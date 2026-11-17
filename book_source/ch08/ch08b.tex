@@ -1,0 +1,174 @@
+% ======================================================================
+% Chapter 8 -- Part B: build, deploy, evaluate, business case, end matter
+% ======================================================================
+
+\section{Build}
+\label{sec:fr-build}
+
+\subsection{The scoring server}
+
+The anomaly-scoring model already exists; the design question is how to expose it to the case agent. The scoring MCP server, owned by fraud analytics, offers three read-only tools:
+\begin{itemize}[itemsep=1pt]
+  \item \texttt{explain\_score(transaction\_id)} returns the score recorded at authorization, the model version, and the five features with the largest attributions, each with its value and the cardholder's typical value. It does not rescore: the analyst must see why the transaction was flagged \emph{then}, by the model in production \emph{then}.
+  \item \texttt{similar\_cases(transaction\_id, k)} returns up to ten confirmed cases with similar attribution profiles, with outcomes.
+  \item \texttt{score(features)} is not exposed. The agent has no reason to score hypothetical transactions, and a tool that lets it do so would invite it to search for inputs that change the answer.
+\end{itemize}
+Attributions come from the model team's standard explanation method for the model type (for tree ensembles, typically Shapley-value attributions). The method is part of the model's validated documentation, which matters in a regulated setting: model risk management must be able to say what the explanations mean.
+
+\subsection{The case agent and its summary}
+
+The case agent's instruction describes a fixed summary structure: \emph{what happened} (amount, merchant, channel, time); \emph{why it was flagged}, in plain language, citing the model's factors in the form \texttt{\{factor:amount\_vs\_history\}}; \emph{what is unusual for this cardholder}; and \emph{similar cases} with outcomes. The agent is told not to state a conclusion about whether the transaction is fraud. As in Chapter~\ref{ch:case-invoice}, the system lays out evidence; the person decides.
+
+\subsection{Faithfulness}
+
+An explanation is \keyterm{faithful} if the reasons it gives are the reasons the model used. A plausible but unfaithful explanation---``unusual location at night'' when the model in fact reacted to a new device and a large amount---is worse than none, because it directs the analyst's attention to the wrong evidence (\textsf{R2}). Listing~\ref{lst:faithful} is the guardrail: it parses the factors cited in a summary and rejects any that are not among the model's top factors for that transaction.
+
+\lstinputlisting[language=Python, caption={The faithfulness guardrail (\texttt{ch08/faithfulness.py}).}, label={lst:faithful}, firstline=2, lastline=21]{code/faithfulness.py}
+
+On two summaries for a transaction whose top factors are the amount relative to history, a new device and merchant risk:
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=1.5em]
+good: ok
+bad:  ["cites 'geo_distance_km', which is not a top factor", "cites 'hour_of_day', which is not a top factor"]
+\end{lstlisting}
+
+The check is deliberately narrow. It verifies that cited reasons are real; it does not verify that the prose around them is accurate. The evaluation measures that second property by sampling.
+
+% ----------------------------------------------------------------------
+\section{Deploy}
+\label{sec:fr-deploy}
+
+\paragraph{Out of the hot path.} The authorization path is untouched: same model, same serving infrastructure, same latency. The case agent runs on Cloud Run, triggered by queue events, in a project with no network route to the authorization systems. If it fails, analysts work the queue as they do today.
+
+\paragraph{Data minimization.} The card-history server returns masked card numbers, no full names, and only the last 90 days of transactions. Summaries are stored with the case, under the same access controls and retention rules as the rest of the case record, and never in general-purpose logs. Model calls are made to a model hosted within Northgate's cloud tenancy, under terms that exclude training on Northgate's data.
+
+\paragraph{Model risk management.} In banking, any model used in decisions is subject to model risk management: documented purpose and limitations, independent validation, and ongoing monitoring \citep{fed2011sr117}. The scoring model already has this. The case agent is not making the decision, but it influences one, so Northgate's model risk team treats it as a model too: the instruction, the model version, the tools and the faithfulness check are documented, and the evaluation below is its validation evidence. Any change of model or instruction triggers revalidation, proportionate to the change.
+
+% ----------------------------------------------------------------------
+\section{Evaluate}
+\label{sec:fr-evaluate}
+
+Evaluation is the technical focus of this case, and fraud is where naive evaluation fails most visibly.
+
+\subsection{Why accuracy is useless here}
+
+With about one transaction in 800 fraudulent, a system that declares everything legitimate is 99.9\% accurate. Accuracy, and most metrics that average over all transactions, say almost nothing. Useful metrics are tied to decisions and costs:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{fraud value caught within the review budget}---of the money at risk, how much reaches a block or an analyst who can act;
+  \item \emph{false-positive ratio}---good customers declined or blocked per fraud caught;
+  \item \emph{total cost}, as in Listing~\ref{lst:fraud-policy}, plotted against thresholds as a \emph{cost curve}, so that the sensitivity of the optimum is visible.
+\end{itemize}
+
+\subsection{Delayed labels and time-based splits}
+
+Fraud labels arrive late. A cardholder may dispute a transaction weeks after it happened; chargebacks can take 60 to 90 days to settle. Two consequences follow. First, recent data looks cleaner than it is: if you evaluate on last week's transactions, much of last week's fraud is not yet labeled. Evaluation therefore uses a period that ended at least 90 days ago. Second, fraud changes as fraudsters adapt. A random split of historical data leaks the future into training; evaluation always trains on an earlier period and tests on a later one.
+
+\subsection{Evaluating the agent}
+
+The case agent is evaluated on what it changes for analysts, in three parts.
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Offline checks} on 2{,}000 historical cases: faithfulness pass rate (target 99\% after one regeneration); sampled accuracy of the prose by senior analysts (target 97\%); and no full card numbers or names in any summary.
+  \item \emph{A controlled comparison.} For two weeks, analysts are randomly assigned cases with and without summaries. Measured: minutes per review, decision accuracy against the eventual label, and agreement with senior reviewers. The value case requires that review time fall to about 3.5 minutes \emph{without} a fall in decision accuracy; a faster but less accurate review moves cost from analysts to losses.
+  \item \emph{Automation bias.} Analysts are shown, without being told, a small number of summaries with a seeded unfaithful reason. The share of analysts who follow the wrong reason to a wrong decision measures how much they rely on the summary rather than check it. If it is high, the summary design changes---for example, to show the model's raw factors beside the prose.
+\end{enumerate}
+
+\subsection{Monitoring}
+
+In production, Northgate monitors the score distribution (to detect drift in the transactions or the model), the review queue's depth and age, minutes per review, the faithfulness pass rate, and---as labels arrive---fraud value caught and false-positive ratio by month. The thresholds are recomputed quarterly from the latest labeled data, and immediately if the score distribution shifts.
+
+% ----------------------------------------------------------------------
+\section{Business Case and Rollout}
+\label{sec:fr-business}
+
+At Northgate's volume, the simulation's difference between unassisted and assisted review is about \$1.6 million a year, mostly from fewer good customers blocked and slightly lower fraud losses. The run cost of the case agent---about 1{,}800 summaries a day at a few cents each, plus engineering---is under \$150{,}000 a year. The largest uncertainty is review time: if summaries save one minute instead of two and a half, most of the benefit disappears. The controlled comparison measures exactly that before any threshold is changed.
+
+The rollout therefore has a particular order: summaries first, with thresholds unchanged; then, after the comparison confirms review time and accuracy, thresholds recomputed for the new capacity. Changing thresholds before capacity is proven would block fewer customers on the strength of an assumption.
+
+\begin{tcolorbox}[colback=white, colframe=black!60, boxrule=0.6pt, arc=1pt, left=10pt, right=10pt, top=8pt, bottom=8pt, fontupper=\small]
+\textbf{To:} Head of Fraud Strategy \hfill \textbf{From:} Fraud Design Team\\
+\textbf{Re:} More reviews per analyst, fewer good customers blocked --- request to proceed
+
+\smallskip\hrule\smallskip
+
+\textbf{Recommendation.} Approve case summaries for the review queue, followed by a threshold change once their effect is measured.
+
+\textbf{The problem.} Our analysts can review about 1{,}000 of the flagged transactions each day. To contain fraud, we block more cards outright, and about 800 good customers a day are blocked wrongly.
+
+\textbf{What changes.} For each flagged transaction, the analyst receives a summary of the evidence and of why our fraud model flagged it, checked automatically against the model's actual reasons. The analyst still decides. Nothing changes in how transactions are authorized.
+
+\textbf{Value.} If review time falls from six minutes to three and a half, as in testing, we can review about 1{,}800 a day, block about 550 fewer good customers daily, and save about \$1.6 million a year. A two-week controlled comparison confirms the effect before thresholds change.
+
+\textbf{Controls.} The system cannot block, release or contact anyone; it only prepares evidence. Model risk management will validate it as a model. Customer data is masked and stays within our tenancy.
+\end{tcolorbox}
+
+% ----------------------------------------------------------------------
+\section{Changed Requirement}
+\label{sec:fr-changed}
+
+\begin{enumerate}[itemsep=3pt]
+  \item \textbf{A fraud wave.} A new attack doubles card-not-present fraud for a month and shifts its pattern. What happens to the thresholds, the queue and the faithfulness of summaries trained on old patterns? What would you monitor to see it in the first day?
+  \item \textbf{A right-to-explanation rule.} A regulator requires that a customer whose card is blocked receive a plain-language reason within 24 hours. Should the case agent write it? What new risks does that create?
+  \item \textbf{Half the analysts.} A cost-cutting plan halves the review team. Rerun Listing~\ref{lst:fraud-policy} and advise the head of fraud on the consequences for customers.
+\end{enumerate}
+
+% ----------------------------------------------------------------------
+\section*{Chapter Summary}
+\addcontentsline{toc}{section}{Chapter Summary}
+
+\begin{itemize}[itemsep=2pt]
+  \item Keep language models out of latency-critical decision paths. Put them where they save human time or add judgment that statistical models cannot.
+  \item Expose an anomaly model through a read-only MCP tool that returns its score and reasons as recorded at decision time.
+  \item With fixed review capacity, the amount of review---not the review threshold---decides outcomes; faster review lets the block threshold rise, which helps customers.
+  \item Asymmetric costs shape thresholds. Optimize total cost jointly, and recompute when costs or capacity change.
+  \item Explanations must be faithful to the model. Check cited reasons mechanically; sample the prose.
+  \item Evaluate with decision-tied metrics, time-based splits and labels old enough to be complete. Test analysts for automation bias.
+\end{itemize}
+
+\section*{Review Questions}
+\addcontentsline{toc}{section}{Review Questions}
+
+\begin{enumerate}[itemsep=2pt]
+  \item Why does D1 fail the design method at steps 3 and 4?
+  \item Why does \texttt{explain\_score} return the score recorded at authorization rather than rescoring?
+  \item Why is \texttt{score(features)} deliberately not exposed to the agent?
+  \item Explain how faster reviews lead to fewer wrongly blocked customers in Listing~\ref{lst:fraud-policy}'s results.
+  \item What is a faithful explanation, and what does the guardrail in Listing~\ref{lst:faithful} not check?
+  \item Why must fraud evaluation use time-based splits and periods at least 90 days old?
+  \item What is automation bias, and how does the evaluation measure it?
+  \item Why are thresholds changed only after the controlled comparison?
+\end{enumerate}
+
+\section*{Exercises}
+\addcontentsline{toc}{section}{Exercises}
+
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{(Design)} Draw D3 in the notation, including the app-verification channel and its trust boundary.
+  \item \textbf{(Design)} Write the node card for the case agent, including three things it must never write.
+  \item \textbf{(Build)} Plot total daily cost from Listing~\ref{lst:fraud-policy} as a surface over the two thresholds for 3.5-minute reviews. How flat is it near the optimum?
+  \item \textbf{(Build)} Vary the cost of a wrongly blocked customer from \$2 to \$40. At what value does the optimal block threshold move above 0.75?
+  \item \textbf{(Build)} Extend \texttt{faithfulness.py} to check that numbers cited in a summary (``9x the usual amount'') match the attribution's feature values within 10\%.
+\end{enumerate}
+
+\section*{Lab 8: Evaluating What Matters}
+\addcontentsline{toc}{section}{Lab 8: Evaluating What Matters}
+
+\paragraph{Goal.} Build the scoring server and the case agent on a synthetic labeled dataset, and produce an evaluation a model risk manager would accept.
+
+\paragraph{Steps.}
+\begin{enumerate}[itemsep=2pt]
+  \item In \texttt{ch08/}, load 18 months of synthetic card-not-present transactions with delayed fraud labels. Train the provided gradient-boosted scoring model on months 1--12 and test it on months 13--15.
+  \item Wrap the model in an MCP server with \texttt{explain\_score} and \texttt{similar\_cases}.
+  \item Build the case agent and the faithfulness guardrail. Generate summaries for 300 test cases and report the faithfulness pass rate.
+  \item Replace the simulated scores in \texttt{fraud\_policy.py} with your model's test-period scores and recompute the thresholds for 6- and 3.5-minute reviews.
+  \item Using months 16--18, show what happens to your evaluation if you ignore the label delay.
+\end{enumerate}
+
+\paragraph{Deliverable.} A four-page validation report: purpose, data and splits, cost-based results, faithfulness results, limitations, and a monitoring plan.
+
+\section*{Further Reading}
+\addcontentsline{toc}{section}{Further Reading}
+
+\begin{itemize}[itemsep=2pt]
+  \item \citet{bolton2002fraud} remains a clear survey of statistical fraud detection and its evaluation problems.
+  \item \citet{fed2011sr117} is the supervisory guidance on model risk management that shapes how banks validate and monitor models, including the case agent in this chapter.
+  \item For anomaly-scoring methods and agentic workflows built around them, see the author's \emph{Agentic AI for Anomaly Detection} (third edition, Innovation Press), which treats the scoring side of this case in depth.
+\end{itemize}

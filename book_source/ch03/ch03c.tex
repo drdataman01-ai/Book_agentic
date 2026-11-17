@@ -1,0 +1,229 @@
+% ======================================================================
+% Chapter 3 -- Part C: money in the trade-off table, rollout, memo,
+% end matter
+% ======================================================================
+
+\section{Putting Money into the Trade-off Table}
+\label{sec:money-tradeoff}
+
+Chapter~\ref{ch:toolkit} scored designs on a 1--5 scale for all eight criteria. With the tools of this chapter, three of the criteria can usually be replaced by money per transaction: \emph{cost} becomes the run-cost term of Equation~\eqref{eq:unit}, \emph{human workload} becomes the human-time term, and much of \emph{quality} becomes the expected-error-cost term. The other five---speed, reliability, security and privacy, control and auditability, maintainability---usually stay as scores, because their value is either already inside a KPI (speed drives Harbor's win rate) or shows up mainly as risk.
+
+A mixed table, with a dollar row and score rows, is more honest than an all-score table. It shows the sponsor exactly what money is at stake, and keeps the judgment calls visible as judgment calls. Table~\ref{tab:money} applies the idea to Team~A's and Team~B's quote designs from Chapter~\ref{ch:foundations}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Team A's and Team B's quote designs with money per quote. Error rates for Team A are the pilot estimates from a 200-quote test; human-time figures from the analysts' time log. Fixed platform and support costs, about \$4.20 per quote for either design, are left out because they do not differ.}
+\label{tab:money}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Per quote & Team A (single agent) & Team B (workflow) \\
+\midrule
+Model and tool calls & \$0.21 & \$0.04 \\
+Analyst and manager time & \$12.10 & \$10.50 \\
+Expected error cost, below-floor quotes & \$4.28 & \$0.71 \\
+Expected error cost, wrong contract & \$1.90 & \$0.60 \\
+\midrule
+Total cost per quote & \$18.49 & \$11.85 \\
+\midrule
+Speed (score) & 5 & 4 \\
+Control and auditability (score) & 1 & 5 \\
+Security and privacy (score) & 2 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Team A's design is more than five times as expensive to run, but that is not why it loses: run cost is still a few cents next to the human time and error cost. It loses because its error cost is several times higher---a policy in a prompt is broken more often than a policy in code---and because no one can audit why it priced a quote as it did. The dollar rows make the first point; the score rows make the second.
+
+% ----------------------------------------------------------------------
+\section{Rollout: Pilot, Go/No-Go and Owner}
+\label{sec:rollout}
+
+No sponsor should be asked to approve a full launch on the strength of a design document. The usual request is for a \keyterm{pilot}: a limited, time-boxed trial with a decision at the end. A good pilot plan has six parts.
+
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Scope.} Who and what is in the pilot, and who is not. Harbor: two of six sales regions; quotes up to \$250{,}000; standard catalog items only.
+  \item \emph{Comparison.} What the pilot results will be compared against. Harbor: the four non-pilot regions over the same weeks, and the same two regions over the previous year's same weeks. Without a comparison group, a seasonal upswing will be credited to the AI.
+  \item \emph{Duration.} Long enough to measure the most uncertain benefit. Win rate on large quotes moves slowly; Harbor's analysts estimated that eight weeks would give roughly 1{,}000 pilot quotes, enough to detect a two-point change in win rate with reasonable confidence but probably not a one-point change. The plan says so: the pilot can confirm the floor case, and can only bound the growth case.
+  \item \emph{Go/no-go criteria.} Stated in advance, measurable, and tied to KPIs and error budgets (Table~\ref{tab:gonogo}). Criteria agreed after the results are known are not criteria.
+  \item \emph{Stop rules.} Conditions that halt the pilot at once, before the scheduled decision: any below-floor quote issued; any customer data exposure.
+  \item \emph{Owner.} One named person who makes the go/no-go call and owns the solution afterward. Committees review; owners decide.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Go/no-go criteria for Harbor's eight-week pilot.}
+\label{tab:gonogo}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\toprule
+Criterion & Baseline & Go if \\
+\midrule
+Median quote turnaround & 26 h & $\le$ 6 h (target 4 h) \\
+Analyst minutes per quote & 35 min & $\le$ 12 min \\
+Realized margin, pilot vs.\ comparison regions & --- & No worse than $-0.3$ points \\
+Below-floor quotes issued & 2.4\% & 0 (stop rule) \\
+Wrong customer or contract & 0.9\% & $\le$ 0.3\% \\
+Share of eligible quotes sent through the system & --- & $\ge$ 70\% by week 6 \\
+Representative satisfaction (weekly 1--5 pulse) & --- & $\ge$ 3.8 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Note the adoption criterion. A pilot in which representatives route only the easy quotes through the system will show excellent numbers that will not survive a full launch.
+
+After the pilot, the decision has three outcomes, not two: \emph{go} (expand on a stated schedule), \emph{no-go} (stop, and record why), or \emph{iterate} (fix named problems and repeat a shorter pilot). Planning for all three in advance keeps the pilot from drifting into a permanent half-launched state, which is the most common fate of AI pilots that have no owner.
+
+% ----------------------------------------------------------------------
+\section{The One-Page Memo}
+\label{sec:memo}
+
+Every case in this book ends with a memo to the executive sponsor, and every memo follows the same outline. The limit of one page is a discipline, not a formatting rule: if the case cannot be made in a page, it is not yet clear, and an executive will not read the second page anyway. Figure~\ref{fig:memo} is Harbor's.
+
+\begin{figure}[htbp]
+\begin{tcolorbox}[colback=white, colframe=black!60, boxrule=0.6pt, arc=1pt, left=10pt, right=10pt, top=8pt, bottom=8pt, fontupper=\small]
+\textbf{To:} Vice President, Sales \hfill \textbf{From:} Quote Design Team\\
+\textbf{Re:} Faster quotes with margin protection --- request to pilot \hfill \textbf{Decision needed by:} 14 March
+
+\smallskip\hrule\smallskip
+
+\textbf{Recommendation.} Approve an eight-week pilot of the redesigned quote process in the Central and Gulf regions, at a build cost of \$180{,}000.
+
+\textbf{The problem.} Large quotes take a median of 26 hours, almost all of it waiting in queues. 2.4\% of quotes are issued below the margin floor. Representatives report losing deals to faster competitors.
+
+\textbf{What changes.} Requests are read and structured automatically; prices, contract terms and policy checks are applied by tested rules; analysts check drafts instead of building quotes; managers see only true exceptions, with the reason stated. Representatives still send every quote.
+
+\textbf{Value.} \emph{Floor case, from measured inputs:} about \$335{,}000 a year (analyst capacity and fewer below-floor quotes, net of run costs); payback in about seven months. \emph{Upside, to be tested:} each one-point rise in win rate on quoted orders adds about \$2.3 million in gross profit a year.
+
+\textbf{Risks and safeguards.} Below-floor quotes are blocked in code; any occurrence stops the pilot. Customer data stays within our cloud tenancy. Adoption is the main risk; the pilot measures it directly.
+
+\textbf{Pilot and decision.} Comparison against the four other regions. Go if median turnaround $\le$ 6 hours, analyst time $\le$ 12 minutes per quote, margin within 0.3 points of comparison regions, wrong-contract errors $\le$ 0.3\%, and at least 70\% of eligible quotes use the system. Decision owner: VP Sales. Expansion to all regions would follow in one quarter.
+
+\textbf{What we need from you.} Approval of the budget; two regional managers as pilot leads; a decision on whether analysts' freed time goes to the strategic-accounts team.
+\end{tcolorbox}
+\caption{Harbor's one-page memo to the executive sponsor. The template is in Appendix~C.}
+\label{fig:memo}
+\end{figure}
+
+Five features of the memo are deliberate and should be copied:
+\begin{itemize}[itemsep=1pt]
+  \item The \emph{recommendation comes first}, with the money and the decision requested.
+  \item The \emph{problem is stated in the sponsor's numbers}, from the process map.
+  \item \emph{What changes} is described in business terms. Words like \emph{agent}, \emph{RAG} and \emph{MCP} do not appear; the solution graph is an attachment for those who want it.
+  \item The \emph{value is split into floor and upside}, with the source of each.
+  \item The memo \emph{ends with what the sponsor must do}, including the decision that only she can make: what to do with the freed capacity, without which the labor benefit stays on paper.
+\end{itemize}
+
+% ----------------------------------------------------------------------
+\section{The Business Layer in Every Case}
+\label{sec:business-in-cases}
+
+From Chapter~\ref{ch:case-policy} onward, each case applies this chapter in the same places of the chapter template:
+\begin{itemize}[itemsep=1pt]
+  \item Section 1, \emph{business brief and current process}: the process map with times, costs and error points.
+  \item Section 2, \emph{stakeholders, KPIs and value hypothesis}: the four stakeholder roles, a KPI tree, and the hypothesis in one sentence.
+  \item Section 4, \emph{trade-offs}: unit economics per design, with money rows where they can be measured.
+  \item Section 8, \emph{business case and rollout}: the value case with its tornado analysis, error budgets, the pilot plan and the memo.
+\end{itemize}
+Each case also has a \emph{business skill} it emphasizes. Chapter~\ref{ch:case-policy} focuses on defining KPIs for a solution whose output is information rather than transactions; Chapter~\ref{ch:case-support} on unit economics at high volume; and so on through the book.
+
+% ----------------------------------------------------------------------
+\section*{Chapter Summary}
+\addcontentsline{toc}{section}{Chapter Summary}
+
+\begin{itemize}[itemsep=2pt]
+  \item A current-process map with touch times, wait times and error points is the baseline for every claim a design makes. Measure it before the pilot; it cannot be measured afterward.
+  \item Sponsors, users, approvers and owners each need different things; each approver appears in the graph as a checkpoint or constraint, each owner as a boundary.
+  \item Good KPIs are business-facing, measured today, movable by the design, paired with a quality guard, and few. A KPI tree links them to the metrics of individual nodes.
+  \item A value case separates growth, labor capacity, error reduction and risk reduction. Lead with the floor case built from measured inputs; use tornado analysis to find the assumption the case rests on, and design the pilot to test it.
+  \item Unit economics (Equation~\ref{eq:unit}) give a cost per transaction by design and by path, including expected error cost. Model cost is often the smallest term.
+  \item When error costs are asymmetric, choose thresholds that minimize expected cost, not error count; where a rule can decide exactly, prefer the rule. Error budgets turn quality hopes into commitments.
+  \item A pilot needs scope, a comparison group, enough duration, go/no-go criteria agreed in advance, stop rules and a single owner. The one-page memo makes the case to the sponsor in the sponsor's terms.
+\end{itemize}
+
+\section*{Key Terms}
+\addcontentsline{toc}{section}{Key Terms}
+
+\begin{multicols}{2}
+\raggedright\small
+asymmetric error cost \\
+current-process map \\
+error budget \\
+floor case \\
+go/no-go criteria \\
+KPI tree \\
+key performance indicator (KPI) \\
+one-page memo \\
+pilot \\
+risk register \\
+sponsor, users, approvers, owners \\
+stop rule \\
+tornado analysis \\
+touch time and wait time \\
+unit economics \\
+value case \\
+value hypothesis
+\end{multicols}
+
+\section*{Review Questions}
+\addcontentsline{toc}{section}{Review Questions}
+
+\begin{enumerate}[itemsep=2pt]
+  \item Why does Harbor's process map change the designer's priorities, even though the analysts' work takes only 35 minutes?
+  \item Name the four stakeholder roles in Harbor's case. Which of them appears in the solution graph, and how?
+  \item Give an example of an unpaired KPI for an AI solution and explain how the solution could improve it while making the business worse.
+  \item What is the difference between labor capacity and cash savings? What decision turns one into the other?
+  \item In Harbor's tornado analysis, why does model cost barely matter? Describe a business where it would dominate.
+  \item Explain Equation~\eqref{eq:threshold} in words. Why should the threshold for sending quotes to a manager differ from the accuracy-maximizing threshold?
+  \item What is an error budget, and how does one become a go/no-go criterion?
+  \item Why does the pilot need a comparison group? What could mislead Harbor without one?
+  \item Why does the memo avoid words like \emph{agent} and \emph{MCP}?
+  \item A pilot ends with mixed results: turnaround and analyst time pass, adoption reaches only 55\%. What should the owner decide, and what information would help?
+\end{enumerate}
+
+\section*{Exercises}
+\addcontentsline{toc}{section}{Exercises}
+
+\paragraph{Design track}
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{Map a process.} For the process you have used in earlier exercises, draw a swimlane map with touch times, wait times and at least two error points. State how you would measure each number.
+  \item \textbf{KPI tree.} Build a KPI tree for Harbor's returns process from Chapter~\ref{ch:toolkit}, with leaves that belong to nodes of the straight-through design.
+  \item \textbf{Price the errors.} For the returns case, estimate $L_k$ for an out-of-warranty credit and for a valid return wrongly refused. Which is more expensive, and what does that imply for the safe-zone rules?
+  \item \textbf{Write the memo.} Write the one-page memo for Harbor's straight-through returns design, with a floor case and an upside.
+\end{enumerate}
+
+\paragraph{Build track}
+\begin{enumerate}[resume, itemsep=2pt]
+  \item \textbf{Probabilistic value case.} Replace the one-at-a-time sensitivity in Listing~\ref{lst:value} with a Monte Carlo simulation in which each uncertain input is drawn from a distribution you justify. Report the probability that net annual value is below \$250{,}000.
+  \item \textbf{Threshold under asymmetric costs.} Using the synthetic routing scores in the repository, plot $E(\tau)$ from Equation~\eqref{eq:threshold} for $L_{\text{FN}}/L_{\text{FP}} \in \{1, 10, 100\}$ and report the optimal threshold for each ratio.
+\end{enumerate}
+
+% ----------------------------------------------------------------------
+\section*{Lab 3: A Value Case You Can Defend}
+\addcontentsline{toc}{section}{Lab 3: A Value Case You Can Defend}
+
+\paragraph{Goal.} Produce a value case, a pilot plan and a memo for Harbor's returns design from Chapter~\ref{ch:toolkit}, using data rather than guesses wherever data exists.
+
+\paragraph{Time.} About 90 minutes.
+
+\paragraph{Steps.}
+\begin{enumerate}[itemsep=2pt]
+  \item Open \texttt{ch03/} in the companion repository. It contains a synthetic extract of 12 months of Harbor's returns: case timestamps, representative handling times, credit amounts, and an audit sample of 400 credits marked in or out of warranty.
+  \item Compute the baseline: median and 90th-percentile days to RMA and to credit, representative minutes per return, and the out-of-warranty credit rate with a 95\% confidence interval.
+  \item Copy \texttt{value\_case.py} to \texttt{returns\_value.py} and rewrite the inputs for the returns case. Mark each input \texttt{MEASURED} or \texttt{ASSUMED} in a comment.
+  \item Run the tornado analysis. Identify the assumption the case rests on.
+  \item Write go/no-go criteria for a six-week pilot, including at least one error budget and one adoption criterion.
+  \item Write the one-page memo.
+\end{enumerate}
+
+\paragraph{Deliverable.} The baseline table, the value case with its tornado output, the go/no-go table and the memo. In one paragraph, explain how the pilot would measure the assumption your case rests on.
+
+% ----------------------------------------------------------------------
+\section*{Further Reading}
+\addcontentsline{toc}{section}{Further Reading}
+
+\begin{itemize}[itemsep=2pt]
+  \item \citet{kohavi2020trustworthy} is the standard practical guide to controlled experiments; read its chapters on choosing metrics and on guardrail metrics before designing a pilot comparison.
+  \item \citet{provost2013datascience} explains expected-value thinking for decisions under uncertainty, including cost-sensitive thresholds, in business language.
+  \item \citet{parmenter2019kpi} covers the selection and use of KPIs in organizations, with many examples of KPIs that backfired.
+\end{itemize}

@@ -1,0 +1,107 @@
+% ======================================================================
+% Chapter 5 -- Case: Customer Support Triage
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: case at a glance; business brief; stakeholders, KPIs, value
+% ======================================================================
+
+\chapter{Case: Customer Support Triage}
+\label{ch:case-support}
+
+\begin{caseglance}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm}X@{}}
+Company & Cymbal Home \& Garden, a home-improvement and garden retailer (the fictional company of Google's sample) \\
+Process & Customer support by chat and e-mail: order status, delivery problems, returns and refunds, product questions, service appointments, complaints \\
+Starting point & Google ADK sample \texttt{customer-service}, pinned at commit \texttt{a9dc177} (9 September 2026), the last commit before the sample was removed from the repository \\
+Technical focus & MCP tool design \\
+Business skill & Unit economics: cost per contact, by design and by path \\
+Patterns & Router; approval gate; retrieve-then-answer; multi-agent handoff \\
+Deliverables & Solution graphs for four designs, per-intent cost model, MCP servers, deployed agent, evaluation report, memo
+\end{tabularx}
+\end{caseglance}
+
+\begin{objectives}
+After working through this case, you will be able to:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item Critique a tool-using agent's tool set and callbacks against principles of tool design.
+  \item Design MCP tools that are task-shaped, identity-safe, validated, idempotent and policy-enforcing, and implement one such server.
+  \item Build a cost-per-contact model that compares designs by intent, and use it to choose which intents to automate.
+  \item Pair a containment KPI with re-contact and satisfaction measures so that it cannot be gamed.
+  \item Deploy an agent to Agent Runtime with its tools on Cloud Run, and evaluate tool use, not only answers.
+\end{enumerate}
+\end{objectives}
+
+% ----------------------------------------------------------------------
+\section{Business Brief and Current Process}
+\label{sec:support-brief}
+
+\subsection{The company}
+
+Cymbal Home \& Garden sells tools, building supplies, plants and garden equipment through 140 stores and an online shop, and offers services such as professional planting. Its customer support team handles about 52{,}000 contacts a month by chat and e-mail. Seventy agents work in two shifts; about half are employed by Cymbal and half by an outsourcing partner paid per productive hour. Their blended loaded cost is about \$37 an hour, or \$0.62 a minute, and contact-centre software adds about \$0.45 per contact handled by a person.
+
+\subsection{What customers contact Cymbal about}
+
+A month of tagged contacts gives the mix in Table~\ref{tab:intents}. The mix is the first thing a support designer should ask for, because the economics of every design depend on it.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Cymbal's contact mix and median handling time per contact. Tagging by the support team; times from the contact-centre platform.}
+\label{tab:intents}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Intent & Share & Minutes & Typical example \\
+\midrule
+Order status & 34\% & 4.5 & ``Where is my order A10294?'' \\
+Delivery issue & 14\% & 9.0 & ``The patio set arrived with a broken leg.'' \\
+Return or refund & 18\% & 8.0 & ``I bought two rose bushes and only need one.'' \\
+Product question & 12\% & 7.0 & ``Which fertilizer for petunias in Las Vegas?'' \\
+Service scheduling & 8\% & 6.0 & ``Can someone plant my hedges next week?'' \\
+Complaint & 6\% & 14.0 & ``This is the third time my delivery was missed.'' \\
+Other & 8\% & 9.0 & Invoices, account changes, store hours \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Weighting minutes by share, the average contact takes about 7.1 minutes of agent time, so the baseline cost is about \$4.86 per contact, or roughly \$253{,}000 a month and \$3 million a year. Chat contacts are answered in a median of 3 minutes; e-mail in a median of 19 hours, because e-mail queues are worked after chat. Customer satisfaction (CSAT) after a contact averages 3.9 out of 5, and 18\% of contacts are followed within 72 hours by another contact about the same issue---a sign that the first contact did not resolve it.
+
+\subsection{Errors}
+
+An audit of 400 contacts that ended in a return, refund or goodwill credit found that 2.2\% were granted against policy (outside the return window, or a refund larger than the item's price), and 0.8\% were applied to the wrong order. The second is rarer but worse: it can expose one customer's order details to another, and it is the kind of error that is hardest to explain to the affected customer.
+
+% ----------------------------------------------------------------------
+\section{Stakeholders, KPIs and Value Hypothesis}
+\label{sec:support-kpis}
+
+\subsection{Stakeholders}
+
+\begin{description}[leftmargin=1em,itemsep=2pt]
+  \item[Sponsor.] Vice president of customer experience. Wants lower cost per contact without lower satisfaction.
+  \item[Users.] Customers; support agents, who will receive the contacts the system does not resolve.
+  \item[Approvers.] Finance, for refund and goodwill rules; legal, for what an automated assistant may say and must disclose; information security, for access to order and customer data.
+  \item[Owners.] The order-management team (orders and returns systems), the services team (scheduling), the e-commerce team (catalog), and the support-operations team (the contact-centre platform and the agent itself).
+\end{description}
+
+Four system owners is typical of support, and it is the first hint about where MCP server boundaries belong. Each owner will want to control what any automated system can do to its systems. A server per owner gives each of them that control.
+
+\subsection{Containment and its partners}
+
+Support has its own version of the deflection trap from Chapter~\ref{ch:case-policy}. It is called \keyterm{containment}: the share of contacts resolved without a person. An assistant that tells every customer ``your refund is being processed'' contains every refund request, until the same customers come back angry. Containment must therefore be defined strictly and paired with measures that catch false resolution.
+
+\begin{itemize}[itemsep=1pt]
+  \item[\textsf{K1}] Cost per contact, all-in (Equation~\eqref{eq:unit}): target at most \$3.75, from \$4.86.
+  \item[\textsf{K2}] 72-hour re-contact rate on the same issue: no higher than the baseline 18\%. This is containment's partner: it rises when the assistant claims to resolve what it did not.
+  \item[\textsf{K3}] CSAT: no lower than 3.9.
+  \item[\textsf{K4}] Median first response for e-mail: under one hour, from 19.
+  \item[\textsf{R1}] A return, refund or credit granted against policy.
+  \item[\textsf{R2}] An action taken on, or information shown from, another customer's order.
+  \item[\textsf{R3}] A customer who asks for a person and cannot reach one.
+  \item[\textsf{R4}] Discounts or credits obtained by manipulating the assistant.
+\end{itemize}
+
+\textsf{R3} deserves a word. Customers who want a person and are kept talking to a machine are the commonest source of complaints about automated support, and in several jurisdictions rules on automated customer service are tightening. The design treats ``I want a person'' as an intent that is always honored.
+
+\subsection{Value hypothesis}
+
+\begin{quote}
+\emph{If routine contacts---order status above all---are resolved instantly and correctly by automated paths with authoritative data, and agents receive the rest already triaged and summarized, cost per contact will fall by at least a quarter and e-mail will be answered within an hour, without more repeat contacts or lower satisfaction.}
+\end{quote}

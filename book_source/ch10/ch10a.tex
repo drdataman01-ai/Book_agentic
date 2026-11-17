@@ -1,0 +1,168 @@
+% ======================================================================
+% Chapter 10 -- Case: KYC/AML Customer Onboarding
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: brief, KPIs, designs, trade-offs
+% ======================================================================
+
+\chapter{Case: KYC and AML Onboarding}
+\label{ch:case-kyc}
+
+\begin{caseglance}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm}X@{}}
+Company & Kestrel Bank, a US digital bank for small businesses \\
+Process & Opening business accounts: know-your-customer (KYC) and anti-money-laundering (AML) checks \\
+Starting point & Original design (Part III) \\
+Technical focus & Security and governance \\
+Business skill & Regulatory risk and audit readiness \\
+Patterns & Approval gate; router; retrieve-then-answer; guardrails throughout \\
+Deliverables & Solution graphs, threat model, permission matrix, audit trail, control tests, memo
+\end{tabularx}
+\end{caseglance}
+
+\begin{objectives}
+After working through this case, you will be able to:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item Threat-model an agentic system, including attacks through the documents it reads.
+  \item Assign least-privilege permissions per agent and per tool, and show them in a permission matrix.
+  \item Separate decisions that may be automated, assisted, or reserved to people by law or policy.
+  \item Build an audit trail that records who or what decided, on what evidence, under which version, and that reveals tampering.
+  \item Present an agentic design to a regulator or auditor as a set of controls, each with a test.
+\end{enumerate}
+\end{objectives}
+
+% ----------------------------------------------------------------------
+\section{Business Brief and Current Process}
+\label{sec:kyc-brief}
+
+Kestrel Bank serves small businesses entirely online. About 6{,}000 businesses apply for accounts each month. Before opening an account, US banks must identify and verify the customer, understand the nature of the business, identify and verify its beneficial owners---generally anyone owning 25\% or more, plus one person with significant control---screen all of them against sanctions lists, assign a risk rating, and apply enhanced due diligence to higher-risk customers. Records must be kept for at least five years. Examiners test all of it.
+
+Today an applicant uploads formation documents, an owner's identity document and answers a questionnaire. Twenty-eight onboarding analysts check the documents, run identity verification and sanctions screening through vendor services, resolve possible matches, look for adverse media, rate the risk, and approve, decline or escalate. Median time to open is 4.5 days; 38\% of applicants abandon before completion; analysts spend about 70 minutes per application, much of it reconciling documents with the questionnaire and clearing false-positive sanctions matches. Kestrel's last examination found the risk-rating rationale undocumented in 11\% of sampled files---a finding that must not recur.
+
+% ----------------------------------------------------------------------
+\section{Stakeholders, KPIs and Value Hypothesis}
+\label{sec:kyc-kpis}
+
+\paragraph{Stakeholders.} The sponsor is the chief operating officer. Users are applicants and onboarding analysts. Approvers carry unusual weight in this case: the BSA/AML officer, who is personally accountable for the bank's program; compliance; model risk management; information security; and, indirectly, the bank's examiners. Owners are the onboarding operations team, the financial-crimes compliance team (screening rules and risk model) and the platform team.
+
+\paragraph{KPIs and risks.}
+\begin{itemize}[itemsep=1pt]
+  \item[\textsf{K1}] Median time to open for low-risk applicants: under one business day, from 4.5.
+  \item[\textsf{K2}] Abandonment: under 22\%, from 38\%.
+  \item[\textsf{K3}] Analyst minutes per application: down 40\%.
+  \item[\textsf{K4}] Files with complete, documented risk rationale on examination sampling: 100\%.
+  \item[\textsf{R1}] Opening an account for a sanctioned party or one whose beneficial owners were not identified.
+  \item[\textsf{R2}] An agent manipulated by content in an uploaded document.
+  \item[\textsf{R3}] Personal or confidential data exposed or retained beyond need.
+  \item[\textsf{R4}] A decision reserved to a person made, or effectively made, by a system---including any communication that discloses a suspicious-activity report, which US law prohibits.
+\end{itemize}
+
+\begin{quote}
+\emph{Value hypothesis.} If documents are read and reconciled automatically, low-risk applicants who pass every deterministic check are approved by rule within hours, and analysts receive every other file fully assembled with a written rationale, Kestrel will open accounts faster, lose fewer applicants, and pass examination sampling on documentation---without weakening any control.
+\end{quote}
+
+% ----------------------------------------------------------------------
+\section{Alternative Designs}
+\label{sec:kyc-designs}
+
+\subsection{D1: an onboarding agent}
+
+One agent receives the application, reads the documents, calls identity verification and sanctions screening, searches the web for adverse media, rates the risk and approves low-risk applicants, escalating the rest. Its instruction contains the bank's onboarding policy. It is the design most vendors demonstrate. It also concentrates every permission in a component that reads untrusted documents, places risk rating---a regulated model---inside a prompt, and makes approvals a model output.
+
+\subsection{D2: controls as code, agents as clerks}
+
+D2 treats the bank's AML program as a set of controls and asks, for each, whether code, a model or a person should perform it (Figure~\ref{fig:kyc-d2}).
+\begin{itemize}[itemsep=1pt]
+  \item A \emph{document agent} (Level~1) extracts fields from uploaded documents into strict schemas. It runs inside a trust boundary with \emph{no tools at all}: it receives document contents and returns structured fields, nothing else.
+  \item \emph{Code} reconciles extracted fields with the questionnaire, checks beneficial-ownership completeness (do the owners listed add up, is a control person named), and calls identity verification and sanctions screening through vendor MCP servers.
+  \item A \emph{screening agent} (Level~4, read-only) helps with possible sanctions matches and adverse media: it gathers the vendor's match details and searches a licensed news database, and writes a match analysis. It never clears a match.
+  \item The \emph{risk rating} is the bank's validated model, run as code.
+  \item \emph{Routing in code}: an applicant who is low risk, fully verified, with no screening hits, no open questions and complete beneficial ownership is approved by rule. Every other file goes to an analyst, assembled by a \emph{file agent} that writes the KYC memo with citations to the evidence.
+  \item \emph{People decide} every decline, every enhanced-due-diligence case, every match clearance and every escalation to the financial-intelligence unit. The system never contacts the applicant about screening or suspicion.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
+\node[sg trigger] (app) at (0,0) {Applicant\\[-1pt]{\scriptsize uploads, form}};
+\node[sg agent] (doc) at (3.2,0) {Document agent\\[-1pt]{\scriptsize L1; no tools}};
+\node[sg guard] (g1) at (6.0,0) {Schema\\check};
+\node[sg code] (rec) at (8.8,0) {Reconcile, ownership, verify, screen};
+\node[sg mcp, text width=2.4cm] (ven) at (12.4,0) {Vendors\\[-1pt]{\scriptsize Compliance}\nodepart{two}{\tiny\ttfamily verify\_identity, screen\_sanctions}};
+\node[sg code] (risk) at (8.8,-2.5) {Risk model\\[-1pt]{\scriptsize validated, v7}};
+\node[sg agent] (scr) at (12.4,-2.5) {Screening agent\\[-1pt]{\scriptsize L4, read-only; match analysis}};
+\node[sg code] (rt) at (5.6,-2.5) {Route\\[-1pt]{\scriptsize all checks clean?}};
+\node[sg agent] (file) at (5.6,-5.0) {File agent\\[-1pt]{\scriptsize memo with citations}};
+\node[sg human] (an) at (9.0,-5.0) {Onboarding analyst\\[-1pt]{\scriptsize decides}};
+\node[sg code] (open) at (2.2,-2.5) {Open account\\[-1pt]{\scriptsize by rule}};
+\node[sg human] (fiu) at (12.4,-5.0) {Financial intelligence unit};
+\draw[sg flow] (app) -- (doc); \draw[sg flow] (doc) -- (g1);
+\draw[sg flow] (g1) -- node[sg lab, above] {[valid]} (rec);
+\draw[sg call] (rec) -- (ven);
+\draw[sg flow] (rec) -- (risk);
+\draw[sg flow] (rec.south east) -- node[sg lab, sloped, above] {[possible match]} (scr.north west);
+\draw[sg flow] (risk) -- (rt);
+\draw[sg flow] (rt) -- node[sg lab, above] {[clean, low]} (open);
+\draw[sg flow] (rt) -- node[sg lab, right] {[else]} (file);
+\draw[sg flow] (file) -- (an);
+\draw[sg flow] (scr) -- node[sg lab, sloped, above] {analysis} (an.north east);
+\draw[sg handoff] (an) -- node[sg lab, above] {[suspicion]} (fiu);
+\node[sg trust, fit=(app)(doc)] (tb) {};
+\node[sg btitle, text=BrickRed] at (tb.north west) {untrusted documents};
+\sgtag{doc}{K3 R2}
+\sgtag{g1}{R2}
+\sgtag{rec}{R1}
+\sgtag{risk}{K4}
+\sgtag{scr}{K3}
+\sgtag{rt}{K1}
+\sgtag{file}{K4}
+\sgtag{an}{R1 R4}
+\sgtag{fiu}{R4}
+\end{tikzpicture}
+\caption{D2: controls as code, agents as clerks. The document agent has no tools; approval is a rule over deterministic checks; every adverse decision is a person's.}
+\label{fig:kyc-d2}
+\end{figure}
+
+\subsection{D3: assist only}
+
+D3 is D2 without automatic approval: every file, however clean, goes to an analyst, already assembled. It is the most conservative design and the easiest to explain to examiners.
+
+% ----------------------------------------------------------------------
+\section{Trade-offs}
+\label{sec:kyc-tradeoffs}
+
+\subsection{Constraints first}
+
+This case has more constraints than any other in the book, and they remove options before any scoring:
+\begin{itemize}[itemsep=1pt]
+  \item The risk-rating methodology is a validated model under the bank's model risk management; it cannot be replaced by a prompt. D1, which rates risk in its instruction, fails here.
+  \item Only people may clear a possible sanctions match, decide on enhanced due diligence, decline, or refer suspicion. D1's escalation is the model's choice, so it fails here too.
+  \item Records must allow an examiner to reconstruct every decision. D1 can log its outputs, but its reasons are a model's narrative, not the application of a documented rule.
+\end{itemize}
+
+D1 is out. The comparison is between D2 and D3, and it is a real business decision: how much of the onboarding flow may run without a person, given that the bank's regulators will examine exactly that.
+
+\subsection{Scores and decision}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Trade-off table for onboarding (D1 removed by constraints).}
+\label{tab:kyc-tradeoff}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Weight & D2 & D3 \\
+\midrule
+Speed and abandonment (\textsf{K1}, \textsf{K2}) & 0.25 & 5 & 3 \\
+Analyst workload (\textsf{K3}) & 0.15 & 5 & 3 \\
+Control and auditability (\textsf{K4}) & 0.25 & 4 & 5 \\
+Security (\textsf{R2}, \textsf{R3}) & 0.20 & 5 & 5 \\
+Regulatory acceptability & 0.15 & 4 & 5 \\
+\midrule
+Weighted score & 1.00 & 4.60 & 4.20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+D2 approves only what a fully deterministic rule allows, over checks examiners already accept; its automated decision is the kind of straight-through processing that banks have used for years, now with better document handling. That narrows the regulatory difference with D3. The decision is D2, but the BSA/AML officer's sign-off on the approval rule is a precondition, and the rollout begins with D3 behavior for the first two months so that the bank can show examiners a body of analyst-reviewed files that the rule would have approved.
+
+The business skill of this case---regulatory risk---does not fit neatly into the expected-cost tables of earlier chapters. An enforcement action is rare, large and damaging to the bank's ability to grow; it is a tail risk, and averages understate it. The design responds to tail risks the way the constraints above do: by keeping the decisions that could produce them in human hands, and by making every control testable.

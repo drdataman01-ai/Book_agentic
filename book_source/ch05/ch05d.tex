@@ -1,0 +1,169 @@
+% ======================================================================
+% Chapter 5 -- Part D: business case and rollout; changed requirement;
+% end matter
+% ======================================================================
+
+\section{Business Case and Rollout}
+\label{sec:support-business}
+
+\subsection{The value case}
+
+At the base inputs, D4 lowers the monthly cost of support from about \$252{,}600 to about \$183{,}700, a saving of about \$68{,}900 a month or \$827{,}000 a year, against a build cost estimated at \$420{,}000 for five servers, the agents, the copilot integration and the evaluation harness. Payback is about six months.
+
+Unlike Harbor's case, this one rests mostly on measured inputs: the contact mix, the handling times and the human cost come from the contact-centre platform, and the automation rates from replaying 2{,}000 real transcripts against prototypes. The script \texttt{d4\_sensitivity.py} in the repository varies the uncertain inputs one at a time:
+
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=1.5em]
+base saving per month: $68,899
+order-status automation 0.70 / 0.95    $  56,708  $  73,641
+assist time cut -10 pts / +10 pts      $  59,227  $  78,571
+human cost $0.45 / $0.75 per min       $  40,857  $  90,344
+error cost $22 -> $66 / $11            $  52,385  $  73,028
+model cost x10 / x0.5                  $  65,525  $  69,087
+\end{lstlisting}
+
+The largest swing is not a model property at all but the cost of a human minute. If Cymbal renegotiated its outsourcing contract to \$0.45 a minute, the saving would fall by 40\%; this is the subject of one of the changed requirements below. Among the AI-related inputs, the cost of an error matters more than model price: tripling the average cost of a wrong automated resolution takes \$16{,}500 a month off the saving, while a tenfold rise in model cost takes \$3{,}400. The practical conclusion is the same as in every case so far: spend engineering effort on error rates before spending it on model costs.
+
+\subsection{Pilot: a randomized comparison}
+
+Support has a property that Harbor's quote desk lacked: high volume of nearly identical units. That makes a proper randomized experiment possible, and it is far more convincing than a before-and-after comparison \citep{kohavi2020trustworthy}.
+
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Design:} 10\% of new chat and e-mail contacts, chosen at random by customer, are handled by D4; the rest by the current process. Randomizing by customer rather than by contact keeps each customer's experience consistent.
+  \item \emph{Duration:} four weeks, giving about 5{,}000 treated contacts---enough to detect a two-point change in the 72-hour re-contact rate.
+  \item \emph{Ramp:} 1\% for the first three days, with the adversarial evaluation rerun daily; then 10\%.
+  \item \emph{Stop rules:} any confirmed cross-customer data exposure (\textsf{R2}); any refund or credit granted against policy by an automated path (\textsf{R1}); ``wants a person'' recall below 0.99 in daily sampling (\textsf{R3}).
+  \item \emph{Owner:} Vice president of customer experience.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Go/no-go criteria for the D4 pilot (treatment vs.\ control).}
+\label{tab:support-gonogo}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.4cm}@{}}
+\toprule
+Criterion & Baseline & Go if (treatment) \\
+\midrule
+\textsf{K1} Cost per contact, from actual costs & \$4.86 & $\le$ \$3.75 \\
+\textsf{K2} 72-hour re-contact rate & 18\% & Not higher than control \\
+\textsf{K3} CSAT & 3.9 & Not lower than control by more than 0.1 \\
+\textsf{K4} Median first response, e-mail & 19 h & $\le$ 1 h \\
+\textsf{R1}, \textsf{R2} Policy and cross-customer errors & --- & 0 (stop rules) \\
+Copilot draft acceptance & --- & $\ge$ 70\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The memo}
+
+\begin{tcolorbox}[colback=white, colframe=black!60, boxrule=0.6pt, arc=1pt, left=10pt, right=10pt, top=8pt, bottom=8pt, fontupper=\small]
+\textbf{To:} VP, Customer Experience \hfill \textbf{From:} Support Design Team\\
+\textbf{Re:} Lower cost per contact, faster e-mail, no loss of control over refunds --- request to pilot
+
+\smallskip\hrule\smallskip
+
+\textbf{Recommendation.} Approve a four-week randomized pilot on 10\% of contacts; build cost about \$420{,}000.
+
+\textbf{The problem.} 52{,}000 contacts a month cost \$4.86 each, about \$3 million a year. E-mail waits 19 hours. 18\% of contacts come back within three days. 2.2\% of refunds are granted against policy.
+
+\textbf{What changes.} Order-status questions---a third of all contacts---are answered instantly from the order system. Delivery problems, product questions and service bookings are handled automatically where possible. Returns, refunds and complaints stay with our agents, who receive each case already identified, with the order details fetched and a reply drafted. Any customer who asks for a person gets one.
+
+\textbf{Value.} About \$69{,}000 a month (\$827{,}000 a year) at today's costs, from measured volumes and handling times; payback about six months. The saving depends most on the cost of an agent minute: under a cheaper outsourcing contract it would be about 40\% lower.
+
+\textbf{Risks and safeguards.} No automated path can grant a refund; refund rules are enforced by the order system itself. Each customer can see only their own orders. The pilot stops at once on any policy or privacy error.
+
+\textbf{Decision at four weeks.} Go if cost per contact is at most \$3.75, repeat contacts and satisfaction are no worse than the control group, e-mail is answered within an hour, and there are no policy or privacy errors.
+
+\textbf{What we need from you.} Commitment from the order-management, services and e-commerce teams to own their servers; a decision on whether savings reduce outsourced hours or are reinvested in longer, better calls on complaints.
+\end{tcolorbox}
+
+% ----------------------------------------------------------------------
+\section{Changed Requirement}
+\label{sec:support-changed}
+
+Choose one of the following changes. Redo the cost model, the solution graph, the trade-off table and the memo. Say which decisions survive.
+
+\begin{enumerate}[itemsep=3pt]
+  \item \textbf{Holiday peak.} From mid-November to early January, contacts quadruple, and order status and delivery issues rise to 60\% of the mix. Agents cannot be hired fast enough. Does the case for automating returns change during the peak? What capacity limits apply to each server and to Agent Runtime, and what happens when they are reached?
+  \item \textbf{A disclosure rule.} A new consumer-protection rule in several of Cymbal's markets requires an automated assistant to say that it is automated at the start of each conversation, to transfer to a person within one turn of a request, and to keep a record of every automated decision affecting a refund or a charge for two years. Which nodes change? Does the record-keeping requirement change the trade-off between D2 and D4?
+  \item \textbf{Cheaper people.} Cymbal renegotiates its outsourcing contract, and the blended human cost falls to \$0.45 a minute. Rerun the cost model. Which intents are still worth automating? Is D3 now the better design?
+\end{enumerate}
+
+% ----------------------------------------------------------------------
+\section*{Chapter Summary}
+\addcontentsline{toc}{section}{Chapter Summary}
+
+\begin{itemize}[itemsep=2pt]
+  \item The \texttt{customer-service} sample is a sales assistant with useful guardrail ideas---identity checks in callbacks, defense in depth, recoverable errors---and gaps a support system must close: scope, identity as an argument, policy in three places, approval decided by a callback, and a token evaluation bar.
+  \item Containment is not savings, and it is not quality. Pair it with re-contact and satisfaction, and measure cost per contact all-in.
+  \item Per-intent unit economics can design the system: here they showed that one deterministic path (order status) carries most of the savings, and that automating refunds was worth about \$1{,}000 a month against a real risk.
+  \item Nine principles of tool design: task-shaped; identity from context; narrow, validated inputs; policy enforced once in the owner's server; read and write separated and annotated; idempotent writes; structured, actionable errors; small outputs; few tools per agent, described for the model.
+  \item When routing can fail, make the tools on the wrong path unable to do harm.
+  \item Tool-using agents are evaluated on trajectories and outcomes, not just responses. Claims without calls, adversarial outcome tests and draft acceptance are the metrics that matter most.
+  \item High-volume processes allow randomized pilots, which give the sponsor a far stronger answer than before-and-after comparisons.
+\end{itemize}
+
+\section*{Review Questions}
+\addcontentsline{toc}{section}{Review Questions}
+
+\begin{enumerate}[itemsep=2pt]
+  \item Name three things the sample does well and three gaps it leaves for a support deployment.
+  \item Why does removing \texttt{customer\_id} from every tool's parameters make the design safer than validating it in a callback?
+  \item The sample's discount limit appears in three places. What principle does this violate, and what goes wrong over time?
+  \item D1 contains 50\% of contacts but saves only 14\% of cost. Explain each reason.
+  \item Why is order status implemented as a workflow rather than given to an agent?
+  \item How did per-intent economics lead to D4? What exactly did the comparison of D2 and D4 measure?
+  \item What is an idempotency key, and which failure does it prevent?
+  \item Explain the difference between the caller identity and the customer identity on a tool call. Why are both needed?
+  \item What is a ``claim without a call,'' and how is it detected?
+  \item Why does this case use a randomized pilot when Harbor's did not?
+\end{enumerate}
+
+\section*{Exercises}
+\addcontentsline{toc}{section}{Exercises}
+
+\paragraph{Design track}
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{Failure walk-through.} Complete the failure walk-through for D4, with at least eight rows including the triage misroute described in Section~\ref{sec:support-tradeoffs}.
+  \item \textbf{Tool review.} Choose five tools from any public MCP server. Score each against principles T1--T9 and propose a redesign for the weakest.
+  \item \textbf{KPI tree.} Draw the KPI tree for D4, with leaves from Table~\ref{tab:support-thresholds}.
+  \item \textbf{Changed requirement.} Complete one of the changes in Section~\ref{sec:support-changed}.
+\end{enumerate}
+
+\paragraph{Build track}
+\begin{enumerate}[resume, itemsep=2pt]
+  \item \textbf{Discount server.} Implement \texttt{request\_discount} from Table~\ref{tab:tool-redesign} as an MCP server with the limit enforced once, an enumerated \texttt{kind}, and a manager queue for larger requests. Write tests that run without a model.
+  \item \textbf{Claims without calls.} Implement the check described in Section~\ref{sec:support-evaluate} and run it over the repository's 600 replayed contacts for D1 and D4.
+  \item \textbf{Cost model.} Extend Listing~\ref{lst:support-econ} with a per-contact triage cost and with error costs that differ by intent. Does the decision change?
+\end{enumerate}
+
+% ----------------------------------------------------------------------
+\section*{Lab 5: Tools You Can Trust}
+\addcontentsline{toc}{section}{Lab 5: Tools You Can Trust}
+
+\paragraph{Goal.} Build and test the returns server, connect it to an ADK agent, and show by adversarial testing that policy holds even when the model is persuaded to try to break it.
+
+\paragraph{Time.} About three hours.
+
+\paragraph{Steps.}
+\begin{enumerate}[itemsep=2pt]
+  \item In \texttt{ch05/}, install the pinned requirements. The folder includes the vendored sample at commit \texttt{a9dc177}, synthetic orders for 500 customers, and a local token issuer for testing.
+  \item Run the sample as published with \texttt{adk web}. Try three of the adversarial scripts from \texttt{adversarial/} by hand. Record what the agent says and what the mocked tools do.
+  \item Run \texttt{pytest tests/test\_returns\_server.py}. All tests should pass without a model or network.
+  \item Start the returns server locally with Streamable HTTP. Inspect its tool list with the MCP Inspector and confirm that \texttt{reason} is an enumeration and that the annotations are present.
+  \item Complete \texttt{returns\_agent.py}: an ADK agent connected to the server through an MCP toolset with a \texttt{tool\_filter}, passing the test customer's token in the request headers.
+  \item Run all 150 adversarial scripts with \texttt{python run\_adversarial.py}. Report outcomes, not transcripts: how many policy-violating returns were created, and how many cross-customer responses occurred.
+  \item Deploy the server to Cloud Run and repeat step 6 against the deployed service. Run the cleanup script.
+\end{enumerate}
+
+\paragraph{Deliverable.} A short report with the outcome table from steps 2 and 6, one transcript in which the agent was persuaded to \emph{try} something it should not and the server refused, and your answer to: \emph{which of the sample's gaps did the server close without any change to the prompt?}
+
+% ----------------------------------------------------------------------
+\section*{Further Reading}
+\addcontentsline{toc}{section}{Further Reading}
+
+\begin{itemize}[itemsep=2pt]
+  \item The MCP specification \citep{mcp2026spec} describes tool annotations, authorization and the stateless transport used in this chapter; read the security considerations section before deploying any server.
+  \item \citet{kohavi2020trustworthy} covers randomization units, ramp-up and guardrail metrics for experiments such as the pilot in this chapter.
+  \item \citet{yao2023react} remains a useful reference for why interleaving reasoning and actions helps tool use---and, read alongside this chapter, for why the actions themselves must be designed with care.
+\end{itemize}

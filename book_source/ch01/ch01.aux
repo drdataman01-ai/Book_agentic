@@ -1,0 +1,175 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}From Building Agents to Designing Solutions}{3}{chapter.1}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:foundations}{{1}{3}{From Building Agents to Designing Solutions}{chapter.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Two Demos on a Friday Afternoon}{3}{section.1.1}\protected@file@percent }
+\newlabel{sec:two-demos}{{1.1}{3}{Two Demos on a Friday Afternoon}{section.1.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Team A}{3}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Team B}{4}{section*.15}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces A first, informal sketch of Team B's quote design. Shading marks the kind of component: blue for steps that use a language model, grey for ordinary code, green for MCP servers, amber for document search, and double borders for people. Chapter~\ref {ch:toolkit} introduces the standard notation.}}{4}{figure.1.1}\protected@file@percent }
+\newlabel{fig:quote-sketch}{{1.1}{4}{A first, informal sketch of Team B's quote design. Shading marks the kind of component: blue for steps that use a language model, grey for ordinary code, green for MCP servers, amber for document search, and double borders for people. Chapter~\ref {ch:toolkit} introduces the standard notation}{figure.1.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}The Design Gap}{5}{section.1.2}\protected@file@percent }
+\newlabel{sec:design-gap}{{1.2}{5}{The Design Gap}{section.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}Building is getting cheap; designing is not}{5}{subsection.1.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Five design skills}{5}{subsection.1.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}What a design is}{5}{subsection.1.2.3}\protected@file@percent }
+\citation{anthropic2024effective}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}What a Language Model Can and Cannot Do}{6}{section.1.3}\protected@file@percent }
+\newlabel{sec:llm}{{1.3}{6}{What a Language Model Can and Cannot Do}{section.1.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}How Much Autonomy? From Rules to Agents}{6}{section.1.4}\protected@file@percent }
+\newlabel{sec:autonomy}{{1.4}{6}{How Much Autonomy? From Rules to Agents}{section.1.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces What a language model does on its own, the four gaps that stop it from doing business work, and the building block that fills each gap.}}{7}{figure.1.2}\protected@file@percent }
+\newlabel{fig:llm-gaps}{{1.2}{7}{What a language model does on its own, the four gaps that stop it from doing business work, and the building block that fills each gap}{figure.1.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.3}{\ignorespaces Two ways to use a model. In a workflow (a), code decides the order of the steps and the model fills in some of them. In an agent (b), the model decides which tool to use next, reads the result, and decides again, until it chooses to stop. Dashed arrows are possibilities, not a fixed path.}}{7}{figure.1.3}\protected@file@percent }
+\newlabel{fig:workflow-vs-agent}{{1.3}{7}{Two ways to use a model. In a workflow (a), code decides the order of the steps and the model fills in some of them. In an agent (b), the model decides which tool to use next, reads the result, and decides again, until it chooses to stop. Dashed arrows are possibilities, not a fixed path}{figure.1.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.1}{\ignorespaces The autonomy spectrum. Each row down the table gives the model more control over what happens next.}}{8}{table.1.1}\protected@file@percent }
+\newlabel{tab:autonomy}{{1.1}{8}{The autonomy spectrum. Each row down the table gives the model more control over what happens next}{table.1.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.5}Four Building Blocks}{8}{section.1.5}\protected@file@percent }
+\newlabel{sec:blocks}{{1.5}{8}{Four Building Blocks}{section.1.5}{}}
+\citation{lewis2020rag}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.1}Plain code and rules}{9}{subsection.1.5.1}\protected@file@percent }
+\newlabel{sec:block-code}{{1.5.1}{9}{Plain code and rules}{subsection.1.5.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.2}Retrieval-augmented generation (RAG)}{9}{subsection.1.5.2}\protected@file@percent }
+\newlabel{sec:block-rag}{{1.5.2}{9}{Retrieval-augmented generation (RAG)}{subsection.1.5.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{The problem RAG solves.}{9}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{How RAG works.}{9}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What an embedding is.}{9}{section*.18}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.4}{\ignorespaces How retrieval-augmented generation works. Documents are split, turned into embeddings and indexed ahead of time. When a question arrives, the closest passages that the user is allowed to read are placed in the prompt, and the model answers from them and cites them.}}{10}{figure.1.4}\protected@file@percent }
+\newlabel{fig:rag-pipeline}{{1.4}{10}{How retrieval-augmented generation works. Documents are split, turned into embeddings and indexed ahead of time. When a question arrives, the closest passages that the user is allowed to read are placed in the prompt, and the model answers from them and cites them}{figure.1.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.5}{\ignorespaces Embeddings place texts with similar meanings near one another. The question lands beside the policy sentences about discount approval, although it shares few words with them, so a search for the nearest points finds the right passage. Real embeddings have hundreds of dimensions; two are shown for illustration.}}{10}{figure.1.5}\protected@file@percent }
+\newlabel{fig:embedding}{{1.5}{10}{Embeddings place texts with similar meanings near one another. The question lands beside the policy sentences about discount approval, although it shares few words with them, so a search for the nearest points finds the right passage. Real embeddings have hundreds of dimensions; two are shown for illustration}{figure.1.5}{}}
+\citation{yao2023react}
+\@writefile{toc}{\contentsline {paragraph}{What the model actually sees.}{11}{section*.19}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.6}{\ignorespaces The prompt the model receives in Harbor's RAG component. The two passages were found by semantic search. The model's job is reduced to reading them and answering with a citation: \emph  {No. Discounts above 15\% need the regional sales manager's written approval [Discount Policy, \S  4.2, v2026-Q3].}}}{11}{figure.1.6}\protected@file@percent }
+\newlabel{fig:rag-prompt}{{1.6}{11}{The prompt the model receives in Harbor's RAG component. The two passages were found by semantic search. The model's job is reduced to reading them and answering with a citation: \emph {No. Discounts above 15\% need the regional sales manager's written approval [Discount Policy, \S 4.2, v2026-Q3].}}{figure.1.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{When RAG is the right block.}{11}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.3}The agent}{11}{subsection.1.5.3}\protected@file@percent }
+\newlabel{sec:block-agent}{{1.5.3}{11}{The agent}{subsection.1.5.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Tools: how a model asks for an action.}{11}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The agent loop.}{11}{section*.22}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.7}{\ignorespaces The agent loop. The model either requests a tool or gives a final answer. The framework runs each requested tool and returns the result to the model, which decides again. The loop ends when the model decides it is done or when a limit is reached.}}{12}{figure.1.7}\protected@file@percent }
+\newlabel{fig:agent-loop}{{1.7}{12}{The agent loop. The model either requests a tool or gives a final answer. The framework runs each requested tool and returns the result to the model, which decides again. The loop ends when the model decides it is done or when a limit is reached}{figure.1.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{An agent at work.}{12}{section*.23}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1.2}{\ignorespaces A trace of Harbor's agent at work. The model chooses each step; the framework runs each tool and returns the result.}}{12}{table.1.2}\protected@file@percent }
+\newlabel{tab:agent-trace}{{1.2}{12}{A trace of Harbor's agent at work. The model chooses each step; the framework runs each tool and returns the result}{table.1.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{When an agent is the right block.}{12}{section*.24}\protected@file@percent }
+\citation{mcp2026spec}
+\@writefile{toc}{\contentsline {paragraph}{How agents fail.}{13}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.4}The Model Context Protocol (MCP)}{13}{subsection.1.5.4}\protected@file@percent }
+\newlabel{sec:block-mcp}{{1.5.4}{13}{The Model Context Protocol (MCP)}{subsection.1.5.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{The problem MCP solves.}{13}{section*.26}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.8}{\ignorespaces The problem MCP solves. Without a standard, every AI application needs its own connection to every company system. With MCP, each system is wrapped once by a server, each application contains a client, and any client can use any server.}}{13}{figure.1.8}\protected@file@percent }
+\newlabel{fig:mcp-nm}{{1.8}{13}{The problem MCP solves. Without a standard, every AI application needs its own connection to every company system. With MCP, each system is wrapped once by a server, each application contains a client, and any client can use any server}{figure.1.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Host, client and server.}{13}{section*.27}\protected@file@percent }
+\citation{mcp2026spec}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.9}{\ignorespaces The parts of an MCP connection. The host is the application in which the model runs. It contains one client per server. Each server wraps one company system, is owned by the team that owns that system, and is the only way the model can reach it.}}{14}{figure.1.9}\protected@file@percent }
+\newlabel{fig:mcp-arch}{{1.9}{14}{The parts of an MCP connection. The host is the application in which the model runs. It contains one client per server. Each server wraps one company system, is owned by the team that owns that system, and is the only way the model can reach it}{figure.1.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{A conversation over MCP.}{14}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Tools, resources and prompts.}{14}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Local and remote servers.}{14}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why MCP matters for design.}{14}{section*.31}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.10}{\ignorespaces The messages behind one tool call over MCP. At start-up the client learns which tools the server offers and tells the model. When the model requests a tool, the request passes through the client and the server, and only the server touches the ERP.}}{15}{figure.1.10}\protected@file@percent }
+\newlabel{fig:mcp-sequence}{{1.10}{15}{The messages behind one tool call over MCP. At start-up the client learns which tools the server offers and tells the model. When the model requests a tool, the request passes through the client and the server, and only the server touches the ERP}{figure.1.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.5}Choosing among the blocks}{15}{subsection.1.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.6}How the blocks work together}{15}{subsection.1.5.6}\protected@file@percent }
+\newlabel{sec:blocks-together}{{1.5.6}{15}{How the blocks work together}{subsection.1.5.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.3}{\ignorespaces The four building blocks of an agentic solution.}}{16}{table.1.3}\protected@file@percent }
+\newlabel{tab:blocks}{{1.3}{16}{The four building blocks of an agentic solution}{table.1.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.11}{\ignorespaces The four building blocks working together in Harbor's quote assistant. The agent decides which step comes next; plain code enforces the discount cap; RAG supplies the policy text and its version; MCP servers give access to the ERP and the CRM. A person approves before anything leaves the company.}}{16}{figure.1.11}\protected@file@percent }
+\newlabel{fig:integrated}{{1.11}{16}{The four building blocks working together in Harbor's quote assistant. The agent decides which step comes next; plain code enforces the discount cap; RAG supplies the policy text and its version; MCP servers give access to the ERP and the CRM. A person approves before anything leaves the company}{figure.1.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.6}Decomposing a Process: The Pricing Desk}{17}{section.1.6}\protected@file@percent }
+\newlabel{sec:decompose}{{1.6}{17}{Decomposing a Process: The Pricing Desk}{section.1.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.4}{\ignorespaces Decomposing Harbor's quote process. The ``needs'' column drives the choice of block.}}{17}{table.1.4}\protected@file@percent }
+\newlabel{tab:quote-decomp}{{1.4}{17}{Decomposing Harbor's quote process. The ``needs'' column drives the choice of block}{table.1.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.1}What the sketch does not yet say}{17}{subsection.1.6.1}\protected@file@percent }
+\citation{adkdocs}
+\newlabel{eq:quote-cost}{{1.1}{18}{What the sketch does not yet say}{equation.1.6.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.7}A Primer on the Agent Development Kit}{18}{section.1.7}\protected@file@percent }
+\newlabel{sec:adk}{{1.7}{18}{A Primer on the Agent Development Kit}{section.1.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7.1}Project layout and the development loop}{18}{subsection.1.7.1}\protected@file@percent }
+\newlabel{lst:layout}{{1.1}{18}{Layout of the Chapter 1 lab project}{lstlisting.1.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.1}Layout of the Chapter 1 lab project.}{18}{lstlisting.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7.2}Agents and function tools}{18}{subsection.1.7.2}\protected@file@percent }
+\newlabel{lst:agent}{{1.2}{19}{A minimal ADK agent with one function tool (\texttt {quote\_desk/agent.py}, first version)}{lstlisting.1.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.2}A minimal ADK agent with one function tool (\texttt  {quote\_desk/agent.py}, first version).}{19}{lstlisting.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Designing the docstring.}{19}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7.3}Connecting to an MCP server}{20}{subsection.1.7.3}\protected@file@percent }
+\newlabel{lst:server}{{1.3}{20}{A small MCP server exposing two pricing tools (\texttt {pricing\_server/server.py})}{lstlisting.1.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.3}A small MCP server exposing two pricing tools (\texttt  {pricing\_server/server.py}).}{20}{lstlisting.1.3}\protected@file@percent }
+\newlabel{lst:mcpagent}{{1.4}{21}{The agent using tools from the MCP server over stdio. \texttt {Agent}, \texttt {MODEL} and \texttt {check\_discount} are as in Listing~\ref {lst:agent}; \texttt {INSTRUCTION} holds the instruction text}{lstlisting.1.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.4}The agent using tools from the MCP server over stdio. \texttt  {Agent}, \texttt  {MODEL} and \texttt  {check\_discount} are as in Listing~\ref {lst:agent}; \texttt  {INSTRUCTION} holds the instruction text.}{21}{lstlisting.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7.4}Workflows, sessions and the rest}{21}{subsection.1.7.4}\protected@file@percent }
+\citation{gcpnames2026}
+\@writefile{toc}{\contentsline {section}{\numberline {1.8}A Primer on Google Cloud for Agents}{22}{section.1.8}\protected@file@percent }
+\newlabel{sec:gcp}{{1.8}{22}{A Primer on Google Cloud for Agents}{section.1.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.5}{\ignorespaces Google Cloud services used in this book, by need.}}{22}{table.1.5}\protected@file@percent }
+\newlabel{tab:gcp}{{1.5}{22}{Google Cloud services used in this book, by need}{table.1.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.8.1}Three places to run an agent}{22}{subsection.1.8.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1.6}{\ignorespaces Choosing a deployment target. Chapter~\ref {ch:case-loan} returns to this choice with full cost figures.}}{23}{table.1.6}\protected@file@percent }
+\newlabel{tab:targets}{{1.6}{23}{Choosing a deployment target. Chapter~\ref {ch:case-loan} returns to this choice with full cost figures}{table.1.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.8.2}Cost control from day one}{23}{subsection.1.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.9}The Production Lifecycle and the Map of the Book}{23}{section.1.9}\protected@file@percent }
+\newlabel{sec:lifecycle}{{1.9}{23}{The Production Lifecycle and the Map of the Book}{section.1.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.12}{\ignorespaces The production lifecycle used in every case, with the chapters that go deep on each stage. Human-in-the-loop design (Chapter~\ref {ch:case-invoice}) and cost and latency (Chapter~\ref {ch:case-forecast}) cut across several stages.}}{23}{figure.1.12}\protected@file@percent }
+\newlabel{fig:lifecycle}{{1.12}{23}{The production lifecycle used in every case, with the chapters that go deep on each stage. Human-in-the-loop design (Chapter~\ref {ch:case-invoice}) and cost and latency (Chapter~\ref {ch:case-forecast}) cut across several stages}{figure.1.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.10}How to Use This Book}{23}{section.1.10}\protected@file@percent }
+\newlabel{sec:how-to-use}{{1.10}{23}{How to Use This Book}{section.1.10}{}}
+\@writefile{toc}{\contentsline {paragraph}{Two tracks.}{23}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{One template.}{24}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{From critique to blank page.}{24}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The companion repository.}{24}{section*.36}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Chapter Summary}{24}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Key Terms}{24}{section*.38}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Review Questions}{25}{section*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Exercises}{25}{section*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Design track}{25}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Build track}{25}{section*.42}\protected@file@percent }
+\citation{anthropic2024effective}
+\citation{yao2023react}
+\citation{lewis2020rag}
+\citation{mcp2026spec}
+\citation{adkdocs}
+\@writefile{toc}{\contentsline {section}{Lab 1: A First Quote Assistant}{26}{section*.43}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Goal.}{26}{section*.44}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Time.}{26}{section*.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Steps.}{26}{section*.46}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{26}{section*.47}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Further Reading}{26}{section*.48}\protected@file@percent }
+\@setckpt{ch01/ch01}{
+\setcounter{page}{27}
+\setcounter{equation}{1}
+\setcounter{enumi}{8}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{1}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{1}
+\setcounter{chapter}{1}
+\setcounter{section}{10}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{12}
+\setcounter{table}{6}
+\setcounter{parentequation}{0}
+\setcounter{AM@survey}{0}
+\setcounter{lstnumber}{19}
+\setcounter{tcbbreakpart}{1}
+\setcounter{tcblayer}{0}
+\setcounter{tcolorbox@number}{8}
+\setcounter{tcbrastercolumn}{1}
+\setcounter{tcbrasterrow}{1}
+\setcounter{tcbrasternum}{1}
+\setcounter{tcbraster}{0}
+\setcounter{tcblisting}{0}
+\setcounter{NAT@ctr}{0}
+\setcounter{section@level}{4}
+\setcounter{Item}{39}
+\setcounter{Hfootnote}{1}
+\setcounter{bookmark@seq@number}{35}
+\setcounter{lstlisting}{4}
+}

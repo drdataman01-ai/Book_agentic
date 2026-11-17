@@ -1,0 +1,72 @@
+% ======================================================================
+% Preface -- Designing Agentic AI Solutions, Chris Kuo
+% Place in \frontmatter, after \tableofcontents (or before it, if preferred).
+% ======================================================================
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\markboth{Preface}{Preface}
+
+Building an AI agent has become easy. With an open-source framework and an afternoon, a student can connect a language model to a few tools, give it a document store, and watch it answer questions and take actions. Designing a solution that a business will fund, trust and keep running is a different matter, and it has not become easier at all.
+
+This book is about that second skill. It teaches you to take a business problem and turn it into an agentic AI solution: to decide which parts of the work a model should do and which it must never do, where the system's knowledge comes from, which actions need a person's approval, what the whole thing costs per transaction, and how you will know in production whether it is working. Then it asks you to build the design, deploy it, and defend it to an executive sponsor. Throughout, it takes an information systems approach: the agent is studied as part of the organization it serves, not on its own.
+
+\section*{Why this book}
+
+Courses and tutorials usually teach the new technologies one at a time: retrieval-augmented generation (RAG) as a pipeline, agents as a loop, and the Model Context Protocol (MCP) as a way to connect tools. Vendor samples go further and show a complete, working system. What they rarely show is \emph{why} the system looks the way it does, what the alternatives were, and whether it pays off for a particular business.
+
+Chapter~1 opens with two teams at a regional distributor, each given two weeks to show what AI could do for a slow pricing desk. One team built an impressive agent with fourteen tools and a long prompt. The other built less, but brought a diagram that assigned every step to a deliberate building block, a comparison with the all-in-one alternative, and a one-page memo with a cost per quote and a pilot plan. The second team won the funding. The difference between them is what this book calls the \emph{design gap}: the distance between being able to build an agent and being able to design a solution.
+
+\section*{What makes this book different}
+
+\paragraph{It takes an information systems approach.} Most books on agentic AI treat the agent as the system: a model, a prompt and a set of tools to be made smarter. This book treats the agent as one component of a larger \emph{information system}, in which people, business processes, rules, data, company systems and controls work together to serve an organization's goals. That is the view the information systems discipline has taken for decades, and it is the view a business needs when it decides whether to fund, trust and operate an AI solution. It changes the questions you ask. Instead of ``How capable is the agent?'' you ask ``Which part of this process should the agent do, who owns the data and systems it touches, which decisions stay with people, and what does the organization gain?'' The approach also brings proven methods with it. Systems analysis and software architecture supply the diagram notation, the design patterns and the decision record; decision analysis supplies the trade-off table and its sensitivity check; reliability engineering supplies the failure walk-through. Within this approach, two disciplines shape the book more than any other, and they are what set it apart from other books on agentic AI.
+
+\paragraph{It starts from the business process, not the technology.} Most agent projects begin with a question about technology: ``What should our agent do?'' This book begins where business process analysis has always begun: with the work as it is done today. Every case opens with a map of the current process, the people and systems involved, and the points where time, money and errors accumulate. Only then do we decompose the process step by step and ask what each step needs: \emph{judgment}, which may call for a model; \emph{knowledge}, which calls for retrieval; \emph{action} on a company system, which calls for an MCP server; a \emph{fixed rule}, which belongs in plain code; or a \emph{person}, who must approve. This discipline keeps rules out of prompts, keeps people in the loop where a decision is theirs, and often reveals that the most valuable change is not an agent at all. You will learn to give each step the least autonomy that meets its quality target, and to make every additional level of autonomy earn its place.
+
+\paragraph{It puts numbers on the value.} A design is not finished until someone can say whether it is worth building. From managerial economics and operations, the book takes the tools for answering that question: key performance indicators tied to business results, unit economics such as the cost per quote or per ticket, the cost of errors and the fact that different errors cost very different amounts, the trade-off between a reviewer's time and the errors the reviewer prevents, queues, cycle times and service levels, staffing and human workload, and the total cost of ownership of a deployment. Every component in a solution graph must trace back to a KPI it improves or a risk it reduces; a component with no such link should not be there. Each case ends with a one-page memo to the executive sponsor, with a rollout plan and go/no-go criteria. Each case also develops one business skill in depth, from defining KPIs and estimating the cost per ticket to pricing asymmetric fraud errors, valuing inventory, and comparing building with buying.
+
+These two disciplines frame the technical work rather than replace it. Between the process map at the start of a case and the memo at the end, you will draw alternative designs in a fixed notation, compare them on eight criteria, walk the chosen design node by node to find its failure points, record the decision and what would reverse it, and then build, evaluate and deploy it.
+
+\section*{Who this book is for}
+
+The book is written for one-semester courses in applied AI, information systems, business analytics and MBA technology electives, and for practitioners who scope and justify agent projects at work: solution architects, AI engineers, product managers and consultants.
+
+Every chapter supports two tracks. The \emph{design track}---the business brief, the solution graphs, the trade-offs and the business case---requires no programming. The \emph{build track} adds the implementation and the cloud deployment, and assumes working knowledge of Python and a basic understanding of large language models. MBA and executive-education readers can follow the design track and treat the build sections as demonstrations. Computer science, data science and information systems readers should do both. In a mixed classroom, the two groups find that each already knows half of the toolkit and learns the other half from the book and from each other.
+
+\section*{How the book is organized}
+
+The book has thirteen chapters in four parts.
+
+\emph{Part~I, Foundations}, establishes the way of working. Chapter~1 introduces the design gap, the autonomy spectrum, and the four building blocks of every solution: plain code, RAG, the agent and MCP. Chapter~2 presents the designer's toolkit: the solution-graph notation, a seven-step design method, the essential patterns and anti-patterns, the evaluation criteria and the trade-off table. Chapter~3 adds the business layer: process maps, stakeholders, KPIs, value cases, unit economics, the cost of errors and the one-page memo.
+
+\emph{Part~II, Critique and Redesign} (Chapters~4--7), applies the method to cases that start from published Google sample agents, each pinned to a fixed version: a company policy assistant, customer support triage, invoice-to-payment processing and IT incident response. Your first alternative design is always the sample as it stands; your task is to critique it and redesign it for a specific business. Critiquing a working design is easier than inventing one, and it trains the eye.
+
+\emph{Part~III, Original Designs} (Chapters~8--12), removes the starting point. You design from a blank page for credit card fraud review, airline flight-disruption rebooking, customer onboarding under know-your-customer and anti-money-laundering rules, demand forecasting and replenishment, and commercial loan underwriting.
+
+\emph{Part~IV, Capstone} (Chapter~13), joins several designs across departments, with agents that coordinate through the Agent2Agent protocol, a staged rollout, and the operating model and change management that adoption requires.
+
+Every case chapter follows the same nine sections: the business brief and current process; stakeholders, KPIs and the value hypothesis; alternative designs; trade-offs; build; deploy; evaluate; business case and rollout; and a changed-requirement exercise, in which a new regulation, ten times the traffic or a smaller budget sends you back to redo the design. Once you have worked through one case, you know where to find everything in the next, and your instructor knows what to grade. Each case also goes deep on one stage of the production lifecycle---design, local build, tools via MCP, knowledge, evaluation, deployment, state and memory, security, observability and operations---so that by the capstone you have practiced every stage in depth once and in summary many times.
+
+The appendices cover setup and cost control on Google Cloud (Appendix~A), a mapping from the book's concepts to other agent frameworks (Appendix~B), templates for the solution graph, trade-off table, decision record and memo (Appendix~C), and course plans with grading rubrics (Appendix~D).
+
+\section*{One platform, a neutral design}
+
+All cases are built with Google's open-source Agent Development Kit (ADK) and deployed on Google Cloud, so that you move from a local prototype to production on one consistent platform. The design sections, however, do not depend on that choice. Tools are built as MCP servers, an open standard that any compatible client can use; models can be swapped; and Appendix~B shows how each design maps to LangGraph, the OpenAI Agents SDK and the Claude Agent SDK. The frameworks will change. The design method will not.
+
+\section*{Companion materials}
+
+The companion GitHub repository contains runnable code for every case, with dependencies and Google samples pinned to fixed versions, sample data, and setup and cleanup scripts. The printed listings are excerpts chosen to show design decisions; when a listing and the repository disagree, the repository is correct.
+
+A free AI design coach reviews your solution graphs and trade-off tables against the book's notation, well-formedness rules and rubrics, and points you back to the relevant section. Instructors can request a kit with slides, rubrics, sample solutions and exam questions.
+
+\section*{A note on versions}
+
+Agent frameworks, model names and cloud services change several times a year. This book was written against the ADK~2.x line, the MCP revision dated 2026-07-28, and the Google Cloud service names introduced in April 2026, giving the earlier name the first time a renamed service appears. Model identifiers are read from configuration rather than written into code, and you should do the same in your own work.
+
+\section*{Acknowledgments}
+
+% TODO: thank reviewers, students who tested the cases, colleagues and family.
+
+\bigskip
+\noindent\textit{Chris Kuo}\\
+\textit{November 2026}

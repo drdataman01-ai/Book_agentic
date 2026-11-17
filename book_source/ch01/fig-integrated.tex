@@ -1,0 +1,84 @@
+% Figure: the four building blocks working together in Harbor's quote assistant.
+% Uses the color names of fig:quote-sketch (agentfill, codefill, mcpfill, ragfill) from
+% ../common/preamble. TikZ libraries: positioning, shapes.geometric, arrows.meta, fit, backgrounds.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=7mm and 8mm,
+  box/.style={draw, rounded corners=2pt, align=center, font=\footnotesize, minimum height=10mm},
+  agent/.style={box, fill=agentfill, text width=4.6cm},
+  code/.style={box, fill=codefill, text width=2.2cm},
+  mcp/.style={box, fill=mcpfill, text width=2.8cm},
+  rag/.style={box, fill=ragfill, shape=cylinder, shape border rotate=90, aspect=0.18,
+              rounded corners=0pt, text width=2.5cm},
+  io/.style={box, fill=white, text width=2.1cm},
+  human/.style={box, fill=humanfill, shape=rectangle, double, text width=2.1cm},
+  sor/.style={box, fill=white, dashed, text width=2.6cm},
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  biarr/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick},
+  lab/.style={font=\scriptsize, fill=white, inner sep=1pt}
+]
+% inside the agent
+\node[agent] (llm) {LLM loop (agent)\\{\scriptsize reads the request, picks a tool, reads the result, repeats}};
+\node[code, below left=8mm and -2.2cm of llm] (disc) {{\ttfamily\scriptsize check\_discount}\\{\scriptsize 15\% cap (code)}};
+\node[box, fill=mcpfill, text width=2.2cm, below right=8mm and -2.2cm of llm] (client) {MCP client};
+
+% agent boundary
+\begin{scope}[on background layer]
+  \node[draw, dashed, rounded corners=4pt, inner sep=3mm, fit=(llm)(disc)(client),
+        label={[font=\footnotesize\bfseries]above:{\ttfamily quote\_desk} agent (ADK)}] (agentbox) {};
+\end{scope}
+
+% request and result
+\node[io, left=9mm of llm] (rep) {Sales rep\\{\scriptsize ``40 valves for Delta Water, 18\% off''}};
+\node[human, right=9mm of llm] (send) {Rep reviews and sends\\{\scriptsize manager first if $>$15\%}};
+
+% the MCP bus and servers
+\coordinate (bus) at ([yshift=-7mm]agentbox.south -| client);
+\node[mcp, anchor=north] (erp) at ([yshift=-15mm]agentbox.south) {ERP MCP server\\{\scriptsize\ttfamily get\_item\_pricing}\\{\scriptsize\ttfamily get\_contract\_terms}};
+\node[rag, anchor=north east] (kb) at ([xshift=-7mm]erp.north west) {Policy \&\\contract text (RAG)\\{\scriptsize cites policy version}};
+\node[mcp, anchor=north west] (crm) at ([xshift=7mm]erp.north east) {CRM MCP server\\{\scriptsize\ttfamily create\_quote\_draft}};
+\node[sor, below=7mm of erp] (erpdb) {ERP\\(system of record)};
+\node[sor, below=7mm of crm] (crmdb) {CRM\\(system of record)};
+
+% arrows
+\draw[arr] (rep) -- (llm);
+\draw[arr] (llm) -- (send);
+\draw[biarr] (llm.south -| disc) -- (disc);
+\draw[biarr] (llm.south -| client) -- (client);
+\draw[thick] (client.south) -- (bus);
+\draw[thick] (bus -| kb) -- (bus -| crm);
+\draw[biarr] (bus -| kb) -- (kb.north);
+\draw[biarr] (bus -| erp) -- (erp.north);
+\draw[biarr] (bus -| crm) -- (crm.north);
+\node[lab, above right=0.5mm and 1mm of bus] {MCP};
+\draw[arr, dashed] (erp) -- (erpdb);
+\draw[arr, dashed] (crm) -- (crmdb);
+
+% legend: the four building blocks
+\begin{scope}[
+  swatch/.style={draw, rounded corners=1pt, minimum width=5mm, minimum height=3.5mm, inner sep=0pt},
+  key/.style={font=\footnotesize, anchor=west, inner sep=1pt}
+]
+  \coordinate (leg) at ([yshift=-8mm]current bounding box.south -| erp);
+  \node[swatch, fill=codefill] (s1) at ([xshift=-41mm]leg) {};
+  \node[key, right=1.5mm of s1] (k1) {Plain code};
+  \node[swatch, fill=agentfill, right=6mm of k1] (s2) {};
+  \node[key, right=1.5mm of s2] (k2) {Agent};
+  \node[minimum width=4.5mm, minimum height=6mm, inner sep=0pt, right=6mm of k2] (s3) {};
+  \filldraw[fill=ragfill] (s3.north west) ++(0,-0.8mm) -- ++(0,-4.4mm)
+    arc[start angle=180, end angle=360, x radius=2.25mm, y radius=0.8mm] -- ++(0,4.4mm)
+    arc[start angle=0, end angle=180, x radius=2.25mm, y radius=0.8mm] -- cycle;
+  \draw ([yshift=-0.8mm]s3.north west)
+    arc[start angle=180, end angle=360, x radius=2.25mm, y radius=0.8mm];
+  \node[key, right=1.5mm of s3] (k3) {RAG};
+  \node[swatch, fill=mcpfill, right=6mm of k3] (s4) {};
+  \node[key, right=1.5mm of s4] (k4) {MCP};
+  \begin{scope}[on background layer]
+    \node[draw, gray, rounded corners=2pt, inner sep=2mm, fit=(s1)(k4)] {};
+  \end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{The four building blocks working together in Harbor's quote assistant. The agent decides which step comes next; plain code enforces the discount cap; RAG supplies the policy text and its version; MCP servers give access to the ERP and the CRM. A person approves before anything leaves the company.}
+\label{fig:integrated}
+\end{figure}

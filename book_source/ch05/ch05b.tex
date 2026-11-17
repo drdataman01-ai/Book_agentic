@@ -1,0 +1,206 @@
+% ======================================================================
+% Chapter 5 -- Part B: alternative designs; unit economics; trade-offs
+% ======================================================================
+
+\section{Alternative Designs}
+\label{sec:support-designs}
+
+\subsection{The sample as it stands}
+
+Google's \texttt{customer-service} sample was one of the most widely used ADK samples; a version of it appeared in the Google Cloud Next 2025 keynote. It builds ``Project Pro,'' an assistant for Cymbal Home \& Garden that greets a returning customer by name, identifies plants (including from video), recommends products, manages the cart, offers discounts within limits or asks a manager for larger ones, books planting appointments, sends care instructions and generates discount QR codes. It is a single agent with twelve tools and four callbacks. The tools are mocks, as its README states clearly: they return plausible responses without touching any real system.\footnote{The sample was removed from the main branch of \texttt{google/adk-samples} on 9 September 2026 as part of a clean-up of older samples. The companion repository vendors it at commit \texttt{a9dc177}, the last commit that contains it, under its Apache 2.0 license.}
+
+There is much to learn from it, both from what it does well and from what a production design must change. Its strengths first:
+\begin{itemize}[itemsep=1pt]
+  \item Callbacks are used as guardrails. A before-tool callback checks that any \texttt{customer\_id} a tool is called with matches the customer in the session---the right instinct about \textsf{R2}.
+  \item Defense in depth for discounts: the QR-code tool re-checks the discount limit itself, with a comment explaining that this guards against prompts that try to talk the agent into larger discounts.
+  \item Tools return structured, recoverable errors. A rejected discount comes back as a status and a message telling the model what limit applies, so the conversation can continue sensibly.
+  \item It ships an evaluation folder and unit tests for its tools.
+\end{itemize}
+
+Now the gaps, measured against Cymbal's support process and the principles of this chapter:
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{It is a sales assistant, not a support system.} Of Cymbal's seven intents, it covers product questions and scheduling. It has no tools for order status, delivery problems, returns or refunds, which are two-thirds of the volume. Its instruction asks it to be proactive about upselling, a goal that sits uneasily with a customer reporting a broken delivery.
+  \item \emph{Identity is an argument.} The customer's profile is written into the global instruction (customer \texttt{123} in the mock), and tools take \texttt{customer\_id} as an argument chosen by the model. The callback's check against session state mitigates this, but the safer design removes the argument entirely, so that the model has nothing to get wrong.
+  \item \emph{The discount rule lives in three places.} The 10\% limit is a constant in the callbacks module, a separate constant in the tools module, and is checked again in the QR-code tool. The vocabulary also disagrees: the approval tools describe discount types as \emph{percentage} or \emph{flat}, while the QR-code tool checks \emph{percentage} or \emph{fixed}. A policy that exists in three copies with two vocabularies will eventually exist in three versions.
+  \item \emph{Approval is decided by a callback.} When the agent asks a manager for a discount of 10 or less, the callback answers ``approved, no manager needed'' without calling the tool; above 10, the mocked manager always approves. In a real system the approval rule belongs to the system that grants the discount.
+  \item \emph{A callback that silently does nothing.} The before-tool callback calls a helper to lowercase all tool arguments but discards the helper's return value, so the arguments are never changed. It is a small slip, and an instructive one: rewriting the model's arguments in a callback is fragile, and validating them in the tool, against an explicit schema, is safer.
+  \item \emph{A blocking rate limiter.} The before-model callback enforces ten model calls a minute per session by sleeping the thread. That is fine in a demonstration and harmful in a service handling thousands of concurrent conversations; rate limiting belongs in the serving infrastructure.
+  \item \emph{The evaluation bar is low.} The evaluation configuration passes an agent whose tool-trajectory score and response-match score are each at least 0.2 on a 0--1 scale. That threshold checks that the agent runs, not that it behaves.
+\end{enumerate}
+
+\subsection{D1: the sample's design, extended to support}
+
+To compare like with like, D1 extends the sample in its own style to cover Cymbal's support intents: the same single agent, with tools for order status, delivery claims, returns, refunds and case creation added to the flat list (seventeen tools in all), customer ID as an argument, and policy limits in callbacks and prompt. This is what a team under time pressure would most likely build first. Figure~\ref{fig:support-alts}(a) draws it.
+
+\subsection{D2: triage with task-shaped tools}
+
+D2 separates \emph{understanding} a contact from \emph{acting} on it (Figure~\ref{fig:support-d2}). A Level~3 triage agent reads the message, identifies the intent and the key entities (order number, product), and routes. Each intent then has its own path, with the least autonomy that works:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Order status} is a Level~2 workflow: code fetches the order's status from the orders server and a Level~1 agent turns it into a friendly reply. No agent decides anything; there is nothing to decide.
+  \item \emph{Returns and refunds} go to a Level~4 returns agent with two tools on the returns server. The refund limit and return window are enforced by the server, and refunds above \$150 are queued for a returns specialist.
+  \item \emph{Product questions} use retrieve-then-answer over the catalog and care guides.
+  \item \emph{Scheduling} uses a Level~4 agent with the scheduling server's two tools.
+  \item \emph{Complaints, ``I want a person'', and anything else} are handed to a human agent with a summary and the customer's recent orders already attached.
+\end{itemize}
+
+Five MCP servers sit behind the agents, one per owning team plus the support platform's case server. The customer's identity comes from the authenticated chat or e-mail session and travels to each server as a verified token; no tool has a \texttt{customer\_id} parameter.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.84cm, y=1cm, sg base/.append style={text width=1.95cm}]
+\node[sg trigger] (cust) at (0,0) {Customer\\[-1pt]{\scriptsize signed-in chat / e-mail}};
+\node[sg guard] (g) at (2.7,0) {Input\\screen};
+\node[sg agent] (tri) at (5.4,0) {Triage agent\\[-1pt]{\scriptsize L3; stop: intent + entities}};
+\node[sg code] (st) at (9.6,2.5) {Status workflow\\[-1pt]{\scriptsize L2 + reply agent}};
+\node[sg agent] (ret) at (9.6,0.8) {Returns agent\\[-1pt]{\scriptsize L4, $\le$6 calls}};
+\node[sg agent] (prod) at (9.6,-0.9) {Product \&\\scheduling agents};
+\node[sg subagent] (sum) at (9.6,-2.6) {Summarize case};
+\node[sg mcp, text width=2.45cm] (ord) at (13.3,2.5) {Orders\\[-1pt]{\scriptsize Order Mgmt}\nodepart{two}{\tiny\ttfamily get\_order\_status}};
+\node[sg mcp, text width=2.45cm] (rs) at (13.3,0.8) {Returns\\[-1pt]{\scriptsize Order Mgmt}\nodepart{two}{\tiny\ttfamily get\_return\_options\\start\_return}};
+\node[sg mcp, text width=2.45cm] (cat) at (13.3,-0.9) {Catalog, Scheduling\\[-1pt]{\scriptsize E-com, Services}\nodepart{two}{\tiny\ttfamily search, find\_slots, book\_slot}};
+\node[sg mcp, text width=2.45cm] (case) at (13.3,-2.6) {Cases\\[-1pt]{\scriptsize Support Ops}\nodepart{two}{\tiny\ttfamily create\_case}};
+\node[sg human] (ag) at (9.6,-4.5) {Support agent};
+\node[sg human] (spec) at (13.3,-5.9) {Returns specialist\\[-1pt]{\scriptsize refunds $>$\$150}};
+\draw[sg flow] (cust) -- (g); \draw[sg flow] (g) -- (tri);
+\draw[sg flow] (tri.east) -- ++(0.3,0) |- node[sg lab, pos=1, anchor=south east] {[status]} (st.west);
+\draw[sg flow] (tri.east) -- ++(0.3,0) |- node[sg lab, pos=1, anchor=south east] {[return]} (ret.west);
+\draw[sg flow] (tri.east) -- ++(0.3,0) |- node[sg lab, pos=1, anchor=south east] {[product]} (prod.west);
+\draw[sg flow] (tri.east) -- ++(0.3,0) |- node[sg lab, pos=1, anchor=south east] {[other]} (sum.west);
+\draw[sg call] (st) -- (ord); \draw[sg call] (ret) -- (rs); \draw[sg call] (prod) -- (cat);
+\draw[sg call] (sum) -- (case);
+\draw[sg handoff] (case.south) |- (ag.east);
+\draw[sg flow] (rs.east) -- ++(0.45,0) |- node[sg lab, pos=0.75, below] {[pending\_review]} (spec.east);
+\sgtag{tri}{K1 K4}
+\sgtag{g}{R4}
+\sgtag{st}{K1 K2}
+\sgtag{ret}{K1}
+\sgtag{rs}{R1 R2}
+\sgtag{prod}{K1 K3}
+\sgtag{sum}{R3 K3}
+\sgtag{spec}{R1}
+\sgtag{ord}{R2}
+\end{tikzpicture}
+\caption{D2: triage with task-shaped tools. One server per owning team; identity travels as a verified token, never as a tool argument. [product] covers product questions and bookings; [other] covers complaints, requests for a person and anything else. Every agent can also hand a case to a person through \texttt{create\_case} (edges omitted for clarity).}
+\label{fig:support-d2}
+\end{figure}
+
+\subsection{D3: agent assist}
+
+D3 keeps a person on every contact and gives that person an AI copilot. When a contact arrives, the copilot classifies it, fetches the order, the return options or the catalog passages, and drafts a reply. The agent reviews, edits and sends. D3 contains nothing; its savings come from shorter handling times, which Cymbal estimates at 20--35\% depending on intent, based on a two-week trial of drafting in the e-mail queue. Its risks are the lowest of the four designs, because every action passes a person (Figure~\ref{fig:support-alts}(b)).
+
+\subsection{D4: hybrid by intent}
+
+D4 emerged from the cost model in the next section rather than from a pattern. It uses D2's automated paths for order status, delivery issues, product questions and scheduling, and D3's assisted path for returns and refunds, complaints and anything else. Its graph is D2's with the returns agent replaced by a copilot whose drafts go to a person (Figure~\ref{fig:support-alts}(c)).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.7cm, minimum height=7.5mm, font=\scriptsize, inner sep=2pt}]
+\node[font=\small\bfseries, anchor=west] at (-1.0,1.25) {(a) D1};
+\node[sg trigger] (c1) at (0,0) {Customer};
+\node[sg agent] (a1) at (2.4,0) {One agent\\{\tiny 17 tools}};
+\node[sg mcp, text width=1.9cm] (m1) at (4.9,0) {All systems\nodepart{two}{\tiny \texttt{customer\_id} arg}};
+\draw[sg flow] (c1) -- (a1); \draw[sg call] (a1) -- (m1);
+\begin{scope}[xshift=7.2cm]
+\node[font=\small\bfseries, anchor=west] at (-1.0,1.25) {(b) D3};
+\node[sg trigger] (c3) at (0,0) {Customer};
+\node[sg human] (h3) at (2.4,0) {Support agent};
+\node[sg agent] (p3) at (2.4,-1.5) {Copilot\\{\tiny drafts, fetches}};
+\node[sg mcp, text width=1.6cm] (m3) at (5.0,-1.5) {Servers\nodepart{two}{\tiny read-only}};
+\draw[sg flow] (c3) -- (h3); \draw[sg flow] (p3) -- node[sg lab, right] {draft} (h3);
+\draw[sg call] (p3) -- (m3);
+\draw[sg flow] (h3.north) to[bend right=35] node[sg lab, above] {reply} (c3.north);
+\end{scope}
+\begin{scope}[yshift=-3.3cm]
+\node[font=\small\bfseries, anchor=west] at (-1.0,1.05) {(c) D4};
+\node[sg trigger] (c4) at (0,0) {Customer};
+\node[sg agent] (t4) at (2.4,0) {Triage\\{\tiny L3}};
+\node[sg subagent] (a4) at (5.0,0.6) {D2 paths\\{\tiny status, delivery, product, booking}};
+\node[sg agent] (p4) at (5.0,-0.9) {Copilot};
+\node[sg human] (h4) at (7.6,-0.9) {Agent: returns, complaints, other};
+\draw[sg flow] (c4) -- (t4);
+\draw[sg flow] (t4) -- node[sg lab, sloped, above] {[routine]} (a4.west);
+\draw[sg flow] (t4) -- node[sg lab, sloped, below] {[else]} (p4.west);
+\draw[sg flow] (p4) -- node[sg lab, above] {draft} (h4);
+\end{scope}
+\end{tikzpicture}
+\caption{(a) D1, the sample's design extended to support. (b) D3, agent assist on every contact. (c) D4, automated paths for routine intents and assisted paths for the rest.}
+\label{fig:support-alts}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\section{Trade-offs}
+\label{sec:support-tradeoffs}
+
+\subsection{Cost per contact, by design and by intent}
+
+This case's business skill is unit economics, and at 52{,}000 contacts a month it decides the design. Listing~\ref{lst:support-econ} implements Equation~\eqref{eq:unit} for each design, intent by intent. Each design has an automation rate per intent (the share resolved without a person, from a pilot on 2{,}000 historical transcripts replayed against prototypes), a model cost per automated contact, an error rate and cost on automated contacts, and fixed monthly costs for the engineers and servers that keep it running. Escalated contacts cost an extra 1.5 agent minutes, because the agent has to catch up; D2 saves 3 minutes on complaints by handing them over summarized.
+
+\lstinputlisting[language=Python, caption={Cost per contact by design and intent (\texttt{ch05/unit\_economics.py}, inputs).}, label={lst:support-econ}, firstline=6, lastline=30]{code/unit_economics.py}
+
+The output is:
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=0em, basicstyle=\ttfamily\scriptsize]
+Baseline             $4.86/contact  (variable 4.86, fixed 0.00)  contained  0%  monthly $  252,626
+D1 single agent      $4.16/contact  (variable 3.85, fixed 0.31)  contained 50%  monthly $  216,334
+D2 triage + tools    $3.51/contact  (variable 2.78, fixed 0.73)  contained 59%  monthly $  182,725
+D3 agent assist      $3.91/contact  (variable 3.58, fixed 0.33)  contained  0%  monthly $  203,153
+D4 hybrid by intent  $3.53/contact  (variable 2.84, fixed 0.69)  contained 48%  monthly $  183,727
+
+D2 cost per contact by intent (variable part):
+  order status    automated  88%   $0.80
+  delivery issue  automated  40%   $4.31
+  return/refund   automated  55%   $3.04
+  product q       automated  65%   $2.22
+  scheduling      automated  60%   $2.24
+  complaint       automated   0%   $7.27
+  other           automated  15%   $5.97
+\end{lstlisting}
+
+Four lessons come out of these numbers, and each is more general than this case.
+
+\paragraph{Containment is not savings.} D1 contains half of all contacts but saves only 14\% of cost. Its escalations arrive cold, adding minutes to the human path; its higher error rate adds error cost to the automated path; and model cost, though small, is highest for D1 because seventeen tool descriptions travel with every call.
+
+\paragraph{One intent carries the case.} Order status is a third of the volume and, automated as a workflow, falls from about \$3.20 to \$0.80 a contact. Most of D2's savings come from the least glamorous path in the design, the one with no real agent in it.
+
+\paragraph{Assist is a serious alternative.} D3 never lets AI answer a customer and still saves about 20\%, at the lowest risk. A design that does not automate anything can be the right choice when errors are costly or trust is low.
+
+\paragraph{Automating returns buys almost nothing.} Comparing D2 and D4 isolates the value of automating returns, refunds, complaints and other contacts. The difference is two cents a contact---about \$1{,}000 a month. In exchange, D2 lets an agent grant refunds of up to \$150 without a person, the path where \textsf{R1} lives. Per-intent economics turned a design question into a precise price for a risk.
+
+\subsection{Scores for what money does not capture}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Trade-off table for support triage. Cost and human workload are in the money row; the remaining criteria are scored 1--5.}
+\label{tab:support-tradeoff}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & Weight & D1 & D2 & D3 & D4 \\
+\midrule
+Cost per contact (all-in) & --- & \$4.16 & \$3.51 & \$3.91 & \$3.53 \\
+\midrule
+Quality (re-contact, errors) & 0.25 & 2 & 4 & 5 & 4 \\
+Speed (\textsf{K4}) & 0.20 & 5 & 5 & 2 & 4 \\
+Reliability & 0.15 & 2 & 4 & 4 & 4 \\
+Security and privacy & 0.15 & 2 & 4 & 5 & 5 \\
+Control and auditability & 0.15 & 2 & 4 & 5 & 5 \\
+Maintainability & 0.10 & 2 & 3 & 4 & 3 \\
+\midrule
+Weighted score & 1.00 & 2.60 & 4.10 & 4.15 & 4.20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:support-tradeoff} combines the money row with scores for the criteria that money does not capture. D4 scores 4 rather than 5 on speed because returns, complaints and other contacts still wait for a person, though a person with a draft; D3 scores 2 because every e-mail still waits in a queue, which fails \textsf{K4}. D4 matches D2's cost within two cents while scoring higher on security and control, because no refund is granted without a person.
+
+\subsection{Failure walk-through and decision}
+
+The failure walk-through for D4 (an exercise) surfaces one change worth recording here: triage itself can misroute a refund request into the automated delivery path, where a ``broken item'' report could lead to a replacement being shipped. The fix is in the tool, not the router: the delivery server's \texttt{report\_delivery\_damage} tool creates a claim for review and cannot ship a replacement itself. When routing can fail, the tools on the wrong path should be unable to do harm.
+
+\begin{tcolorbox}[colback=white, colframe=black!45, boxrule=0.4pt, arc=1pt, fontupper=\small, title={DR-SUP-001: Hybrid by intent (D4)}, fonttitle=\bfseries\small, coltitle=black, colbacktitle=codefill]
+\textbf{Context.} 52{,}000 contacts a month at \$4.86; 18\% re-contact; e-mail answered in 19 hours; 2.2\% of refunds against policy.\\
+\textbf{Options.} D1 sample extended; D2 triage with task-shaped tools; D3 agent assist; D4 hybrid.\\
+\textbf{Decision.} D4. Automate order status, delivery issues, product questions and scheduling; assist people on returns and refunds, complaints and other contacts.\\
+\textbf{Reasons.} D4 costs within \$0.02 of D2 per contact (about \$1{,}000 a month) and keeps a person on every refund; it meets \textsf{K4}, which D3 does not.\\
+\textbf{Consequences.} Five MCP servers, owned by four teams. The returns server is built now, for the copilot, and is ready for automation later.\\
+\textbf{Reversal triggers.} Automate returns under \$150 if the copilot's drafts for returns are accepted unedited in more than 90\% of cases over a month, with no policy errors in the sampled review. Move back to assist for any automated intent whose 72-hour re-contact rate exceeds its baseline.
+\end{tcolorbox}

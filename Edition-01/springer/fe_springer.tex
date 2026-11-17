@@ -1,0 +1,300 @@
+%%%%%%%%%%%%%%%%%%%% fe_springer.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Financial Engineering and the Evidence -- Springer (svmult) layout,
+% following springer_agentic.tex. Converted from the Beautybook version.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[graybox,openany]{style/svmult}
+\usepackage[paperwidth=7.5in, paperheight=9.25in, top=2.5cm, bottom=2.5cm,
+            left=2.5cm, right=2.5cm]{geometry}
+
+% ----------------------------------------------------------------------
+% Fonts and encoding (as in springer_agentic.tex)
+% ----------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{type1cm}
+\usepackage{newtxtext}
+\usepackage{newtxmath}       % Times Roman text and math
+\usepackage{bm}
+
+% ----------------------------------------------------------------------
+% General packages
+% ----------------------------------------------------------------------
+\usepackage{amsmath}         % \eqref, equation environments
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{pdfpages}        % chapter infographics, cover
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage[bottom]{footmisc}
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=0pt}
+\setlist[enumerate]{itemsep=0pt}
+\usepackage{url}
+\pagecolor{white}
+
+% ----------------------------------------------------------------------
+% Layout (as in springer_agentic.tex)
+% ----------------------------------------------------------------------
+\usepackage{tocloft}
+\setlength{\parskip}{0.5em}
+\usepackage{setspace} \setstretch{1.1}
+\usepackage{chngcntr}
+\counterwithin{section}{chapter}
+\counterwithin{figure}{chapter}
+\usepackage[justification=centering]{caption}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{0pt}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{*1.0}{*0.7}
+\titlespacing*{\subsection}{0pt}{*1.0}{*0.7}
+\titlespacing*{\subsubsection}{0pt}{*1.0}{*0.7}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\thepage}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ----------------------------------------------------------------------
+% Figures drawn in TikZ / pgfplots (Chapters 3-7)
+% ----------------------------------------------------------------------
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{decorations.pathreplacing}
+
+\definecolor{fenavy}{HTML}{1B2A6B}
+\definecolor{fegray}{HTML}{4D4D4D}
+\definecolor{feorange}{HTML}{B8481C}
+\definecolor{feshade}{HTML}{F3F5FA}
+
+% ----------------------------------------------------------------------
+% Boxes
+% ----------------------------------------------------------------------
+\usepackage[most]{tcolorbox}   % breakable, skins (for borderline west)
+
+% Callouts (What Failed, Lab at a glance, ...)
+\newtcolorbox{callout}{%
+  breakable, enhanced,
+  colback=white, colframe=fenavy, boxrule=0.5pt, arc=1mm,
+  borderline west={2.5pt}{0pt}{fenavy},
+  left=8pt, right=8pt, top=4pt, bottom=4pt}
+
+% Background box (was redefined in the Beautybook version)
+\newenvironment{backgroundbox}[1]
+{%
+\begin{tcolorbox}[
+    width=\textwidth, center,
+    colback=gray!5, colframe=gray!70,
+    enhanced, boxrule=0.5pt, breakable,
+    left=0pt, right=5pt, top=4pt, bottom=4pt]
+\linespread{1.1}\selectfont
+\begin{list}{}{%
+    \setlength{\labelwidth}{0.8cm}%
+    \setlength{\labelsep}{0.25cm}%
+    \setlength{\leftmargin}{1.05cm}%
+    \setlength{\rightmargin}{0pt}%
+    \setlength{\topsep}{0pt}%
+    \setlength{\partopsep}{0pt}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\listparindent}{0pt}%
+}
+\item\relax
+{\bfseries #1\par}\medskip
+}
+{%
+\end{list}%
+\end{tcolorbox}%
+}
+
+% ----------------------------------------------------------------------
+% Theorem-like environments
+% svmult already provides: theorem, lemma, corollary, proposition,
+% definition, example, exercise, problem, remark, conjecture, ...
+% The short Beautybook names are mapped onto them so chapters still compile.
+% ----------------------------------------------------------------------
+\newenvironment{defi}{\begin{definition}}{\end{definition}}
+\newenvironment{thm}{\begin{theorem}}{\end{theorem}}
+\newenvironment{lem}{\begin{lemma}}{\end{lemma}}
+\newenvironment{prop}{\begin{proposition}}{\end{proposition}}
+\newenvironment{exam}{\begin{example}}{\end{example}}
+\newenvironment{cor}{\begin{corollary}}{\end{corollary}}
+
+% ----------------------------------------------------------------------
+% Q&A
+% ----------------------------------------------------------------------
+\newenvironment{qanda}
+  {\begin{list}{}{\leftmargin=1cm \rightmargin=0cm \labelwidth=1cm
+                  \labelsep=0.2cm \itemindent=0cm \parsep=0.2cm}}
+  {\end{list}}
+% svmult already defines \question, so clear both names first
+\let\question\relax
+\let\answer\relax
+\newcommand{\question}[1]{\item[\textbf{Question:}] #1}
+\newcommand{\answer}[1]{\item[\textbf{Answer:}] #1}
+
+% ----------------------------------------------------------------------
+% Code listings
+% ----------------------------------------------------------------------
+\usepackage{listings}
+\lstset{
+    basicstyle=\small\ttfamily,
+    commentstyle=\color{gray!50!black!50},
+    stringstyle=\rmfamily\color{red},
+    keywordstyle=\normalfont\ttfamily,
+    frame=leftline,
+    framerule=0.5pt, rulecolor=\color{gray!80},
+    numbers=left,
+    numberstyle=\color{gray}\small,
+    firstnumber=1, stepnumber=1, numbersep=8pt,
+    showspaces=false, showstringspaces=false, keepspaces=true,
+    showtabs=false, tabsize=2,
+    captionpos=b, flexiblecolumns=true,
+    breaklines=true, breakatwhitespace=false, breakautoindent=true,
+    breakindent=1em,
+    title=\lstname,
+    escapeinside=``,
+    xleftmargin=1em, xrightmargin=1em,
+    aboveskip=1ex, belowskip=1ex,
+    framextopmargin=1pt, framexbottommargin=1pt,
+    abovecaptionskip=-2pt, belowcaptionskip=3pt,
+    extendedchars=false, columns=flexible, mathescape=true,
+    texcl=true, fontadjust
+}
+
+% ----------------------------------------------------------------------
+% Index
+% ----------------------------------------------------------------------
+\usepackage{makeidx}
+\makeindex             % run makeindex with the svind.ist style
+
+% Load hyperref last
+\usepackage[hidelinks]{hyperref}
+
+%--------------------------------------------------------%
+\begin{document}
+%--------------------------------------------------------%
+
+% Cover (optional; uncomment to include the front cover PDF)
+%\includepdf{cover/The_frontcover_beautybook.pdf}
+
+%------------------------ Publisher matter -------------------------%
+\thispagestyle{empty}
+\vspace*{\fill}
+\footnotesize
+
+\noindent Copyright \textcopyright{} Chris Kuo, Ph.D. \\
+\\
+\noindent All rights reserved. No part of this publication may be reproduced,
+stored in a retrieval system, or transmitted in any form or by any means,
+electronic, mechanical, photocopying, recording, scanning, or otherwise, except
+as permitted under Section 107 or 108 of the 1976 United States Copyright Act,
+without the prior written permission of the publisher, or in the case of brief
+quotations embodied in critical reviews and certain other noncommercial uses
+permitted by copyright law.
+
+\noindent While every effort has been made to ensure the reliability of the
+information presented in this publication, Innovation Press assumes no
+responsibility for errors or omissions. However, neither the author nor
+Innovation Press assumes any liability for damages resulting from the use of
+the information contained herein. \\
+\\
+\noindent ISBN 979-8-9907810-8-5 \\
+\\
+\noindent First edition: January 2027 \\
+
+\noindent This book was typeset using \LaTeX{} software. \\
+\noindent The Innovation Press, \\
+\noindent Ann Arbor, MI
+\begin{figure}[!htbp]
+  \includegraphics[width=0.12\textwidth]{innovation_press.png}
+\end{figure}
+
+\vspace*{\fill}
+\normalsize
+
+\frontmatter
+
+% -------------------------About the author------------------------------%
+{
+\thispagestyle{empty}
+\input{chapters/author.tex}
+}
+
+%------------------------------TOC------------------------------------------%
+\thispagestyle{empty}
+\tableofcontents\let\cleardoublepage\clearpage
+
+\mainmatter
+\pagenumbering{arabic}
+
+% ----------------------------Preface and Introduction-----------------%
+\input{chapters/preface.tex}
+\clearpage
+
+%--------------------------- PART I ------------------------------------%
+%\addcontentsline{toc}{chapter}{PART I: ...}
+%\input{parts/part1_intro.tex}
+\input{chapters/ch01.tex}
+\includepdf{infographic/ch01_infographic.pdf}
+\input{chapters/ch02.tex}
+\includepdf{infographic/ch02_infographic.pdf}
+
+%--------------------------- PART II -----------------------------------%
+%\addcontentsline{toc}{chapter}{PART II: ...}
+\input{chapters/ch03.tex}
+\includepdf{infographic/ch03_infographic.pdf}
+\input{chapters/ch04.tex}
+\includepdf{infographic/ch04_infographic.pdf}
+\input{chapters/ch05.tex}
+\input{chapters/ch06.tex}
+
+%--------------------------- PART III ----------------------------------%
+%\addcontentsline{toc}{chapter}{PART III: ...}
+\input{chapters/ch07.tex}
+%\input{chapters/ch08.tex}
+%\input{chapters/ch09.tex}
+%\input{chapters/ch10.tex}
+
+%--------------------------- PART IV -----------------------------------%
+%\input{chapters/ch11.tex}
+%\input{chapters/ch12.tex}
+%\input{chapters/ch13.tex}
+%\input{chapters/ch14.tex}
+%\input{chapters/ch15.tex}
+
+%--------------------------- PART V ------------------------------------%
+%\input{chapters/ch16.tex}
+%\input{chapters/ch17.tex}
+%\input{chapters/ch18.tex}
+
+%--------------------------- PART VI -----------------------------------%
+%\input{chapters/ch19.tex}
+%\input{chapters/ch20.tex}
+
+%--------------------------- PART VII ----------------------------------%
+%\input{chapters/ch21.tex}
+%\input{chapters/ch22.tex}
+%\input{chapters/ch23.tex}
+
+%--------------------------- PART VIII ---------------------------------%
+%\input{chapters/ch24.tex}
+%\input{chapters/ch25.tex}
+%\input{chapters/ch26.tex}
+\input{chapters/furtherreading.tex}
+
+%--------------------------Keyword Page Index------------------------%
+\backmatter
+\clearpage
+\printindex
+
+\thispagestyle{empty}
+\end{document}

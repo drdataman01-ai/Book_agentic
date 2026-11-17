@@ -1,0 +1,181 @@
+% ======================================================================
+% Chapter 8 -- Case: Credit Card Fraud Review
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: brief, KPIs, designs, trade-offs
+% ======================================================================
+
+\chapter{Case: Credit Card Fraud Review}
+\label{ch:case-fraud}
+
+\begin{caseglance}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm}X@{}}
+Company & Northgate Card Services, a card issuer with 3.2 million credit cards \\
+Process & Reviewing card-not-present transactions flagged as possible fraud \\
+Starting point & Original design (Part III) \\
+Technical focus & Evaluation \\
+Business skill & Asymmetric error costs \\
+Patterns & Router; approval gate; reflection (for explanations); event-triggered agent \\
+Deliverables & Solution graphs, threshold and capacity model, scoring server, explanation checks, evaluation report, memo
+\end{tabularx}
+\end{caseglance}
+
+\begin{objectives}
+After working through this case, you will be able to:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item Keep language models out of latency-critical decision paths and put them where they add judgment or save human time.
+  \item Expose a statistical anomaly model as an MCP tool, with its score and its reasons.
+  \item Choose block and review thresholds under asymmetric costs and limited analyst capacity.
+  \item Check that an agent's explanation is faithful to what the model actually used.
+  \item Evaluate a fraud system with delayed labels, time-based splits and cost curves, not accuracy.
+\end{enumerate}
+\end{objectives}
+
+From this chapter on, cases are designed from a blank page. There is no sample to critique; the first alternative is the design an inexperienced team would most likely propose, and the method of Chapter~\ref{ch:toolkit} does the rest.
+
+% ----------------------------------------------------------------------
+\section{Business Brief and Current Process}
+\label{sec:fr-brief}
+
+Northgate issues credit cards to 3.2 million cardholders. About 600{,}000 card-not-present transactions---online and in-app purchases---arrive each day. When a merchant asks Northgate to authorize one, Northgate must answer within about 100 milliseconds. A fraud-scoring model, trained on years of labeled transactions, gives each one a score; rules then approve, decline, or approve and place the transaction in a queue for analysts to review after the fact.
+
+Fourteen fraud analysts work each shift. For each queued transaction, an analyst opens the cardholder's history, compares the transaction with the cardholder's usual behavior, checks the merchant, decides, and, if fraud is likely, blocks the card and arranges a new one. A review takes about six minutes. The queue is always longer than the analysts' capacity; transactions not reached before the end of the shift are released unreviewed.
+
+The economics are asymmetric in a way that dominates every design choice:
+\begin{itemize}[itemsep=1pt]
+  \item A \emph{missed fraud} costs Northgate the transaction amount (for card-not-present fraud, the issuer usually bears it) plus about \$25 of chargeback handling.
+  \item A \emph{wrongly declined or blocked good customer} costs much less per case---about \$6 in calls and goodwill---but there are many more good customers than fraudsters, and some of them stop using the card.
+  \item An \emph{analyst review} costs about \$0.70 a minute.
+\end{itemize}
+
+Fraud losses run at about 9 basis points (0.09\%) of card-not-present volume; the head of fraud wants them lower without declining more good customers, and the analysts' queue has grown 30\% in a year.
+
+% ----------------------------------------------------------------------
+\section{Stakeholders, KPIs and Value Hypothesis}
+\label{sec:fr-kpis}
+
+\paragraph{Stakeholders.} The sponsor is the head of fraud strategy. Users are the fraud analysts. Approvers include model risk management, which validates every model used in decisions; compliance, for customer-contact rules; and information security. Owners are the fraud analytics team (the scoring model), the authorization platform team, and fraud operations (the queue and analysts).
+
+\paragraph{KPIs and risks.}
+\begin{itemize}[itemsep=1pt]
+  \item[\textsf{K1}] Fraud losses in basis points of card-not-present volume: down 20\%.
+  \item[\textsf{K2}] Good customers wrongly declined or blocked per 10{,}000 transactions: no higher than today.
+  \item[\textsf{K3}] Transactions reviewed per analyst hour: up 50\%.
+  \item[\textsf{R1}] Any language model in the authorization path (latency and availability).
+  \item[\textsf{R2}] An explanation that misstates why a transaction was flagged, leading an analyst to a wrong decision.
+  \item[\textsf{R3}] Cardholder personal data exposed beyond the analysts who need it.
+\end{itemize}
+
+\textsf{K1} and \textsf{K2} are a pair in the sense of Chapter~\ref{ch:business}: any design can cut fraud by declining more, and any design can please customers by declining less.
+
+\begin{quote}
+\emph{Value hypothesis.} If analysts receive each flagged transaction with a faithful summary of why the model flagged it and the context they would otherwise gather by hand, they will review substantially more transactions per hour; with more review capacity, fewer transactions need to be blocked outright, so fraud losses and wrongly blocked customers can fall together.
+\end{quote}
+
+% ----------------------------------------------------------------------
+\section{Alternative Designs}
+\label{sec:fr-designs}
+
+\subsection{D1: an agent that judges each transaction}
+
+The design a team new to agents often proposes is to give a model each flagged transaction, the cardholder's history and some tools, and ask it whether the transaction is fraud. It fails the method at step~3 (judgment versus rules) and step~4 (knowledge): the judgment ``is this fraud?'' is exactly what a statistical model trained on millions of labeled transactions does well, and what a language model reading a few dozen does poorly and expensively. If D1 is placed in the authorization path it also violates \textsf{R1}: authorization needs an answer in 100 milliseconds, every time, which no agent loop can promise. We score D1 for completeness.
+
+\subsection{D2: anomaly model as a tool; agent as the analyst's assistant}
+
+D2 assigns each block to what it does best (Figure~\ref{fig:fr-d2}).
+\begin{itemize}[itemsep=1pt]
+  \item The \emph{scoring model} stays in the authorization path, served with low latency by the authorization platform. It is also exposed, read-only, through an MCP server owned by fraud analytics, which returns for any transaction its score, the model version and the features that contributed most to the score (its \emph{attributions}).
+  \item \emph{Code} applies two thresholds: above the block threshold, the card is blocked at once; between the review and block thresholds, the transaction is approved and queued for review. Both thresholds are configuration, owned by fraud strategy and set by the analysis in Section~\ref{sec:fr-tradeoffs}.
+  \item For each queued transaction, a \emph{case agent} (Level~4, at most eight tool calls) gathers what an analyst would: the attributions, the cardholder's recent transactions and devices, the merchant's fraud history, and similar confirmed cases. It writes a \emph{case summary}: the facts, the model's top factors in plain language, and what is unusual against the cardholder's own history.
+  \item A \emph{faithfulness guardrail} checks that every reason the summary cites is one of the model's top factors (Section~\ref{sec:fr-build}). Summaries that fail are regenerated once, then shown with a warning.
+  \item The \emph{analyst} decides, through the existing case tool. The agent has no write tools.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
+\node[sg trigger] (mer) at (0,0) {Merchant request\\[-1pt]{\scriptsize $\le$100 ms}};
+\node[sg code] (auth) at (3.2,0) {Score + thresholds\\[-1pt]{\scriptsize authorization path}};
+\node[sg mcp, text width=2.4cm] (sc) at (3.2,-2.6) {Scoring\\[-1pt]{\scriptsize Fraud analytics}\nodepart{two}{\tiny\ttfamily score, explain\_score, similar\_cases}};
+\node[sg code] (q) at (6.5,0) {Review queue\\[-1pt]{\scriptsize by expected loss}};
+\node[sg agent] (ca) at (9.7,0) {Case agent\\[-1pt]{\scriptsize L4; $\le$8 calls; stop: summary}};
+\node[sg mcp, text width=2.4cm] (hist) at (9.7,-2.6) {Card history\\[-1pt]{\scriptsize Cards team, read}\nodepart{two}{\tiny\ttfamily recent\_txns, devices, merchant\_profile}};
+\node[sg guard] (fg) at (12.9,0) {Faithful?};
+\node[sg human] (an) at (12.9,-2.6) {Fraud analyst\\[-1pt]{\scriptsize decides}};
+\draw[sg flow] (mer) -- (auth);
+\draw[sg call] (auth) -- (sc);
+\draw[sg flow] (auth) -- node[sg lab, above] {[review band]} (q);
+
+\draw[sg event] (q) -- (ca);
+\draw[sg call] (ca) -- (hist);
+\draw[sg call] (ca.south west) -- node[sg lab, sloped, above, pos=0.35] {explain\_score} (sc.north east);
+\draw[sg flow] (ca) -- (fg);
+\draw[sg flow] (fg) -- node[sg lab, right] {[pass]} (an);
+\draw[sg flow] (fg.north) to[bend right=40] node[sg lab, above] {[fail, once]} (ca.north);
+\node[sg trust, fit=(auth)(sc)] (hot) {};
+\node[sg btitle, text=BrickRed] at (hot.north west) {no language model inside};
+\sgtag{auth}{K1 K2}
+\sgtag{q}{K1}
+\sgtag{ca}{K3}
+\sgtag{fg}{R2}
+\sgtag{an}{K1 K2}
+\sgtag{hist}{R3}
+\end{tikzpicture}
+\caption{D2. Above the block threshold the card is blocked at once; below the review band the transaction is approved (edges omitted). The red boundary here marks the latency-critical path, which contains no language model. The agent works on the review queue, after authorization, and has no write tools.}
+\label{fig:fr-d2}
+\end{figure}
+
+\subsection{D3: automated customer verification}
+
+D3 adds a step to D2: for transactions in a middle band, the system asks the cardholder through the bank's own app, with a push notification, ``Did you make this purchase?'' A ``yes'' clears the transaction without an analyst; a ``no'' blocks the card at once. The verification message is a fixed template sent through the authenticated app channel---never free text written by a model, and never by SMS or e-mail, which fraudsters imitate. D3 needs compliance approval for customer contact and engineering work by the mobile team.
+
+% ----------------------------------------------------------------------
+\section{Trade-offs}
+\label{sec:fr-tradeoffs}
+
+\subsection{Thresholds under asymmetric costs and limited capacity}
+
+The business skill of this case is choosing thresholds when errors cost different amounts and the review budget is fixed. Listing~\ref{lst:fraud-policy} simulates a day of card-not-present transactions with a realistic, imperfect score, and searches for the block and review thresholds that minimize total daily cost: missed fraud, wrongly blocked customers and analyst time. Analysts work the review queue from the highest score down until their capacity runs out.
+
+\lstinputlisting[language=Python, caption={Block and review thresholds under capacity (\texttt{ch08/fraud\_policy.py}, core).}, label={lst:fraud-policy}, firstline=6, lastline=36]{code/fraud_policy.py}
+
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=0em, basicstyle=\ttfamily\scriptsize]
+fraud cases 734, fraud value $100,860
+analyst alone (6 min/alert)        review>=0.05 block>=0.55  reviewed  1050  caught 476/734  false blocks  839  cost $52,994/day
+with case summary (3.5 min/alert)  review>=0.05 block>=0.60  reviewed  1800  caught 482/734  false blocks  294  cost $48,533/day
+no review: block >= 0.70           cost $85,681/day
+\end{lstlisting}
+
+Four things in this output generalize.
+\begin{itemize}[itemsep=2pt]
+  \item \emph{Capacity, not the review threshold, decides what is reviewed.} Because the queue is worked from the top and always exceeds capacity, the optimal review threshold sinks to the bottom of the search range; what matters is how many items analysts can reach. That is why the case agent targets review time.
+  \item \emph{Faster review moves the block threshold.} With case summaries, analysts review 1{,}800 transactions instead of 1{,}050, so fewer need to be blocked blindly: the optimal block threshold rises from 0.55 to 0.60 and wrongly blocked customers fall from 839 to 294 a day. \textsf{K2} improves because of an assistant to \textsf{K3}---a connection that only the joint optimization reveals.
+  \item \emph{The asymmetry sets the shape.} Because a missed fraud costs about \$160 on average and a wrongly blocked customer about \$6, the optimizer blocks aggressively when review capacity is short. Change the friction cost and the optimum moves; Exercise~4 asks you to find where.
+  \item \emph{The model's quality is the ceiling.} Even the best policy catches only about two-thirds of fraud cases, because the simulated score is deliberately imperfect. No amount of agent assistance changes that; a better scoring model does. The agent is not a substitute for the model.
+\end{itemize}
+
+At Northgate's volumes, the difference between the first two rows is about \$4{,}500 a day, or \$1.6 million a year, before counting the retention value of 545 fewer wrongly blocked customers each day.
+
+\subsection{Scores and decision}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Trade-off table for fraud review. D1 is shown outside the authorization path; inside it, D1 fails \textsf{R1}.}
+\label{tab:fr-tradeoff}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & Weight & D1 & D2 & D3 \\
+\midrule
+Quality (fraud caught, \textsf{K1}) & 0.30 & 2 & 4 & 5 \\
+Customer impact (\textsf{K2}) & 0.20 & 2 & 4 & 4 \\
+Speed and latency & 0.10 & 2 & 5 & 4 \\
+Security and privacy & 0.15 & 2 & 4 & 3 \\
+Control and auditability & 0.15 & 1 & 5 & 4 \\
+Maintainability & 0.10 & 3 & 4 & 3 \\
+\midrule
+Weighted score & 1.00 & 1.95 & 4.25 & 4.05 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+D3 catches more fraud, because many mid-band transactions are resolved by the cardholder in seconds. It scores lower on privacy and control because it introduces a new customer-facing channel with its own failure modes, and it depends on another team and on compliance approval. The decision is D2 now, with D3 as a separate project once D2's evaluation establishes the baseline it would improve on.

@@ -1,0 +1,97 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {11}Case: Demand Forecasting and Replenishment}{141}{chapter.11}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:case-forecast}{{11}{141}{Case: Demand Forecasting and Replenishment}{chapter.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {11.1}Business Brief and Current Process}{141}{section.11.1}\protected@file@percent }
+\newlabel{sec:fc-brief}{{11.1}{141}{Business Brief and Current Process}{section.11.1}{}}
+\citation{ansari2024chronos,das2024timesfm}
+\@writefile{toc}{\contentsline {section}{\numberline {11.2}Stakeholders, KPIs and Value Hypothesis}{142}{section.11.2}\protected@file@percent }
+\newlabel{sec:fc-kpis}{{11.2}{142}{Stakeholders, KPIs and Value Hypothesis}{section.11.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Stakeholders.}{142}{section*.171}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{KPIs and risks.}{142}{section*.172}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11.3}Alternative Designs}{142}{section.11.3}\protected@file@percent }
+\newlabel{sec:fc-designs}{{11.3}{142}{Alternative Designs}{section.11.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.3.1}D1: an agent that forecasts and orders}{142}{subsection.11.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.3.2}D2: foundation-model forecasts, rules for orders, an agent for exceptions}{142}{subsection.11.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.3.3}D3: statistical forecasts and rules}{142}{subsection.11.3.3}\protected@file@percent }
+\citation{silver2017inventory}
+\@writefile{lof}{\contentsline {figure}{\numberline {11.1}{\ignorespaces D2: batch forecasts for all series, orders by rule, an agent only for exceptions. Unreviewed adjustments fall back to the computed order, never to the agent's proposal.}}{143}{figure.11.1}\protected@file@percent }
+\newlabel{fig:fc-d2}{{11.1}{143}{D2: batch forecasts for all series, orders by rule, an agent only for exceptions. Unreviewed adjustments fall back to the computed order, never to the agent's proposal}{figure.11.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {11.4}Trade-offs}{143}{section.11.4}\protected@file@percent }
+\newlabel{sec:fc-tradeoffs}{{11.4}{143}{Trade-offs}{section.11.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.4.1}Inventory economics: order a quantile, not the mean}{143}{subsection.11.4.1}\protected@file@percent }
+\newlabel{eq:newsvendor}{{11.1}{143}{Inventory economics: order a quantile, not the mean}{equation.11.4.1}{}}
+\newlabel{lst:replenish}{{11.1}{143}{Newsvendor ordering and the nightly compute budget (\texttt {ch11/replenish.py})}{lstlisting.11.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {11.1}Newsvendor ordering and the nightly compute budget (\texttt  {ch11/replenish.py}).}{143}{lstlisting.11.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.4.2}Cost and latency: where the compute goes}{144}{subsection.11.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {11.1}{\ignorespaces Trade-off table for replenishment. Forecast quality scores are provisional until the backtest (Section~\ref {sec:fc-evaluate}).}}{145}{table.11.1}\protected@file@percent }
+\newlabel{tab:fc-tradeoff}{{11.1}{145}{Trade-off table for replenishment. Forecast quality scores are provisional until the backtest (Section~\ref {sec:fc-evaluate})}{table.11.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.4.3}Scores and decision}{145}{subsection.11.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11.5}Build}{145}{section.11.5}\protected@file@percent }
+\newlabel{sec:fc-build}{{11.5}{145}{Build}{section.11.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.5.1}The forecast server}{145}{subsection.11.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.5.2}The exception agent}{145}{subsection.11.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.5.3}The order calculation}{145}{subsection.11.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11.6}Deploy}{146}{section.11.6}\protected@file@percent }
+\newlabel{sec:fc-deploy}{{11.6}{146}{Deploy}{section.11.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Batch on accelerators, serving on Cloud Run.}{146}{section*.173}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The nightly timeline as an SLO.}{146}{section*.174}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Cost controls.}{146}{section*.175}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11.7}Evaluate}{146}{section.11.7}\protected@file@percent }
+\newlabel{sec:fc-evaluate}{{11.7}{146}{Evaluate}{section.11.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.7.1}A baseline must be beaten}{146}{subsection.11.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.7.2}Exceptions and the agent}{146}{subsection.11.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.7.3}Monitoring for drift}{146}{subsection.11.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11.8}Business Case and Rollout}{146}{section.11.8}\protected@file@percent }
+\newlabel{sec:fc-business}{{11.8}{146}{Business Case and Rollout}{section.11.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {11.9}Changed Requirement}{147}{section.11.9}\protected@file@percent }
+\newlabel{sec:fc-changed}{{11.9}{147}{Changed Requirement}{section.11.9}{}}
+\@writefile{toc}{\contentsline {section}{Chapter Summary}{147}{section*.176}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Review Questions}{147}{section*.177}\protected@file@percent }
+\citation{silver2017inventory}
+\citation{ansari2024chronos}
+\citation{das2024timesfm}
+\@writefile{toc}{\contentsline {section}{Exercises}{148}{section*.178}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Lab 11: Beat the Baseline}{148}{section*.179}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Goal.}{148}{section*.180}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Steps.}{148}{section*.181}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{148}{section*.182}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Further Reading}{148}{section*.183}\protected@file@percent }
+\@setckpt{ch11/ch11}{
+\setcounter{page}{149}
+\setcounter{equation}{1}
+\setcounter{enumi}{5}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{3}
+\setcounter{chapter}{11}
+\setcounter{section}{9}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{1}
+\setcounter{table}{1}
+\setcounter{parentequation}{0}
+\setcounter{AM@survey}{0}
+\setcounter{lstnumber}{4}
+\setcounter{tcbbreakpart}{1}
+\setcounter{tcblayer}{0}
+\setcounter{tcolorbox@number}{52}
+\setcounter{tcbrastercolumn}{1}
+\setcounter{tcbrasterrow}{1}
+\setcounter{tcbrasternum}{1}
+\setcounter{tcbraster}{0}
+\setcounter{tcblisting}{0}
+\setcounter{NAT@ctr}{0}
+\setcounter{section@level}{4}
+\setcounter{Item}{379}
+\setcounter{Hfootnote}{3}
+\setcounter{bookmark@seq@number}{320}
+\setcounter{lstlisting}{1}
+}

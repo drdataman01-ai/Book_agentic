@@ -1,0 +1,141 @@
+% ======================================================================
+% Chapter 13 -- Capstone: Cross-Department Operations
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: many agents, one company; A2A; governance across boundaries
+% ======================================================================
+
+\chapter{Capstone: Cross-Department Operations}
+\label{ch:capstone}
+
+\begin{objectives}
+After working through this chapter, you will be able to:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item Decide when agents owned by different teams should coordinate through the Agent2Agent protocol, through MCP tools, or inside one workflow.
+  \item Design the contract between agents: agent cards, skills, task states, identity and authorization, timeouts and fallbacks.
+  \item Build a release pipeline for agent systems in which models, instructions, tools and evaluation sets are all versioned and gated.
+  \item Design an operating model---roles, ownership, governance and portfolio management---for a company running many agents.
+  \item Plan the change management that decides whether people adopt what was built.
+\end{enumerate}
+\end{objectives}
+
+The eleven cases so far each designed one solution for one process. Real companies that succeed with their first solution soon have five, then twenty, built by different teams on different schedules. New problems appear between the solutions: agents that need each other, releases that break neighbors, costs that nobody owns, and people whose jobs change in ways nobody planned. This chapter is about those problems. It does not follow the case template; it ends with a capstone project that does.
+
+We return to Harbor Industrial Supply, where the book began.
+
+% ----------------------------------------------------------------------
+\section{One Company, Many Agents}
+\label{sec:cap-company}
+
+Two years after the pricing desk pilot, Harbor runs several agentic solutions, each owned by the department whose process it serves:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Sales}: the quote design from Chapters~\ref{ch:foundations}--\ref{ch:business}.
+  \item \emph{Customer service}: the returns design from Chapter~\ref{ch:toolkit}.
+  \item \emph{Finance}: credit checks for new orders and an invoice-to-payment workflow like Meridian's in Chapter~\ref{ch:case-invoice}.
+  \item \emph{Operations}: demand forecasting and replenishment like Greenleaf's in Chapter~\ref{ch:case-forecast}, adapted to industrial parts, plus warehouse allocation.
+\end{itemize}
+
+Then, one Tuesday morning, a water main bursts in a city served by Delta Water, one of Harbor's largest customers. Delta's buyer needs 400 stainless ball valves of a specific size, plus fittings, delivered to three sites within 48 hours, and asks for a quote by noon. Answering well requires every department at once. Sales must price an order far above any standing quote. Operations must find stock across four warehouses, decide whether allocating it to Delta will starve other customers, and consider expediting from a supplier. Finance must check whether the order fits Delta's credit limit or needs a temporary increase. Logistics must confirm that three-site delivery in 48 hours is possible.
+
+Today this is a morning of phone calls. With each department's agent able to answer its part, it could be an hour. But how should the agents work together?
+
+\subsection{Three ways to connect}
+
+There are three ways to connect a capability owned by another team, and the choice matters more than any single agent's design.
+
+\begin{description}[leftmargin=1em,itemsep=3pt]
+  \item[Inside one workflow.] The sales team builds the whole order flow in its own ADK application, including steps for stock, credit and logistics. This is simplest when one team owns all the logic and releases it together. Across departments it fails: the sales team ends up maintaining operations' allocation rules and finance's credit policy, which change without their knowledge.
+  \item[As MCP tools.] Operations exposes \texttt{check\_availability} and \texttt{reserve\_stock}; finance exposes \texttt{check\_credit}. The sales agent calls them. This is right when the capability is \emph{a function}: deterministic or nearly so, with a clear input and output, and no judgment that the owning team needs to exercise in the moment.
+  \item[As agents, over A2A.] Operations exposes an \emph{allocation agent} that accepts a task---``find 400 valves for Delta within 48 hours''---and works on it with its own tools, its own rules and its own judgment, possibly for many minutes, possibly asking a planner, and returns a result or a request for more information. This is right when the capability \emph{needs the owning team's judgment and policies}, takes time, or may need a person on the owning side.
+\end{description}
+
+The Agent2Agent protocol (A2A) is the open standard for the third option \citep{a2a2026spec}. Introduced by Google in 2025 and now governed under the Linux Foundation, it reached version~1.0 in 2026. Each agent publishes an \keyterm{agent card}: a JSON document describing who it is, its \emph{skills}, the interfaces and versions it supports, and how callers must authenticate. A client agent sends a message that creates a \emph{task}; the task moves through states such as \emph{working}, \emph{input-required} and \emph{completed}, and can stream progress or push notifications. Crucially, neither agent sees the other's prompts, tools or memory. Where MCP connects an agent to tools, A2A connects an agent to another agent as a peer.
+
+Table~\ref{tab:cap-connect} turns this into a decision rule.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Choosing how to connect to a capability owned by another team.}
+\label{tab:cap-connect}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X ccc@{}}
+\toprule
+If the capability\ldots & One workflow & MCP tool & A2A agent \\
+\midrule
+is owned and released by the same team & \checkmark & & \\
+is a function with clear inputs and outputs & & \checkmark & \\
+needs the owner's judgment or policies applied at run time & & & \checkmark \\
+may take minutes or hours, or need a person on the owner's side & & & \checkmark \\
+must hide its internal tools, data and prompts from callers & & \checkmark & \checkmark \\
+is offered to other companies' agents & & \checkmark & \checkmark \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Harbor's order desk}
+
+Applying the rule to Delta's emergency order gives the design in Figure~\ref{fig:cap-order}. The sales \emph{order-desk agent} coordinates. Credit is a function---a limit check and, above the limit, a request for approval---so finance exposes it as an MCP tool. Allocation needs operations' judgment about other customers and suppliers, and sometimes a planner, so operations exposes an A2A agent. Logistics is a function of the carrier systems, exposed as an MCP tool. The quote itself is built by the existing quote workflow, which the order-desk agent calls as a sub-agent because sales owns both.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=2.0cm}]
+\node[sg trigger] (buyer) at (0,0) {Delta buyer\\[-1pt]{\scriptsize via sales rep}};
+\node[sg agent] (desk) at (3.4,0) {Order-desk agent\\[-1pt]{\scriptsize Sales; L4}};
+\node[sg subagent] (quote) at (3.4,-2.6) {Quote workflow\\[-1pt]{\scriptsize Sales (Ch.~1--3)}};
+\node[sg agent] (alloc) at (7.4,1.2) {Allocation agent\\[-1pt]{\scriptsize Operations}};
+\node[sg human] (plan) at (11.2,1.2) {Operations planner};
+\node[sg mcp, text width=2.4cm] (cred) at (7.4,-1.2) {Credit\\[-1pt]{\scriptsize Finance}\nodepart{two}{\tiny\ttfamily check\_credit, request\_increase}};
+\node[sg mcp, text width=2.4cm] (log) at (7.4,-3.4) {Logistics\\[-1pt]{\scriptsize Logistics}\nodepart{two}{\tiny\ttfamily delivery\_options}};
+\node[sg human] (fin) at (11.2,-1.2) {Credit manager};
+\node[sg human] (rep) at (0,-2.6) {Sales rep\\[-1pt]{\scriptsize sends quote}};
+\draw[sg flow] (buyer) -- (desk);
+\draw[sg call] (desk) -- node[sg lab, sloped, above] {A2A task} (alloc);
+\draw[sg flow] (alloc) -- node[sg lab, above] {[input-required]} (plan);
+\draw[sg call] (desk) -- (cred);
+\draw[sg flow] (cred) -- node[sg lab, above] {[above limit]} (fin);
+\draw[sg call] (desk.south east) -- (log.north west);
+\draw[sg call] (desk) -- (quote);
+\draw[sg handoff] (quote) -- (rep);
+\node[sg boundary, fit=(alloc)(plan)] (ob) {};
+\node[sg btitle] at (ob.north west) {Operations};
+\node[sg boundary, fit=(cred)(fin)] (fb) {};
+\node[sg btitle] at (fb.north west) {Finance};
+\node[sg boundary, fit=(desk)(quote)(rep)] (sb) {};
+\node[sg btitle] at (sb.north west) {Sales};
+\end{tikzpicture}
+\caption{Harbor's cross-department order desk. Allocation, which needs operations' judgment, is an A2A agent; credit and logistics are MCP tools; the quote workflow is a sub-agent within sales. Each boundary is a team that owns, releases and operates its part.}
+\label{fig:cap-order}
+\end{figure}
+
+Listing~\ref{lst:agent-card} sketches the allocation agent's card. Field names follow the A2A specification's structure; check the current specification for the exact required fields.
+
+\begin{lstlisting}[language={}, caption={The allocation agent's card (abridged).}, label={lst:agent-card}]
+{
+  "name": "harbor-allocation-agent",
+  "description": "Finds and reserves stock for large or urgent orders across Harbor warehouses and suppliers, applying operations' allocation policy.",
+  "version": "3.2.0",
+  "supportedInterfaces": [{"url": "https://agents.harbor.internal/allocation/a2a", "protocolBinding": "JSONRPC"}],
+  "capabilities": {"streaming": true, "pushNotifications": true},
+  "securitySchemes": {"oidc": {"type": "openIdConnect", "openIdConnectUrl": "https://login.harbor.internal/.well-known/openid-configuration"}},
+  "skills": [{
+    "id": "allocate-urgent-order",
+    "name": "Allocate an urgent order",
+    "description": "Given items, quantities, sites and a deadline, propose an allocation and reserve stock for 4 hours. May ask an operations planner.",
+    "tags": ["inventory", "allocation"]
+  }]
+}
+\end{lstlisting}
+
+\subsection{Contracts between agents}
+
+An A2A connection is a contract between teams. Five clauses make it work in production.
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Skills are narrow and versioned.} ``Allocate an urgent order,'' not ``help with inventory.'' A change to a skill's meaning is a new version, announced to callers.
+  \item \emph{Identity travels; trust does not.} The order-desk agent authenticates as itself and passes the identity of the sales rep on whose behalf it acts. The allocation agent authorizes the request against its own policy---may this rep, through this agent, reserve 400 valves?---and never assumes that because sales asked, it is allowed. Trust is not transitive across agents.
+  \item \emph{Outputs are proposals until confirmed.} The allocation agent reserves stock for four hours and returns a reservation; the reservation becomes an allocation only when the order is confirmed. This is the expiring-hold pattern of Chapter~\ref{ch:case-airline}, applied across departments.
+  \item \emph{Every call has a deadline and a fallback.} If the allocation agent does not answer in 15 minutes, the order desk tells the rep what it knows and that operations will confirm stock separately. A slow neighbor must not stall the whole desk.
+  \item \emph{Costs are attributed.} Each task carries the calling department's cost center, so that operations' model and planner time spent on sales' requests is visible and can be budgeted.
+\end{enumerate}
+
+\subsection{The agent registry}
+
+With more than a handful of agents, Harbor needs a \keyterm{agent registry}: one catalog of every agent and MCP server in production, with its owner, card or tool list, version, risk tier, SLOs, data it can access, and the systems it can change. The registry is how a new team finds the allocation agent instead of building its own; how security reviews who can reach what; and how an incident commander answers, at 3~a.m., ``which agents call the ERP?'' Google Cloud's agent platform and several independent products offer registries; a spreadsheet is a poor substitute but a far better one than nothing.

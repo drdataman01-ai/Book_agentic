@@ -1,0 +1,193 @@
+% ============================================================
+% Preface
+% Designing Agentic AI Solutions:
+% Ten Business Cases with RAG, Agents, and MCP --
+% from Whiteboard to Production
+% Chris Kuo
+% ============================================================
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\markboth{Preface}{Preface}
+
+\section*{The question students keep asking}
+
+Every term, my students arrive knowing more vocabulary than the term before.
+They can explain retrieval-augmented generation. They have built a chatbot
+that calls a tool. Many of them have heard of the Model Context Protocol and
+can tell you that it is ``USB-C for AI.'' Yet when I hand them a real business
+problem, such as a claims department drowning in paperwork or a retailer whose
+customers cannot find answers in a thousand-page policy manual, and ask them to
+\emph{design} a solution, the room goes quiet.
+
+The quiet is not a lack of intelligence or effort. It is a gap in what we
+teach. Tutorials show how to use each component. Very few show how to decide
+which components a problem needs, how they should talk to each other, where
+the data should live, which steps a human must approve, and what the whole
+thing will cost to run on a Tuesday afternoon when traffic doubles. Those
+decisions are design decisions, and design is the skill that separates a
+working demo from a working business.
+
+This book is my attempt to close that gap.
+
+\section*{What this book is about}
+
+This is a book about \emph{designing} agentic AI solutions. Its three building
+blocks are:
+
+\begin{itemize}
+  \item \textbf{Retrieval-augmented generation (RAG)}, which grounds a model's
+        answers in an organization's own documents and data;
+  \item \textbf{Agents}, which plan, call tools, and carry a task across many
+        steps toward a goal; and
+  \item \textbf{The Model Context Protocol (MCP)}, which gives agents a standard,
+        governable way to reach the systems a business already runs: databases,
+        ticketing systems, file stores, and internal APIs.
+\end{itemize}
+
+Each of these is useful on its own. The interesting problems, and the hard
+ones, appear when they are combined. When should a question be answered by
+retrieval and when by a tool call? Should one agent do everything, or should
+several specialists hand work to one another? Which capabilities belong behind
+an MCP server, and who is allowed to call them? This book treats those questions
+as the main subject, not as footnotes to a code listing.
+
+\section*{Ten business cases, from whiteboard to production}
+
+The book is built around ten business cases. I chose cases rather than topics
+because design cannot be learned in the abstract. A design is only good or bad
+relative to a problem: its users, its data, its risks, and its budget.
+
+Every case follows the same arc, so that by the third or fourth case the arc
+itself becomes a habit of mind:
+
+\begin{enumerate}
+  \item \textbf{The business problem.} Who is the customer, what hurts, and how
+        will we know the pain went away? We define success in business terms,
+        such as hours saved, errors avoided, or revenue protected, before we write
+        any prompts.
+  \item \textbf{The whiteboard design.} We draw the solution as a flowchart or
+        graph: the agents, the retrieval sources, the MCP servers, the human
+        checkpoints, and the flows of data and control between them. The
+        diagram is the primary artifact of each chapter. If you cannot draw it,
+        you do not yet understand it.
+  \item \textbf{Trade-offs.} We weigh the pros and cons of the design against at
+        least one alternative. Every choice has a price in latency, cost,
+        accuracy, security, or maintainability, and a designer's job is to know
+        which price is being paid and why it is worth paying.
+  \item \textbf{Critique and redesign.} Several cases begin from a publicly
+        available reference design, including sample agents published by
+        Google Cloud. We read these samples the way an architect reads someone
+        else's blueprint: respectfully, but critically. Where do they fall
+        short for a real business? Then we redesign. The remaining cases are
+        original designs built from a blank whiteboard.
+  \item \textbf{Build.} We implement the design, using Google's Agent
+        Development Kit (ADK) and Google Cloud as our working toolchain.
+  \item \textbf{Production.} We take the solution the last mile: evaluation,
+        observability, security and access control, cost management, and
+        deployment. A design that cannot survive production was never a design
+        at all.
+\end{enumerate}
+
+% TODO: insert a short table or paragraph listing the ten cases by industry
+% once the case list is final.
+
+\section*{Why the business side matters}
+
+Students who study AI engineering often treat the business context as
+background color. In practice it is the opposite: the business context is what
+determines the architecture. A bank and a coffee chain may both want a
+``customer service agent,'' but the bank's regulators, audit trail, and cost of
+a wrong answer lead to a very different design than the coffee chain's. For this
+reason every case in this book opens with the business and returns to it at the
+end. My hope is that readers will finish the book able to sit across the table
+from a manager, ask the right questions, and propose a solution that makes sense
+on a balance sheet as well as in a code review.
+
+\section*{A note on tools}
+
+This book uses Google's Agent Development Kit and Google Cloud to carry each case
+from whiteboard to production. They are capable, well documented, and they let
+us show a complete path to deployment in one consistent environment.
+
+But this is not a book about one vendor. Frameworks change quickly; the design
+principles in these chapters do not. An agent that should hand off to a human
+before it issues a refund should do so whether it runs on ADK, another
+framework, or something not yet invented. Wherever possible I separate the
+\emph{design decision} from the \emph{implementation detail}, so that readers
+who work on another platform can carry the designs with them. MCP, as an open
+protocol, helps here: a well-designed MCP server is useful to any agent that
+speaks the protocol.
+
+\section*{Who this book is for}
+
+I wrote this book for three groups of readers.
+
+\begin{itemize}
+  \item \textbf{Students} in courses on AI engineering, data science, information
+        systems, or business analytics who already know the basics of large
+        language models and want to learn how to design complete solutions.
+  \item \textbf{Practitioners}, including engineers, data scientists, solution
+        architects, and technical product managers, who are being asked to
+        ``add agents'' to their organization and want a disciplined way to
+        decide what to build.
+  \item \textbf{Instructors} who want a case-based structure for a course. Each
+        case is designed to fill about one week of class: one session on the
+        business problem and the whiteboard design, one on trade-offs and
+        critique, and a lab for building and deploying.
+\end{itemize}
+
+You should be comfortable reading Python and have used a large language model
+through an API. You do not need prior experience with agent frameworks, MCP, or
+cloud deployment; the book introduces them as the cases require them.
+
+\section*{How to read this book}
+
+The cases can be read in order, and I recommend doing so the first time
+through, because the early cases introduce design patterns that later cases
+combine. After that, each case stands on its own, and readers interested in a
+particular industry can go straight to it.
+
+Above all, I encourage you to draw before you read. At the start of each case,
+stop after the business problem, take a blank sheet of paper, and sketch your
+own design. Then read on and compare yours with mine. Where we differ, ask
+whether your design is worse, or simply makes a different trade-off. Often it
+will be the latter, and learning to tell the two apart is the point of the
+exercise.
+
+\section*{The AI companion}
+
+Every reader of this book receives free access to an AI companion: an assistant
+built to work alongside these chapters. You can use it to talk through a case,
+to critique a design you have drawn, to ask ``what if'' questions about
+alternative architectures, or to get unstuck in a lab. Think of it as a study
+partner who has read the whole book and never tires of being asked why.
+
+The companion is also a small demonstration of the book's subject. It is itself
+a designed agentic solution, and it is worth asking, as you use it, how you
+would have designed it differently.
+
+\section*{Companion materials}
+
+All code for the cases, along with the diagrams and deployment
+configurations, is available in the book's companion repository. Because the
+tools in this field change quickly, the repository will be kept up to date even
+when the printed text cannot be.
+
+% TODO: insert repository URL and AI companion URL.
+
+\section*{Acknowledgments}
+
+This book grew out of questions from my students, and my first thanks go to
+them. Their confusion about where to begin was the most useful feedback any
+author could ask for.
+
+% TODO: add personal acknowledgments (reviewers, colleagues, publisher, family).
+
+I hope this book helps you move from knowing the parts to designing the whole,
+and from the whiteboard to production.
+
+\vspace{2em}
+\begin{flushright}
+Chris Kuo\\
+% TODO: place and date
+\end{flushright}

@@ -1,0 +1,167 @@
+% ======================================================================
+% Chapter 13 -- Part B: releasing, operating, adopting; capstone project
+% ======================================================================
+
+\section{Releasing Agent Systems}
+\label{sec:cap-release}
+
+\subsection{What changes, and what must be versioned}
+
+An ordinary service changes when its code changes. An agent system changes when any of six things changes, and only the first is code:
+\begin{enumerate}[itemsep=1pt]
+  \item code, including routing and guardrails;
+  \item instructions and prompt templates;
+  \item the model, including a provider's update behind an unchanged name;
+  \item tools: an MCP server's version, its descriptions, or the tool filter;
+  \item knowledge: indexes, documents and their metadata;
+  \item the evaluation sets and thresholds that define ``good.''
+\end{enumerate}
+All six are versioned together as a \emph{release}: instructions in the repository, not in a console; model names pinned to versions, not aliases; tool lists and server versions in configuration. A release identifier is recorded on every trace and audit entry, so that any outcome can be tied to exactly what produced it. Chapter~\ref{ch:case-incident}'s sample, whose hard-coded model was retired, and Chapter~\ref{ch:case-policy}'s, whose model name defaulted to a moving alias, show the two ways this goes wrong.
+
+\subsection{Gates}
+
+Every release passes the same sequence of gates before it reaches users. Unit tests check tools and code without a model, as in Chapters~\ref{ch:case-support} and~\ref{ch:case-invoice}. The \emph{evaluation gate} reruns the solution's evaluation sets---the policy questions, the replayed contacts, the injection suites, the incident replays built in each case---and compares the results with thresholds and with the version in production. Listing~\ref{lst:gate} is a minimal version of that gate.
+
+\lstinputlisting[language=Python, caption={A release gate (\texttt{ch13/release\_gate.py}).}, label={lst:gate}, firstline=6, lastline=34]{code/release_gate.py}
+
+Three candidate releases against the same production baseline:
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=0em, basicstyle=\ttfamily\scriptsize]
+model upgrade -> ('review', ['REVIEW tool_trajectory_match: regressed from 0.93 to 0.91'])
+prompt change -> ('no-go', ['BLOCK claims_without_calls: 2 vs threshold 0', 'REVIEW tool_trajectory_match: ...'])
+missing eval -> ('no-go', ['BLOCK leakage_cases: missing result', 'REVIEW tool_trajectory_match: ...'])
+\end{lstlisting}
+The model upgrade improves accuracy, latency and cost but regresses tool use within its threshold, so a person reviews it. The prompt change introduces claims without tool calls, a hard failure. And a release whose leakage test did not run is blocked: \emph{a missing result is a failed result}, the same fail-closed principle as Chapter~\ref{ch:case-invoice}, applied to the release process itself.
+
+\subsection{Rollout and rollback}
+
+A release that passes its gates still reaches users gradually:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Shadow}: the new release processes real traffic in parallel and its outputs are compared with production's, without effect (Chapter~\ref{ch:case-invoice}).
+  \item \emph{Canary}: a small share of traffic---1\% to 5\%---is served by the new release, with the KPIs and agent SLOs of the solution watched for that share specifically.
+  \item \emph{Staged}: the share rises in steps, each with a hold period and an automatic stop on any breached guardrail metric.
+\end{itemize}
+Rollback must be designed, not assumed. Two things make it hard for agents. First, \emph{state compatibility}: a conversation started under one release may resume under another. Session and case formats need versioning and migration, as ADK's own release notes show---sessions written by ADK~2.0 are readable by recent 1.x versions, but not by older ones. Second, \emph{side effects}: a rolled-back agent cannot un-send an e-mail or un-issue a refund. That is one more reason for the expiring holds, idempotency keys and approval gates of earlier chapters: they make the world easier to restore.
+
+\subsection{Model changes are events}
+
+Model providers update and retire models on their own schedules. A model change, even ``the same model, newer version,'' is treated as a release: it passes the evaluation gate, runs in shadow, and rolls out by canary. Harbor's platform team keeps a calendar of announced retirements for every model in the registry and schedules each migration months ahead, so that no solution meets a retirement the way the bug-assistant sample did.
+
+% ----------------------------------------------------------------------
+\section{The Operating Model}
+\label{sec:cap-operating}
+
+\subsection{Who owns what}
+
+Technology does not run itself, and agents least of all: their behavior depends on instructions, knowledge and thresholds that business people understand better than engineers. Table~\ref{tab:cap-raci} is Harbor's assignment of responsibilities, in the familiar form of who is \emph{responsible}, \emph{accountable}, \emph{consulted} and \emph{informed} (RACI).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Harbor's operating model for agentic solutions. R = responsible, A = accountable, C = consulted, I = informed.}
+\label{tab:cap-raci}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+ & \shortstack{Solution\\owner} & \shortstack{Platform\\team} & \shortstack{Data/system\\owner} & \shortstack{Risk \&\\security} & \shortstack{AI review\\board} \\
+\midrule
+KPIs, value tracking & A/R & I & C & I & I \\
+Instructions and thresholds & A/R & C & C & C & I \\
+MCP server for a system & C & C & A/R & C & I \\
+Models, runtimes, registry & C & A/R & I & C & I \\
+Evaluation sets and gates & A/R & R & C & C & I \\
+Risk tier and controls & R & C & C & A & C \\
+Approval of high-risk solutions & R & C & C & C & A \\
+Incidents involving an agent & R & R & C & I & I \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Four roles deserve description.
+\begin{description}[leftmargin=1em,itemsep=2pt]
+  \item[Solution owner.] A business person---the returns manager, the AP lead---accountable for the solution's KPIs and its behavior, in the same way they are accountable for their team's work. The engineers build; the owner decides what ``right'' means.
+  \item[Platform team.] Runs the shared foundation: model access, runtimes, the registry, tracing, the release pipeline and the evaluation harness, so that each solution team does not rebuild them.
+  \item[Data and system owners.] Own the MCP servers in front of their systems, as every case in this book has assumed. They decide what agents may do to their systems.
+  \item[AI review board.] A small cross-functional group---risk, security, legal, a senior engineer, a business leader---that sets the risk tiers, approves solutions in the highest tier before launch, and reviews incidents. It should be fast for low-risk solutions and thorough for high-risk ones; a board that treats a policy assistant like a fraud system will be routed around.
+\end{description}
+
+\subsection{Risk tiers}
+
+Not every solution needs the same governance. Harbor uses three tiers, set by what the solution can do: \emph{Tier~1} solutions inform people and change nothing (Chapter~\ref{ch:case-policy}'s assistant); \emph{Tier~2} solutions take reversible actions or prepare decisions that people make (Chapters~\ref{ch:case-support}, \ref{ch:case-incident}, \ref{ch:case-fraud}); \emph{Tier~3} solutions move money, affect customers' rights, or operate in regulated decisions (Chapters~\ref{ch:case-invoice}, \ref{ch:case-kyc}, \ref{ch:case-loan}). The tier sets the evaluation depth, the approval path, the rollout speed and the monitoring obligations. The solution graph makes the tier easy to determine: look at the write tools and what they touch.
+
+\subsection{Managing the portfolio}
+
+Each solution began with a memo that promised value. The operating model closes the loop: every quarter, each solution owner reports its KPIs against the memo's baseline and target, its run cost, its incidents and its adoption. Solutions that do not deliver are improved, narrowed or retired---and retiring a solution that did not work is a sign of a healthy portfolio, not a failed one. The portfolio view also shows what no single solution shows: shared costs, shared risks (three solutions depending on one model that is about to be retired), and opportunities to reuse servers and agents that one team built and others need.
+
+% ----------------------------------------------------------------------
+\section{Change Management and Adoption}
+\label{sec:cap-change}
+
+Every case in this book changed someone's work: pricing analysts who check drafts instead of building quotes, AP clerks who see only risky invoices, fraud analysts who read summaries, credit analysts who edit instead of transcribe. Whether those changes deliver value depends on the people more than on the agents. Four practices recur in solutions that are adopted.
+
+\paragraph{Design with the people whose work changes.} Involve them from the process map onward. They know where the errors really come from, they will spot the step the design forgot, and they are more likely to trust a system they helped shape. Where employees are represented by works councils or unions, as at Alder \& Finch, involve the representatives early; their concerns are usually about monitoring and job security, and both can be addressed by design.
+
+\paragraph{Say what happens to the freed time.} Every value case in this book included capacity that becomes value only if it is redeployed. The people whose time is freed will assume the worst unless told otherwise. A clear, honest answer---``you will take on supplier negotiations,'' ``we will not backfill two retirements''---is part of the design.
+
+\paragraph{Calibrate trust, in both directions.} People can over-trust a system (automation bias, measured in Chapter~\ref{ch:case-fraud}) or under-trust it and redo its work (which erases the value). Both are visible in data: override rates, edit rates, time on task, canary catch rates. Training shows people how the system fails, not only how it works, and the evidence shown with every output---citations, factors, evidence packs---lets them check rather than believe.
+
+\paragraph{Measure adoption as a KPI.} Every pilot in this book included an adoption criterion, and for good reason: a system that people route around delivers nothing, whatever its evaluation scores. Adoption is reported alongside value in the portfolio review, and low adoption is treated as a design problem to investigate, not a training problem to push.
+
+% ----------------------------------------------------------------------
+\section{The Designer's Habits}
+\label{sec:cap-habits}
+
+Twelve chapters of cases come down to a few habits, which apply far beyond the tools of this book:
+\begin{itemize}[itemsep=2pt]
+  \item Start from the business result and the current process, measured; choose technology last.
+  \item Give each step the least autonomy that meets its target; let autonomy be earned with evidence.
+  \item Put rules in code, knowledge in retrieval, judgment in agents, and actions behind task-shaped tools owned by the teams accountable for them.
+  \item Draw the design, compare at least two alternatives, and write down what would change your mind.
+  \item Put people where the risk is, show them evidence rather than conclusions, and fail closed where money, rights or access are at stake.
+  \item Measure what the business cares about, before and after, and keep measuring after launch.
+  \item Write the one page that lets a sponsor say yes---and the conditions under which you would say no.
+\end{itemize}
+Frameworks, models and cloud services will change many times over the life of this book. These habits will not.
+
+% ----------------------------------------------------------------------
+\section{Capstone Project}
+\label{sec:cap-project}
+
+\paragraph{Brief.} Teams of three or four design, build and present a cross-department solution for a company of their choice, real or fictional, in which at least two departments' agents or servers must cooperate. Harbor's order desk is an example; others are hospital patient discharge (clinical, pharmacy, transport, billing), university admissions (admissions, financial aid, housing), and insurance claims (intake, coverage, repair network, payments).
+
+\paragraph{Deliverables.}
+\begin{enumerate}[itemsep=1pt]
+  \item A business brief with a measured or carefully estimated current-process map, SUAO stakeholders, KPIs and risks.
+  \item Solution graphs for at least two alternatives, well formed under W1--W8, with each cross-team connection justified by Table~\ref{tab:cap-connect}.
+  \item A trade-off table with money rows where possible, a sensitivity check, a failure walk-through and a decision record.
+  \item A working deployment of the chosen design on Google Cloud, with at least one MCP server and, if the design calls for it, one A2A connection; an agent card for any A2A agent.
+  \item An evaluation report with thresholds, results and a release gate that the team's own final change passed.
+  \item An operating-model page: owners, risk tier, monitoring and adoption plan.
+  \item The one-page memo, presented to a panel playing the sponsor.
+\end{enumerate}
+
+\paragraph{Assessment.} The rubric in Appendix~D weights design (30\%), business case (25\%), build and deployment (20\%), evaluation (15\%) and presentation (10\%). Design-track teams may substitute a clickable prototype and a detailed build plan for the deployment, with that weight moved to the business case and evaluation design.
+
+% ----------------------------------------------------------------------
+\section*{Chapter Summary}
+\addcontentsline{toc}{section}{Chapter Summary}
+
+\begin{itemize}[itemsep=2pt]
+  \item Connect capabilities across teams in one workflow when one team owns everything, as MCP tools when the capability is a function, and as A2A agents when it needs the owner's judgment, takes time or may need a person.
+  \item Contracts between agents need narrow versioned skills, propagated identity without transitive trust, proposals that expire, deadlines with fallbacks, and cost attribution. A registry makes the whole visible.
+  \item Agent releases version code, instructions, models, tools, knowledge and evaluation sets together, pass gates that fail closed, and roll out through shadow, canary and stages. Rollback needs state compatibility and reversible side effects.
+  \item An operating model assigns solution owners, a platform team, system owners and a proportionate review board, with risk tiers set by what solutions can change, and a portfolio review that closes the loop on value.
+  \item Adoption decides value: design with the people affected, say what happens to freed time, calibrate trust with evidence, and measure adoption as a KPI.
+\end{itemize}
+
+\section*{Review Questions}
+\addcontentsline{toc}{section}{Review Questions}
+
+\begin{enumerate}[itemsep=2pt]
+  \item Why is allocation an A2A agent in Harbor's order desk while credit is an MCP tool?
+  \item What does ``identity travels; trust does not'' mean in practice?
+  \item List the six things that must be versioned in an agent release. Which two did samples in this book get wrong?
+  \item Why does the release gate treat a missing evaluation result as a failure?
+  \item Why is rollback harder for agents than for ordinary services?
+  \item What determines a solution's risk tier, and how does the solution graph help?
+  \item Why is retiring an unsuccessful solution a sign of a healthy portfolio?
+  \item Give two signs in data that people over-trust a system, and two that they under-trust it.
+\end{enumerate}

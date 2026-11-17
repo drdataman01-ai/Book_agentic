@@ -1,0 +1,185 @@
+% ======================================================================
+% Chapter 12 -- Case: Commercial Loan Underwriting Memo
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: brief, KPIs, designs, trade-offs (build vs buy)
+% ======================================================================
+
+\chapter{Case: Commercial Loan Underwriting Memo}
+\label{ch:case-loan}
+
+\begin{caseglance}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm}X@{}}
+Company & Summit Regional Bank, a commercial bank lending \$1--25 million to mid-sized companies \\
+Process & Preparing the credit memo on which a loan decision is made \\
+Starting point & Original design (Part III) \\
+Technical focus & Choosing the deployment target \\
+Business skill & Build versus buy; total cost of ownership \\
+Patterns & Planner--executor; retrieve-then-answer; reflection; approval gate \\
+Deliverables & Solution graphs, TCO model, deployment decision, memo-quality evaluation, memo
+\end{tabularx}
+\end{caseglance}
+
+\begin{objectives}
+After working through this case, you will be able to:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item Compare building a solution with buying one on total cost of ownership, risk and control.
+  \item Design a long-running document-generation workflow in which every number comes from a tool and every claim cites a source.
+  \item Use the reflection pattern with an explicit checklist, and bound it.
+  \item Choose among Agent Runtime, Cloud Run and GKE with stated criteria, and recognize when the answer is a combination.
+  \item Evaluate generated professional documents with the people who will rely on them.
+\end{enumerate}
+\end{objectives}
+
+% ----------------------------------------------------------------------
+\section{Business Brief and Current Process}
+\label{sec:loan-brief}
+
+Summit Regional Bank lends to companies with revenue between \$20 million and \$500 million: manufacturers, distributors, healthcare groups. Every new loan, and every existing loan at its annual review, needs a \emph{credit memo}: a document of 15 to 40 pages that describes the borrower, its industry, management, financial performance and projections, the loan's structure and collateral, the risks and their mitigants, and a recommended risk rating. A credit officer with sufficient lending authority approves or declines on the strength of it. About 1{,}400 new memos and 3{,}000 annual reviews are written each year.
+
+Forty credit analysts write them. For a new loan, an analyst spends about three and a half days: a day \emph{spreading} the borrower's financial statements (re-keying them into the bank's standard template), half a day computing ratios and checking covenants, a day reading filings, industry reports and management materials, and a day writing. Relationship managers complain that deals are lost to faster lenders; analysts complain that most of their time goes to transcription.
+
+The bank's chief credit officer is clear about one thing: the memo is the bank's record of why it lent money. Every number must be right, every claim must be traceable, and the judgment---the risk rating and the recommendation---belongs to the analyst and the credit officer.
+
+% ----------------------------------------------------------------------
+\section{Stakeholders, KPIs and Value Hypothesis}
+\label{sec:loan-kpis}
+
+\paragraph{Stakeholders.} The sponsor is the chief credit officer. Users are credit analysts and credit officers; relationship managers benefit. Approvers include model risk management, information security, and procurement (for any vendor). Owners are credit administration (templates and policy), the data team (financial spreads) and the platform team.
+
+\paragraph{KPIs and risks.}
+\begin{itemize}[itemsep=1pt]
+  \item[\textsf{K1}] Analyst days per new-loan memo: at most 1.5, from 3.5.
+  \item[\textsf{K2}] Days from complete application to credit decision: at most 5, from 12.
+  \item[\textsf{K3}] Memos returned by credit officers for missing or incorrect content: halved.
+  \item[\textsf{R1}] A wrong number in a memo.
+  \item[\textsf{R2}] A claim not supported by the borrower's documents or the bank's data.
+  \item[\textsf{R3}] Borrower confidential information leaving the bank's control.
+  \item[\textsf{R4}] Dependence on a vendor or platform that the bank cannot exit at reasonable cost.
+\end{itemize}
+
+\begin{quote}
+\emph{Value hypothesis.} If spreading and calculation are automated and a complete, cited first draft of each memo section is ready when the analyst starts, analysts will spend their time on judgment, decisions will reach borrowers in days rather than weeks, and memos will be more complete---without any change in who decides.
+\end{quote}
+
+% ----------------------------------------------------------------------
+\section{Alternative Designs}
+\label{sec:loan-designs}
+
+This case's main design question is not only \emph{what} to build but \emph{whether} to build. Several vendors sell credit-memo platforms for banks. The alternatives are therefore one purchase and two builds.
+
+\subsection{D1: buy a vendor platform}
+
+A vendor platform for commercial credit, configured with Summit's templates and policy, integrated with the loan origination system and the bank's financial-spreading data. The vendor hosts the platform and its models. Summit's work is configuration, integration, validation and change management.
+
+\subsection{D2: build a memo workflow}
+
+D2 is built on ADK and Google Cloud (Figure~\ref{fig:loan-d2}).
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Spreading}: an extraction agent (Level~1) reads financial statements into the bank's spreading template; code validates that statements balance and that totals reconcile, and an analyst confirms the spread in the existing spreading tool. Spreading is a batch job that runs when documents arrive.
+  \item \emph{Calculation}: an MCP server owned by credit administration computes ratios (debt-service coverage, leverage, liquidity), runs covenant tests, and compares the borrower with peers from the bank's portfolio. No number in the memo comes from anywhere else.
+  \item \emph{Drafting}: a planner agent reads the memo template and the deal's characteristics and assigns sections to section agents (business, industry, management, financial analysis, structure and collateral, risks). Each section agent retrieves from the borrower's documents and the bank's industry research, calls the calculation server for numbers, and writes its section with a citation for every claim. This is the planner--executor pattern: the set of sections and the depth of each depend on the deal.
+  \item \emph{Review}: a critic agent checks the draft against the credit policy's required-content checklist and against the citations, and returns specific gaps to the section agents, at most twice (the reflection pattern). Code then checks that every number in the text appears in the calculation server's output.
+  \item \emph{People}: the analyst edits, assigns the risk rating and writes the recommendation; the credit officer decides.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
+\node[sg trigger] (docs) at (0,0) {Borrower documents};
+\node[sg agent] (ext) at (3.1,0) {Spreading agent\\[-1pt]{\scriptsize L1}};
+\node[sg human] (an1) at (6.2,0) {Analyst confirms spread};
+\node[sg mcp, text width=2.4cm] (calc) at (9.6,0) {Calculation\\[-1pt]{\scriptsize Credit admin}\nodepart{two}{\tiny\ttfamily ratios, covenants, peers}};
+\node[sg agent] (plan) at (6.2,-2.5) {Planner\\[-1pt]{\scriptsize sections for this deal}};
+\node[sg subagent] (sec) at (9.6,-2.5) {Section agents\\[-1pt]{\scriptsize cite every claim}};
+\node[sg store] (kb) at (13.0,-2.5) {Documents \& industry research};
+\node[sg agent] (crit) at (9.6,-5.0) {Critic\\[-1pt]{\scriptsize policy checklist; $\le$2 rounds}};
+\node[sg guard] (num) at (6.2,-5.0) {Numbers\\trace?};
+\node[sg human] (an2) at (3.1,-5.0) {Analyst\\[-1pt]{\scriptsize rating, recommendation}};
+\node[sg human] (co) at (0,-5.0) {Credit officer\\[-1pt]{\scriptsize decides}};
+\draw[sg flow] (docs) -- (ext); \draw[sg flow] (ext) -- (an1);
+\draw[sg flow] (an1) -- node[sg lab, above] {spread} (calc);
+\draw[sg flow] (an1) -- (plan);
+\draw[sg call] (plan) -- (sec);
+\draw[sg call] (sec) -- (calc); \draw[sg data] (kb) -- (sec);
+\draw[sg flow] (sec) -- (crit);
+\draw[sg flow] (crit.east) to[bend right=50] node[sg lab, right] {[gaps]} (sec.east);
+\draw[sg flow] (crit) -- node[sg lab, above] {[complete]} (num);
+\draw[sg flow] (num) -- node[sg lab, above] {[pass]} (an2);
+\draw[sg flow] (an2) -- (co);
+\sgtag{ext}{K1}
+\sgtag{an1}{R1}
+\sgtag{calc}{R1}
+\sgtag{plan}{K1}
+\sgtag{sec}{K1 R2}
+\sgtag{crit}{K3}
+\sgtag{num}{R1}
+\sgtag{an2}{K3}
+\sgtag{co}{R2}
+\end{tikzpicture}
+\caption{D2: a built memo workflow. Numbers come only from the calculation server; claims carry citations; a bounded critic checks completeness; people rate and decide.}
+\label{fig:loan-d2}
+\end{figure}
+
+\subsection{D3: build a drafting assistant only}
+
+D3 is a single retrieval agent over the borrower's documents that analysts use to draft sections on request. It leaves spreading and calculation as they are. It is the cheapest build and the smallest change; it also leaves the day of spreading untouched.
+
+% ----------------------------------------------------------------------
+\section{Trade-offs: Build or Buy}
+\label{sec:loan-tradeoffs}
+
+\subsection{Total cost of ownership}
+
+The business skill of this case is total cost of ownership (TCO): the full cost of a choice over its life, not its purchase price. For software, the life is usually taken as three to five years, and the cost includes building or licensing, integration, hosting and model usage, the people who run and change it, and the cost of leaving it. Listing~\ref{lst:tco} compares D1 with D2 on each of three deployment targets over three years.
+
+\lstinputlisting[language=Python, caption={Three-year TCO (\texttt{ch12/tco.py}). Every input is a planning figure to be replaced with quotes.}, label={lst:tco}, firstline=5, lastline=19]{code/tco.py}
+
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=1.5em]
+Build: Agent Runtime   3-year TCO $  1,290,240
+Build: Cloud Run       3-year TCO $  1,444,240
+Build: GKE             3-year TCO $  2,064,600
+Buy: vendor platform   3-year TCO $  1,726,600
+
+TCO by annual volume (memos):
+volume  Agent Runtime      Cloud Run            GKE         Vendor
+ 1,000  $   1,257,600  $   1,411,600  $   2,034,000  $   1,543,000
+ 4,400  $   1,290,240  $   1,444,240  $   2,064,600  $   1,726,600
+15,000  $   1,392,000  $   1,546,000  $   2,160,000  $   2,299,000
+\end{lstlisting}
+
+Several lessons hold beyond these particular figures.
+\begin{itemize}[itemsep=2pt]
+  \item \emph{People dominate.} The largest differences between the build options come from the engineering time needed to operate each target, not from hosting or model costs. GKE is the most capable target and, for a bank without a large platform team, the most expensive to run.
+  \item \emph{Per-unit pricing scales against you.} The vendor's per-memo fee is modest at today's volume and becomes the largest line as volume grows. At 15{,}000 memos a year---plausible if the bank extends the system to smaller loans---the vendor costs more than any build.
+  \item \emph{The build's risk is its estimate.} The cheapest build beats the vendor at current volume unless its build cost overruns by about two-thirds. Build estimates for new kinds of systems are notoriously optimistic; that margin is the number to discuss with the sponsor.
+  \item \emph{Exit costs belong in the model.} Leaving a vendor means migrating templates, validation evidence and integrations. Leaving a build means less, because the bank owns the code and its tools are MCP servers any framework can call (\textsf{R4}).
+\end{itemize}
+
+\subsection{Beyond cost}
+
+Cost is not the whole decision. Table~\ref{tab:loan-tradeoff} adds the criteria that matter to a bank.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Trade-off table, build versus buy.}
+\label{tab:loan-tradeoff}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & Weight & D1 buy & D2 build & D3 build small \\
+\midrule
+Three-year TCO (est.) & --- & \$1.7M & \$1.3M & \$0.6M \\
+\midrule
+Quality (\textsf{K1}--\textsf{K3}) & 0.25 & 4 & 5 & 2 \\
+Time to value & 0.15 & 5 & 3 & 4 \\
+Control and auditability (\textsf{R1}, \textsf{R2}) & 0.20 & 3 & 5 & 4 \\
+Security and data control (\textsf{R3}) & 0.15 & 3 & 5 & 5 \\
+Exit and flexibility (\textsf{R4}) & 0.10 & 2 & 5 & 5 \\
+Maintainability & 0.15 & 5 & 3 & 4 \\
+\midrule
+Weighted score & 1.00 & 3.75 & 4.40 & 3.75 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The vendor wins on time to value and maintainability: it is ready sooner, and someone else maintains it. D2 wins on control, data, exit and quality, and on cost at Summit's volume. D3 is cheap but leaves most of the analysts' time where it is. The decision is to build D2, with a stated condition: if the build's first phase (spreading and calculation) overruns its budget by more than 30\%, the bank reopens the vendor option before building the drafting stages.

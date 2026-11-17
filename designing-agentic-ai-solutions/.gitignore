@@ -1,0 +1,11 @@
+.env
+course.env
+.venv/
+__pycache__/
+*.pyc
+results/
+evidence/
+.terraform/
+*.tfstate*
+models/*.joblib
+vendor/*/.git

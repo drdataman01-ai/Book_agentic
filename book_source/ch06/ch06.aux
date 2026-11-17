@@ -1,0 +1,103 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Case: Invoice to Payment}{89}{chapter.6}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:case-invoice}{{6}{89}{Case: Invoice to Payment}{chapter.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Business Brief and Current Process}{89}{section.6.1}\protected@file@percent }
+\newlabel{sec:inv-brief}{{6.1}{89}{Business Brief and Current Process}{section.6.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions.}}{90}{table.6.1}\protected@file@percent }
+\newlabel{tab:inv-process}{{6.1}{90}{Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions}{table.6.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Stakeholders, KPIs and Value Hypothesis}{90}{section.6.2}\protected@file@percent }
+\newlabel{sec:inv-kpis}{{6.2}{90}{Stakeholders, KPIs and Value Hypothesis}{section.6.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Stakeholders.}{90}{section*.110}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{KPIs and risks.}{90}{section*.111}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Alternative Designs}{90}{section.6.3}\protected@file@percent }
+\newlabel{sec:inv-designs}{{6.3}{90}{Alternative Designs}{section.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}The sample as it stands}{90}{subsection.6.3.1}\protected@file@percent }
+\newlabel{lst:expense-graph}{{6.1}{90}{The sample's workflow graph (from \texttt {expense\_agent/agent.py} at commit \texttt {1b20a7a})}{lstlisting.6.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.1}The sample's workflow graph (from \texttt  {expense\_agent/agent.py} at commit \texttt  {1b20a7a}).}{90}{lstlisting.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}D1: the sample, adapted to invoices}{91}{subsection.6.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}D2: controls first, review by risk}{91}{subsection.6.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces D2: controls first, review by risk. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury.}}{92}{figure.6.1}\protected@file@percent }
+\newlabel{fig:inv-d2}{{6.1}{92}{D2: controls first, review by risk. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury}{figure.6.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}D3: touchless only on a perfect match}{92}{subsection.6.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Trade-offs}{92}{section.6.4}\protected@file@percent }
+\newlabel{sec:inv-tradeoffs}{{6.4}{92}{Trade-offs}{section.6.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Reviewer cost versus error cost}{92}{subsection.6.4.1}\protected@file@percent }
+\newlabel{lst:review-policy}{{6.2}{92}{Comparing review policies on a simulated month (\texttt {ch06/review\_policy.py})}{lstlisting.6.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.2}Comparing review policies on a simulated month (\texttt  {ch06/review\_policy.py}).}{92}{lstlisting.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure.}}{93}{table.6.2}\protected@file@percent }
+\newlabel{tab:review-policies}{{6.2}{93}{Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure}{table.6.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Scores and decision}{93}{subsection.6.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.5}Build}{93}{section.6.5}\protected@file@percent }
+\newlabel{sec:inv-build}{{6.5}{93}{Build}{section.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.1}The workflow}{93}{subsection.6.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces Trade-off table for invoice to payment.}}{94}{table.6.3}\protected@file@percent }
+\newlabel{tab:inv-tradeoff}{{6.3}{94}{Trade-off table for invoice to payment}{table.6.3}{}}
+\newlabel{lst:inv-workflow}{{6.3}{94}{D2's workflow (abridged from \texttt {ch06/invoice\_agent/agent.py})}{lstlisting.6.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.3}D2's workflow (abridged from \texttt  {ch06/invoice\_agent/agent.py}).}{94}{lstlisting.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.2}Designing the checkpoint}{95}{subsection.6.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What does the reviewer see?}{95}{section*.112}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What may the reviewer decide?}{95}{section*.113}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Who may decide?}{95}{section*.114}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What if nobody decides?}{95}{section*.115}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Is the reviewer really reviewing?}{95}{section*.116}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.3}Failing closed}{95}{subsection.6.5.3}\protected@file@percent }
+\newlabel{lst:strict-parse}{{6.4}{95}{Fail-closed decision parsing (\texttt {ch06/decision.py})}{lstlisting.6.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.4}Fail-closed decision parsing (\texttt  {ch06/decision.py}).}{95}{lstlisting.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.6}Deploy}{96}{section.6.6}\protected@file@percent }
+\newlabel{sec:inv-deploy}{{6.6}{96}{Deploy}{section.6.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.7}Evaluate}{96}{section.6.7}\protected@file@percent }
+\newlabel{sec:inv-evaluate}{{6.7}{96}{Evaluate}{section.6.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Evaluation thresholds for D2.}}{96}{table.6.4}\protected@file@percent }
+\newlabel{tab:inv-thresholds}{{6.4}{96}{Evaluation thresholds for D2}{table.6.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.8}Business Case and Rollout}{97}{section.6.8}\protected@file@percent }
+\newlabel{sec:inv-business}{{6.8}{97}{Business Case and Rollout}{section.6.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Value.}{97}{section*.117}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pilot: shadow, then partial, then full.}{97}{section*.118}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.9}Changed Requirement}{97}{section.6.9}\protected@file@percent }
+\newlabel{sec:inv-changed}{{6.9}{97}{Changed Requirement}{section.6.9}{}}
+\@writefile{toc}{\contentsline {section}{Chapter Summary}{98}{section*.119}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Review Questions}{98}{section*.120}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Exercises}{98}{section*.121}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Lab 6: A Checkpoint That Holds}{98}{section*.122}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Goal.}{98}{section*.123}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Steps.}{99}{section*.124}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{99}{section*.125}\protected@file@percent }
+\@setckpt{ch06/ch06}{
+\setcounter{page}{100}
+\setcounter{equation}{0}
+\setcounter{enumi}{6}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{2}
+\setcounter{chapter}{6}
+\setcounter{section}{9}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{1}
+\setcounter{table}{4}
+\setcounter{parentequation}{0}
+\setcounter{AM@survey}{0}
+\setcounter{lstnumber}{8}
+\setcounter{tcbbreakpart}{1}
+\setcounter{tcblayer}{0}
+\setcounter{tcolorbox@number}{35}
+\setcounter{tcbrastercolumn}{1}
+\setcounter{tcbrasterrow}{1}
+\setcounter{tcbrasternum}{1}
+\setcounter{tcbraster}{0}
+\setcounter{tcblisting}{0}
+\setcounter{NAT@ctr}{0}
+\setcounter{section@level}{4}
+\setcounter{Item}{247}
+\setcounter{Hfootnote}{3}
+\setcounter{bookmark@seq@number}{188}
+\setcounter{lstlisting}{4}
+}
