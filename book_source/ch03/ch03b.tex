@@ -3,28 +3,43 @@
 % cost of errors, risk
 % ======================================================================
 
-\section{The Value Hypothesis and the Value Case}
+\section{What Is It Worth?}
 \label{sec:value-case}
 
 \subsection{State the hypothesis first}
 
-Before estimating any money, write one sentence that says how the design creates value. This is the \keyterm{value hypothesis}:
+Before estimating any money, write one sentence that says how the design creates value. This is the \keyterm{value hypothesis}.
 
-\begin{quote}
+\begin{keyidea}[Harbor's value hypothesis, in one sentence]
 \emph{If quotes reach customers in under four hours instead of a day, Harbor will win more of the orders it quotes; and if analysts only check drafts instead of building quotes, they can spend the freed time on large, complex deals---without lowering realized margin.}
-\end{quote}
+\end{keyidea}
 
 The hypothesis names the mechanism (faster quotes, freed analyst time), the result (more orders won, better use of analysts), and the guardrail (margin holds). Every number in the value case should map to a clause of the hypothesis. A number that does not is a sign that the case is being padded.
 
 \subsection{Four kinds of benefit}
 
-The benefits of AI solutions fall into four kinds, and they differ sharply in how certain they are and how they show up in the accounts.
-\begin{description}[leftmargin=1em,itemsep=2pt]
-  \item[Growth.] More revenue or margin: more deals won, more customers served, faster time to market. Often the largest benefit and always the least certain.
-  \item[Labor capacity.] Hours freed from routine work. Real, but it becomes \emph{cash} only if the freed time is redeployed to valuable work or the team grows more slowly than it otherwise would. A business case that counts every freed minute as saved salary is the most common overstatement in the field.
-  \item[Error reduction.] Fewer costly mistakes: margin leakage, refunds, penalties, rework. Usually well measured, because errors leave a trail.
-  \item[Risk reduction.] Lower probability of a rare, expensive event: a regulatory finding, a data breach, a lawsuit. Hard to value, but sometimes the real reason the project exists.
-\end{description}
+The benefits of AI solutions fall into four kinds, and they differ sharply in how certain they are and how they show up in the accounts. Table~\ref{tab:benefits} compares them.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four kinds of benefit, from the least certain to the best measured.}
+\label{tab:benefits}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Kind & What it means & How certain & Watch for \\
+\midrule
+Growth & More revenue or margin: more deals won, more customers served & \cotag{coRed}{Least certain} & Often the largest benefit, so it is tempting to promise it \\
+Labor capacity & Hours freed from routine work & \cotag{coAmber}{Real, but} & It becomes cash only if the freed time is put to valuable use or the team grows more slowly \\
+Error reduction & Fewer costly mistakes, such as margin leakage, refunds and rework & \cotag{coGreen}{Well measured} & Usually solid, because errors leave a trail \\
+Risk reduction & A lower chance of a rare, expensive event, such as a fine or a breach & \cotag{coAmber}{Hard to value} & Sometimes the real reason the project exists \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{watchout}
+A business case that counts every freed minute as saved salary is the most common overstatement in the field. Unless someone decides what the freed people will do, or the team stops hiring, the minutes never reach the bank.
+\end{watchout}
 
 \subsection{Harbor's value case}
 
@@ -41,7 +56,7 @@ Its output, rounded, is in Table~\ref{tab:value}. Even before looking at sensiti
 \label{tab:value}
 \begin{tabular}{@{}lrl@{}}
 \toprule
-Line & \$ per year & Source of the main input \\
+\rowcolor{coHead} Line & \$ per year & Source of the main input \\
 \midrule
 Growth (win rate +1 point) & 2{,}304{,}000 & \emph{Assumed}; to be tested in pilot \\
 Labor capacity (50\% redeployed) & 297{,}000 & Time log; redeploy share \emph{assumed} \\
@@ -49,35 +64,43 @@ Error reduction (below-floor quotes) & 156{,}900 & Controller's audit (measured)
 Manager review time & $-34{,}600$ & 18\% exception rate (measured) \\
 Run cost (model, platform, 0.4 engineer) & $-84{,}600$ & Vendor pricing; staffing plan \\
 \midrule
-Net annual value & 2{,}638{,}700 & Payback on build cost: under one month \\
+\rowcolor{coGreenBg} Net annual value & 2{,}638{,}700 & Payback on build cost: under one month \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Which assumption is the case built on?}
 
-A payback of under one month should make you suspicious rather than pleased. The second half of Listing~\ref{lst:value} varies each uncertain input across a plausible range while holding the others at their base values. Table~\ref{tab:tornado} shows the result, sorted by how much each input moves the answer.
+A payback of under one month should make you suspicious rather than pleased. The second half of Listing~\ref{lst:value} varies each uncertain input across a plausible range while holding the others at their base values. Figure~\ref{fig:tornado} shows the result, sorted by how much each input moves the answer.
 
-\begin{table}[htbp]
+\begin{figure}[htbp]
 \centering
-\small
-\caption{How far Harbor's net annual value moves when each uncertain input is set to the low and high ends of its plausible range, with all other inputs at their base values. Inputs are sorted by the size of the swing.}
-\label{tab:tornado}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.1cm}rr@{}}
-\toprule
-Input (name in the code) & Range tested & \multicolumn{1}{p{1.9cm}}{\raggedleft Net value at low end} & \multicolumn{1}{p{1.9cm}@{}}{\raggedleft Net value at high end} \\
-\midrule
-Rise in win rate (\texttt{win\_rate\_lift}) & 0 to 2 points & \$334{,}700 & \$4{,}942{,}700 \\
-Share of freed time put to use (\texttt{redeploy\_share}) & 0\% to 100\% & \$2{,}341{,}700 & \$2{,}935{,}700 \\
-Margin lost per below-floor order (\texttt{loss\_per\_err}) & \$600 to \$2{,}000 & \$2{,}563{,}680 & \$2{,}754{,}640 \\
-Below-floor rate after redesign (\texttt{err\_after}) & 0\% to 1\% & \$2{,}652{,}960 & \$2{,}581{,}660 \\
-Share of quotes sent to a manager (\texttt{review\_share}) & 10\% to 40\% & \$2{,}654{,}060 & \$2{,}596{,}460 \\
-Model cost per quote (\texttt{model\_cost}) & \$0.01 to \$0.30 & \$2{,}639{,}100 & \$2{,}633{,}300 \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\begin{tikzpicture}[x=1.45cm,y=1.15cm,
+  lab/.style={font=\footnotesize, anchor=east, align=right, text width=5.6cm}]
+% x axis: $ millions, 0 to 5
+\foreach \m in {0,1,2,3,4,5} {
+  \draw[black!15] (\m,0.35) -- (\m,-5.45);
+  \node[font=\scriptsize, text=black!60] at (\m,-5.7) {\$\m M};
+}
+\foreach \k/\n/\r/\lo/\hi in {
+  0/{Rise in win rate}/{0 to 2 points: \$0.33M--\$4.94M}/0.3347/4.9427,
+  1/{Share of freed time put to use}/{0\% to 100\%: \$2.34M--\$2.94M}/2.3417/2.9357,
+  2/{Margin lost per below-floor order}/{\$600 to \$2{,}000: \$2.56M--\$2.75M}/2.5637/2.7546,
+  3/{Below-floor rate after redesign}/{1\% to 0\%: \$2.58M--\$2.65M}/2.5817/2.6530,
+  4/{Share of quotes sent to a manager}/{40\% to 10\%: \$2.60M--\$2.65M}/2.5965/2.6541,
+  5/{Model cost per quote}/{\$0.30 to \$0.01: \$2.633M--\$2.639M}/2.6333/2.6391} {
+  \node[lab] at (-0.12,-\k) {\textbf{\n}\\{\scriptsize\color{black!65}\r}};
+  \fill[coRed!65] (\lo,-\k-0.25) rectangle (2.6387,-\k+0.25);
+  \fill[coGreen!65] (2.6387,-\k-0.25) rectangle (\hi,-\k+0.25);
+}
+\draw[dashed, thick, black!70] (2.6387,0.45) -- (2.6387,-5.45);
+\node[font=\scriptsize\bfseries, anchor=south] at (2.6387,0.45) {base case \$2.64M};
+\end{tikzpicture}
+\caption{A tornado chart of Harbor's value case. Each bar shows how far the net annual value moves when one uncertain input swings across its plausible range while the others stay at their base values. Red is the pessimistic end and green the optimistic end. One input, the rise in win rate, dwarfs all the others.}
+\label{fig:tornado}
+\end{figure}
 
-This kind of table is called a \keyterm{tornado analysis}, because when the swings are drawn as bars from widest to narrowest they look like a funnel cloud. Its message is blunt. The entire case swings on one assumption, the win-rate lift: at zero lift the net value is about \$335{,}000 a year; at two points it is nearly \$5 million. Everything else, including a tenfold change in model cost, moves the answer by a few percent.
+This kind of chart comes from a \keyterm{tornado analysis}, and you can see where the name comes from: with the bars sorted from widest to narrowest, it looks like a funnel cloud. Its message is blunt. The entire case swings on one assumption, the win-rate lift: at zero lift the net value is about \$335{,}000 a year; at two points it is nearly \$5 million. Everything else, including a tenfold change in model cost, moves the answer by a few percent.
 
 This changes how the case should be presented and how the pilot should be designed:
 \begin{itemize}[itemsep=1pt]
@@ -91,7 +114,7 @@ Build the value case so that its conservative version rests only on measured inp
 \end{principle}
 
 % ----------------------------------------------------------------------
-\section{Unit Economics}
+\section{What Does One Transaction Cost?}
 \label{sec:unit-econ}
 
 Annual totals persuade sponsors; \keyterm{unit economics} guide design. The unit is one transaction---one quote, one ticket, one invoice---and the question is what it costs to process one, by design and by path. Chapter~\ref{ch:foundations} gave a first version for Harbor (Equation~1.1). The full version adds the cost of errors:
@@ -104,6 +127,10 @@ Annual totals persuade sponsors; \keyterm{unit economics} guide design. The unit
   \label{eq:unit}
 \end{equation}
 Here $r_j$ is the share of transactions that reach human step $j$, taking $m_j$ minutes at a loaded cost of $w_j$ per minute; $p_k$ is the probability of error type $k$ per transaction and $L_k$ its average cost when it happens. The platform term $c_{\text{plat}}$ spreads fixed costs (hosting, search index, monitoring, the engineer who keeps it running) across the volume.
+
+\begin{keyidea}[Equation~\ref{eq:unit} in plain words]
+One transaction costs what the machines charge, plus the minutes that people spend on it, plus the mistakes it is expected to cause. The third part is the one most business cases forget.
+\end{keyidea}
 
 Three uses of Equation~\eqref{eq:unit} recur throughout the cases.
 
@@ -125,8 +152,12 @@ At Harbor, model cost is negligible because each quote is worth tens of thousand
 Chapters~\ref{ch:case-support} and~\ref{ch:case-forecast} are cases where model and infrastructure costs are a first-order design concern.
 
 % ----------------------------------------------------------------------
-\section{The Cost of Errors}
+\section{Which Mistakes Hurt Most?}
 \label{sec:error-cost}
+
+\begin{thinkabout}
+Which is worse for Harbor: a sales manager spending a few minutes checking a quote that was fine all along, or a below-floor quote slipping through to a customer? Guess how many times worse, and then read on.
+\end{thinkabout}
 
 Every AI component makes mistakes, and so do the people and rules around it. The design question is never ``how do we eliminate errors?'' but ``which errors are expensive, and is the design spending its protection in the right place?''
 
@@ -143,7 +174,23 @@ At Harbor, a below-floor quote that is won (31\% of quotes are) costs on average
 
 \subsection{Asymmetric errors}
 
-Most decisions can go wrong in two directions, and the two directions rarely cost the same. Consider the manager-approval branch in Harbor's policy engine. A \emph{false negative}---an exception that should have gone to a manager but did not---risks a below-floor quote, about \$1{,}150 when it matters. A \emph{false positive}---a routine quote sent to a manager unnecessarily---costs six manager minutes, about \$10, plus some hours of delay. The first is roughly a hundred times as expensive as the second.
+Most decisions can go wrong in two directions, and the two directions rarely cost the same. Consider the manager-approval branch in Harbor's policy engine. A \emph{false negative}---an exception that should have gone to a manager but did not---risks a below-floor quote, about \$1{,}150 when it matters. A \emph{false positive}---a routine quote sent to a manager unnecessarily---costs six manager minutes, about \$10, plus some hours of delay. The first is roughly a hundred times as expensive as the second, as Figure~\ref{fig:asym} shows.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm, lab/.style={font=\footnotesize, anchor=east, align=right, text width=4.8cm}]
+% scale: $1,150 = 7.5 cm
+\node[lab] at (-0.15,1) {\textbf{False positive}\\{\scriptsize routine quote sent to a manager}};
+\fill[coAmber] (0,0.72) rectangle ({10/1150*7.5},1.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coAmber!80!black] at ({10/1150*7.5+0.1},1) {about \$10};
+\node[lab] at (-0.15,0) {\textbf{False negative}\\{\scriptsize exception that skipped the manager}};
+\fill[coRed!75] (0,-0.28) rectangle (7.5,0.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coRed] at (7.6,0) {about \$1{,}150};
+\draw[black!40] (0,-0.5) -- (0,1.5);
+\end{tikzpicture}
+\caption{The two ways the manager-approval branch can go wrong, drawn to scale. When one error costs a hundred times the other, the design should be willing to make many cheap errors to avoid one expensive one.}
+\label{fig:asym}
+\end{figure}
 
 When costs are asymmetric, the right threshold is not the one that minimizes the number of errors; it is the one that minimizes their cost. If a component produces a score $s$ (a classifier's probability, a router's confidence) and acts when $s$ exceeds a threshold $\tau$, the expected error cost per transaction is
 \begin{equation}
@@ -165,7 +212,7 @@ An \keyterm{error budget} is the rate of a given error the business agrees to ac
 Budgets are set from the error's cost and the baseline: the new design should beat the old process on expensive errors, not merely match it, and the budget for a catastrophic error is zero with a defined response when it is breached. Error budgets become go/no-go criteria in the rollout plan and alert thresholds in operations (Chapter~\ref{ch:capstone}).
 
 % ----------------------------------------------------------------------
-\section{Risk}
+\section{What Else Could Go Wrong?}
 \label{sec:risk}
 
 Errors are the risks you can count. A \keyterm{risk register} also lists the ones you cannot count easily, each with an owner and a response. Table~\ref{tab:risk} shows the top of Harbor's.
@@ -177,16 +224,18 @@ Errors are the risks you can count. A \keyterm{risk register} also lists the one
 \label{tab:risk}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.9cm}@{}}
 \toprule
-Risk & Kind & Response in the design or plan & Owner \\
+\rowcolor{coHead} Risk & Kind & Response in the design or plan & Owner \\
 \midrule
-Below-floor quote issued & Financial & Floor enforced in code; zero error budget; pilot stop rule & Controller \\
-Representatives bypass the system for big deals & Adoption & Pilot with volunteers; analysts available for complex quotes; measure share of eligible quotes handled & VP Sales \\
-Customer data sent to a model provider & Privacy & Models run within Harbor's cloud tenancy; no customer data in prompts beyond the request & IT security \\
-Policy text and configuration drift apart & Operational & Policy engine reads configuration; retrieval cites version; mismatch alert & Pricing team \\
-Model or API version retired & Technology & Model name in configuration; regression evaluation before any model change & Platform team \\
-Growth benefit does not appear & Business case & Lead with floor case; pilot measures win rate & VP Sales \\
+Below-floor quote issued & \cotag{coRed}{Financial} & Floor enforced in code; zero error budget; pilot stop rule & Controller \\
+Representatives bypass the system for big deals & \cotag{coPurple}{Adoption} & Pilot with volunteers; analysts available for complex quotes; measure share of eligible quotes handled & VP Sales \\
+Customer data sent to a model provider & \cotag{coBlue}{Privacy} & Models run within Harbor's cloud tenancy; no customer data in prompts beyond the request & IT security \\
+Policy text and configuration drift apart & \cotag{coGray}{Operational} & Policy engine reads configuration; retrieval cites version; mismatch alert & Pricing team \\
+Model or API version retired & \cotag{coTeal}{Technology} & Model name in configuration; regression evaluation before any model change & Platform team \\
+Growth benefit does not appear & \cotag{coAmber}{Business case} & Lead with floor case; pilot measures win rate & VP Sales \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
+\begin{inpractice}
 Two risks in the table have nothing to do with models: adoption and the business case itself. In practice these sink more AI projects than hallucination does. A design that the people it serves will not use has a value of zero, whatever its evaluation scores.
+\end{inpractice}

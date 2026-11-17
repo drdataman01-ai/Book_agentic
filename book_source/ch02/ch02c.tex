@@ -3,10 +3,14 @@
 % decision record, end matter
 % ======================================================================
 
-\section{Comparing Designs}
+\section{Step 5: Which Design Is Best?}
 \label{sec:criteria}
 
-To compare designs fairly we need fixed yardsticks. Every case in the book uses the same eight criteria, so that designs can be compared across cases and so that nobody quietly drops the criterion on which a favorite design looks worst. Table~\ref{tab:criteria} defines each criterion by saying what a score of 1 and a score of 5 look like, and how the score will eventually be measured rather than estimated.
+\begin{thinkabout}
+Before any scoring, look at the three returns designs in Table~\ref{tab:returns-designs} later in this section and pick the one you would fund. Write down your choice and one reason. At the end of the section, check whether the scores agree with your instinct, and if they do not, ask which of you is wrong.
+\end{thinkabout}
+
+Step 5 of the method compares the drafted designs. To compare designs fairly we need fixed yardsticks. Every case in the book uses the same eight criteria, so that designs can be compared across cases and so that nobody quietly drops the criterion on which a favorite design looks worst. Table~\ref{tab:criteria} defines each criterion by saying what a score of 1 and a score of 5 look like, and how the score will eventually be measured rather than estimated.
 
 \begin{table}[htbp]
 \centering
@@ -15,13 +19,13 @@ To compare designs fairly we need fixed yardsticks. Every case in the book uses 
 \label{tab:criteria}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}@{}}
 \toprule
-Criterion & 1 (poor) & 5 (excellent) & Measured by \\
+\rowcolor{coHead} Criterion & \cellcolor{coRedBg}1 (poor) & \cellcolor{coGreenBg}5 (excellent) & Measured by \\
 \midrule
 Quality & Frequent wrong outcomes, some unnoticed & At or above the best current human level & Accuracy on a test set \\
 Cost & Running cost per transaction erodes the value & Running cost negligible next to the value & Cost per transaction \\
 Speed & No faster than today & Meets the speed target with room to spare & Time from start to finish \\
 Reliability & Erratic under load or bad input & Degrades gracefully; consistent from run to run & Success rate; variation across runs \\
-Security and privacy & Broad permissions; untrusted input reaches agents that can write & Least privilege; trust boundaries guarded & Permission review; attack testing \\
+Security and privacy & Broad permissions; untrusted input reaches agents that can write & Least privilege; untrusted input screened & Permission review; attack testing \\
 Control and auditability & Cannot explain why an outcome happened & Every outcome traceable to inputs, rules, sources and approvers & Share of outcomes with a full record \\
 Maintainability & Changes cause surprises elsewhere & Rules, prompts, tools and models change independently & Effort for a standard change \\
 Human workload & Adds work or moves it to a scarcer role & People handle only real exceptions & Minutes per transaction by role \\
@@ -34,50 +38,27 @@ Three remarks help in using the criteria. First, at design time most scores are 
 \subsection{Three designs for returns}
 \label{sec:tradeoff}
 
-Figure~\ref{fig:returns-designs} shows three designs for Harbor's returns process. All three respect the two constraints (the inspector judges misuse, and finance approves large credits). They differ in how much the system decides on its own.
+In step 4, Harbor's team drafted three designs for the returns process. All three respect the two constraints, namely that the inspector judges misuse and that finance approves large credits. They differ in one thing only, which is the open question left by step 3: how much the system may decide without a representative. Table~\ref{tab:returns-designs} sets the three side by side. Each column is a design, each row is a step of the work, and each cell says who or what does that step in that design, so you can compare the designs by reading across a row.
 
-The \emph{single-agent design} uses one tool-using agent with access to all three servers. It reads the request, applies the warranty rules described in its instructions, and creates the authorization and label itself. This is the do-everything agent, and it is worth drawing because most teams build it first and every sponsor will ask, ``why not just one agent?'' The \emph{reviewed-workflow design} uses a router to classify the request, code to check warranty eligibility against the table, and a single model call to draft the authorization and a reply to the customer, and then a representative approves every authorization before it is created. The \emph{straight-through design} is the same as the reviewed workflow except that the representative sees only the exceptions. Code issues the authorization automatically when the item is in warranty, its value is under \$500, the router is confident, and the customer has not been flagged as a repeat returner. Everything else goes to a representative.
+The \emph{single-agent design} gives one tool-using agent access to all three servers. The agent reads the request, applies the warranty rules described in its instructions, and creates the authorization and label itself. This is the do-everything agent, and it is worth drafting because most teams build it first and every sponsor will ask, ``why not just one agent?'' The \emph{reviewed-workflow design} uses a router to classify the request, code to check warranty eligibility against the table, and a single model call to draft the authorization and a reply to the customer, after which a representative approves every authorization before it is created. The \emph{straight-through design} is the same as the reviewed workflow except that the representative sees only the exceptions. Code issues the authorization automatically when the item is in warranty, its value is under \$500, the router is confident, and the customer has not been flagged as a repeat returner. These conditions together define the \emph{safe zone}, and everything outside it goes to a representative.
 
-\begin{figure}[htbp]
+\begin{table}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.7cm, minimum height=7.5mm, font=\scriptsize, inner sep=2pt}]
-% ---- single agent
-\node[font=\small\bfseries, anchor=west] at (-1,0.95) {Single agent};
-\node[sg trigger] (c1) at (0,0) {Customer};
-\node[sg agent] (a1) at (2.6,0) {Returns agent\\{\tiny tool loop; warranty in prompt}};
-\node[sg mcp, text width=2.4cm] (m1) at (5.9,0) {ERP, warehouse, shipping\nodepart{two}{\tiny\ttfamily 9 tools incl.\ create\_rma}};
-\node[sg human] (f1) at (9.1,0) {Finance\\{\tiny credits $>$\$2k}};
-\draw[sg flow] (c1) -- (a1); \draw[sg call] (a1) -- (m1); \draw[sg flow] (m1) -- (f1);
-% ---- reviewed workflow
-\begin{scope}[yshift=-2.4cm]
-\node[font=\small\bfseries, anchor=west] at (-1,0.95) {Reviewed workflow};
-\node[sg trigger] (c2) at (0,0) {Customer};
-\node[sg agent] (r2) at (2.3,0) {Router\\{\tiny picks a path}};
-\node[sg code] (w2) at (4.6,0) {Warranty\\check};
-\node[sg agent] (d2) at (6.9,0) {Draft RMA\\{\tiny one call}};
-\node[sg human] (h2) at (9.2,0) {Rep approves\\every RMA};
-\node[sg mcp, text width=1.9cm] (m2) at (11.6,0) {ERP, shipping\nodepart{two}{\tiny\ttfamily create\_rma, label}};
-\draw[sg flow] (c2) -- (r2); \draw[sg flow] (r2) -- (w2); \draw[sg flow] (w2) -- (d2);
-\draw[sg flow] (d2) -- (h2); \draw[sg call] (h2) -- (m2);
-\end{scope}
-% ---- straight-through
-\begin{scope}[yshift=-5.0cm]
-\node[font=\small\bfseries, anchor=west] at (-1,0.95) {Straight-through with exceptions};
-\node[sg trigger] (c3) at (0,0) {Customer};
-\node[sg agent] (r3) at (2.3,0) {Router\\{\tiny picks a path}};
-\node[sg code] (w3) at (4.6,0) {Warranty \&\\safe-zone rules};
-\node[sg agent] (d3) at (6.9,0) {Draft RMA\\{\tiny one call}};
-\node[sg human] (h3) at (9.2,-1.1) {Rep reviews\\exceptions};
-\node[sg mcp, text width=1.9cm] (m3) at (11.6,0) {ERP, shipping\nodepart{two}{\tiny\ttfamily create\_rma, label}};
-\draw[sg flow] (c3) -- (r3); \draw[sg flow] (r3) -- (w3); \draw[sg flow] (w3) -- (d3);
-\draw[sg call] (d3) -- node[sg lab, above] {[safe zone]} (m3);
-\draw[sg flow] (w3.south) |- node[sg lab, pos=0.75, below] {[else]} (h3.west);
-\draw[sg call] (h3.east) -| node[sg lab, pos=0.25, below] {[approved]} (m3.south);
-\end{scope}
-\end{tikzpicture}
-\caption{Three designs for returns, simplified to the stage that issues the return authorization (RMA). The later inspection and credit stages are the same in the second and third designs and are omitted.}
-\label{fig:returns-designs}
-\end{figure}
+\small
+\caption{Who or what does each step in the three returns designs. The table covers the stage that issues the return authorization (RMA); the later inspection and credit stages are the same in the second and third designs and are omitted.}
+\label{tab:returns-designs}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Step & Single agent & Reviewed workflow & Straight-through \\
+\midrule
+Understand the request & The returns agent, which loops over its tools until it decides it is done & Router agent: one model call that picks a path & Router agent: one model call that picks a path \\
+Check the warranty & The same agent, using rules written in its instructions & Code, using the warranty table & Code, using the warranty table and the safe-zone rules \\
+Draft the RMA and reply & The same agent & Agent: one model call & Agent: one model call \\
+Approve the RMA & Nobody & Representative approves every RMA & Representative approves only cases outside the safe zone \\
+Create the RMA and label & The same agent, through the ERP, warehouse and shipping servers (nine tools, including \texttt{create\_rma}) & Code, after approval, through the ERP and shipping servers (\texttt{create\_rma}, \texttt{create\_label}) & Code, at once inside the safe zone and after approval otherwise, through the same two servers \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Scoring, weighting and checking the result}
 
@@ -97,7 +78,7 @@ where $s_{d,c}$ is design $d$'s score on criterion $c$ and $w_c$ is that criteri
 \label{tab:tradeoff}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Criterion & Weight & Single agent & Reviewed workflow & Straight-through \\
+\rowcolor{coHead} Criterion & Weight & Single agent & Reviewed workflow & Straight-through \\
 \midrule
 Quality & 0.20 & 2 & 5 & 4 \\
 Cost & 0.10 & 3 & 4 & 4 \\
@@ -108,45 +89,73 @@ Control and auditability & 0.15 & 1 & 5 & 4 \\
 Maintainability & 0.05 & 3 & 4 & 3 \\
 Human workload & 0.10 & 5 & 2 & 4 \\
 \midrule
-Weighted score $S_d$ & 1.00 & 2.90 & 3.75 & \textbf{3.95} \\
+\rowcolor{coAmberBg} Weighted score $S_d$ & 1.00 & 2.90 & 3.75 & \textbf{3.95} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The straight-through design leads, but only by 0.20 points on a five-point scale, and every score is an estimate. Before recording a decision, ask how wrong the weights would have to be for the answer to change. The script \texttt{ch02/tradeoff.py} in the companion repository does this by drawing ten thousand sets of weights scattered around the chosen ones and counting how often each design wins. The straight-through design wins about 85\% of the time, the reviewed workflow about 15\%, and the single agent never. The script also finds the single change that would reverse the decision: the reviewed workflow overtakes the straight-through design if the weight on control doubles from 0.15 to 0.30, or if the weight on quality rises from 0.20 to 0.34. The answer to ``why not one agent?'' is therefore not a matter of taste, and the conditions that would reverse the choice are now known and can be written into the decision record.
+The straight-through design leads, but only by 0.20 points on a five-point scale, and every score is an estimate. Before recording a decision, ask how wrong the weights would have to be for the answer to change. The script \texttt{ch02/tradeoff.py} in the companion repository does this by drawing ten thousand sets of weights scattered around the chosen ones and counting how often each design wins. The straight-through design wins about 85\% of the time, the reviewed workflow about 15\%, and the single agent never. The script also finds the single change that would reverse the decision: the reviewed workflow overtakes the straight-through design if the weight on control doubles from 0.15 to 0.30, or if the weight on quality rises from 0.20 to 0.34. The answer to ``why not one agent?'' is therefore not a matter of taste, and the conditions that would reverse the choice are now known and can be written into the decision record. Figure~\ref{fig:scores} puts both results side by side.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm, lab/.style={font=\footnotesize, anchor=east}, val/.style={font=\footnotesize\bfseries, anchor=west}]
+% left panel: weighted score, 0..5 mapped to 0..5 cm
+\node[font=\sffamily\bfseries\small, anchor=west] at (-2.9,2.75) {Weighted score (out of 5)};
+\foreach \y/\n/\v/\c in {2/{Single agent}/2.90/coRed, 1.1/{Reviewed workflow}/3.75/coAmber, 0.2/{Straight-through}/3.95/coGreen} {
+  \node[lab] at (-0.1,\y) {\n};
+  \fill[\c!70] (0,\y-0.3) rectangle (\v,\y+0.3);
+  \node[val] at (\v,\y) {\v};
+}
+\draw[black!40] (0,-0.25) -- (0,2.45);
+% right panel: share of 10,000 weightings won, 0..100% mapped to 0..4 cm
+\begin{scope}[xshift=8.9cm]
+\node[font=\sffamily\bfseries\small, anchor=west] at (-2.9,2.75) {Share of 10{,}000 weightings won};
+\foreach \y/\n/\v/\c in {2/{Single agent}/0/coRed, 1.1/{Reviewed workflow}/15/coAmber, 0.2/{Straight-through}/85/coGreen} {
+  \node[lab] at (-0.1,\y) {\n};
+  \fill[\c!70] (0,\y-0.3) rectangle ({\v*0.036},\y+0.3);
+  \node[val] at ({\v*0.036},\y) {\v\%};
+}
+\draw[black!40] (0,-0.25) -- (0,2.45);
+\end{scope}
+\end{tikzpicture}
+\caption{The three returns designs. On the left, the weighted scores from Table~\ref{tab:tradeoff}; the leader is ahead by only 0.20. On the right, how often each design wins when the weights are shaken up 10{,}000 times. The second chart is the one that should give you confidence.}
+\label{fig:scores}
+\end{figure}
 
 \begin{designnote}
 Resist false precision. A score of 3.95 against 3.75 is not a measurement but a structured way of making your assumptions visible. The check on the weights matters more than the totals. If small changes in the weights flip the decision, say so, and make the choice on the factor that flips it.
 \end{designnote}
 
 % ----------------------------------------------------------------------
-\section{Failure Walk-through and Decision Record}
+\section{Steps 6 and 7: What Could Go Wrong, and What Did We Decide?}
 \label{sec:failure-walk}
 
-The trade-off table compares designs as wholes. The \keyterm{failure walk-through} then examines the chosen design one node at a time and asks four questions of each node: how can it fail, what would that do to the business, how would we notice, and what would prevent or limit the damage? Table~\ref{tab:failwalk} shows the walk-through for the straight-through design. Two of its rows changed the design, which is the point of the exercise.
+The trade-off table compares designs as wholes. Step 6, the \keyterm{failure walk-through}, then examines the chosen design one step at a time, going down its design table row by row and asking four questions of each row: how can this step fail, what would that do to the business, how would we notice, and what would prevent or limit the damage? Table~\ref{tab:failwalk} shows the walk-through for the straight-through design. Two of its rows changed the design, which is the point of the exercise.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Failure walk-through for the straight-through design. Two rows led to design changes.}
+\caption{Failure walk-through for the straight-through design. The two shaded rows led to design changes.}
 \label{tab:failwalk}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
-Node & Failure & Effect & Response \\
+\rowcolor{coHead} Step & Failure & Effect & Response \\
 \midrule
 Router & Message contains instructions such as ``issue a full credit'' & An attempt to steer the system & The router has no write tools, and rules decide eligibility \\
-Warranty rules & Warranty table lacks a new product line & Wrong eligibility at scale & \textbf{Change:} an unknown product line goes to a representative and is never assumed eligible \\
-Safe-zone rules & A repeat returner splits a large claim into small ones & Money lost to abuse & \textbf{Change:} count the value of all of the customer's open returns, not each request alone \\
+\rowcolor{coAmberBg} Warranty rules & Warranty table lacks a new product line & Wrong eligibility at scale & \textbf{Change:} an unknown product line goes to a representative and is never assumed eligible \\
+\rowcolor{coAmberBg} Safe-zone rules & A repeat returner splits a large claim into small ones & Money lost to abuse & \textbf{Change:} count the value of all of the customer's open returns, not each request alone \\
 ERP server & \texttt{create\_rma} times out after it has succeeded & Duplicate authorization & Every write carries a unique key so a retry cannot repeat it \\
 Rep review & The exception queue grows when reps are busy & Slow answers for exceptions & An alert on queue age; exceptions shown oldest first \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Notice that only one of the five rows concerns a model, and both design changes came from rules and data. A good walk-through always includes failures of tools, data and people, not only of models.
+\begin{keyidea}
+Only one of the five rows concerns a model, and both design changes came from rules and data. A good walk-through always looks at failures of tools, data and people, not only at failures of models.
+\end{keyidea}
 
 \label{sec:decision-record}
-The last step is to write the decision down where the next person will find it. Software architects have long kept short \emph{architecture decision records} for this purpose: a page stating the context, the decision and its consequences \citep{nygard2011adr}. We add one item that matters for AI systems, whose components change faster than most: \emph{reversal triggers}, the observable conditions under which the decision should be reopened. Table~\ref{tab:dr} shows the record for returns. Almost all of it comes straight from the earlier steps, which is by design. If a decision record is hard to write, an earlier step was skipped.
+Step 7, the last step, is to write the decision down where the next person will find it. Software architects have long kept short \emph{architecture decision records} for this purpose: a page stating the context, the decision and its consequences \citep{nygard2011adr}. We add one item that matters for AI systems, whose components change faster than most: \emph{reversal triggers}, the observable conditions under which the decision should be reopened. Table~\ref{tab:dr} shows the record for returns. Almost all of it comes straight from the earlier steps, which is by design. If a decision record is hard to write, an earlier step was skipped.
 
 \begin{table}[htbp]
 \centering
@@ -155,11 +164,11 @@ The last step is to write the decision down where the next person will find it. 
 \label{tab:dr}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-\multicolumn{2}{@{}l}{\textbf{Issue low-risk return authorizations automatically; send exceptions to a representative}} \\
+\rowcolor{coGreenBg}\multicolumn{2}{@{}l}{\textbf{Issue low-risk return authorizations automatically; send exceptions to a representative}} \\
 \midrule
 Status and owner & Accepted for the pilot. Owner: the returns manager. \\
 Context & 1{,}100 returns a month; three days to authorization; 6\% of credits out of warranty. Constraints: the inspector judges misuse, and finance approves credits over \$2{,}000. \\
-Options considered & Single agent; reviewed workflow; straight-through with exceptions (Figure~\ref{fig:returns-designs}). \\
+Options considered & Single agent; reviewed workflow; straight-through with exceptions (Table~\ref{tab:returns-designs}). \\
 Decision & Straight-through with exceptions, plus the two changes from the walk-through. \\
 Reasons & Highest weighted score (3.95, against 3.75 and 2.90), and it wins in about 85\% of alternative weightings. The single agent was rejected because its warranty decisions cannot be audited. \\
 Consequences & Representatives handle only exceptions, expected to be 30--40\% of volume. A weekly sample of automatic authorizations is reviewed. The warranty table becomes a governed configuration with an owner. \\
@@ -169,10 +178,14 @@ Reversal triggers & Reopen the decision if out-of-warranty authorizations in the
 \end{table}
 
 % ----------------------------------------------------------------------
-\section{Putting the Toolkit Together}
+\section{The Method in Every Case}
 \label{sec:toolkit-together}
 
-Every case chapter uses the toolkit in the same order, and the list below doubles as a checklist for design reviews. Run the seven-step method and name the business measures and risks. Draw at least two alternative solution graphs; in Part~II the first alternative is the Google sample as it stands. Check each graph against the eight checks, and drop any design that breaks a policy or legal constraint. Write the weights from the business context, score the surviving designs with a reason for each score, and check how sensitive the result is to the weights. Walk the chosen design node by node and fold the changes back into the graph. Finally, write the decision record and a node card for every agent, MCP server and guardrail.
+Every case chapter follows the seven steps in the same order, so the list below doubles as a checklist for design reviews. First, set the goal, measures and risks, and list the people and systems involved. Second, walk through the work one step at a time and answer the four questions for each step. Third, draft at least two designs and write each one as a design table; in Part~II the first design is always the Google sample as it stands. Check each table against the eight checks, and drop any design that breaks a policy or legal constraint. Fourth, write the weights from the business context, score the surviving designs with a reason for each score, and check how sensitive the result is to the weights. Fifth, walk through the chosen design row by row and fold the changes back into its table. Finally, write the decision record and a component card for every agent, MCP server and guardrail.
+
+\begin{tryit}[Try it on your own process]
+Pick a process you know well, such as booking travel at your company or handling a refund at a shop. Spend ten minutes on steps 1 to 3 only: write the goal and two measures, list the people and systems, and ask the four questions of each step. You will probably find that fewer steps need a model than you expected.
+\end{tryit}
 
 Chapter~\ref{ch:business} adds the business layer that this chapter took as given: where the business measures come from, how to estimate the value of moving them, and how to put the cost of errors into money, so that several of the scores in a trade-off table can be replaced by dollars.
 
@@ -181,9 +194,11 @@ Chapter~\ref{ch:business} adds the business layer that this chapter took as give
 \addcontentsline{toc}{section}{Chapter Summary}
 
 \begin{itemize}[itemsep=2pt]
-  \item A fixed notation makes the kind, owner and purpose of every component visible, makes omissions stand out, and lets designs be compared. It has nine kinds of node, five kinds of arrow, ownership and trust boundaries, and trace tags that name the business measure or risk each node serves.
-  \item Eight simple checks catch the commonest structural mistakes before anyone discusses whether a design is good.
-  \item The seven-step method works from the business inward: goal and measures, people and systems, judgment or rule, knowledge, actions, human checkpoints, and failure points.
+  \item An assistant that only answers can be judged by its answers. Once it can act, the process matters as much as the outcome, and every capability needs a boundary, a rule, a test and evidence.
+  \item The seven-step design method works from the business inward. It sets the goal and measures, lists the people and systems, asks four questions of each step of the work, drafts and writes down two or three designs, compares them, walks through the failures of the chosen one, and records the decision.
+  \item The four questions of step 3 ask whether a step is judgment or a rule, what must be known, which systems are read or changed, and who must decide. Their answers usually show that only a few steps need a model.
+  \item A design table states, for every step, who or what does it, what it uses, and why it is there. It makes the kind, owner and purpose of every part visible and lets designs be compared row by row.
+  \item Eight simple checks catch the commonest mistakes in a design table before anyone discusses whether the design is good.
   \item Retrieve-then-answer and the approval gate appear in almost every case. The do-everything agent, policy in the prompt and the silent write are the commonest anti-patterns.
   \item Designs are scored on eight fixed criteria, with weights from the business. Checking how sensitive the result is to the weights matters more than the totals.
   \item The failure walk-through examines tools, data and people as well as models, and it usually changes the design. A decision record captures the choice, the reasons and the conditions for reopening it.
@@ -195,29 +210,30 @@ Chapter~\ref{ch:business} adds the business layer that this chapter took as give
 \begin{multicols}{2}
 \raggedright\small
 anti-pattern \\
+approval gate \\
+component card \\
 constraint (versus criterion) \\
 decision record \\
+design method \\
 design pattern \\
+design table \\
 evaluation criteria \\
 failure walk-through \\
-handoff \\
-node card \\
-ownership boundary \\
+judgment versus rule \\
+outcome versus process \\
+retrieve-then-answer \\
 reversal trigger \\
-solution graph \\
-tool call \\
-trace tag \\
-trade-off table \\
-trust boundary \\
-well-formed graph
+safe zone \\
+trade-off table
 \end{multicols}
 
 \section*{Review Questions}
 \addcontentsline{toc}{section}{Review Questions}
 
 \begin{enumerate}[itemsep=2pt]
-  \item Why does the notation draw a company system separately from the MCP server in front of it?
-  \item Explain the difference between a tool call and a handoff. Give an example in which choosing the wrong one would leave a case with no owner.
+  \item In Table~\ref{tab:two-paths}, both paths produce the same credit. Name two ways in which Path~B could lead to a larger failure later.
+  \item Why does the design method postpone the question ``what should the agent do?'' until step 3?
+  \item Why does a design table list only the tools that a solution may use, rather than every tool that a server offers?
   \item Which of the eight checks does Team A's design from Chapter~\ref{ch:foundations} fail? Give one sentence for each.
   \item In the returns case, why is warranty eligibility treated as a rule even though representatives found it hard?
   \item When is an approval gate the wrong choice, and what would you use instead?
@@ -230,9 +246,9 @@ well-formed graph
 
 \paragraph{Design track}
 \begin{enumerate}[itemsep=2pt]
-  \item \textbf{Complete the returns graph.} Extend the straight-through design to include the inspection and credit stages, and check the full graph against the eight checks.
+  \item \textbf{Complete the returns design.} Write the straight-through design as a full design table that includes the inspection and credit stages, and check the table against the eight checks.
   \item \textbf{Re-weight.} Suppose Harbor's auditors require every return authorization to have a named human approver. Is this a constraint or a change of weights? Redo the decision and update the decision record.
-  \item \textbf{Your own process.} Apply the seven-step method to the process you broke down in Chapter~\ref{ch:foundations}'s exercises, draw two alternatives, and complete a trade-off table.
+  \item \textbf{Your own process.} Apply the seven-step method to the process you broke down in Chapter~\ref{ch:foundations}'s exercises. Write two alternative designs as design tables, and complete a trade-off table.
 \end{enumerate}
 
 \paragraph{Build track}

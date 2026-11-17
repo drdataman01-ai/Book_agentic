@@ -3,12 +3,12 @@
 % decomposing the quote desk
 % ======================================================================
 
-\section{Four Building Blocks}
+\section{What Are the Four Building Blocks?}
 \label{sec:blocks}
 
 The book's subtitle names three technologies: RAG, agents and MCP. In practice, every solution in this book also uses a fourth building block that is easy to forget because it is not new, and that is plain code. Section~\ref{sec:llm} showed which gap in a language model each block fills. This section explains how each block works, when it is the right choice, and how it tends to fail. We take the blocks in order from the most predictable to the least predictable, and we spend the most time on the three that are likely to be new to you.
 
-\subsection{Plain code and rules}
+\subsection{Plain code: the block that never guesses}
 \label{sec:block-code}
 
 Plain code is any logic that a programmer writes and that a test can check exactly. A policy threshold, a currency conversion, a database query, a check that a form is complete, and a rule that sends a case to one team or another are all plain code. Code of this kind is fast, almost free to run, gives the same answer every time and is easy to audit. It is the right block whenever the rule can be written down and the inputs are structured.
@@ -19,10 +19,14 @@ The most common mistake in agentic designs is not that they use too little AI. I
 If a requirement contains the words \emph{never}, \emph{always} or \emph{must}, or contains a number, start by asking whether it belongs in code. A prompt can \emph{explain} a rule to the model so that the model behaves sensibly around it, but code should \emph{enforce} it.
 \end{designnote}
 
-\subsection{Retrieval-augmented generation (RAG)}
+\subsection{Retrieval-augmented generation (RAG): an open book for the model}
 \label{sec:block-rag}
 
 \paragraph{The problem RAG solves.} A language model knows only what was in its training data, which is general, out of date and silent about your company. Harbor's discount policy, the notes in its product catalog and each customer's contract are exactly the knowledge the model lacks. A useful comparison is the difference between a closed-book exam and an open-book exam. A bright student in a closed-book exam about Harbor's policy can only guess. The same student with the right pages open on the desk can answer correctly and point to the paragraph that supports the answer. \keyterm{Retrieval-augmented generation} gives the model an open book. Before the model answers, the system searches a collection of documents for the passages most relevant to the question and places them in the prompt, so that the model's answer is based on them \citep{lewis2020rag}.
+
+\begin{thinkabout}
+Why not simply paste all of Harbor's documents into every prompt? Or train the model on them so that it ``knows'' Harbor? Decide what you think before reading the next paragraph.
+\end{thinkabout}
 
 Two simpler ideas come to mind first, and it helps to see why neither works. The first idea is to paste every policy document into every prompt. Harbor's policies, catalog notes and contracts run to thousands of pages, which is more than a context window holds, and even a smaller library would make every request slow and expensive. Pasting everything also shows every user every document, including contracts they are not allowed to see. The second idea is to train the model further on Harbor's documents. Training is costly, the result goes out of date the moment the policy changes, and a model that has absorbed a document into its training cannot point to the paragraph it relied on. Retrieval avoids all of these problems. Only a few relevant passages enter each prompt, the passages come from the current version of each document, the search can respect who may see what, and every answer can cite its source.
 
@@ -117,11 +121,34 @@ The second phase, \emph{answering}, happens every time a question arrives. The s
 \label{fig:rag-prompt}
 \end{figure}
 
-\paragraph{When RAG is the right block.} RAG is the right block when the system needs \emph{knowledge the model was not trained on}: text that is private, that changes often, or that is too large to put in every prompt. It is often the wrong block for \emph{structured facts with one exact answer}. The current list price of part \texttt{BV-316-3} is a database lookup, not a search problem. Semantic search finds passages that are \emph{similar} to the question, so using it to find a price invites the system to return the price of a similar part.
+\paragraph{When RAG is the right block.} RAG is the right block when the system needs \emph{knowledge the model was not trained on}: text that is private, that changes often, or that is too large to put in every prompt. It is often the wrong block for \emph{structured facts with one exact answer}.
 
-Designing a RAG component means answering a short list of questions, each of which returns in later chapters. Which documents are the sources, who owns them, and in what formats do they arrive? How quickly must a change in a document reach the answers: within minutes, by the next day, or by the next quarter? May every user see every document? At Harbor, for example, a sales representative may read the discount policy but not another region's contract terms. How are documents split into chunks, and does a split ever cut a rule in half? Must every answer cite its source and version, and what should happen when nothing relevant is found? Finally, how will you measure whether the right passages were retrieved, separately from whether the final answer was good? Chapter~\ref{ch:case-policy}, the first case, goes deep on these questions.
+\begin{watchout}
+The current list price of part \texttt{BV-316-3} is a database lookup, not a search problem. Semantic search finds passages that are \emph{similar} to the question, so using it to find a price invites the system to return the price of \texttt{BV-316-4}, a similar part that costs \$9 more. Use a tool for exact facts and retrieval for passages of text.
+\end{watchout}
 
-\subsection{The agent}
+Designing a RAG component means answering a short list of questions. Table~\ref{tab:rag-checklist} lists them with Harbor's answers, and Chapter~\ref{ch:case-policy}, the first case, goes deep on each one.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{A checklist for designing a RAG component, with Harbor's answers.}
+\label{tab:rag-checklist}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coAmberBg} Question to answer & Harbor's answer \\
+\midrule
+Which documents are the sources, and who owns each one? & The discount policy (Finance), catalog notes (Product), and contracts (Sales Operations). \\
+How quickly must a change reach the answers? & A policy change must reach answers by the next business day. \\
+May every user see every document? & No. A representative may read the policy but not another region's contracts. \\
+How are documents split into chunks? & Never in the middle of a numbered policy clause, so that a rule is never cut in half. \\
+Must answers cite their source? & Yes, with section and version. When nothing relevant is found, the system says so rather than guessing. \\
+How will we know retrieval works? & By checking whether the right passages were found, separately from whether the final answer was good. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The agent: a model that can ask for actions}
 \label{sec:block-agent}
 
 \paragraph{Tools: how a model asks for an action.} Section~\ref{sec:llm} said that a model cannot act, and that is still true for an agent. The trick that makes an agent possible is that the model never acts directly. Instead, it \emph{asks} for an action, and ordinary software carries the action out. The thing it may ask for is called a \keyterm{tool}. A tool is an ordinary function, written by a programmer, together with a short description that the model can read: the tool's name, what it does, and what inputs it needs. Harbor's \texttt{get\_item\_pricing} tool, for example, is described as returning the list price, unit cost and stock level for one part number.
@@ -182,9 +209,27 @@ Turn & What the model decides & Tool call it requests & Result returned \\
 
 \paragraph{When an agent is the right block.} An agent is the right block when a step needs \emph{judgment over a path that cannot be fixed in advance}. Understanding an unstructured request, deciding which of several lookups is needed, reconciling conflicting information, and writing text for a person to read all need judgment of this kind. At Harbor, turning a rambling e-mail from a sales representative into a structured quote request needs judgment, and so does writing the two-sentence explanation a manager reads before approving a 17\% discount. When the steps are always the same, however, a fixed workflow does the job more cheaply and more predictably.
 
-\paragraph{How agents fail.} Agents fail in characteristic ways, and a designer should expect each one. An agent may choose the \emph{wrong tool or the wrong inputs}, for example by looking up the wrong customer because two customers have similar names. It may make \emph{unsupported claims}, stating a contract term that appears in no tool result or retrieved document. It may \emph{loop}, calling tool after tool without converging and running up cost as it goes. It may \emph{drift} from its instructions when a conversation grows long or when an input is written to mislead it. And it may \emph{overreach}, taking an action such as sending an e-mail that should have waited for a person. Each failure has a design response: fewer and better-shaped tools, required citations, step and cost limits, automatic checks on inputs and outputs, and points where a person must approve. The cases teach these responses one at a time.
+\paragraph{How agents fail.} Agents fail in five characteristic ways, and a designer should expect every one of them. Table~\ref{tab:agent-failures} lists them with a Harbor example and the usual design response. The cases teach these responses one at a time.
 
-\subsection{The Model Context Protocol (MCP)}
+\begin{table}[htbp]
+\centering
+\small
+\caption{Five ways an agent fails, and what a designer does about each.}
+\label{tab:agent-failures}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coRedBg} Failure & What it looks like at Harbor & Design response \\
+\midrule
+Wrong tool or input & Looks up Delta Waterworks instead of Delta Water & Fewer, better-shaped tools; confirm the customer number before quoting \\
+Unsupported claim & States a contract term that no tool returned & Every number must come from a tool result; answers cite their sources \\
+Looping & Calls the same lookups again and again, running up cost & Limits on steps and cost per request \\
+Drift & Forgets an instruction in a long chat, or follows one hidden in a customer e-mail & Short, focused instructions; automatic checks on inputs \\
+Overreach & Sends an e-mail that should have waited for a person & A person approves any action that leaves the company \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The Model Context Protocol (MCP): one plug for every system}
 \label{sec:block-mcp}
 
 \paragraph{The problem MCP solves.} An agent is only as useful as the tools it can call and the information it can reach, and in a company those live in many different systems. Before MCP, every agent framework had its own way of describing a tool, so every connection between an AI application and a company system was written by hand, once for each pair. Picture Harbor with three AI applications (the quote agent, a customer-support agent, and a desktop assistant that employees use) and three systems (the ERP, the CRM and the warehouse system). Connecting every application to every system takes nine separate integrations, and each new application or system adds several more. The left side of Figure~\ref{fig:mcp-nm} shows the tangle.
@@ -230,6 +275,11 @@ The \keyterm{Model Context Protocol} is an open standard that removes the tangle
 \caption{The problem MCP solves. Without a standard, every AI application needs its own connection to every company system. With MCP, each system is wrapped once by a server, each application contains a client, and any client can use any server.}
 \label{fig:mcp-nm}
 \end{figure}
+
+\begin{quickcheck}
+Harbor adds a fourth AI application and a fourth company system. How many custom integrations would it need without a standard? How many servers and clients would it need with MCP?
+\answer{Without a standard it needs $4 \times 4 = 16$ integrations. With MCP it needs four servers, one per system, and four clients, one per application. The gap grows quickly: ten applications and ten systems would need 100 integrations, or twenty pieces with MCP.}
+\end{quickcheck}
 
 \paragraph{Host, client and server.} MCP uses three terms for the parts of a connection, shown in Figure~\ref{fig:mcp-arch}. The \keyterm{host} is the application in which the model runs, such as an ADK agent, a desktop assistant or a programmer's code editor. Inside the host, an MCP \emph{client} manages the connection to one MCP \emph{server}; a host that uses three servers contains three clients. The server is owned by the team responsible for the system behind it, and it decides exactly which capabilities to offer and to whom. The model is never connected to the ERP or the CRM directly. It sees only the descriptions the servers publish, and every request it makes passes through a server that can check permissions and log what happened.
 
@@ -299,15 +349,35 @@ The \keyterm{Model Context Protocol} is an open standard that removes the tangle
 \label{fig:mcp-sequence}
 \end{figure}
 
-\paragraph{Tools, resources and prompts.} An MCP server can offer three kinds of capability, and choosing among them is itself a design decision. \emph{Tools} are actions that the model may decide to invoke, with defined inputs and outputs. A tool that returns the contract price for a customer and a part number is one example, and a tool that creates a quote draft is another; the first only reads, while the second changes a system. \emph{Resources} are read-only information that the host application can attach to the conversation, each identified by an address in the same way a web page is identified by its URL. The current discount policy and a product data sheet are natural resources. The important difference from a tool is that the application or the user chooses when to attach a resource, while the model chooses when to call a tool. \emph{Prompts} are reusable message templates with blanks to fill in, which the server offers to users or applications, such as ``draft a quote justification for manager review.''
+\paragraph{Tools, resources and prompts.} An MCP server can offer three kinds of capability, and choosing among them is itself a design decision. Table~\ref{tab:mcp-kinds} compares them. The most important difference is \emph{who decides when to use it}: the model decides when to call a tool, while the application or the user decides when to attach a resource or use a prompt.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The three kinds of capability an MCP server can offer.}
+\label{tab:mcp-kinds}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coGreenBg} Kind & What it is & Who decides to use it & Harbor example \\
+\midrule
+Tool & An action with defined inputs and outputs; it may only read, or it may change a system & The model & \texttt{get\_contract\_terms} reads; \texttt{create\_quote\_draft} changes the CRM \\
+Resource & Read-only information with an address, like a web page's URL & The application or the user & The current discount policy; a product data sheet \\
+Prompt & A reusable message template with blanks to fill in & The user or the application & ``Draft a quote justification for manager review'' \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \paragraph{Local and remote servers.} An MCP server can run in two ways. It can run as a local program beside the client, in which case the two talk through the program's standard input and output (a transport called \emph{stdio}), or it can run as a remote web service that the client reaches over the network (a transport called \emph{Streamable HTTP}). The protocol is versioned by date. The revision current as of this writing, dated 2026-07-28, made the core protocol stateless, which means that each request carries everything the server needs to answer it \citep{mcp2026spec}. As a result, a remote MCP server can run behind an ordinary load balancer like any other web service. For a designer, this means that an MCP server can be deployed, scaled and secured with the same tools as the rest of the company's services.
 
-\paragraph{Why MCP matters for design.} Why does a protocol belong in a book about design? Because MCP gives us a natural \emph{boundary}. Deciding what goes into an MCP server, and what each tool promises to do, is the same kind of decision as deciding the interface of any other shared service. A good MCP server is owned by the team that owns the system behind it. It offers a small number of tools shaped around business tasks, rather than one tool for every function the system happens to have. It enforces its own permissions, and it can be tested without any model involved. A poor server offers a single tool called \texttt{run\_sql(query)} that can do anything, and hopes the model uses it wisely. Chapter~\ref{ch:case-support} is devoted to tool design.
+\paragraph{Why MCP matters for design.} Why does a protocol belong in a book about design? Because MCP gives us a natural \emph{boundary}. Deciding what goes into an MCP server, and what each tool promises to do, is the same kind of decision as deciding the interface of any other shared service. A good MCP server is owned by the team that owns the system behind it. It offers a small number of tools shaped around business tasks, rather than one tool for every function the system happens to have. It enforces its own permissions, and it can be tested without any model involved. Chapter~\ref{ch:case-support} is devoted to tool design.
+
+\begin{watchout}
+The worst MCP server offers a single tool called \texttt{run\_sql(query)} that can do anything, and then hopes the model uses it wisely. A good server offers a few tools shaped around business tasks, such as \texttt{get\_item\_pricing(sku)}, each of which can do only one thing.
+\end{watchout}
 
 A related protocol, \keyterm{Agent2Agent (A2A)}, addresses a different boundary: communication between agents that are built and run by different teams or companies. MCP connects an agent to tools and information, while A2A connects an agent to other agents. We use A2A in the capstone, Chapter~\ref{ch:capstone}.
 
-\subsection{Choosing among the blocks}
+\subsection{Which block should I choose?}
 
 Table~\ref{tab:blocks} summarizes the four blocks. Keep it beside you when you break a process into steps. The right-hand column is often the fastest way to catch a poor choice.
 
@@ -320,15 +390,15 @@ Table~\ref{tab:blocks} summarizes the four blocks. Keep it beside you when you b
 \toprule
 Block & What it supplies & Use it when & Warning sign that you chose wrong \\
 \midrule
-Plain code & Certainty: rules, calculations, routing, validation & The rule can be written down and the inputs are structured & You are writing ``never'' or a threshold into a prompt \\
-RAG & Knowledge from private, changing or large collections of text & Answers depend on documents the model was not trained on & You are using semantic search to find one exact record \\
-Agent & Judgment: interpreting, choosing, writing & The path cannot be fixed in advance, or the inputs are unstructured & The agent follows the same three steps every time \\
-MCP server & Action and information: access to company systems & The solution must read from or write to company systems & A tool mirrors a raw system function, or one tool can do anything \\
+\cellcolor{codefill}Plain code & Certainty: rules, calculations, routing, validation & The rule can be written down and the inputs are structured & You are writing ``never'' or a threshold into a prompt \\
+\cellcolor{ragfill}RAG & Knowledge from private, changing or large collections of text & Answers depend on documents the model was not trained on & You are using semantic search to find one exact record \\
+\cellcolor{agentfill}Agent & Judgment: interpreting, choosing, writing & The path cannot be fixed in advance, or the inputs are unstructured & The agent follows the same three steps every time \\
+\cellcolor{mcpfill}MCP server & Action and information: access to company systems & The solution must read from or write to company systems & A tool mirrors a raw system function, or one tool can do anything \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Two further components appear in every design, although they are not building blocks in the same sense. A \keyterm{human checkpoint} is a point where the system stops and a person approves, edits or rejects its work. A \keyterm{guardrail} is an automatic check, usually written in code, that inspects inputs or outputs and blocks or repairs anything that breaks a policy. Both are drawn explicitly in the notation of Chapter~\ref{ch:toolkit}.
+Two further components appear in every design, although they are not building blocks in the same sense. A \keyterm{human checkpoint} is a point where the system stops and a person approves, edits or rejects its work. A \keyterm{guardrail} is an automatic check, usually written in code, that inspects inputs or outputs and blocks or repairs anything that breaks a policy. Both appear as steps of their own in the design tables of Chapter~\ref{ch:toolkit}.
 
 \subsection{How the blocks work together}
 \label{sec:blocks-together}
@@ -340,10 +410,14 @@ Notice how each block does only the job that Table~\ref{tab:blocks} assigns to i
 \input{fig-integrated}
 
 % ----------------------------------------------------------------------
-\section{Decomposing a Process: The Pricing Desk}
+\section{How Do We Break a Process into Steps?}
 \label{sec:decompose}
 
 We now apply the blocks to Harbor's pricing desk. The method is the first half of the design method that Chapter~\ref{ch:toolkit} sets out in full. You write down the current process step by step, and then you decide, for each step, whether it needs judgment, knowledge, an action, a fixed rule, or a person.
+
+\begin{tryit}
+Before you look at Table~\ref{tab:quote-decomp}, try it yourself. Here are the pricing desk's steps in plain words: read the request; check that it is complete; look up prices and stock; look up the contract; check the discount against policy; get a manager's approval when needed; write the quote and cover note; record and send it. For each step, decide whether it needs judgment, knowledge, an action, a fixed rule or a person. Then compare your answers with the table.
+\end{tryit}
 
 Table~\ref{tab:quote-decomp} shows the result. The first two columns describe the current process, as the pricing analysts described it in interviews. The last two columns record design decisions.
 
@@ -352,18 +426,18 @@ Table~\ref{tab:quote-decomp} shows the result. The first two columns describe th
 \small
 \caption{Decomposing Harbor's quote process. The ``needs'' column drives the choice of block.}
 \label{tab:quote-decomp}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X@{}}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-\# & Step today & Needs & Block in the design \\
+\rowcolor{coHead} \# & Step today & Needs & Block in the design \\
 \midrule
-1 & Read the rep's e-mail or chat message; identify the customer, items, quantities and requested discount & Judgment & A single model call that fills in a fixed form \\
-2 & Check that the request is complete; ask the rep for anything missing & Rule & Code checks the form; the model writes the follow-up question \\
-3 & Look up list price, unit cost and stock for each item & Action & MCP server over the ERP: \texttt{get\_item\_pricing} \\
-4 & Look up the customer's contract price and terms & Action and knowledge & MCP tool for the structured contract fields; RAG over the contract text for special clauses \\
-5 & Check the requested discount against policy & Knowledge and rule & Code enforces the cap and the margin floor; RAG cites the policy section and version \\
-6 & If above 15\% or below the margin floor, get a manager's approval & Person & Human checkpoint, with a model-written explanation \\
-7 & Write the quote and the cover note & Judgment & The model drafts the words; code fills in every number from steps 3 to 5 \\
-8 & Record the quote in the CRM and send it & Action & MCP server over the CRM; sending waits for the rep's click \\
+1 & Read the rep's e-mail or chat message; identify the customer, items, quantities and requested discount & \tagJudgment & A single model call that fills in a fixed form \\
+2 & Check that the request is complete; ask the rep for anything missing & \tagRule & Code checks the form; the model writes the follow-up question \\
+3 & Look up list price, unit cost and stock for each item & \tagAction & MCP server over the ERP: \texttt{get\_item\_pricing} \\
+4 & Look up the customer's contract price and terms & \tagAction\ \tagKnowledge & MCP tool for the structured contract fields; RAG over the contract text for special clauses \\
+5 & Check the requested discount against policy & \tagKnowledge\ \tagRule & Code enforces the cap and the margin floor; RAG cites the policy section and version \\
+6 & If above 15\% or below the margin floor, get a manager's approval & \tagPerson & Human checkpoint, with a model-written explanation \\
+7 & Write the quote and the cover note & \tagJudgment & The model drafts the words; code fills in every number from steps 3 to 5 \\
+8 & Record the quote in the CRM and send it & \tagAction & MCP server over the CRM; sending waits for the rep's click \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -376,11 +450,24 @@ The second is that \emph{policy is enforced in code and explained by retrieval}.
 
 The third is that \emph{two people stay involved, for different reasons}. The manager approves exceptions because the business wants control over its margin. The sales representative sends the quote because the customer relationship belongs to the representative. Neither checkpoint is there because the model is untrustworthy in general. Each is there because a specific decision belongs to a specific person.
 
-Figure~\ref{fig:quote-sketch}, Team B's diagram from Section~\ref{sec:two-demos}, is this table drawn as a first sketch. It is deliberately informal. Chapter~\ref{ch:toolkit} replaces it with the book's standard notation, and Chapter~\ref{ch:business} attaches business measures to it. Even in informal form, the sketch makes the design something people can argue about: a reviewer can point at any box and ask why it is there and what happens when it fails.
+\begin{keyidea}
+The model writes the words, code supplies every number and enforces every rule, retrieval explains the policy and cites it, and people make the decisions that belong to them.
+\end{keyidea}
 
-\subsection{What the sketch does not yet say}
+Figure~\ref{fig:quote-sketch}, Team B's diagram from Section~\ref{sec:two-demos}, is this table drawn as a first sketch. It is deliberately informal. Chapter~\ref{ch:toolkit} writes it down as a design table, and Chapter~\ref{ch:business} attaches business measures to it. Even in informal form, the sketch makes the design something people can argue about: a reviewer can point at any box and ask why it is there and what happens when it fails.
 
-A sketch is the beginning of a design, not the end. Before Team B could defend theirs, they had to answer questions that the sketch leaves open, and every case in this book asks the same questions. The first concerns \emph{alternatives}. Would a single agent with all the tools, like Team A's, be cheaper to build and good enough? Would a pure workflow with no agent at all handle 90\% of requests? The second concerns \emph{business value}. If turnaround falls from 26 hours to 4, how many more deals will Harbor win, and what is that worth? What does each quote cost to produce, in model usage and in analyst minutes? The third concerns the \emph{cost of errors}. A quote below the margin floor loses money on every unit, while a quote above the customer's contract price damages trust. Which error is worse, and does the design guard hardest against the worse one? The fourth concerns \emph{production}. How will the system be tested before launch, monitored after it, and rolled back if something goes wrong?
+\subsection{What questions are still open?}
+
+A sketch is the beginning of a design, not the end. Before Team B could defend theirs, they had to answer questions that the sketch leaves open, and every case in this book asks the same ones.
+
+\begin{thinkabout}[Questions every sponsor will ask]
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Alternatives.} Would a single agent with all the tools, like Team A's, be cheaper to build and good enough? Would a plain workflow with no agent at all handle 90\% of requests?
+  \item \textbf{Business value.} If turnaround falls from 26 hours to 4, how many more deals will Harbor win, and what is that worth? What does each quote cost to produce?
+  \item \textbf{Cost of errors.} A quote below the margin floor loses money on every unit, while a quote above the contract price damages trust. Which error is worse, and does the design guard hardest against it?
+  \item \textbf{Production.} How will the system be tested before launch, watched after it, and rolled back if something goes wrong?
+\end{enumerate}
+\end{thinkabout}
 
 A first estimate of the cost of one quote already shows why these questions matter. Let $m$ be the analyst minutes spent on a quote, $w$ the full cost of an analyst minute, $c$ the model and computing cost of a quote, and $r$ the share of quotes that still need a manager's review, each taking $m_r$ minutes. The cost of producing one quote is then
 \begin{equation}
@@ -388,3 +475,7 @@ A first estimate of the cost of one quote already shows why these questions matt
   \label{eq:quote-cost}
 \end{equation}
 Today, with no AI, $c = 0$ and $m$ is about 35 minutes. Team B's design aims to cut $m$ to about 5 minutes, because a pricing analyst only spot-checks the draft, while adding a model cost $c$ of a few cents. Even if $c$ turned out ten times higher than planned, it would remain small next to the analyst time saved. The real risks to the business case lie elsewhere. One is $r$, if the system sends too many quotes to managers. The other is the cost of errors, which Equation~\eqref{eq:quote-cost} leaves out entirely. Chapter~\ref{ch:business} adds that term and shows how to estimate it.
+
+\begin{keyidea}
+In plain words, a quote costs the model's few cents plus the people's minutes. The people's minutes, and the mistakes that slip through, decide the business case. The model's bill almost never does.
+\end{keyidea}

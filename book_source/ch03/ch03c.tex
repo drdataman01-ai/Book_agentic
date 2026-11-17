@@ -3,7 +3,7 @@
 % end matter
 % ======================================================================
 
-\section{Putting Money into the Trade-off Table}
+\section{Can We Put Dollars on the Trade-off?}
 \label{sec:money-tradeoff}
 
 Chapter~\ref{ch:toolkit} scored designs on a 1--5 scale for all eight criteria. With the tools of this chapter, three of the criteria can usually be replaced by money per transaction: \emph{cost} becomes the run-cost term of Equation~\eqref{eq:unit}, \emph{human workload} becomes the human-time term, and much of \emph{quality} becomes the expected-error-cost term. The other five---speed, reliability, security and privacy, control and auditability, maintainability---usually stay as scores, because their value is either already inside a KPI (speed drives Harbor's win rate) or shows up mainly as risk.
@@ -17,14 +17,14 @@ A mixed table, with a dollar row and score rows, is more honest than an all-scor
 \label{tab:money}
 \begin{tabular}{@{}lrr@{}}
 \toprule
-Per quote & Team A (single agent) & Team B (workflow) \\
+\rowcolor{coHead} Per quote & \cellcolor{coRedBg}Team A (single agent) & \cellcolor{coGreenBg}Team B (workflow) \\
 \midrule
 Model and tool calls & \$0.21 & \$0.04 \\
 Analyst and manager time & \$12.10 & \$10.50 \\
 Expected error cost, below-floor quotes & \$4.28 & \$0.71 \\
 Expected error cost, wrong contract & \$1.90 & \$0.60 \\
 \midrule
-Total cost per quote & \$18.49 & \$11.85 \\
+\rowcolor{coAmberBg} Total cost per quote & \$18.49 & \textbf{\$11.85} \\
 \midrule
 Speed (score) & 5 & 4 \\
 Control and auditability (score) & 1 & 5 \\
@@ -36,8 +36,12 @@ Security and privacy (score) & 2 & 4 \\
 Team A's design is more than five times as expensive to run, but that is not why it loses: run cost is still a few cents next to the human time and error cost. It loses because its error cost is several times higher---a policy in a prompt is broken more often than a policy in code---and because no one can audit why it priced a quote as it did. The dollar rows make the first point; the score rows make the second.
 
 % ----------------------------------------------------------------------
-\section{Rollout: Pilot, Go/No-Go and Owner}
+\section{How Do We Try It Safely?}
 \label{sec:rollout}
+
+\begin{thinkabout}
+Imagine the pilot ends and the numbers look wonderful. What could make those wonderful numbers misleading? List two possibilities before you read the six parts of a good pilot plan.
+\end{thinkabout}
 
 No sponsor should be asked to approve a full launch on the strength of a design document. The usual request is for a \keyterm{pilot}: a limited, time-boxed trial with a decision at the end. A good pilot plan has six parts.
 
@@ -57,7 +61,7 @@ No sponsor should be asked to approve a full launch on the strength of a design 
 \label{tab:gonogo}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
 \toprule
-Criterion & Baseline & Go if \\
+\rowcolor{coHead} Criterion & Baseline & Go if \\
 \midrule
 Median quote turnaround & 26 h & $\le$ 6 h (target 4 h) \\
 Analyst minutes per quote & 35 min & $\le$ 12 min \\
@@ -70,12 +74,14 @@ Representative satisfaction (weekly 1--5 pulse) & --- & $\ge$ 3.8 \\
 \end{tabularx}
 \end{table}
 
-Note the adoption criterion. A pilot in which representatives route only the easy quotes through the system will show excellent numbers that will not survive a full launch.
+\begin{watchout}[Watch out: the easy-quotes pilot]
+Note the adoption criterion in Table~\ref{tab:gonogo}. A pilot in which representatives route only the easy quotes through the system will show excellent numbers that will not survive a full launch.
+\end{watchout}
 
-After the pilot, the decision has three outcomes, not two: \emph{go} (expand on a stated schedule), \emph{no-go} (stop, and record why), or \emph{iterate} (fix named problems and repeat a shorter pilot). Planning for all three in advance keeps the pilot from drifting into a permanent half-launched state, which is the most common fate of AI pilots that have no owner.
+After the pilot, the decision has three outcomes, not two: \cotag{coGreen}{Go} means expand on a stated schedule, \cotag{coAmber}{Iterate} means fix named problems and repeat a shorter pilot, and \cotag{coRed}{No-go} means stop and record why. Planning for all three in advance keeps the pilot from drifting into a permanent half-launched state, which is the most common fate of AI pilots that have no owner.
 
 % ----------------------------------------------------------------------
-\section{The One-Page Memo}
+\section{How Do We Ask for a Yes?}
 \label{sec:memo}
 
 Every case in this book ends with a memo to the executive sponsor, and every memo follows the same outline. The limit of one page is a discipline, not a formatting rule: if the case cannot be made in a page, it is not yet clear, and an executive will not read the second page anyway. Figure~\ref{fig:memo} is Harbor's.
@@ -105,11 +111,15 @@ Every case in this book ends with a memo to the executive sponsor, and every mem
 \label{fig:memo}
 \end{figure}
 
+\begin{tryit}
+Read the memo in Figure~\ref{fig:memo} as the vice president would, in under two minutes. Can you say what she is being asked to approve, what it costs, what she gets, and what could go wrong? If you can, the memo works.
+\end{tryit}
+
 Five features of the memo are deliberate and should be copied:
 \begin{itemize}[itemsep=1pt]
   \item The \emph{recommendation comes first}, with the money and the decision requested.
   \item The \emph{problem is stated in the sponsor's numbers}, from the process map.
-  \item \emph{What changes} is described in business terms. Words like \emph{agent}, \emph{RAG} and \emph{MCP} do not appear; the solution graph is an attachment for those who want it.
+  \item \emph{What changes} is described in business terms. Words like \emph{agent}, \emph{RAG} and \emph{MCP} do not appear; the design table is an attachment for those who want it.
   \item The \emph{value is split into floor and upside}, with the source of each.
   \item The memo \emph{ends with what the sponsor must do}, including the decision that only she can make: what to do with the freed capacity, without which the labor benefit stays on paper.
 \end{itemize}
@@ -132,9 +142,9 @@ Each case also has a \emph{business skill} it emphasizes. Chapter~\ref{ch:case-p
 \addcontentsline{toc}{section}{Chapter Summary}
 
 \begin{itemize}[itemsep=2pt]
-  \item A current-process map with touch times, wait times and error points is the baseline for every claim a design makes. Measure it before the pilot; it cannot be measured afterward.
-  \item Sponsors, users, approvers and owners each need different things; each approver appears in the graph as a checkpoint or constraint, each owner as a boundary.
-  \item Good KPIs are business-facing, measured today, movable by the design, paired with a quality guard, and few. A KPI tree links them to the metrics of individual nodes.
+  \item A current-process map with one row per step and its touch times, wait times and error points is the baseline for every claim a design makes. Measure it before the pilot; it cannot be measured afterward.
+  \item Sponsors, users, approvers and owners each need different things; each approver appears in the design table as a person who decides or as a constraint, and each owner is named next to what they own.
+  \item Good KPIs are business-facing, measured today, movable by the design, paired with a quality guard, and few. A KPI tree links them to the metrics of individual steps in the design.
   \item A value case separates growth, labor capacity, error reduction and risk reduction. Lead with the floor case built from measured inputs; use tornado analysis to find the assumption the case rests on, and design the pilot to test it.
   \item Unit economics (Equation~\ref{eq:unit}) give a cost per transaction by design and by path, including expected error cost. Model cost is often the smallest term.
   \item When error costs are asymmetric, choose thresholds that minimize expected cost, not error count; where a rule can decide exactly, prefer the rule. Error budgets turn quality hopes into commitments.
@@ -170,7 +180,7 @@ value hypothesis
 
 \begin{enumerate}[itemsep=2pt]
   \item Why does Harbor's process map change the designer's priorities, even though the analysts' work takes only 35 minutes?
-  \item Name the four stakeholder roles in Harbor's case. Which of them appears in the solution graph, and how?
+  \item Name the four stakeholder roles in Harbor's case. Where does each of them appear in the design table?
   \item Give an example of an unpaired KPI for an AI solution and explain how the solution could improve it while making the business worse.
   \item What is the difference between labor capacity and cash savings? What decision turns one into the other?
   \item In Harbor's tornado analysis, why does model cost barely matter? Describe a business where it would dominate.
@@ -186,8 +196,8 @@ value hypothesis
 
 \paragraph{Design track}
 \begin{enumerate}[itemsep=2pt]
-  \item \textbf{Map a process.} For the process you have used in earlier exercises, draw a swimlane map with touch times, wait times and at least two error points. State how you would measure each number.
-  \item \textbf{KPI tree.} Build a KPI tree for Harbor's returns process from Chapter~\ref{ch:toolkit}, with leaves that belong to nodes of the straight-through design.
+  \item \textbf{Map a process.} For the process you have used in earlier exercises, build a current-process map with touch times, wait times and at least two error points. State how you would measure each number.
+  \item \textbf{KPI tree.} Build a KPI tree for Harbor's returns process from Chapter~\ref{ch:toolkit}, with technical metrics that belong to steps of the straight-through design.
   \item \textbf{Price the errors.} For the returns case, estimate $L_k$ for an out-of-warranty credit and for a valid return wrongly refused. Which is more expensive, and what does that imply for the safe-zone rules?
   \item \textbf{Write the memo.} Write the one-page memo for Harbor's straight-through returns design, with a floor case and an upside.
 \end{enumerate}

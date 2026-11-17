@@ -8,18 +8,18 @@
 \chapter{From Building Agents to Designing Solutions}
 \label{ch:foundations}
 
-\begin{objectives}
-After reading this chapter, you will be able to:
+\begin{chapterquestions}
+By the end of this chapter you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Explain the difference between \emph{building} an agent and \emph{designing} a solution, and name the five design skills this book trains.
-  \item Explain in plain terms what a large language model can do on its own, and which three things it cannot do without help.
-  \item Describe how an agent works, how retrieval-augmented generation (RAG) works, and how the Model Context Protocol (MCP) works, and say what each one contributes and how each one fails.
-  \item Place a proposed system on the autonomy spectrum, from fixed rules to multi-agent systems, and argue for the least autonomy that meets the business goal.
-  \item Break a business process into steps and assign each step to a building block.
-  \item Set up and run a minimal agent with Google's Agent Development Kit (ADK) that calls a tool served by an MCP server.
-  \item Name the Google Cloud services that support each stage of the production lifecycle used throughout the book.
+  \item Why did a smaller, plainer demo win funding over a flashier one?
+  \item What can a language model do on its own, and what can it not do without help?
+  \item How do RAG, agents and MCP work, and how does each of them fail?
+  \item How much should we let the model decide?
+  \item How do I break a business process into steps and choose a building block for each one?
+  \item How do I run a first agent with Google's Agent Development Kit (ADK) that calls a tool on an MCP server?
+  \item Which Google Cloud services will we use, and where in the book does each one appear?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
 \section{Two Demos on a Friday Afternoon}
@@ -32,6 +32,10 @@ The vice president asked two internal teams to show her what AI could do about t
 \paragraph{Team A} built an agent. They wrote a long set of instructions for a large language model that described the discount policy, and they connected the model to fourteen tools, including product search, price lookup, inventory, customer lookup, contract lookup, a margin calculator, an e-mail sender and a CRM updater. In the demo, a sales representative typed, ``Quote 40 units of the 3-inch stainless ball valve for Delta Water, they want 18\% off.'' Within a minute the agent had looked up the customer, found the contract, checked stock, computed a price and drafted an e-mail. The room applauded.
 
 Then the finance director asked three questions. What stops the agent from approving 18\% when the policy caps discounts at 15\% unless a manager signs off? Where does the policy text come from, and what happens when the policy changes next quarter? How much does each quote cost to produce, and how will we know when a quote is wrong? Team A had only partial answers. The cap was ``in the prompt,'' and so was the policy. The cost was ``probably a few cents.'' Nobody had measured how often the agent made mistakes, because there was nothing to compare it against.
+
+\begin{thinkabout}
+Before you read what Team B did, pause on the finance director's three questions. If you had been on Team A, how would you have answered each of them? Which question would have been the hardest to answer with a demo alone?
+\end{thinkabout}
 
 \paragraph{Team B} also showed a working system, but a smaller one. Before the demo they put up a single diagram, a version of which appears in Figure~\ref{fig:quote-sketch}. The diagram showed which steps were handled by ordinary code (the discount cap, the minimum margin and the approval threshold), which steps searched the policy documents (so that every quote cited the policy version it followed), which steps used a language model (reading the representative's free-text request and writing the explanation a manager would read), and which steps reached Harbor's business systems through a small set of tools. A manager approved every discount above 15\%. Next to the diagram was a table that compared Team B's design with a single all-purpose agent like Team A's on cost, speed, risk of error and ease of audit. Below it was one page addressed to the vice president. That page stated the target turnaround (under four hours), the cost per quote, the expected effect on the share of quotes that become orders, the main risks, and a four-week pilot with clear conditions for continuing or stopping.
 
@@ -77,19 +81,48 @@ Then the finance director asked three questions. What stops the agent from appro
 \draw[arr, dashed] (erp) -- (erpdb);
 \draw[arr, dashed] (crm.south) to[bend right=20] (crmdb.south);
 \end{tikzpicture}
-\caption{A first, informal sketch of Team B's quote design. Shading marks the kind of component: blue for steps that use a language model, grey for ordinary code, green for MCP servers, amber for document search, and double borders for people. Chapter~\ref{ch:toolkit} introduces the standard notation.}
+\caption{A first, informal sketch of Team B's quote design. Shading marks the kind of component: blue for steps that use a language model, grey for ordinary code, green for MCP servers, amber for document search, and double borders for people. Chapter~\ref{ch:toolkit} shows how to write a design like this down as a simple table.}
 \label{fig:quote-sketch}
 \end{figure}
 
-The vice president funded Team B.
+The vice president funded Team B. Table~\ref{tab:two-teams} shows why, side by side.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Team A and Team B on the Friday afternoon. Both systems worked; only one came with answers.}
+\label{tab:two-teams}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+ & \cellcolor{coRedBg}\textbf{Team A: built an agent} & \cellcolor{coGreenBg}\textbf{Team B: designed a solution} \\
+\midrule
+What they built & One agent with fourteen tools and a long prompt & A workflow with one model step to read requests, rules in code, cited policy text, and manager approval for exceptions \\
+The 15\% discount cap & Written in the prompt & Enforced by tested code \\
+When the policy changes & Edit the prompt and hope & Update the configuration; every quote cites the policy version \\
+Cost per quote & ``Probably a few cents'' & Estimated in advance \\
+How often it is wrong & Unknown & To be measured against today's process \\
+What the VP received & An impressive demo & A diagram, a comparison and a one-page plan \\
+\midrule
+Outcome & \cellcolor{coRedBg}Not funded & \cellcolor{coGreenBg}Funded \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 Team A's engineers were at least as skilled as Team B's. Their agent was impressive, and with a few more weeks it might have worked well. The difference was that Team B had \emph{designed a solution}. They had decided what the system should do and what it should not do, they had chosen a component for each part of the work on purpose, they had compared their choice with an alternative, and they had tied the whole thing to a business result that someone could check. Team A had \emph{built an agent} and hoped that the business case would follow.
 
 This book is about doing what Team B did, again and again, for real business problems. If some of the words in the story, such as \emph{agent}, \emph{RAG}, \emph{MCP} or \emph{tool}, are new to you, that is expected. This chapter explains each of them from the beginning.
 
+\begin{keyidea}
+Building an agent answers the question ``Can we?'' Designing a solution answers three harder questions: ``Should we? How exactly? And is it worth it?''
+\end{keyidea}
+
 % ----------------------------------------------------------------------
-\section{The Design Gap}
+\section{Why Is Designing Harder Than Building?}
 \label{sec:design-gap}
+
+\begin{thinkabout}
+Think of a tool that became easy to use during your career, such as spreadsheets, website builders or online surveys. When it became easy, did the hard part of the work disappear, or did it simply move somewhere else?
+\end{thinkabout}
 
 \subsection{Building is getting cheap; designing is not}
 
@@ -101,13 +134,36 @@ These are design questions, and courses and tutorials rarely teach them. Most te
 
 \subsection{Five design skills}
 
-We will call the distance between being able to build an agent and being able to design a solution the \keyterm{design gap}. Closing the gap takes five skills, and every case in this book exercises all five.
+We will call the distance between being able to build an agent and being able to design a solution the \keyterm{design gap}. Closing the gap takes five skills, and every case in this book exercises all five. Each skill answers one plain question, as Figure~\ref{fig:five-skills} shows.
 
-The first skill is \emph{decomposition}: breaking a business process into steps and deciding, for each step, what kind of work it is. Some steps need \emph{judgment}, which a model can supply. Some need \emph{knowledge} from company documents, which document search can supply. Some need an \emph{action} in a company system, which a tool can perform. The rest follow a \emph{fixed rule}, which ordinary code handles best. Most poor designs go wrong at this first step. They hand a model a decision that a three-line \texttt{if} statement would make more reliably, or they hard-code a judgment that really needs a model.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  card/.style={rounded corners=4pt, minimum width=2.75cm, minimum height=2.9cm, align=center, text width=2.5cm, font=\footnotesize, inner sep=4pt},
+  num/.style={circle, fill=white, font=\sffamily\bfseries\small, minimum size=6mm, inner sep=0pt}]
+\foreach \i/\c/\name/\q in {
+  1/coBlue/Decomposition/{What kind of work is each step?},
+  2/coTeal/Boundaries/{Who decides, and where does each part stop?},
+  3/coAmber/Trade-offs/{Why this design and not another?},
+  4/coGreen/Production/{Can we test it, run it and watch it?},
+  5/coPurple/Business case/{Is it worth it, and to whom?}} {
+  \node[card, fill=\c!15, draw=\c, thick] (c\i) at ({(\i-1)*3.05},0) {\textcolor{\c!80!black}{\sffamily\bfseries\name}\\[5pt]\itshape ``\q''};
+  \node[num, draw=\c, text=\c, thick] at (c\i.north) {\i};
+}
+\end{tikzpicture}
+\caption{The five design skills, each with the question it answers. Every case in the book exercises all five.}
+\label{fig:five-skills}
+\end{figure}
 
-The second skill is drawing \emph{boundaries}: deciding where one component ends and the next begins, which agent owns which decision, which capabilities are offered to the model and which are kept away from it, and where a person must step in. The third skill is weighing \emph{trade-offs}. A designer compares two or more designs on the same fixed criteria, including quality, cost, speed, reliability, security, auditability, ease of change and the workload placed on people, and then writes down the decision and what would change it. The fourth skill is \emph{production}: carrying a design through testing, deployment, security, monitoring and day-to-day operation. A design that cannot be tested or monitored is not finished. The fifth skill is \emph{business justification}: tying the design to the numbers the business already watches, to the cost of each transaction and of each error, to the main risks and to a rollout plan, and explaining all of this to an executive on one page.
+\begin{description}[leftmargin=1em,itemsep=3pt]
+  \item[Decomposition.] This skill breaks a business process into steps and decides, for each step, what kind of work it is. Some steps need \emph{judgment}, which a model can supply. Some need \emph{knowledge} from company documents, which document search can supply. Some need an \emph{action} in a company system, which a tool can perform. The rest follow a \emph{fixed rule}, which ordinary code handles best. Most poor designs go wrong right here. They hand a model a decision that a three-line \texttt{if} statement would make more reliably, or they hard-code a judgment that really needs a model.
+  \item[Boundaries.] This skill decides where one component ends and the next begins, which agent owns which decision, which capabilities the model may use and which are kept away from it, and where a person must step in.
+  \item[Trade-offs.] This skill compares two or more designs on the same fixed criteria, such as quality, cost, speed, security and the workload placed on people, and then writes down the decision and what would change it.
+  \item[Production.] This skill carries a design through testing, deployment, security, monitoring and daily operation. A design that cannot be tested or monitored is not finished.
+  \item[Business justification.] This skill ties the design to the numbers the business already watches, to the cost of each transaction and each error, to the main risks and to a rollout plan, and then explains all of it to an executive on one page.
+\end{description}
 
-\subsection{What a design is}
+\subsection{What exactly is a design?}
 
 Throughout the book we use the word \emph{design} in a specific sense.
 
@@ -117,11 +173,32 @@ A \keyterm{solution design} is a set of decisions about how a business process w
 
 A design is not a diagram, although it usually includes one, and it is not code, although code carries it out. The definition has three parts on purpose. The \emph{decisions} say what the system does. The \emph{reasons and alternatives} let someone else check the thinking and change it later when conditions change. The \emph{measurements} turn the design into a claim that can be tested once the system is running.
 
-The definition leads directly to the four deliverables you will produce for every case in this book. The first is a \keyterm{solution graph}, which is a diagram of the components and how work flows between them, drawn in a fixed notation that Chapter~\ref{ch:toolkit} introduces. The second is a \keyterm{trade-off table}, which scores at least two alternative designs on the same criteria and records the decision. The third is a \emph{working deployment} of the chosen design, built with ADK and running on Google Cloud. The fourth is a \keyterm{one-page memo} to the executive sponsor that states the business case, the risks and a rollout plan; Chapter~\ref{ch:business} shows how to write it. Team B brought all four to the meeting, and that is why they won.
+The definition leads directly to the four deliverables you will produce for every case in this book, listed in Table~\ref{tab:deliverables}. A \keyterm{design table} lists every step of the solution and says who or what does it, what it uses and why it is there. A \keyterm{trade-off table} scores at least two alternative designs on the same criteria and records the decision. A \emph{working deployment} shows that the chosen design runs, built with ADK on Google Cloud. A \keyterm{one-page memo} to the executive sponsor states the business case, the risks and a rollout plan. Team B brought all four to the meeting, and that is why they won.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four things you bring to every design review.}
+\label{tab:deliverables}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\toprule
+\rowcolor{coHead} Deliverable & The question it answers & Where you learn it \\
+\midrule
+\cotag{coBlue}{Design table} & What does each step do, who or what does it, and why is it there? & Chapter~\ref{ch:toolkit} \\
+\cotag{coAmber}{Trade-off table} & Why this design and not another? & Chapter~\ref{ch:toolkit} \\
+\cotag{coGreen}{Working deployment} & Does it actually run, and can we test it? & Every case \\
+\cotag{coPurple}{One-page memo} & Is it worth it, what could go wrong, and what do you need from the sponsor? & Chapter~\ref{ch:business} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 % ----------------------------------------------------------------------
-\section{What a Language Model Can and Cannot Do}
+\section{What Can a Language Model Do on Its Own?}
 \label{sec:llm}
+
+\begin{thinkabout}
+Suppose you paste the request ``Quote 40 units of the 3-inch stainless ball valve for Delta Water, they want 18\% off'' into a general-purpose chatbot. What do you expect it to get right? What do you expect it to get wrong? Keep your guesses in mind as you read this section.
+\end{thinkabout}
 
 Every technology in this book is built around a \keyterm{large language model} (LLM), so we start there. A language model is a program that has been trained on a very large amount of text to predict what text should come next. You give it some text, called the \keyterm{prompt}, and it writes a continuation. That sounds modest, but a model trained at a large enough scale learns to do many useful things through this one ability. It can read a messy e-mail and pick out the customer, the products and the quantities. It can summarize a contract, follow written instructions, answer questions, and write a polite note to a manager. It can also produce its answer in a strict format, such as a filled-in form, when asked to.
 
@@ -130,6 +207,10 @@ Two facts about how a model works matter for everything that follows. The first 
 These two facts explain why a language model on its own is not enough for business work. Imagine giving Team A's request about Delta Water to a model with no help at all. Three things would go wrong.
 
 First, the model \emph{does not know Harbor}. It learned from public text up to a cutoff date, and it has never seen Harbor's discount policy, its price list or Delta Water's contract. Asked for the contract price, it will not say ``I don't know.'' It is more likely to produce a plausible number, because producing plausible text is what it was trained to do. An answer of this kind, fluent and confident but not grounded in any real source, is called a \keyterm{hallucination}.
+
+\begin{watchout}
+A hallucination does not look like an error. It looks exactly like a correct answer: the same confident tone, the same tidy format, sometimes even a made-up policy number. That is why the designs in this book never let a model be the only source of a fact that matters.
+\end{watchout}
 
 Second, the model \emph{cannot act}. It produces text and nothing else. It cannot look up the stock level in Harbor's inventory system, and it cannot create a quote in the CRM. At most, it can write a sentence saying that someone should.
 
@@ -171,8 +252,13 @@ Each of these gaps has a standard remedy, and together the remedies make up the 
 \label{fig:llm-gaps}
 \end{figure}
 
+\begin{quickcheck}
+A representative asks for Delta Water's contract price on part \texttt{BV-316-3}. Which gap is this, and which building block should fill it?
+\answer{It is missing knowledge, because the model has never seen Harbor's contracts. But the contract price is a single exact number stored in the ERP, so it should come from a tool lookup through an MCP server, not from document search. Retrieval is for passages of text, such as the policy that explains the price.}
+\end{quickcheck}
+
 % ----------------------------------------------------------------------
-\section{How Much Autonomy? From Rules to Agents}
+\section{How Much Should the Model Decide?}
 \label{sec:autonomy}
 
 The word \emph{agent} is used loosely. Marketing material calls nearly any system with a language model in it an agent, and to design well we need sharper terms. The most useful question to ask about any proposed system is a simple one: \emph{who decides what happens next?} In a traditional program, the programmer decides in advance, by writing the steps in a fixed order. In an agent, the model decides while the program is running, one step at a time. Figure~\ref{fig:workflow-vs-agent} shows the difference on Harbor's quote problem.
@@ -225,18 +311,18 @@ Between a program with no model at all and a group of cooperating agents lies a 
 \begin{table}[htbp]
 \centering
 \small
-\caption{The autonomy spectrum. Each row down the table gives the model more control over what happens next.}
+\caption{The autonomy spectrum. Each row down the table gives the model more control over what happens next. The shading runs from green, which is predictable, cheap and easy to test, to red, which is flexible but harder to test and more expensive to run.}
 \label{tab:autonomy}
 \begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
 Level & Name & Who decides the next step & Example at Harbor's pricing desk \\
 \midrule
-0 & Rules only & Code decides everything. & Reject any discount above 15\% that lacks a manager's approval. \\
-1 & Single model call & Code decides; the model fills in one step. & Pick out the product, quantity and requested discount from a free-text e-mail. \\
+\rowcolor{coGreen!14} 0 & Rules only & Code decides everything. & Reject any discount above 15\% that lacks a manager's approval. \\
+\rowcolor{coGreen!7} 1 & Single model call & Code decides; the model fills in one step. & Pick out the product, quantity and requested discount from a free-text e-mail. \\
 2 & Fixed workflow & Code runs a fixed sequence that includes some model steps. & Read the request, look up prices, apply the policy, then draft the quote text. \\
-3 & Routed workflow & A model picks one of several fixed paths. & Decide whether a request is a standard quote, a contract renewal or a complaint, and send it down the matching path. \\
-4 & Tool-using agent & The model picks tools in a loop until it is done. & Investigate why a customer's contract price disagrees with the list price, calling lookups as needed. \\
-5 & Multi-agent system & Several agents, each with its own goal, hand work to one another. & A sales agent negotiates with a supplier's agent to secure stock for a rush order. \\
+\rowcolor{coAmber!9} 3 & Routed workflow & A model picks one of several fixed paths. & Decide whether a request is a standard quote, a contract renewal or a complaint, and send it down the matching path. \\
+\rowcolor{coRed!7} 4 & Tool-using agent & The model picks tools in a loop until it is done. & Investigate why a customer's contract price disagrees with the list price, calling lookups as needed. \\
+\rowcolor{coRed!13} 5 & Multi-agent system & Several agents, each with its own goal, hand work to one another. & A sales agent negotiates with a supplier's agent to secure stock for a rush order. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -246,6 +332,11 @@ Two observations follow from the table.
 First, \emph{a real solution mixes levels}. Harbor's quote system, as Team B designed it, is mostly a fixed workflow. Inside that workflow there is a single model call to read the request, there are plain rules for the discount cap and the minimum margin, and a tool-using agent is reserved for the small share of requests that need some investigation. Asking whether the whole system is an agent is less useful than asking the question about each step.
 
 Second, \emph{autonomy should be earned}. We will use the following principle in every case.
+
+\begin{quickcheck}
+A program always searches for five documents and then asks a model to summarize them. Is it an agent? Where does it sit in Table~\ref{tab:autonomy}?
+\answer{It is not an agent, because the programmer fixed the steps in advance and the model never chooses what to do next. It is a fixed workflow at Level~2, with one model step inside it.}
+\end{quickcheck}
 
 \begin{principle}[Least sufficient autonomy]
 For each step in a process, choose the lowest level of autonomy that meets the step's quality target. Move a step to a higher level only when you can name the requirement that the lower level fails to meet, and only when you can test the higher level.

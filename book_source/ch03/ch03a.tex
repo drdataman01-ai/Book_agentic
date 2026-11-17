@@ -7,97 +7,106 @@
 \chapter{The Business of AI Solutions}
 \label{ch:business}
 
-\begin{objectives}
-After reading this chapter, you will be able to:
+\begin{chapterquestions}
+By the end of this chapter you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Draw a current-process map that shows where time, cost and errors arise, and use it as the baseline every claim of improvement is measured against.
-  \item Identify a solution's sponsor, users, approvers and owners, and say what each needs from the design.
-  \item Build a KPI tree that links a business result to operational measures and to the technical metrics of individual nodes.
-  \item Write a value case---benefits, run costs, build costs, payback---and test which assumption it depends on most.
-  \item Put the cost of errors into numbers, including errors whose costs are asymmetric, and use them to set error budgets.
-  \item Plan a pilot with go/no-go criteria and an owner, and summarize the whole case in a one-page memo to the executive sponsor.
+  \item Where do the time, the money and the mistakes in today's process actually go?
+  \item Who cares about this solution, and what does each of them need from it?
+  \item How will we know whether the solution worked?
+  \item What is the solution worth, and which assumption is the whole case resting on?
+  \item Which mistakes hurt most, and how much protection does each one deserve?
+  \item How do we try the solution safely, and how do we ask the sponsor for a yes?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
-\section{The Question Behind Every Design}
+\section{What Did the Vice President Actually Read?}
 \label{sec:business-question}
 
-In Chapter~\ref{ch:foundations}, Harbor's vice president of sales chose Team~B's quote design over Team~A's. The technical reasons were real: rules in code, retrieval with citations, a manager approving exceptions. But the vice president did not read the code. What she read was one page that answered four questions:
-\begin{enumerate}[itemsep=1pt]
-  \item \emph{What will change?} Quote turnaround falls from 26 hours to under 4.
-  \item \emph{What is that worth?} More deals won, analyst time freed, fewer quotes below the margin floor.
-  \item \emph{What could go wrong, and what would it cost?} A quote below the floor; the wrong customer's terms applied.
-  \item \emph{How will we know, and how soon?} A four-week pilot with stated pass and fail conditions.
-\end{enumerate}
+In Chapter~\ref{ch:foundations}, Harbor's vice president of sales chose Team~B's quote design over Team~A's. The technical reasons were real: rules in code, retrieval with citations, a manager approving exceptions. But the vice president did not read the code. What she read was one page that answered the four questions in Table~\ref{tab:four-questions}.
 
-Chapter~\ref{ch:toolkit} used KPIs and risks as given and scored designs on a five-point scale. This chapter supplies what that left out: where the KPIs come from, how to put money on them, how to price errors, and how to propose a rollout someone can say yes to. These are the skills that turn a technically sound design into a funded one. They are also design skills in their own right. A value case regularly changes the design, because it reveals which node carries the money and which risk deserves the most protection.
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four questions every sponsor asks, and Team~B's answers.}
+\label{tab:four-questions}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.4cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} The sponsor's question & Team B's answer \\
+\midrule
+\cotag{coBlue}{1} What will change? & Quote turnaround falls from 26 hours to under 4. \\
+\cotag{coGreen}{2} What is that worth? & More deals won, analyst time freed, and fewer quotes below the margin floor. \\
+\cotag{coRed}{3} What could go wrong, and what would it cost? & A quote below the floor, or the wrong customer's terms applied. \\
+\cotag{coPurple}{4} How will we know, and how soon? & A four-week pilot with pass and fail conditions stated in advance. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-We return to Harbor's pricing desk throughout the chapter, so that every tool can be shown on a case you already know.
+Chapter~\ref{ch:toolkit} used KPIs and risks as given and scored designs on a five-point scale. This chapter supplies what that left out: where the KPIs come from, how to put money on them, how to price errors, and how to propose a rollout someone can say yes to. These are the skills that turn a technically sound design into a funded one. They are also design skills in their own right. A value case regularly changes the design, because it reveals which step carries the money and which risk deserves the most protection.
+
+The chapter fits into the seven-step design method of Chapter~\ref{ch:toolkit} at four places. The process map and the KPIs give step~1 its goal and measures. The stakeholder roles sharpen step~2, the list of people and systems. The value case, unit economics and the cost of errors put money into step~5, the comparison of designs. And the pilot plan and the memo complete step~7, because they turn a recorded decision into an approved one. We return to Harbor's pricing desk throughout the chapter, so that every tool can be shown on a case you already know.
 
 % ----------------------------------------------------------------------
-\section{Mapping the Current Process}
+\section{Where Does the Time Go Today?}
 \label{sec:process-map}
+
+\begin{thinkabout}
+Harbor's analysts spend about 35 minutes on a quote, yet customers wait 26 hours for it. If you could shrink only one thing, the analysts' 35 minutes or everything else, which would you choose? Hold that thought until you have seen the map.
+\end{thinkabout}
 
 Every claim a design makes is a claim of \emph{change}: faster, cheaper, fewer errors. Change from what? The \keyterm{current-process map} is the answer. It records how the work is done today---who does each step, how long it takes, how long it waits, what it costs, and where it goes wrong---so that the design's claims can be checked against a baseline rather than against a hope.
 
-\subsection{Swimlanes, times and error points}
+\subsection{Steps, times and error points}
 
-A swimlane map gives each actor a horizontal lane and places each step in the lane of whoever performs it. Three annotations turn an ordinary flowchart into a business tool:
+The simplest map is a table with one row for each step of the work, in the order the work flows. Each row says who performs the step, and three further columns turn an ordinary list of steps into a business tool:
 \begin{itemize}[itemsep=1pt]
   \item \emph{Touch time}: how long someone actually works on the step.
   \item \emph{Wait time}: how long the work sits before the step starts. In knowledge work, waiting usually dwarfs working.
   \item \emph{Error points}: where mistakes enter, with a rate if one can be measured.
 \end{itemize}
 
-Figure~\ref{fig:harbor-map} maps Harbor's quote process as it was before any AI was involved. The data came from three sources: the CRM's timestamps, a two-week time log kept by the six pricing analysts, and an audit of 500 issued quotes by Harbor's controller.
+Table~\ref{tab:harbor-map} maps Harbor's quote process as it was before any AI was involved. The data came from three sources: the CRM's timestamps, a two-week time log kept by the six pricing analysts, and an audit of 500 issued quotes by Harbor's controller.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Harbor's quote process before redesign. Touch times are medians from the analysts' time log; waits are medians from CRM timestamps. The last column marks the three points where errors enter, with the share of quotes affected.}
+\label{tab:harbor-map}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}r>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.5cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Who & Touch & Wait before the step & Errors entering here \\
+\midrule
+1 & Write the quote request & Sales rep & 6 min & --- & --- \\
+2 & Read the request and clarify it with the rep & Pricing analyst & 7 min & 9 h; a further 6 h for the 31\% that need clarification & --- \\
+3 & Look up price, cost, stock and contract in the ERP & Pricing analyst & 14 min & --- & Wrong contract or customer, 0.9\% \\
+4 & Apply the discount policy and compute the price & Pricing analyst & 6 min & --- & Below the margin floor, 2.4\% \\
+5 & Approve the exception (18\% of quotes only) & Sales manager & 5 min & 11 h & --- \\
+6 & Write the quote and cover note in the CRM & Pricing analyst & 8 min & --- & Note disagrees with quote, 1.3\% \\
+7 & Review the quote and send it & Sales rep & 4 min & 4 h & --- \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm,
-  pstep/.style={draw, fill=codefill, rounded corners=1.5pt, align=center, font=\scriptsize, text width=1.85cm, minimum height=9mm},
-  lane/.style={draw=black!35, fill=black!3},
-  lname/.style={font=\scriptsize\bfseries, align=left, text width=1.3cm, anchor=west},
-  wait/.style={font=\tiny\itshape, text=BrickRed, fill=black!3, inner sep=1pt},
-  errp/.style={draw=BrickRed, fill=white, rounded corners=1pt, inner sep=1pt, font=\tiny, text=BrickRed, align=center},
-  arr/.style={-{Stealth[length=1.8mm]}, semithick}]
-% lanes
-\foreach \y/\n in {0/Sales rep, -1.9/Pricing analyst, -3.8/Sales manager, -5.7/Systems} {
-  \draw[lane] (0.2,\y+0.85) rectangle (14.1,\y-0.85);
-  \node[lname] at (-1.4,\y) {\n};
-}
-% steps
-\node[pstep] (s1) at (1.4,0) {Write request\\{\tiny 6 min}};
-\node[pstep] (s2) at (3.7,-1.9) {Read request, clarify\\{\tiny 7 min}};
-\node[pstep] (s3) at (6.0,-1.9) {Look up price, cost, stock, contract\\{\tiny 14 min}};
-\node[pstep] (s4) at (8.3,-1.9) {Apply policy, compute price\\{\tiny 6 min}};
-\node[pstep] (s5) at (8.3,-3.8) {Approve exception\\{\tiny 5 min}};
-\node[pstep] (s6) at (10.6,-1.9) {Write quote and note\\{\tiny 8 min}};
-\node[pstep] (s7) at (12.9,0) {Review, send\\{\tiny 4 min}};
-\node[pstep, fill=white, dashed] (e1) at (6.0,-5.7) {ERP};
-\node[pstep, fill=white, dashed] (e2) at (11.4,-5.7) {CRM};
-% flow
-\draw[arr] (s1.south) |- node[wait, pos=0.3, left] {wait 9 h} (s2.west);
-\draw[arr] (s2.north) |- (s1.east);
-\node[wait, anchor=west] at (3.85,0.3) {31\% need clarification: +6 h};
-\draw[arr] (s2) -- (s3);
-\draw[arr] (s3) -- (s4);
-\draw[arr] (s4) -- node[wait, right] {18\%; wait 11 h} (s5);
-\draw[arr] (s5) -| (s6);
-\draw[arr] (s4) -- (s6);
-\draw[arr] (s6.north) |- node[wait, pos=0.3, left] {wait 4 h} (s7.west);
-\draw[arr, dashed] (s3) -- (e1);
-\draw[arr, dashed] ([xshift=6mm]s6.south) -- ([xshift=6mm]s6.south |- e2.north);
-% error points
-\node[errp, anchor=north east] at ([yshift=-1pt,xshift=-1mm]s3.south) {wrong contract 0.9\%};
-\node[errp, anchor=south] at ([yshift=1pt]s4.north) {below floor 2.4\%};
-\node[errp, anchor=south] at ([yshift=1pt]s6.north) {mismatch 1.3\%};
+\begin{tikzpicture}[x=1cm,y=1cm, lab/.style={font=\footnotesize, anchor=east, align=right, text width=4.0cm}]
+% scale: 26 hours = 9.75 cm, so 1 hour = 0.375 cm
+\node[lab] at (-0.15,2) {Hands-on work by analysts\\{\scriptsize median, all steps}};
+\fill[coGreen] (0,1.72) rectangle ({35/60*0.375},2.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coGreen!80!black] at ({35/60*0.375+0.1},2) {35 minutes};
+\node[lab] at (-0.15,1) {Median time to quote today};
+\fill[coRed!75] (0,0.72) rectangle ({26*0.375},1.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coRed] at ({26*0.375+0.1},1) {26 hours};
+\node[lab] at (-0.15,0) {Target after redesign};
+\fill[coBlue!70] (0,-0.28) rectangle ({4*0.375},0.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coBlue] at ({4*0.375+0.1},0) {under 4 hours};
+\draw[black!40] (0,-0.5) -- (0,2.5);
 \end{tikzpicture}
-\caption{Harbor's quote process before redesign, as a swimlane map. Touch times are medians from the analysts' time log; waits are medians from CRM timestamps. Red labels mark the three points where errors enter, with the share of quotes affected: the wrong contract or customer applied, a price below the margin floor, and a cover note that disagrees with the quote.}
-\label{fig:harbor-map}
+\caption{Where the time goes. The analysts' work, drawn to the same scale as the customer's wait, is barely visible. Almost all of the 26 hours is waiting in queues, so that is where a redesign has to win.}
+\label{fig:time-bar}
 \end{figure}
 
-Read the map from the customer's side and two facts stand out. First, the analysts' touch time totals about 35 minutes, but the median quote takes 26 hours; almost all of the delay is waiting, in three queues. Second, the 18\% of quotes that need a manager wait 11 more hours for a five-minute decision. Any design that speeds up the analyst's 35 minutes but leaves the queues alone will disappoint, and any business case built on the 35 minutes alone will undersell the redesign. The map tells the designer where the value is before a single node is drawn.
+Read the table from the customer's side, and look at Figure~\ref{fig:time-bar}, and two facts stand out. First, the analysts' touch time in steps 2, 3, 4 and 6 totals about 35 minutes, but the median quote takes 26 hours; almost all of the delay is waiting, in three queues. Second, the 18\% of quotes that need a manager wait 11 more hours for a five-minute decision. Any design that speeds up the analyst's 35 minutes but leaves the queues alone will disappoint, and any business case built on the 35 minutes alone will undersell the redesign. The map tells the designer where the value is before a single design is drafted.
 
 \subsection{Getting honest numbers}
 
@@ -113,21 +122,36 @@ Baseline measurement is not a formality. If the baseline is not measured before 
 \end{designnote}
 
 % ----------------------------------------------------------------------
-\section{Stakeholders}
+\section{Who Cares About This Solution?}
 \label{sec:stakeholders}
 
-A solution has more than one customer inside the company. It helps to distinguish four roles, because each one needs something different from the design:
-\begin{description}[leftmargin=1em,itemsep=2pt]
-  \item[Sponsor.] The sponsor is the executive who funds the solution and owns the business result, which at Harbor is the vice president of sales. The sponsor needs a credible value case, risks that are stated openly, and a clear point at which to decide.
-  \item[Users.] Users are the people who work with the system every day, here the sales representatives and pricing analysts. They need a tool that saves them time and does not embarrass them in front of customers.
-  \item[Approvers.] Approvers are the people whose sign-off the system routes work to, or whose permission it needs in order to exist at all. At Harbor they are the sales managers, who approve discount exceptions; the controller, who owns the margin policy; and IT security, who grant access to the ERP and the CRM. Approvers need enough context to decide quickly, and assurance that what they approve is what actually happens.
-  \item[Owners.] Owners are the teams that will run and change the solution after launch: the pricing team for the pricing server and policy configuration, sales operations for the CRM server, and the platform team for hosting and monitoring. They need clear boundaries, written procedures for running the system, and a say in what they are signing up for.
-\end{description}
+\begin{thinkabout}
+Who at Harbor might quietly hope that this project fails, and why? It is a slightly uncomfortable question, but asking it early is much cheaper than discovering the answer after launch.
+\end{thinkabout}
 
-Two practical consequences follow. Every \emph{approver} appears in the solution graph as a human checkpoint or as a constraint, and every \emph{owner} appears as an ownership boundary; if a stakeholder has no place in the graph, either the graph or the stakeholder list is wrong. And the roles often pull in different directions. The sponsor wants speed; the controller wants control; the representatives want fewer clicks; IT security wants fewer permissions. A design that satisfies only the sponsor will be blocked by an approver or quietly abandoned by its users. The weights in a trade-off table (Section~\ref{sec:tradeoff}) are, in practice, a negotiated settlement among these roles, which is why they must be written down and shown to them.
+A solution has more than one customer inside the company. It helps to distinguish four roles, because each one needs something different from the design. Table~\ref{tab:stakeholders} lists them for Harbor's quote design.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four stakeholder roles in Harbor's quote design, and what each one needs.}
+\label{tab:stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is at Harbor & What they need from the design \\
+\midrule
+\cotag{coBlue}{Sponsor} & The vice president of sales, who funds the solution and owns the business result & A credible value case, risks stated openly, and a clear point at which to decide \\
+\cotag{coGreen}{Users} & The sales representatives and pricing analysts, who work with the system every day & A tool that saves them time and does not embarrass them in front of customers \\
+\cotag{coAmber}{Approvers} & The sales managers, who approve discount exceptions; the controller, who owns the margin policy; IT security, who grant access to the ERP and the CRM & Enough context to decide quickly, and assurance that what they approve is what actually happens \\
+\cotag{coPurple}{Owners} & The pricing team (pricing server and policy configuration), sales operations (CRM server) and the platform team (hosting and monitoring) & Clear boundaries, written procedures for running the system, and a say in what they are signing up for \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Two practical consequences follow. Every \emph{approver} appears in the design table as a person who decides a step, or as a constraint that every design must respect, and every \emph{owner} is named next to the server, store or rule that they own. If a stakeholder has no place in the design table, either the table or the stakeholder list is wrong. And the roles often pull in different directions. The sponsor wants speed; the controller wants control; the representatives want fewer clicks; IT security wants fewer permissions. A design that satisfies only the sponsor will be blocked by an approver or quietly abandoned by its users. The weights in a trade-off table (Section~\ref{sec:tradeoff}) are, in practice, a negotiated settlement among these roles, which is why they must be written down and shown to them.
 
 % ----------------------------------------------------------------------
-\section{From Business Goals to Technical Metrics}
+\section{How Will We Know It Worked?}
 \label{sec:kpis}
 
 \subsection{What makes a good KPI}
@@ -141,44 +165,33 @@ A \keyterm{key performance indicator} is a number that tells the sponsor whether
   \item \emph{Few:} three to five per case. More than that and none of them steers anything.
 \end{enumerate}
 
-The pairing rule deserves emphasis because AI solutions break it so easily. ``Tickets closed without a human'' rises happily if the system closes tickets wrongly. Harbor therefore pairs its two speed measures, quote turnaround and analyst minutes per quote, with two quality guards, realized margin and the rate of quotes issued below the margin floor. If the system ever bought speed by giving away discounts, the guards would show it at once.
+\begin{watchout}[Watch out: the KPI that rewards failure]
+AI solutions break the pairing rule easily. A measure such as ``tickets closed without a human'' rises happily if the system closes tickets wrongly. Left unpaired, it will report success while customers grow angrier every week.
+\end{watchout}
+
+Harbor therefore pairs its two speed measures, quote turnaround and analyst minutes per quote, with two quality guards, realized margin and the rate of quotes issued below the margin floor. If the system ever bought speed by giving away discounts, the guards would show it at once.
 
 \subsection{The KPI tree}
 
-KPIs live at the top of an organization's attention; models and tools live at the bottom. A \keyterm{KPI tree} connects the two. Its root is the business result; its middle layer holds operational measures that drive the result; its leaves are technical metrics, each owned by a node in the solution graph. Figure~\ref{fig:kpi-tree} shows Harbor's.
+KPIs live at the top of an organization's attention, while models and tools live at the bottom. A \keyterm{KPI tree} connects the two. Its root is the business result, its middle layer holds the operational measures that drive the result, and its leaves are technical metrics, each owned by one step of the design. The tree is easiest to read as a table, with one row for each operational measure. Table~\ref{tab:kpi-tree} shows Harbor's.
 
-\begin{figure}[htbp]
+\begin{table}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm,
-  kb/.style={draw, rounded corners=2pt, align=center, font=\scriptsize, text width=2.35cm, minimum height=9mm},
-  biz/.style={kb, fill=humanfill, very thick},
-  ops/.style={kb, fill=ragfill},
-  tech/.style={kb, fill=agentfill, text width=2.15cm},
-  arr/.style={semithick}]
-\node[biz, text width=4cm] (root) at (6.5,0) {Gross profit from quoted orders};
-\node[ops] (k1) at (1.3,-1.7) {Quote turnaround (median and 90th percentile)};
-\node[ops] (win) at (4.75,-1.7) {Win rate on quoted orders};
-\node[ops] (k2) at (8.2,-1.7) {Realized margin; below-floor rate};
-\node[ops] (k3) at (11.7,-1.7) {Analyst minutes per quote};
-\node[tech] (t1) at (0,-3.6) {Intake field accuracy};
-\node[tech] (t2) at (2.5,-3.6) {Manager queue age};
-\node[tech] (t3) at (5.0,-3.6) {Clarification rate};
-\node[tech] (t4) at (7.5,-3.6) {Policy-engine test pass rate};
-\node[tech] (t5) at (10.0,-3.6) {Numbers-match guard pass rate};
-\node[tech] (t6) at (12.5,-3.6) {Draft edit rate by analysts};
-\draw[arr] (root) -- (k1); \draw[arr] (root) -- (win); \draw[arr] (root) -- (k2); \draw[arr] (root) -- (k3);
-\draw[arr] (k1) -- (t1); \draw[arr] (k1) -- (t2); \draw[arr] (k1) -- (t3);
-\draw[-{Stealth[length=1.6mm]}, semithick] (k1) -- node[font=\tiny, above] {drives} (win);
-\draw[arr] (k2) -- (t4); \draw[arr] (k2) -- (t5);
-\draw[arr] (k3) -- (t6); \draw[arr] (k3) -- (t3);
-\node[font=\scriptsize\itshape, anchor=west] at (-1.2,0) {business result};
-\node[font=\scriptsize\itshape, anchor=west] at (-1.2,-0.9) {KPIs and risks};
-\node[font=\scriptsize\itshape, anchor=west] at (-1.2,-4.5) {node metrics};
-\end{tikzpicture}
-\caption{A KPI tree for Harbor's quote design. Each leaf is a metric of one node in Figure~2.2, so a change in a KPI can be traced to the node that caused it.}
-\label{fig:kpi-tree}
-\end{figure}
+\small
+\caption{A KPI tree for Harbor's quote design, written as a table. The root is gross profit from quoted orders. Each technical metric belongs to one step of the design in Table~\ref{tab:quote-design}, so a change in a KPI can be traced to the step that caused it.}
+\label{tab:kpi-tree}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\toprule
+\rowcolor{coHead} KPI or risk measure & Technical metrics that drive it & Step that owns the metric \\
+\midrule
+Quote turnaround (median and 90th percentile) & Intake field accuracy; clarification rate; manager queue age & Intake agent (step 2); validation (step 3); sales manager (step 5) \\
+Win rate on quoted orders & Driven mainly by quote turnaround, so it has no metric of its own & --- \\
+Realized margin; below-floor rate & Policy-engine test pass rate; numbers-match guard pass rate & Policy engine (step 4); numbers-match guardrail (step 7) \\
+Analyst minutes per quote & Draft edit rate by analysts; clarification rate & Drafting agent (step 6); validation (step 3) \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 The tree does three jobs. It \emph{explains} to the sponsor why a technical metric matters: intake field accuracy matters because every wrong field triggers a clarification round trip, which adds hours to turnaround. It \emph{directs} engineering effort to the leaves that move the root most. And it \emph{diagnoses}: when turnaround slips, the tree tells you to look first at manager queue age and clarification rate, not at the model.
 
-Notice also what is \emph{not} in the tree. There is no generic ``model accuracy.'' Each technical metric belongs to a specific node and has a specific job. A node whose metric does not connect to any KPI or risk is a node without a reason to exist---the same conclusion that trace tags reached in Chapter~\ref{ch:toolkit}, reached here from the business side.
+Notice also what is \emph{not} in the tree. There is no generic ``model accuracy.'' Each technical metric belongs to a specific step and has a specific job. A step whose metric does not connect to any KPI or risk is a step without a reason to exist. This is the same conclusion that the ``why it is there'' column of the design table reached in Chapter~\ref{ch:toolkit}, reached here from the business side.

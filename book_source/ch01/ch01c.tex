@@ -2,7 +2,7 @@
 % Chapter 1 -- Part C: ADK primer, Google Cloud primer, lifecycle, wrap-up
 % ======================================================================
 
-\section{A Primer on the Agent Development Kit}
+\section{How Do We Build an Agent with ADK?}
 \label{sec:adk}
 
 Every case in this book is built with Google's open-source \keyterm{Agent Development Kit (ADK)}. ADK is a code-first framework: you define agents, tools and the flow between them in ordinary code, then run them locally, evaluate them, and deploy them. It is available for Python, TypeScript, Go, Java and Kotlin; this book uses Python. ADK is optimized for Google's Gemini models and Google Cloud but is not tied to them: through its LiteLLM integration an ADK agent can use models from other providers \citep{adkdocs}.
@@ -93,9 +93,17 @@ def check_discount(requested_discount: float) -> dict:
         A dict with 'allowed' (bool), 'needs_manager' (bool) and 'reason'.
     """
 \end{lstlisting}
-With the weak version, a rep who asks about a 12\% discount may lead the model to call \texttt{check\_discount(d=12)}. The code treats that as 1{,}200\%, reports that manager approval is required, and nothing raises an error; the answer is simply wrong. The single phrase ``e.g.\ 0.18 for 18\%'' prevents the mistake. We use the Google docstring style, with \texttt{Args} and \texttt{Returns} sections, throughout the book.
+\begin{watchout}[Watch out: the 1{,}200\% discount]
+With the weak docstring, a rep who asks about a 12\% discount may lead the model to call \texttt{check\_discount(d=12)}. The code treats that as a 1{,}200\% discount, reports that manager approval is required, and nothing raises an error. The answer is simply wrong, and nobody notices. The single phrase ``e.g.\ 0.18 for 18\%'' prevents the mistake.
+\end{watchout}
+
+We use the Google docstring style, with \texttt{Args} and \texttt{Returns} sections, throughout the book.
 
 Notice where the discount cap lives. The instruction tells the model to call the tool, and the tool enforces the number. If the model ignores the instruction, the worst outcome is a missing check that an evaluation can catch; the cap itself cannot be talked out of. This is the plain-code principle from Section~\ref{sec:block-code} in eight lines.
+
+\begin{tryit}
+Change \texttt{DISCOUNT\_CAP} to \texttt{0.12} and ask the agent about a 14\% discount. The agent's answer changes, but you did not touch its instructions at all. That is what it means for a rule to live in code.
+\end{tryit}
 
 Notice also that the model identifier comes from an environment variable. Model names change several times a year, and older models are retired on published schedules. Hard-coding a model name into agent code is a maintenance bug waiting to happen.
 
@@ -190,7 +198,7 @@ The remaining parts of ADK appear as the cases need them. A brief preview:
 \end{description}
 
 % ----------------------------------------------------------------------
-\section{A Primer on Google Cloud for Agents}
+\section{Where Will Our Agents Run?}
 \label{sec:gcp}
 
 A design is not finished until it runs somewhere real. The cases deploy on Google Cloud so that, from the first case to the last, you move from a local prototype to production on one consistent platform. The design sections stay independent of the platform; Appendix~B maps each concept to other frameworks and clouds.
@@ -245,33 +253,39 @@ GKE & Full control; fits companies that already run Kubernetes; custom networkin
 
 \subsection{Cost control from day one}
 
-Cloud resources keep charging until someone turns them off, and agent workloads add a new kind of cost: model usage that grows with every conversation and every tool loop. Before deploying anything, set three controls: a billing budget with e-mail alerts on the project, a hard limit in the agent on the number of model calls and tool calls per request, and a cleanup script that deletes every resource the lab created. Each case in the repository includes the third. Appendix~A explains the first two.
+\begin{watchout}[Watch out: cloud bills do not stop on their own]
+Cloud resources keep charging until someone turns them off, and agent workloads add a new kind of cost: model usage that grows with every conversation and every tool loop. Before deploying anything, set three controls. First, put a billing budget with e-mail alerts on the project. Second, put a hard limit in the agent on the number of model calls and tool calls per request. Third, keep a cleanup script that deletes every resource the lab created. Each case in the repository includes the cleanup script, and Appendix~A explains the other two.
+\end{watchout}
 
 % ----------------------------------------------------------------------
-\section{The Production Lifecycle and the Map of the Book}
+\section{What Does It Take to Reach Production?}
 \label{sec:lifecycle}
 
 Every case follows the same lifecycle, shown in Figure~\ref{fig:lifecycle}: design, local build, tools via MCP, knowledge, evaluation, deployment, state and memory, security, observability, and operations. A demo stops after the second or third stage. A production system needs all ten.
+
+\begin{keyidea}
+A demo proves that something \emph{can} work. Production proves that it \emph{keeps} working, safely and affordably, when real people use it every day.
+\end{keyidea}
 
 The book does not teach all ten stages at full depth in every chapter; that would make each case three times as long and repeat itself. Instead, each case goes deep on one stage, its \emph{technical focus}, and briefly applies the stages already taught. By the capstone you will have practiced every stage in depth once and in summary many times.
 
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
-  stage/.style={draw, rounded corners=2pt, fill=codefill, align=center, font=\footnotesize, text width=2.15cm, minimum height=11mm},
+  stage/.style={draw, rounded corners=3pt, align=center, font=\footnotesize, text width=2.15cm, minimum height=11mm},
   ch/.style={font=\scriptsize\itshape, text=black!65},
   arr/.style={-{Stealth[length=2mm]}, thick}
 ]
-\node[stage] (s1) at (0,0) {1. Design};
-\node[stage] (s2) at (2.95,0) {2. Local build};
-\node[stage] (s3) at (5.9,0) {3. Tools\\via MCP};
-\node[stage] (s4) at (8.85,0) {4. Knowledge\\(RAG)};
-\node[stage] (s5) at (11.8,0) {5. Evaluation};
-\node[stage] (s6) at (11.8,-2.4) {6. Deployment};
-\node[stage] (s7) at (8.85,-2.4) {7. State \&\\memory};
-\node[stage] (s8) at (5.9,-2.4) {8. Security};
-\node[stage] (s9) at (2.95,-2.4) {9. Observ-\\ability};
-\node[stage] (s10) at (0,-2.4) {10. Operations};
+\node[stage, fill=coBlueBg, draw=coBlue] (s1) at (0,0) {1. Design};
+\node[stage, fill=coGreenBg, draw=coGreen] (s2) at (2.95,0) {2. Local build};
+\node[stage, fill=coGreenBg, draw=coGreen] (s3) at (5.9,0) {3. Tools\\via MCP};
+\node[stage, fill=coGreenBg, draw=coGreen] (s4) at (8.85,0) {4. Knowledge\\(RAG)};
+\node[stage, fill=coGreenBg, draw=coGreen] (s5) at (11.8,0) {5. Evaluation};
+\node[stage, fill=coPurpleBg, draw=coPurple] (s6) at (11.8,-2.4) {6. Deployment};
+\node[stage, fill=coPurpleBg, draw=coPurple] (s7) at (8.85,-2.4) {7. State \&\\memory};
+\node[stage, fill=coPurpleBg, draw=coPurple] (s8) at (5.9,-2.4) {8. Security};
+\node[stage, fill=coPurpleBg, draw=coPurple] (s9) at (2.95,-2.4) {9. Observ-\\ability};
+\node[stage, fill=coPurpleBg, draw=coPurple] (s10) at (0,-2.4) {10. Operations};
 \foreach \a/\b in {s1/s2,s2/s3,s3/s4,s4/s5,s5/s6,s6/s7,s7/s8,s8/s9,s9/s10} \draw[arr] (\a) -- (\b);
 \draw[arr, dashed] (s10.north) -- node[font=\scriptsize, left, align=right] {changed\\requirements} (s1.south);
 \node[ch, above=1mm of s1] {Ch.~2--3};
@@ -285,14 +299,14 @@ The book does not teach all ten stages at full depth in every chapter; that woul
 \node[ch, below=1mm of s9] {Ch.~7};
 \node[ch, below=1mm of s10] {Ch.~13};
 \end{tikzpicture}
-\caption{The production lifecycle used in every case, with the chapters that go deep on each stage. Human-in-the-loop design (Chapter~\ref{ch:case-invoice}) and cost and latency (Chapter~\ref{ch:case-forecast}) cut across several stages.}
+\caption{The production lifecycle used in every case, with the chapters that go deep on each stage. Blue is designing, green is building and testing, and purple is running the system in production. Human-in-the-loop design (Chapter~\ref{ch:case-invoice}) and cost and latency (Chapter~\ref{ch:case-forecast}) cut across several stages.}
 \label{fig:lifecycle}
 \end{figure}
 
-\section{How to Use This Book}
+\section{How Should You Read This Book?}
 \label{sec:how-to-use}
 
-\paragraph{Two tracks.} The \emph{design track}---the business brief, solution graphs, trade-offs and business case---needs no programming. The \emph{build track} adds the ADK implementation and Google Cloud deployment. MBA and executive-education readers can follow the design track alone and treat the build sections as demonstrations. Computer science, data science and information systems readers should do both.
+\paragraph{Two tracks.} The \emph{design track}---the business brief, design tables, trade-offs and business case---needs no programming. The \emph{build track} adds the ADK implementation and Google Cloud deployment. MBA and executive-education readers can follow the design track alone and treat the build sections as demonstrations. Computer science, data science and information systems readers should do both.
 
 \paragraph{One template.} Chapters~\ref{ch:case-policy} to~\ref{ch:case-loan} share the same nine sections: business brief and current process; stakeholders, KPIs and value hypothesis; alternative designs; trade-offs; build; deploy; evaluate; business case and rollout; and a changed-requirement exercise. Once you have worked through one case you will know where to find everything in the next.
 
@@ -306,7 +320,7 @@ The book does not teach all ten stages at full depth in every chapter; that woul
 
 \begin{itemize}[itemsep=2pt]
   \item Building an agent has become cheap. Designing a solution, which means deciding what the system should do, choosing a block for each part, comparing alternatives and tying the result to business outcomes, has not. The distance between the two is the \emph{design gap}.
-  \item Closing the gap takes five skills: decomposition, boundaries, trade-offs, production and business justification. Every case produces four deliverables: a solution graph, a trade-off table, a working deployment and a one-page memo.
+  \item Closing the gap takes five skills: decomposition, boundaries, trade-offs, production and business justification. Every case produces four deliverables: a design table, a trade-off table, a working deployment and a one-page memo.
   \item A language model turns a prompt into text. On its own it does not know the company, cannot act, has no standard way to reach company systems, and cannot guarantee rules or arithmetic. RAG, agents with tools, MCP and plain code fill these four gaps.
   \item RAG indexes documents ahead of time as chunks with embeddings, finds the passages closest in meaning to each question, and places them in the prompt so that the model can answer from them and cite them.
   \item An agent is a model in a loop. At each turn it either requests a tool call, which the framework runs and returns, or gives a final answer. Step and cost limits bound the loop.
@@ -329,6 +343,7 @@ autonomy spectrum \\
 chunk \\
 context window \\
 design gap \\
+design table \\
 embedding \\
 Gemini Enterprise Agent Platform \\
 guardrail \\
@@ -346,7 +361,6 @@ prompt \\
 retrieval-augmented generation (RAG) \\
 semantic search \\
 solution design \\
-solution graph \\
 tool \\
 tool call \\
 trade-off table \\
