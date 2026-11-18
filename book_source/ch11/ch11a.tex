@@ -15,63 +15,92 @@ Starting point & Original design (Part III) \\
 Technical focus & Cost and latency \\
 Business skill & Inventory economics \\
 Patterns & Event-triggered agent; router (exceptions); approval gate \\
-Deliverables & Solution graphs, newsvendor and compute models, forecast MCP server, backtest, memo
+Deliverables & Design tables, newsvendor and compute models, forecast MCP server, backtest, memo
 \end{tabularx}
 \end{caseglance}
 
-\begin{objectives}
-After working through this case, you will be able to:
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Place a time-series foundation model behind an MCP server and decide between batch and on-demand inference.
-  \item Turn probabilistic forecasts into orders with the newsvendor rule, and explain why ordering the mean is wrong for perishables.
-  \item Use an agent only where it pays: on the small share of series that need judgment.
-  \item Estimate compute cost and latency for a nightly pipeline and an agent's share of it.
-  \item Require a new model to beat a simple baseline on the company's own backtest before it is used.
+  \item How do you put a time-series foundation model behind an MCP server, and when should it run in batch rather than on demand?
+  \item Why is ordering the expected demand wrong for perishable food, and what should you order instead?
+  \item Where does an agent pay for itself in a pipeline of 480{,}000 forecasts a night?
+  \item What will a nightly pipeline cost, how long will it take, and how much of that is the agent?
+  \item Why must a new model beat a simple baseline on your own data before anyone uses it?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
-\section{Business Brief and Current Process}
+\section{Business Brief: What Is Going Wrong Today?}
 \label{sec:fc-brief}
 
 Greenleaf Grocers sells about 6{,}000 products in each of its 80 stores. Every night, the replenishment system computes an order for each product in each store---about 480{,}000 store--product combinations, or \emph{series}---and sends the orders to Greenleaf's distribution centre and direct-delivery suppliers by 4~a.m. For most products, the system uses a moving average of recent sales with safety stock. Twelve planners review exceptions and override orders for promotions, holidays, weather and new products; they spend most of their day doing so.
 
 The results are worst where they cost most. Fresh produce, bakery and dairy are perishable: too much is thrown away, too little leaves empty shelves. Fresh waste runs at 6.8\% of fresh sales, and fresh items are out of stock at the time of a customer's visit about 7.5\% of the time. Both numbers are measured: waste from store write-offs, availability from shelf audits and sales gaps.
 
+\begin{thinkabout}
+A grocer expects to sell 40 trays of strawberries tomorrow. Should it order 40? When would it be right to order fewer, and when more?
+\end{thinkabout}
+
 % ----------------------------------------------------------------------
-\section{Stakeholders, KPIs and Value Hypothesis}
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:fc-kpis}
 
-\paragraph{Stakeholders.} The sponsor is the supply-chain director. Users are planners and store managers. Approvers include finance (inventory valuation) and the commercial team (promotions). Owners are the supply-chain analytics team (forecasting), the replenishment-systems team and the planning team.
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of forecasting and replenishment.}
+\label{tab:fc-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\cotag{coBlue}{Sponsor} & The supply-chain director. \\
+\cotag{coGreen}{Users} & Planners and store managers. \\
+\cotag{coAmber}{Approvers} & Finance, for inventory valuation, and the commercial team, for promotions. \\
+\cotag{coPurple}{Owners} & The supply-chain analytics team (forecasting), the replenishment-systems team and the planning team. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\paragraph{KPIs and risks.}
-\begin{itemize}[itemsep=1pt]
-  \item[\textsf{K1}] Fresh waste: at most 4.5\% of fresh sales, from 6.8\%.
-  \item[\textsf{K2}] Fresh on-shelf availability: at least 96\%, from 92.5\%.
-  \item[\textsf{K3}] Planner hours on routine overrides: halved.
-  \item[\textsf{K4}] Nightly pipeline complete by 3~a.m., at a known compute cost.
-  \item[\textsf{R1}] A systematic error that over- or under-orders many series at once.
-  \item[\textsf{R2}] An adjusted order outside sensible bounds reaching a supplier.
-  \item[\textsf{R3}] Forecast quality degrading unnoticed.
-\end{itemize}
+\paragraph{KPIs and risks.} Table~\ref{tab:fc-kpis} lists them.
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs (blue) and risks (red) for forecasting and replenishment.}
+\label{tab:fc-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{Fresh waste} & At most 4.5\% of fresh sales, from 6.8\%. \\
+\kpi{Availability} & Fresh on-shelf availability: at least 96\%, from 92.5\%. \\
+\kpi{Planner hours} & Planner hours on routine overrides: halved. \\
+\kpi{Done by 3 a.m.} & The nightly pipeline complete by 3~a.m., at a known compute cost. \\
+\risk{Systematic error} & An error that over- or under-orders many series at once. \\
+\risk{Out-of-bounds order} & An adjusted order outside sensible bounds reaching a supplier. \\
+\risk{Silent drift} & Forecast quality degrading unnoticed. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\textsf{K1} and \textsf{K2} are the textbook pair: ordering more raises availability and waste together. The design must improve both, which is only possible with better forecasts and a better ordering rule.
+\kpi{Fresh waste} and \kpi{Availability} are the textbook pair: ordering more raises availability and waste together. The design must improve both, which is only possible with better forecasts and a better ordering rule.
 
-\begin{quote}
-\emph{Value hypothesis.} If every series gets a probabilistic forecast and an order set by the economics of that product, and planners attend only to the few series where something unusual is happening, waste and stockouts will fall together and planners will have time for the decisions that need them.
-\end{quote}
+\begin{keyidea}[The value hypothesis, in one sentence]
+If every series gets a probabilistic forecast and an order set by the economics of that product, and planners attend only to the few series where something unusual is happening, waste and stockouts will fall together and planners will have time for the decisions that need them.
+\end{keyidea}
 
 % ----------------------------------------------------------------------
-\section{Alternative Designs}
+\section{Alternative Designs: What Could We Build?}
 \label{sec:fc-designs}
 
-\subsection{D1: an agent that forecasts and orders}
+\subsection{The agent-forecaster design: an agent that forecasts and orders}
 
 An agent reads each series' recent sales, the promotion calendar and the weather, and decides an order. It is easy to describe and wrong on three counts. Language models are not good numerical forecasters of large numbers of series compared with methods built for the job. At 480{,}000 series a night, the cost would be prohibitive (Section~\ref{sec:fc-tradeoffs}). And its errors would be hard to bound or audit.
 
-\subsection{D2: foundation-model forecasts, rules for orders, an agent for exceptions}
+\subsection{The foundation-model design: batch forecasts, rules for orders, an agent for exceptions}
 
-D2 assigns each job to the right block (Figure~\ref{fig:fc-d2}).
+The foundation-model design assigns each job to the right block. Table~\ref{tab:fc-d2} writes it down as a design table.
 \begin{itemize}[itemsep=1pt]
   \item A \emph{time-series foundation model}---a model pretrained on very large collections of time series that can forecast new series without being trained on them, such as Chronos or TimesFM \citep{ansari2024chronos,das2024timesfm}---runs as a \emph{nightly batch} over all series, producing quantile forecasts. The results are stored, and an MCP server owned by supply-chain analytics serves them.
   \item \emph{Code} computes each order from the forecast's quantiles with the newsvendor rule (Section~\ref{sec:fc-tradeoffs}) and existing constraints (pack sizes, shelf capacity, delivery days).
@@ -80,47 +109,49 @@ D2 assigns each job to the right block (Figure~\ref{fig:fc-d2}).
   \item \emph{Planners} approve, edit or reject adjustments in a morning queue, sorted by money at stake. Unreviewed adjustments by 3~a.m. fall back to the computed order.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{table}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
-\node[sg trigger] (sch) at (0,0) {Nightly schedule\\[-1pt]{\scriptsize 10 p.m.}};
-\node[sg code] (batch) at (3.2,0) {Batch forecast\\[-1pt]{\scriptsize TSFM, quantiles}};
-\node[sg store] (fs) at (6.4,0) {Forecast store\\[-1pt]{\scriptsize analytics}};
-\node[sg code] (nv) at (9.6,0) {Newsvendor orders\\[-1pt]{\scriptsize all series}};
-\node[sg code] (exc) at (9.6,-2.5) {Flag exceptions\\[-1pt]{\scriptsize $\approx$2\%}};
-\node[sg agent] (ag) at (6.4,-2.5) {Exception agent\\[-1pt]{\scriptsize L4; 10 calls/series}};
-\node[sg mcp, text width=2.4cm] (fsrv) at (3.0,-2.5) {Forecasts\\[-1pt]{\scriptsize analytics}\nodepart{two}{\tiny\ttfamily get\_forecast, what\_if, similar\_items}};
-\node[sg guard] (bd) at (6.4,-4.8) {Within\\$\pm$40\%?};
-\node[sg human] (pl) at (9.6,-4.8) {Planner\\[-1pt]{\scriptsize by 3 a.m.}};
-\node[sg mcp, text width=2.4cm] (rep) at (13.0,-2.5) {Replenishment\\[-1pt]{\scriptsize repl. systems}\nodepart{two}{\tiny\ttfamily submit\_orders}};
-\draw[sg event] (sch) -- (batch);
-\draw[sg data] (batch) -- node[sg lab, above] {write} (fs);
-\draw[sg data] (fs) -- node[sg lab, above] {read} (nv);
-\draw[sg flow] (nv) -- (exc);
-\draw[sg flow] (exc) -- node[sg lab, above] {[flagged]} (ag);
-\draw[sg call] (ag) -- (fsrv);
-\draw[sg flow] (ag) -- node[sg lab, right] {proposal} (bd);
-\draw[sg flow] (bd) -- node[sg lab, above] {[yes]} (pl);
-\draw[sg call] (pl.east) -| node[sg lab, pos=0.25, below, align=center] {[approved; on timeout:\\computed order]} (rep.south);
-\draw[sg call] (nv.east) -| node[sg lab, pos=0.3, above] {[not flagged]} (rep.north);
-\sgtag{batch}{K4 R3}
-\sgtag{nv}{K1 K2}
-\sgtag{exc}{K3}
-\sgtag{ag}{K1 K2}
-\sgtag{bd}{R2}
-\sgtag{pl}{R1 R2}
-\sgtag{rep}{K4}
-\end{tikzpicture}
-\caption{D2: batch forecasts for all series, orders by rule, an agent only for exceptions. Unreviewed adjustments fall back to the computed order, never to the agent's proposal.}
-\label{fig:fc-d2}
-\end{figure}
+\small
+\caption{The foundation-model design as a design table: batch forecasts for all series, orders by rule, and an agent only for exceptions. Unreviewed adjustments fall back to the computed order, never to the agent's proposal.}
+\label{tab:fc-d2}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+1 & At 10~p.m., forecast every series in one batch, producing quantiles & \tagCode\ Scheduled job on accelerators & Time-series foundation model; forecast store (Analytics) & \kpi{Done by 3 a.m.} \risk{Silent drift} \\
+2 & Compute each order with the newsvendor rule & \tagCode & Forecast store; prices, costs and pack sizes & \kpi{Fresh waste} \kpi{Availability} \\
+3 & Flag exceptions: promotions, holidays, weather, new products and large gaps, about 2\% of series & \tagCode & Calendars and alerts & \kpi{Planner hours} \\
+4 & Investigate each flagged series and propose an adjusted order & \tagAgent\ Level 4; ten calls per series; no write tools & Forecast server (Analytics): \texttt{get\_forecast}, \texttt{what\_if}, \texttt{similar\_items} & \kpi{Fresh waste} \kpi{Availability} \\
+5 & Reject any adjustment beyond $\pm$40\% or shelf capacity & \tagGuardrail & The computed order & \risk{Out-of-bounds order} \\
+6 & Approve, edit or reject the adjustment. At 3~a.m., anything unreviewed falls back to the computed order & \tagPerson\ Planner & Queue sorted by money at stake & \risk{Systematic error} \\
+7 & Submit all orders by 4~a.m. & \tagCode & Replenishment server (Replenishment systems), \texttt{submit\_orders} & \kpi{Done by 3 a.m.} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\subsection{D3: statistical forecasts and rules}
+\subsection{The statistical design: statistical forecasts and rules}
 
-D3 replaces moving averages with established statistical models fitted per series (exponential smoothing with seasonality, for example), keeps the newsvendor rule and the exception flags, and sends exceptions to planners without an agent. It is cheaper, well understood and a strong baseline.
+The statistical design replaces moving averages with established statistical models fitted per series (exponential smoothing with seasonality, for example), keeps the newsvendor rule and the exception flags, and sends exceptions to planners without an agent. It is cheaper, well understood and a strong baseline. Table~\ref{tab:fc-designs} compares the three designs.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The three replenishment designs side by side.}
+\label{tab:fc-designs}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} & \cellcolor{coRedBg}Agent forecaster & Foundation model & Statistical \\
+\midrule
+Forecasts made by & An agent, series by series & One nightly batch of a foundation model & Statistical models fitted per series \\
+Orders set by & The agent & The newsvendor rule, in code & The newsvendor rule, in code \\
+Exceptions handled by & The agent & An agent proposes; a planner approves & Planners alone \\
+Run cost per year (est.) & Over \$2 million & About \$0.1 million & About \$0.05 million \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 % ----------------------------------------------------------------------
-\section{Trade-offs}
+\section{Trade-offs: Which Design Should We Pilot?}
 \label{sec:fc-tradeoffs}
 
 \subsection{Inventory economics: order a quantile, not the mean}
@@ -145,6 +176,11 @@ order = 90% quantile       profit/day $ -4.33
 
 For this item, the critical ratio is 0.37: because waste costs more than a lost sale, the best order is \emph{below} the median expected demand. Ordering the mean leaves about 9\% of the item's profit on the table; ordering the 90th percentile ``to be safe'' loses money. The right quantile differs by product---for a high-margin item with low waste cost, it is well above the median---which is why orders are computed by code from each product's economics rather than set by a blanket policy or a model's intuition.
 
+\begin{quickcheck}
+A high-margin item rarely spoils. Should its order be above or below the median expected demand?
+\answer{Above. A lost sale costs more than a leftover unit, so the critical ratio is above one half and the best order sits above the median.}
+\end{quickcheck}
+
 \subsection{Cost and latency: where the compute goes}
 
 The technical focus of this case is cost and latency, and the second half of Listing~\ref{lst:replenish} makes the point in three lines:
@@ -154,7 +190,13 @@ agent reviews 100% of series: $    5,760/night, $   2,102,400/year
 agent reviews   2% of series: $      115/night, $      42,048/year
 \end{lstlisting}
 
-At the assumed throughput and price, forecasting every series with a foundation model in a batch costs about a dollar a night. Asking an agent to review every series would cost about \$2.1 million a year---and, at a few seconds per series, would not finish before the trucks leave. Restricting the agent to the 2\% of series flagged as exceptions brings its cost to about \$42{,}000 a year and its run time to minutes when parallelized. The general lesson: \emph{batch the predictable; reserve agents for the exceptional}. The throughput and price figures are assumptions to be replaced with measurements on Greenleaf's hardware, but the ratio between the lines is robust to any reasonable values.
+At the assumed throughput and price, forecasting every series with a foundation model in a batch costs about a dollar a night. Asking an agent to review every series would cost about \$2.1 million a year---and, at a few seconds per series, would not finish before the trucks leave. Restricting the agent to the 2\% of series flagged as exceptions brings its cost to about \$42{,}000 a year and its run time to minutes when parallelized. The general lesson fits in one line.
+
+\begin{keyidea}
+Batch the predictable; reserve agents for the exceptional.
+\end{keyidea}
+
+ The throughput and price figures are assumptions to be replaced with measurements on Greenleaf's hardware, but the ratio between the lines is robust to any reasonable values.
 
 Latency shapes the design as much as cost. The nightly window runs from the close of sales data at 10~p.m. to order submission at 4~a.m. Batch forecasting must finish first; exception investigation next; planner review last, with a hard fallback at 3~a.m. The forecast server's \texttt{get\_forecast} tool therefore reads stored results---milliseconds---while \texttt{what\_if}, which runs the model with a changed covariate, is limited to flagged series and counted against the agent's budget.
 
@@ -167,19 +209,19 @@ Latency shapes the design as much as cost. The nightly window runs from the clos
 \label{tab:fc-tradeoff}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
- & Weight & D1 & D2 & D3 \\
+\rowcolor{coHead} & Weight & Agent forecaster & Foundation model & Statistical \\
 \midrule
 Run cost per year (est.) & --- & $>$\$2M & \$0.1M & \$0.05M \\
 \midrule
-Quality (\textsf{K1}, \textsf{K2}) & 0.30 & 2 & 5 & 4 \\
-Latency (\textsf{K4}) & 0.15 & 1 & 4 & 5 \\
-Planner workload (\textsf{K3}) & 0.20 & 3 & 5 & 3 \\
+Quality & 0.30 & 2 & 5 & 4 \\
+Latency & 0.15 & 1 & 4 & 5 \\
+Planner workload & 0.20 & 3 & 5 & 3 \\
 Control and auditability & 0.15 & 1 & 4 & 5 \\
 Maintainability & 0.20 & 2 & 3 & 4 \\
 \midrule
-Weighted score & 1.00 & 1.90 & 4.30 & 4.10 \\
+\rowcolor{coAmberBg} Weighted score & 1.00 & 1.90 & 4.30 & 4.10 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-D2 leads on the provisional scores, but its quality advantage over D3 is an assumption until it is measured on Greenleaf's own data. The decision record makes that explicit: D2 is chosen \emph{on condition} that the foundation model beats D3's statistical models in the backtest by a stated margin; if it does not, Greenleaf builds D3 with D2's exception agent added, which is still a large improvement on moving averages.
+The foundation-model design leads on the provisional scores, but its quality advantage over the statistical design is an assumption until it is measured on Greenleaf's own data. The decision record makes that explicit: the foundation-model design is chosen \emph{on condition} that the foundation model beats the statistical design's models in the backtest by a stated margin; if it does not, Greenleaf builds the statistical design with the foundation-model design's exception agent added, which is still a large improvement on moving averages.

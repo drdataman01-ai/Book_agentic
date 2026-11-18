@@ -2,14 +2,14 @@
 % Chapter 6 -- Part B: build, deploy, evaluate, business case, end matter
 % ======================================================================
 
-\section{Build}
+\section{Build: How Do We Make It?}
 \label{sec:inv-build}
 
 \subsection{The workflow}
 
-D2 is a graph workflow in ADK~2, built the way the sample builds its expense flow: routing decisions are code functions that return a named route, model calls are nodes, and pauses for people are nodes that yield a request for input. Listing~\ref{lst:inv-workflow} shows the graph and the routing function.
+The risk-routed design is a graph workflow in ADK~2, built the way the sample builds its expense flow: routing decisions are code functions that return a named route, model calls are nodes, and pauses for people are nodes that yield a request for input. Listing~\ref{lst:inv-workflow} shows the graph and the routing function.
 
-\begin{lstlisting}[language=Python, caption={D2's workflow (abridged from \texttt{ch06/invoice\_agent/agent.py}).}, label={lst:inv-workflow}]
+\begin{lstlisting}[language=Python, caption={The risk-routed design's workflow (abridged from \texttt{ch06/invoice\_agent/agent.py}).}, label={lst:inv-workflow}]
 from google.adk import Agent, Context, Event, Workflow
 from google.adk.events import RequestInput
 from .controls import run_controls          # match, duplicates, bank check, score
@@ -59,6 +59,10 @@ The structure makes three properties easy to verify by reading: every route out 
 
 The technical focus of this case is the human checkpoint, and a checkpoint is more than a pause. Five questions define it.
 
+\begin{thinkabout}
+Imagine you are the clerk. An invoice arrives flagged as a possible duplicate. What would you need to see on one screen to decide in under a minute, and what would make you approve it without really looking?
+\end{thinkabout}
+
 \paragraph{What does the reviewer see?} The evidence pack: the invoice image with the extracted fields beside it; the purchase-order and receipt lines that disagree, with the differences highlighted; the result of each control (duplicate candidates with links, bank-detail history); and the supplier's last ten invoices. The explanation agent writes a short summary of \emph{what failed}, citing the lines; it does not recommend approval or rejection. A recommendation from the system invites the reviewer to agree with it, which is the opposite of what a reviewer is for.
 
 \paragraph{What may the reviewer decide?} A closed set of decisions, each with required fields: \emph{approve} (with a reason code if any control failed), \emph{reject} (with a reason sent to the supplier), \emph{request information} (from the buyer, the warehouse or the supplier, which restarts the deadline), or \emph{correct} (edit an extracted field, which re-runs the controls). There is no free-text decision.
@@ -92,10 +96,10 @@ Any step that releases money, grants access or changes a record of authority mus
 \end{principle}
 
 % ----------------------------------------------------------------------
-\section{Deploy}
+\section{Deploy: How Do We Run It Safely?}
 \label{sec:inv-deploy}
 
-The sample's Terraform provides most of what D2 needs: a Cloud Run service for the agent, a second for the review interface behind Identity-Aware Proxy, a Pub/Sub topic with a push subscription that triggers the workflow, and log-based metrics with alert policies. D2 adds five things:
+The sample's Terraform provides most of what the risk-routed design needs: a Cloud Run service for the agent, a second for the review interface behind Identity-Aware Proxy, a Pub/Sub topic with a push subscription that triggers the workflow, and log-based metrics with alert policies. The risk-routed design adds five things:
 \begin{enumerate}[itemsep=2pt]
   \item \textbf{Durable pauses.} A workflow paused for two days must survive restarts and new deployments. Sessions are stored in a managed database rather than in memory, and the agent service is deployed so that a new version can resume sessions created by the old one (Chapter~\ref{ch:capstone} returns to versioning).
   \item \textbf{Deadlines.} A Cloud Scheduler job runs every hour, finds paused workflows past their deadline, and escalates.
@@ -105,17 +109,17 @@ The sample's Terraform provides most of what D2 needs: a Cloud Run service for t
 \end{enumerate}
 
 % ----------------------------------------------------------------------
-\section{Evaluate}
+\section{Evaluate: How Do We Know It Works?}
 \label{sec:inv-evaluate}
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Evaluation thresholds for D2.}
+\caption{Evaluation thresholds for the risk-routed design.}
 \label{tab:inv-thresholds}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}r@{}}
 \toprule
-Metric & Node & Threshold \\
+\rowcolor{coHead} Metric & Step & Threshold \\
 \midrule
 Invoice total and supplier extracted correctly (PDFs) & Extraction, validation & $\ge$ 99.5\% \\
 Invalid extraction reaching the controls & Validation & 0 \\
@@ -129,20 +133,29 @@ Canary catch rate, per reviewer & Clerks & $\ge$ 95\% \\
 \end{tabularx}
 \end{table}
 
-Two features of the evaluation are specific to human-in-the-loop systems. First, \emph{the people are part of what is evaluated}: canary catch rates and re-review agreement measure the checkpoint, not just the software. Second, \emph{controls are tested the way auditors test them}: for \textsf{R4}, the test is an attempt by an unauthorized user, and by a requester, to approve through every path, including by editing the payload sent from the review interface. A control that has not been tried is an assertion, not a control.
+Two features of the evaluation are specific to human-in-the-loop systems. First, \emph{the people are part of what is evaluated}: canary catch rates and re-review agreement measure the checkpoint, not just the software. Second, \emph{controls are tested the way auditors test them}: for \risk{Wrong approver}, the test is an attempt by an unauthorized user, and by a requester, to approve through every path, including by editing the payload sent from the review interface.
+
+\begin{keyidea}
+A control that has not been tried is an assertion, not a control.
+\end{keyidea}
 
 The risk score is evaluated on the share of problem \emph{value} that reaches review, not on accuracy. A score that is 99\% accurate because 96\% of invoices are clean is useless; what matters is how much of the money at risk it puts in front of a person within the review budget.
 
 % ----------------------------------------------------------------------
-\section{Business Case and Rollout}
+\section{Business Case: Is It Worth It?}
 \label{sec:inv-business}
 
-\paragraph{Value.} At about \$2.90 per invoice against \$9.40 today, D2 frees about \$62{,}000 a month of clerk time at current volume. The controller's intended use for that capacity is specific: absorb the acquisition's 40\% increase in volume without hiring the four clerks it would otherwise need (about \$260{,}000 a year). Faster approval raises captured early-payment discounts from 35\% to a target of 85\%: on about \$4.6 million a month of discount-eligible spend at 2\%, that is about \$46{,}000 a month, or \$557{,}000 a year, and it rests on a measured input---which invoices currently miss their discount date and why. Losses stay close to what reviewing every invoice would achieve (Table~\ref{tab:review-policies}), with bank-detail fraud addressed by a control that does not depend on a model at all. Build cost is estimated at \$350{,}000.
+\paragraph{Value.} At about \$2.90 per invoice against \$9.40 today, the risk-routed design frees about \$62{,}000 a month of clerk time at current volume. The controller's intended use for that capacity is specific: absorb the acquisition's 40\% increase in volume without hiring the four clerks it would otherwise need (about \$260{,}000 a year). Faster approval raises captured early-payment discounts from 35\% to a target of 85\%: on about \$4.6 million a month of discount-eligible spend at 2\%, that is about \$46{,}000 a month, or \$557{,}000 a year, and it rests on a measured input---which invoices currently miss their discount date and why. Losses stay close to what reviewing every invoice would achieve (Table~\ref{tab:review-policies}), with bank-detail fraud addressed by a control that does not depend on a model at all. Build cost is estimated at \$350{,}000.
+
+\begin{quickcheck}
+Which of the value lines above rests on a measured input, and which on an assumption?
+\answer{The discount line rests on a measured input: which invoices miss their discount date today, and why. The capacity line depends on the acquisition going ahead and on the controller's decision not to hire.}
+\end{quickcheck}
 
 \paragraph{Pilot: shadow, then partial, then full.} For a workflow that moves money, the safest pilot runs in three stages.
 \begin{enumerate}[itemsep=1pt]
-  \item \emph{Shadow (four weeks).} D2 processes every invoice in shadow mode while clerks work as today. Every difference between D2's route and the clerks' outcome is reviewed. This measures extraction, controls and the risk score on real invoices with no exposure.
-  \item \emph{Partial (four weeks).} The touchless path is enabled for invoices from the 200 suppliers with the cleanest history, under \$5{,}000. All other invoices behave as in D3: every exception to a clerk.
+  \item \emph{Shadow (four weeks).} The risk-routed design processes every invoice in shadow mode while clerks work as today. Every difference between the risk-routed design's route and the clerks' outcome is reviewed. This measures extraction, controls and the risk score on real invoices with no exposure.
+  \item \emph{Partial (four weeks).} The touchless path is enabled for invoices from the 200 suppliers with the cleanest history, under \$5{,}000. All other invoices behave as in the perfect-match design: every exception to a clerk.
   \item \emph{Full.} The review threshold moves to the value computed from the shadow data.
 \end{enumerate}
 \emph{Go} from each stage to the next requires zero duplicate payments, zero unauthorized approvals, at least 99.5\% extraction accuracy on totals, and canary catch rates of at least 95\%. The controller owns each decision; internal audit signs off before the touchless path is enabled.
@@ -167,13 +180,13 @@ The risk score is evaluated on the share of problem \emph{value} that reaches re
 \end{tcolorbox}
 
 % ----------------------------------------------------------------------
-\section{Changed Requirement}
+\section{Changed Requirement: What If the World Changes?}
 \label{sec:inv-changed}
 
 \begin{enumerate}[itemsep=3pt]
-  \item \textbf{E-invoicing mandate.} Two of Meridian's markets will require structured electronic invoices from suppliers within two years. Which nodes become unnecessary for those invoices? Does the case for D2 over D3 get weaker?
-  \item \textbf{Different systems after the acquisition.} The acquired company runs a different ERP. Should D2 call both ERPs through one MCP server or two? Who owns each?
-  \item \textbf{Dual approval.} The external auditor requires two approvers for any invoice above \$50{,}000. Change the graph and the decision node. What happens to \textsf{K3} for large invoices, and how would you protect it?
+  \item \textbf{E-invoicing mandate.} Two of Meridian's markets will require structured electronic invoices from suppliers within two years. Which steps become unnecessary for those invoices? Does the case for the risk-routed design over the perfect-match design get weaker?
+  \item \textbf{Different systems after the acquisition.} The acquired company runs a different ERP. Should the risk-routed design call both ERPs through one MCP server or two? Who owns each?
+  \item \textbf{Dual approval.} The external auditor requires two approvers for any invoice above \$50{,}000. Change the design table and the decision step. What happens to \kpi{Days to approval} for large invoices, and how would you protect it?
 \end{enumerate}
 
 % ----------------------------------------------------------------------
@@ -193,7 +206,7 @@ The risk score is evaluated on the share of problem \emph{value} that reaches re
 \addcontentsline{toc}{section}{Review Questions}
 
 \begin{enumerate}[itemsep=2pt]
-  \item List three strengths of the sample's design and explain why each one carries over to D2.
+  \item List three strengths of the sample's design and explain why each one carries over to the risk-routed design.
   \item Why does ``Do not approve'' approve in the sample's free-text path? Rewrite the rule so that it fails closed.
   \item Explain why amount thresholds are a poor review rule for invoices, using Table~\ref{tab:review-policies}.
   \item Why does the evidence pack describe what failed but not recommend a decision?
@@ -207,8 +220,8 @@ The risk score is evaluated on the share of problem \emph{value} that reaches re
 \addcontentsline{toc}{section}{Exercises}
 
 \begin{enumerate}[itemsep=2pt]
-  \item \textbf{(Design)} Draw D3 in the notation and run the well-formedness checks on D1, D2 and D3.
-  \item \textbf{(Design)} Write the node card for the explanation agent, including what it must never say.
+  \item \textbf{(Design)} Write the perfect-match design as a design table and run the eight checks of Chapter~\ref{ch:toolkit} on all three designs.
+  \item \textbf{(Design)} Write the component card for the explanation agent, including what it must never say.
   \item \textbf{(Design)} Complete one changed requirement from Section~\ref{sec:inv-changed}.
   \item \textbf{(Build)} In \texttt{review\_policy.py}, make review cost rise with invoice complexity and reviewer catch rate fall as daily review volume rises. Recompute the best threshold.
   \item \textbf{(Build)} Implement the deadline sweep: a function that, given paused workflows with deadlines, returns the escalations due, and its tests.
@@ -217,7 +230,7 @@ The risk score is evaluated on the share of problem \emph{value} that reaches re
 \section*{Lab 6: A Checkpoint That Holds}
 \addcontentsline{toc}{section}{Lab 6: A Checkpoint That Holds}
 
-\paragraph{Goal.} Build D2 from the sample, run it in shadow mode on a synthetic month of invoices, set the review threshold from the results, and show that the checkpoint resists unauthorized and malformed decisions.
+\paragraph{Goal.} Build the risk-routed design from the sample, run it in shadow mode on a synthetic month of invoices, set the review threshold from the results, and show that the checkpoint resists unauthorized and malformed decisions.
 
 \paragraph{Steps.}
 \begin{enumerate}[itemsep=2pt]

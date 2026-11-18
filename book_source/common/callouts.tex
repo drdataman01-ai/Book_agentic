@@ -73,3 +73,11 @@
 
 % Header row color for tables: \rowcolor{coHead}
 \colorlet{coHead}{coBlueBg}
+
+% ---------- named KPIs and risks (case chapters) -----------------------------
+% Usage: \kpi{Answer accuracy}, \risk{Restricted leak}
+\DeclareRobustCommand{\kpi}[1]{\cotagbox{coBlue}{#1}}
+\DeclareRobustCommand{\risk}[1]{\cotagbox{coRed}{#1}}
+
+% Let lines with unbreakable tags stretch a little instead of overflowing.
+\setlength{\emergencystretch}{2.5em}

@@ -1,65 +1,70 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Case: Credit Card Fraud Review}{123}{chapter.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Case: Credit Card Fraud Review}{129}{chapter.8}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:case-fraud}{{8}{123}{Case: Credit Card Fraud Review}{chapter.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8.1}Business Brief and Current Process}{123}{section.8.1}\protected@file@percent }
-\newlabel{sec:fr-brief}{{8.1}{123}{Business Brief and Current Process}{section.8.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8.2}Stakeholders, KPIs and Value Hypothesis}{124}{section.8.2}\protected@file@percent }
-\newlabel{sec:fr-kpis}{{8.2}{124}{Stakeholders, KPIs and Value Hypothesis}{section.8.2}{}}
-\@writefile{toc}{\contentsline {paragraph}{Stakeholders.}{124}{section*.148}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{KPIs and risks.}{124}{section*.149}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.3}Alternative Designs}{124}{section.8.3}\protected@file@percent }
-\newlabel{sec:fr-designs}{{8.3}{124}{Alternative Designs}{section.8.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.1}D1: an agent that judges each transaction}{124}{subsection.8.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.2}D2: anomaly model as a tool; agent as the analyst's assistant}{124}{subsection.8.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8.1}{\ignorespaces D2. Above the block threshold the card is blocked at once; below the review band the transaction is approved (edges omitted). The red boundary here marks the latency-critical path, which contains no language model. The agent works on the review queue, after authorization, and has no write tools.}}{125}{figure.8.1}\protected@file@percent }
-\newlabel{fig:fr-d2}{{8.1}{125}{D2. Above the block threshold the card is blocked at once; below the review band the transaction is approved (edges omitted). The red boundary here marks the latency-critical path, which contains no language model. The agent works on the review queue, after authorization, and has no write tools}{figure.8.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.3}D3: automated customer verification}{125}{subsection.8.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.4}Trade-offs}{125}{section.8.4}\protected@file@percent }
-\newlabel{sec:fr-tradeoffs}{{8.4}{125}{Trade-offs}{section.8.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4.1}Thresholds under asymmetric costs and limited capacity}{125}{subsection.8.4.1}\protected@file@percent }
-\newlabel{lst:fraud-policy}{{8.1}{125}{Block and review thresholds under capacity (\texttt {ch08/fraud\_policy.py}, core)}{lstlisting.8.1}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.1}Block and review thresholds under capacity (\texttt  {ch08/fraud\_policy.py}, core).}{125}{lstlisting.8.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4.2}Scores and decision}{126}{subsection.8.4.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {8.1}{\ignorespaces Trade-off table for fraud review. D1 is shown outside the authorization path; inside it, D1 fails \textsf  {R1}.}}{126}{table.8.1}\protected@file@percent }
-\newlabel{tab:fr-tradeoff}{{8.1}{126}{Trade-off table for fraud review. D1 is shown outside the authorization path; inside it, D1 fails \textsf {R1}}{table.8.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8.5}Build}{127}{section.8.5}\protected@file@percent }
-\newlabel{sec:fr-build}{{8.5}{127}{Build}{section.8.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5.1}The scoring server}{127}{subsection.8.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5.2}The case agent and its summary}{127}{subsection.8.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5.3}Faithfulness}{127}{subsection.8.5.3}\protected@file@percent }
-\newlabel{lst:faithful}{{8.2}{127}{The faithfulness guardrail (\texttt {ch08/faithfulness.py})}{lstlisting.8.2}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.2}The faithfulness guardrail (\texttt  {ch08/faithfulness.py}).}{127}{lstlisting.8.2}\protected@file@percent }
+\newlabel{ch:case-fraud}{{8}{129}{Case: Credit Card Fraud Review}{chapter.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.1}Business Brief: What Is Going Wrong Today?}{129}{section.8.1}\protected@file@percent }
+\newlabel{sec:fr-brief}{{8.1}{129}{Business Brief: What Is Going Wrong Today?}{section.8.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{130}{section.8.2}\protected@file@percent }
+\newlabel{sec:fr-kpis}{{8.2}{130}{Stakeholders and KPIs: Who Cares, and How Will We Know?}{section.8.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8.1}{\ignorespaces Stakeholders of fraud review.}}{130}{table.8.1}\protected@file@percent }
+\newlabel{tab:fr-stakeholders}{{8.1}{130}{Stakeholders of fraud review}{table.8.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{KPIs and risks.}{130}{section*.146}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8.2}{\ignorespaces KPIs (blue) and risks (red) for fraud review.}}{130}{table.8.2}\protected@file@percent }
+\newlabel{tab:fr-kpis}{{8.2}{130}{KPIs (blue) and risks (red) for fraud review}{table.8.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.3}Alternative Designs: What Could We Build?}{131}{section.8.3}\protected@file@percent }
+\newlabel{sec:fr-designs}{{8.3}{131}{Alternative Designs: What Could We Build?}{section.8.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.1}The agent-judge design: an agent that judges each transaction}{131}{subsection.8.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.2}The assistant design: the model scores, the agent assists the analyst}{131}{subsection.8.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.3}The verification design: ask the cardholder}{131}{subsection.8.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.4}Trade-offs: Which Design Should We Pilot?}{131}{section.8.4}\protected@file@percent }
+\newlabel{sec:fr-tradeoffs}{{8.4}{131}{Trade-offs: Which Design Should We Pilot?}{section.8.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4.1}Thresholds under asymmetric costs and limited capacity}{131}{subsection.8.4.1}\protected@file@percent }
+\newlabel{lst:fraud-policy}{{8.1}{131}{Block and review thresholds under capacity (\texttt {ch08/fraud\_policy.py}, core)}{lstlisting.8.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.1}Block and review thresholds under capacity (\texttt  {ch08/fraud\_policy.py}, core).}{131}{lstlisting.8.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8.3}{\ignorespaces The assistant design as a design table. Step 1 is the latency-critical path, and it contains no language model. The agent works on the review queue, after authorization, and has no write tools.}}{132}{table.8.3}\protected@file@percent }
+\newlabel{tab:fr-d2}{{8.3}{132}{The assistant design as a design table. Step 1 is the latency-critical path, and it contains no language model. The agent works on the review queue, after authorization, and has no write tools}{table.8.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8.4}{\ignorespaces The three fraud designs side by side.}}{132}{table.8.4}\protected@file@percent }
+\newlabel{tab:fr-designs}{{8.4}{132}{The three fraud designs side by side}{table.8.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4.2}Scores and decision}{134}{subsection.8.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8.5}{\ignorespaces Trade-off table for fraud review. The agent-judge design is shown outside the authorization path; inside it, the agent-judge design fails \risk  {Model in hot path}.}}{134}{table.8.5}\protected@file@percent }
+\newlabel{tab:fr-tradeoff}{{8.5}{134}{Trade-off table for fraud review. The agent-judge design is shown outside the authorization path; inside it, the agent-judge design fails \risk {Model in hot path}}{table.8.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.5}Build: How Do We Make It?}{134}{section.8.5}\protected@file@percent }
+\newlabel{sec:fr-build}{{8.5}{134}{Build: How Do We Make It?}{section.8.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5.1}The scoring server}{134}{subsection.8.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5.2}The case agent and its summary}{134}{subsection.8.5.2}\protected@file@percent }
 \citation{fed2011sr117}
-\@writefile{toc}{\contentsline {section}{\numberline {8.6}Deploy}{128}{section.8.6}\protected@file@percent }
-\newlabel{sec:fr-deploy}{{8.6}{128}{Deploy}{section.8.6}{}}
-\@writefile{toc}{\contentsline {paragraph}{Out of the hot path.}{128}{section*.150}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Data minimization.}{128}{section*.151}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Model risk management.}{128}{section*.152}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.7}Evaluate}{128}{section.8.7}\protected@file@percent }
-\newlabel{sec:fr-evaluate}{{8.7}{128}{Evaluate}{section.8.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.1}Why accuracy is useless here}{128}{subsection.8.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.2}Delayed labels and time-based splits}{128}{subsection.8.7.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.3}Evaluating the agent}{129}{subsection.8.7.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.4}Monitoring}{129}{subsection.8.7.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.8}Business Case and Rollout}{129}{section.8.8}\protected@file@percent }
-\newlabel{sec:fr-business}{{8.8}{129}{Business Case and Rollout}{section.8.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8.9}Changed Requirement}{129}{section.8.9}\protected@file@percent }
-\newlabel{sec:fr-changed}{{8.9}{129}{Changed Requirement}{section.8.9}{}}
-\@writefile{toc}{\contentsline {section}{Chapter Summary}{130}{section*.153}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Review Questions}{130}{section*.154}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Exercises}{130}{section*.155}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Lab 8: Evaluating What Matters}{130}{section*.156}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Goal.}{130}{section*.157}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Steps.}{130}{section*.158}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5.3}Faithfulness}{135}{subsection.8.5.3}\protected@file@percent }
+\newlabel{lst:faithful}{{8.2}{135}{The faithfulness guardrail (\texttt {ch08/faithfulness.py})}{lstlisting.8.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.2}The faithfulness guardrail (\texttt  {ch08/faithfulness.py}).}{135}{lstlisting.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.6}Deploy: How Do We Run It Safely?}{135}{section.8.6}\protected@file@percent }
+\newlabel{sec:fr-deploy}{{8.6}{135}{Deploy: How Do We Run It Safely?}{section.8.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Out of the hot path.}{135}{section*.147}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Data minimization.}{135}{section*.148}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Model risk management.}{135}{section*.149}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.7}Evaluate: How Do We Know It Works?}{136}{section.8.7}\protected@file@percent }
+\newlabel{sec:fr-evaluate}{{8.7}{136}{Evaluate: How Do We Know It Works?}{section.8.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.1}Why accuracy is useless here}{136}{subsection.8.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.2}Delayed labels and time-based splits}{136}{subsection.8.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.3}Evaluating the agent}{136}{subsection.8.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.7.4}Monitoring}{136}{subsection.8.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.8}Business Case: Is It Worth It?}{137}{section.8.8}\protected@file@percent }
+\newlabel{sec:fr-business}{{8.8}{137}{Business Case: Is It Worth It?}{section.8.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.9}Changed Requirement: What If the World Changes?}{137}{section.8.9}\protected@file@percent }
+\newlabel{sec:fr-changed}{{8.9}{137}{Changed Requirement: What If the World Changes?}{section.8.9}{}}
+\@writefile{toc}{\contentsline {section}{Chapter Summary}{137}{section*.150}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Review Questions}{137}{section*.151}\protected@file@percent }
 \citation{bolton2002fraud}
 \citation{fed2011sr117}
-\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{131}{section*.159}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Further Reading}{131}{section*.160}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Exercises}{138}{section*.152}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Lab 8: Evaluating What Matters}{138}{section*.153}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Goal.}{138}{section*.154}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Steps.}{138}{section*.155}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{138}{section*.156}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Further Reading}{138}{section*.157}\protected@file@percent }
 \@setckpt{ch08/ch08}{
-\setcounter{page}{132}
+\setcounter{page}{139}
 \setcounter{equation}{0}
 \setcounter{enumi}{5}
 \setcounter{enumii}{0}
@@ -74,14 +79,14 @@
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{1}
-\setcounter{table}{1}
+\setcounter{figure}{0}
+\setcounter{table}{5}
 \setcounter{parentequation}{0}
 \setcounter{AM@survey}{0}
 \setcounter{lstnumber}{3}
 \setcounter{tcbbreakpart}{1}
 \setcounter{tcblayer}{0}
-\setcounter{tcolorbox@number}{180}
+\setcounter{tcolorbox@number}{482}
 \setcounter{tcbrastercolumn}{1}
 \setcounter{tcbrasterrow}{1}
 \setcounter{tcbrasternum}{1}

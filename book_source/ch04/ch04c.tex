@@ -2,14 +2,14 @@
 % Chapter 4 -- Part C: build, deploy, evaluate
 % ======================================================================
 
-\section{Build}
+\section{Build: How Do We Make It?}
 \label{sec:policy-build}
 
 The build changes the sample in four places: the documents and their metadata, the agent's instruction, the search tool, and a guardrail. The full code is in the companion repository under \texttt{ch04/}; the listings here show the parts that carry design decisions.
 
 \subsection{Documents with metadata}
 
-Filtering needs fields to filter on. D2 switches the data connector from unstructured content to structured documents: each policy file is listed in a JSON Lines manifest that gives the file's location and its metadata. Listing~\ref{lst:jsonl} shows one entry.
+Filtering needs fields to filter on. The grounded design switches the data connector from unstructured content to structured documents: each policy file is listed in a JSON Lines manifest that gives the file's location and its metadata. Listing~\ref{lst:jsonl} shows one entry.
 
 \begin{lstlisting}[language={}, caption={One entry in the policy manifest (\texttt{policies.jsonl}). The connector's data schema becomes \texttt{document}.}, label={lst:jsonl}]
 {"id": "UK-LEAVE-v7",
@@ -24,7 +24,7 @@ The document ID carries the version, so a citation identifies exactly which text
 
 \subsection{The instruction}
 
-\begin{lstlisting}[language={}, caption={D2's instruction (abridged).}, label={lst:policy-instr}]
+\begin{lstlisting}[language={}, caption={The grounded design's instruction (abridged).}, label={lst:policy-instr}]
 You answer questions from Alder & Finch employees about company policy.
 
 Rules:
@@ -41,11 +41,11 @@ Rules:
 - Be brief. Quote numbers exactly as the policy states them.
 \end{lstlisting}
 
-Each rule maps to a gap in D1 or a risk: the first two to \textsf{R1}, the citation rule to \textsf{K2} and auditability, the \texttt{NO\_SOURCE} rule to \textsf{R3}. Note what the instruction does \emph{not} do: it does not enforce the search limit or the permission filter. Those live in code.
+Each rule maps to a gap in the sample design or a risk: the first two to \risk{Wrong version}, the citation rule to \kpi{Answer accuracy} and auditability, the \texttt{NO\_SOURCE} rule to \risk{Silent policy}. Note what the instruction does \emph{not} do: it does not enforce the search limit or the permission filter. Those live in code.
 
 \subsection{The permission-aware search tool}
 
-The sample's built-in search tool is configured once, when the agent starts, and is the same for every user. D2 needs a filter that depends on who is asking. The solution is a function tool that reads the employee's profile from the session state, builds the filter, and calls the search service (Listing~\ref{lst:search-tool}).
+The sample's built-in search tool is configured once, when the agent starts, and is the same for every user. The grounded design needs a filter that depends on who is asking. The solution is a function tool that reads the employee's profile from the session state, builds the filter, and calls the search service (Listing~\ref{lst:search-tool}).
 
 \begin{lstlisting}[language=Python, caption={Profile loading and the permission-aware search tool (\texttt{ch04/app/tools.py}, abridged).}, label={lst:search-tool}]
 from google.adk.agents.callback_context import CallbackContext
@@ -100,6 +100,10 @@ Four details in this listing are design decisions, not coding style:
   \item The tool records which documents it returned. The citation guardrail needs that list, and so does the evaluation.
 \end{itemize}
 
+\begin{keyidea}
+Who is asking comes from a verified sign-in, never from the conversation. If the model or the user could supply the country, the filter would be only as trustworthy as the prompt.
+\end{keyidea}
+
 \subsection{The citation guardrail}
 
 Listing~\ref{lst:cite-guard} runs after each model response. If the response is a final answer, it checks that the answer cites at least one source and that every cited document was retrieved in this conversation. Otherwise it replaces the answer with the offer to open an HR ticket.
@@ -130,7 +134,7 @@ def citation_check(callback_context, llm_response: LlmResponse):
 The agent is then assembled as in the sample, with the new instruction, \texttt{search\_policies} as its only search tool, \texttt{load\_profile} as a before-agent callback and \texttt{citation\_check} as an after-model callback. The ticket tool is a separate step outside the agent, called by the web front end only after the employee clicks to confirm; the agent itself has no write tools at all.
 
 % ----------------------------------------------------------------------
-\section{Deploy}
+\section{Deploy: How Do We Run It Safely?}
 \label{sec:policy-deploy}
 
 This is the book's first deployment, so we take it step by step. The technical focus of the case is getting the basics right once, so that later cases can build on them.
@@ -155,22 +159,26 @@ adk deploy cloud_run --project=$PROJECT --region=$REGION \
   \item \textbf{Cost controls.} Set a maximum number of Cloud Run instances, a billing budget with alerts, and the search-count limit already enforced in the tool.
 \end{enumerate}
 
+\begin{watchout}[Watch out: defaults are decisions]
+A global data-store location, a \texttt{latest} model alias and a daily refresh are all defaults that someone chose for a different problem. Each one in this list was examined and replaced; none was simply inherited.
+\end{watchout}
+
 \begin{designnote}
 The sample's README points to the deprecated agent-starter-pack tooling as the old path and recommends ADK's own deploy commands. Expect such shifts during the life of this book. The design decisions in the steps above---residency, least privilege, pinned models, private access, event-driven freshness---do not change when the commands do.
 \end{designnote}
 
 % ----------------------------------------------------------------------
-\section{Evaluate}
+\section{Evaluate: How Do We Know It Works?}
 \label{sec:policy-evaluate}
 
 \subsection{Measure retrieval separately from answers}
 
-A retrieval-augmented system can fail in two places: retrieval can miss the right passage, or generation can misuse a passage it was given. If you measure only final answers, you cannot tell which happened, and you will fix the wrong thing. The evaluation therefore measures five things, each tied to a node and a KPI:
+A retrieval-augmented system can fail in two places: retrieval can miss the right passage, or generation can misuse a passage it was given. If you measure only final answers, you cannot tell which happened, and you will fix the wrong thing. The evaluation therefore measures five things, each tied to a step and a KPI:
 \begin{description}[leftmargin=1em,itemsep=2pt]
-  \item[Recall@$k$] For answerable questions, the share for which a correct document is among the top $k$ retrieved. Measures the index and the filter. Feeds \textsf{K2}.
+  \item[Recall@$k$] For answerable questions, the share for which a correct document is among the top $k$ retrieved. Measures the index and the filter. Feeds \kpi{Answer accuracy}.
   \item[Mean reciprocal rank (MRR)] The average of $1/\text{rank}$ of the first correct document. A falling MRR with steady recall means right documents are slipping down the list, often a sign of competing near-duplicates.
   \item[Citation precision] The share of citations that refer to retrieved documents. The guardrail should hold this at 1.0; if it does not, the guardrail is broken.
-  \item[Abstention] On questions the policies do not answer, the share where the assistant abstained (abstention recall, for \textsf{R3}); on answerable questions, the share where it abstained anyway (false abstention, which costs \textsf{K1}).
+  \item[Abstention] On questions the policies do not answer, the share where the assistant abstained (abstention recall, for \risk{Silent policy}); on answerable questions, the share where it abstained anyway (false abstention, which costs \kpi{Resolved without HR}).
   \item[Leakage] The number of cases in which any document the employee may not see was retrieved. Not answered---\emph{retrieved}. A restricted passage that reaches the model has already left its boundary, whatever the model does with it.
 \end{description}
 
@@ -178,7 +186,9 @@ Listing~\ref{lst:rag-metrics} computes these from evaluation records.
 
 \lstinputlisting[language=Python, caption={Retrieval and answer metrics (\texttt{ch04/rag\_metrics.py}).}, label={lst:rag-metrics}, firstline=2, lastline=38]{code/rag_metrics.py}
 
-The repository's version includes a four-case demonstration. Its output shows why leakage is measured at retrieval:
+\begin{thinkabout}
+The repository's version includes a four-case demonstration. Look at its output below before reading the paragraph after it. Would you ship this system?
+\end{thinkabout}
 \begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=1.5em]
 recall@5            1.00
 MRR                 0.75
@@ -187,6 +197,10 @@ abstention recall   1.00   false abstention 0.00
 cases with leakage  1
 \end{lstlisting}
 Every answer metric is perfect, and the assistant correctly declined the question about performance calibration. Yet one case leaked: a manager-only document was retrieved for a non-manager. An evaluation that looked only at answers would have reported a flawless system with a confidentiality breach in it.
+
+\begin{keyidea}
+Measure leakage at retrieval, not in the answer. A restricted passage that reaches the model has already left its boundary, whatever the model does with it.
+\end{keyidea}
 
 \subsection{The evaluation set}
 
@@ -199,13 +213,13 @@ Table~\ref{tab:policy-evalset} describes the 240-question set built for the pilo
 \label{tab:policy-evalset}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}r>{\raggedright\arraybackslash}X@{}}
 \toprule
-Category & Questions & What it tests \\
+\rowcolor{coHead} Category & Questions & What it tests \\
 \midrule
 Answerable, by country & 120 & Recall, correctness; 40 per country, asked as employees of that country \\
 Grade-dependent & 30 & Filtering by grade band; same question asked at two grades \\
-Policy silent & 30 & Abstention (\textsf{R3}) \\
-Permission traps & 30 & Leakage (\textsf{R2}): non-managers asking about manager-only topics \\
-Freshness traps & 20 & Questions on policies changed in the last month (\textsf{R1}) \\
+Policy silent & 30 & Abstention (\risk{Silent policy}) \\
+Permission traps & 30 & Leakage (\risk{Restricted leak}): non-managers asking about manager-only topics \\
+Freshness traps & 20 & Questions on policies changed in the last month (\risk{Wrong version}) \\
 Multi-hop & 10 & Rule plus exception, needing two searches \\
 \midrule
 Total & 240 & \\
@@ -224,7 +238,7 @@ The thresholds in Table~\ref{tab:policy-thresholds} are part of the go/no-go cri
 \label{tab:policy-thresholds}
 \begin{tabular}{@{}llr@{}}
 \toprule
-Metric & Node & Threshold \\
+\rowcolor{coHead} Metric & Step & Threshold \\
 \midrule
 Recall@5 (answerable) & Index, filter & $\ge$ 0.95 \\
 Answer correctness (answerable) & Agent & $\ge$ 0.97 \\
@@ -237,7 +251,7 @@ Freshness (publish to answerable) & Import on publish & $\le$ 1 hour \\
 \end{tabular}
 \end{table}
 
-Running the same set against D1 is part of the lab. Without metadata, D1 cannot pass the leakage threshold by construction, and the freshness traps fail whenever a change lands between daily syncs. The informative comparison is on the 120 country questions, where D1's errors show how often unfiltered retrieval picks another country's policy---the same error the HR audit found in human answers.
+Running the same set against the sample design is part of the lab. Without metadata, the sample design cannot pass the leakage threshold by construction, and the freshness traps fail whenever a change lands between daily syncs. The informative comparison is on the 120 country questions, where the sample design's errors show how often unfiltered retrieval picks another country's policy---the same error the HR audit found in human answers.
 
 \subsection{Evaluating without watching employees}
 

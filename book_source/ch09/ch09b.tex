@@ -3,7 +3,7 @@
 % business case, end matter
 % ======================================================================
 
-\section{Build: Sessions and State}
+\section{Build: Where Does Each Piece of State Live?}
 \label{sec:air-build}
 
 The technical focus of this case is state: what the system remembers, where, for how long, and who may change it. Multi-agent designs live or die on this question. When three agents and a person work on the same passenger's problem over an evening, the passenger must never have to repeat themselves, no two parties may act on the case at once, and nothing may be remembered longer than it should be.
@@ -15,11 +15,11 @@ ADK distinguishes state by scope, using prefixes on state keys: keys without a p
 \begin{table}[htbp]
 \centering
 \small
-\caption{Where D2 keeps each kind of state.}
+\caption{Where the handoff design keeps each kind of state.}
 \label{tab:air-state}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-State & Where & Why \\
+\rowcolor{coHead} State & Where & Why \\
 \midrule
 The disruption case (owner, stage, hold, itinerary, compensation) & Case store (a database), system of record & Must survive channel changes, agent changes and restarts; read by people in the contact centre \\
 The conversation & Session (Agent Platform Sessions) & Needed for the current exchange; references the case by ID \\
@@ -31,7 +31,11 @@ Disruption-wide facts (cancelled flights, hotel allocation) & \texttt{app:} stat
 \end{tabularx}
 \end{table}
 
-The most important decision in the table is the first: \emph{the case is not in the session}. A session belongs to a conversation, and a passenger may start in the app, continue on the phone with a person, and come back to the app later. If the case lived in the app's session, the contact-centre agent could not see it. The case store is a system of record; sessions point to it.
+\begin{keyidea}
+The case is not in the session. Sessions hold conversations; the case lives in a system of record that every channel and every person can see.
+\end{keyidea}
+
+The most important decision in the table is the first. A session belongs to a conversation, and a passenger may start in the app, continue on the phone with a person, and come back to the app later. If the case lived in the app's session, the contact-centre agent could not see it. The case store is a system of record; sessions point to it.
 
 \subsection{The handoff contract}
 
@@ -49,7 +53,7 @@ The history field gives the next owner---agent or person---the reason for each h
 
 \subsection{Holding scarce seats}
 
-In a disruption, seats on the next flights are the scarcest thing in the system, and thousands of passengers want them at once. The reservation server's \texttt{hold\_seats} tool places a hold that expires after ten minutes, returns a hold ID, and is idempotent per case: a repeated call returns the existing hold. \texttt{reissue} accepts only a live hold ID. The rebooking agent never ``promises'' a seat: it says the seat is held until a stated time, and the reissue either succeeds or the agent offers the next option. This turns \textsf{R1} from a model behavior into an inventory rule.
+In a disruption, seats on the next flights are the scarcest thing in the system, and thousands of passengers want them at once. The reservation server's \texttt{hold\_seats} tool places a hold that expires after ten minutes, returns a hold ID, and is idempotent per case: a repeated call returns the existing hold. \texttt{reissue} accepts only a live hold ID. The rebooking agent never ``promises'' a seat: it says the seat is held until a stated time, and the reissue either succeeds or the agent offers the next option. This turns \risk{Seat not issued} from a model behavior into an inventory rule: agents describe holds; they never promise seats.
 
 \subsection{Compensation in code}
 
@@ -66,8 +70,12 @@ Whether a passenger is owed compensation under EU261, and how much, is defined b
 
 The care agent's job is to \emph{explain} the result: why a storm is an extraordinary circumstance that removes the obligation, what the passenger is still entitled to (care, rerouting or refund), and how to claim. It cannot change the amount. Last year's 4\% of claims paid in error came from people applying the rule under pressure; code does not feel pressure.
 
+\begin{tryit}
+Run the four cases above through \texttt{eu261.py} by hand, then change the cause of the first one from \texttt{technical} to \texttt{weather}. Write the one-paragraph explanation the care agent should give that passenger, without changing the amount.
+\end{tryit}
+
 % ----------------------------------------------------------------------
-\section{Deploy}
+\section{Deploy: How Do We Run It Safely?}
 \label{sec:air-deploy}
 
 The agents run on Agent Runtime, whose managed sessions suit long, interrupted conversations; the case store is a managed database owned by the contact-centre platform team; the reservation server runs on Cloud Run in front of the reservation system. Three surge-specific decisions:
@@ -78,19 +86,19 @@ The agents run on Agent Runtime, whose managed sessions suit long, interrupted c
 \end{itemize}
 
 % ----------------------------------------------------------------------
-\section{Evaluate}
+\section{Evaluate: How Do We Know It Works?}
 \label{sec:air-evaluate}
 
-A disruption cannot be scheduled for testing, so D2 is evaluated by simulation. The harness replays last February's storm: 9{,}600 synthetic passengers drawn from the real bookings' profile, each with a persona (constraints, special needs, patience, language), interact with D2 through a simulated app while the harness plays the reservation system with real inventory constraints. Persona simulators are themselves language models; their behavior is checked against a sample of real disruption transcripts before the results are trusted.
+A disruption cannot be scheduled for testing, so the handoff design is evaluated by simulation. The harness replays last February's storm: 9{,}600 synthetic passengers drawn from the real bookings' profile, each with a persona (constraints, special needs, patience, language), interact with the handoff design through a simulated app while the harness plays the reservation system with real inventory constraints. Persona simulators are themselves language models; their behavior is checked against a sample of real disruption transcripts before the results are trusted.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Evaluation thresholds for D2, from the storm replay.}
+\caption{Evaluation thresholds for the handoff design, from the storm replay.}
 \label{tab:air-thresholds}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X r@{}}
 \toprule
-Metric & Threshold \\
+\rowcolor{coHead} Metric & Threshold \\
 \midrule
 Passengers self-served (accept or conversation, no person) & $\ge$ 65\% \\
 Median time to confirmed itinerary, self-served & $\le$ 30 min \\
@@ -104,15 +112,18 @@ Case reopened by the passenger with the same request & $\le$ 5\% \\
 \end{tabularx}
 \end{table}
 
-A load test runs the same replay at five times the volume to verify pre-warming and back-pressure, and a chaos test cuts the reservation system's capacity in half mid-replay. The goal of the chaos test is not that everything still works, but that it degrades as designed: shorter option lists, longer but honest waits, and handoffs to people when holds cannot be placed.
+A load test runs the same replay at five times the volume to verify pre-warming and back-pressure, and a chaos test cuts the reservation system's capacity in half mid-replay. \begin{quickcheck}
+What counts as passing the chaos test?
+\answer{Not that everything still works. The system passes if it degrades as designed: shorter option lists, longer but honest waits, and handoffs to people when holds cannot be placed.}
+\end{quickcheck}
 
 % ----------------------------------------------------------------------
-\section{Business Case and Rollout}
+\section{Business Case: Is It Worth It?}
 \label{sec:air-business}
 
 The value lies mostly in the bad days. Coral Air has about eight major disruptions a year and many smaller ones. On a major day, moving self-service above the break-even turns hours of queueing into minutes; the airline estimates the cost of a poorly handled disruption day---abandoned bookings, overtime, hotel costs from late rebooking, compensation paid in error and lost repeat business---at about \$1.1 million, and that of a well-handled one at about half. Compensation paid in error alone (4\% of 2{,}300 claims, at an average of \$350) is about \$32{,}000 per major disruption. With build costs estimated at \$900{,}000 and run costs dominated by the contact-centre platform team's time, payback is expected within the first winter.
 
-The rollout uses small disruptions, which happen weekly: first the push notification and self-service list (D3's part), then the conversation for one hub, then all hubs before the winter season. Each stage is evaluated on real disruptions against the thresholds above.
+The rollout uses small disruptions, which happen weekly: first the push notification and self-service list (the self-service design's part), then the conversation for one hub, then all hubs before the winter season. Each stage is evaluated on real disruptions against the thresholds above.
 
 \begin{tcolorbox}[colback=white, colframe=black!60, boxrule=0.6pt, arc=1pt, left=10pt, right=10pt, top=8pt, bottom=8pt, fontupper=\small]
 \textbf{To:} Chief Customer Officer \hfill \textbf{From:} Disruption Design Team\\
@@ -132,12 +143,12 @@ The rollout uses small disruptions, which happen weekly: first the push notifica
 \end{tcolorbox}
 
 % ----------------------------------------------------------------------
-\section{Changed Requirement}
+\section{Changed Requirement: What If the World Changes?}
 \label{sec:air-changed}
 
 \begin{enumerate}[itemsep=3pt]
   \item \textbf{A partner airline.} Coral Air joins an alliance and may rebook passengers onto a partner's flights. The partner runs its own booking agent. Should Coral Air's rebooking agent call the partner's agent (a handoff across companies, Chapter~\ref{ch:capstone}) or the partner's reservation API? What changes in the case object?
-  \item \textbf{A new passenger-rights rule.} A rule change requires that compensation be paid automatically, without a claim, within seven days. Which node gains a write action, and what control do you put in front of it?
+  \item \textbf{A new passenger-rights rule.} A rule change requires that compensation be paid automatically, without a claim, within seven days. Which step gains a write action, and what control do you put in front of it?
   \item \textbf{No consent.} The data protection officer decides that preferences may not be stored across sessions at all. What is lost, and what would you measure to know whether it matters?
 \end{enumerate}
 
@@ -170,8 +181,8 @@ The rollout uses small disruptions, which happen weekly: first the push notifica
 \addcontentsline{toc}{section}{Exercises}
 
 \begin{enumerate}[itemsep=2pt]
-  \item \textbf{(Design)} Draw D1 and list every permission its single agent holds. Compare with D2.
-  \item \textbf{(Design)} Write the node card for the rebooking agent, including its behavior when the reservation server returns ``busy''.
+  \item \textbf{(Design)} Write the single-agent design as a design table and list every permission its single agent holds. Compare with the handoff design.
+  \item \textbf{(Design)} Write the component card for the rebooking agent, including its behavior when the reservation server returns ``busy''.
   \item \textbf{(Build)} Extend \texttt{case.py} with a hand-back from a person to an agent, and a rule that a case owned by a person cannot be taken by an agent without that person's release.
   \item \textbf{(Build)} Replace the fluid approximation in \texttt{surge.py} with a minute-by-minute simulation and plot queue length for 0\%, 55\% and 70\% self-service.
 \end{enumerate}
@@ -179,7 +190,7 @@ The rollout uses small disruptions, which happen weekly: first the push notifica
 \section*{Lab 9: Surviving the Storm}
 \addcontentsline{toc}{section}{Lab 9: Surviving the Storm}
 
-\paragraph{Goal.} Build D2's three agents with the case store and handoff contract, and run a scaled-down storm replay.
+\paragraph{Goal.} Build the handoff design's three agents with the case store and handoff contract, and run a scaled-down storm replay.
 
 \paragraph{Steps.}
 \begin{enumerate}[itemsep=2pt]

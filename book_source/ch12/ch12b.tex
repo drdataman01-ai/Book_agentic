@@ -3,12 +3,16 @@
 % business case, end matter
 % ======================================================================
 
-\section{Build}
+\section{Build: How Do We Make It?}
 \label{sec:loan-build}
 
 \subsection{Numbers from tools, words from models}
 
 The rule Harbor's quote design followed in Chapter~\ref{ch:foundations}---the model writes the words, code supplies the numbers---matters even more in a credit memo, which may contain several hundred figures. Section agents are instructed to obtain every figure from the calculation server and to write it as a reference, for example \texttt{\{calc:dscr\_fy2025\}}, which the rendering step replaces with the value and its source. The numbers-trace guardrail then checks the rendered memo: every number in the text must match a value returned by the calculation server for this deal, or appear verbatim in a cited document. A number that matches neither blocks the draft.
+
+\begin{keyidea}
+The model writes the words; tools supply the numbers; a guardrail checks that every number came from a tool.
+\end{keyidea}
 
 \subsection{Long-running work}
 
@@ -19,7 +23,7 @@ Generating a full draft takes ten to twenty minutes: dozens of retrievals, tens 
 The critic agent checks the draft against a checklist derived from the credit policy: does the financial section address each year presented, each covenant, the borrower's largest customers and suppliers; does the risk section pair each risk with a mitigant; is collateral described with its valuation date. It returns specific gaps, each tied to a checklist item, and section agents revise at most twice. The checklist is the critic's instruction and its evaluation rubric at once, which keeps the reflection loop from drifting into general polishing. Gaps remaining after two rounds are listed at the top of the draft for the analyst.
 
 % ----------------------------------------------------------------------
-\section{Deploy: Choosing the Target}
+\section{Deploy: Where Should Each Part Run?}
 \label{sec:loan-deploy}
 
 The technical focus of this case is the deployment decision deferred since Chapter~\ref{ch:foundations}. Table~\ref{tab:loan-targets} compares the three targets on the criteria that matter for this workload.
@@ -31,7 +35,7 @@ The technical focus of this case is the deployment decision deferred since Chapt
 \label{tab:loan-targets}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
-Criterion & Agent Runtime & Cloud Run & GKE \\
+\rowcolor{coHead} Criterion & Agent Runtime & Cloud Run & GKE \\
 \midrule
 Long-running, resumable runs & Built for long-running agents with managed sessions & Jobs suit batch steps; services need external state for long runs & Full control; team builds it \\
 Sessions and memory & Managed & Team provides a store & Team provides a store \\
@@ -58,10 +62,10 @@ Different components of one solution have different shapes. Choose each componen
 \end{principle}
 
 % ----------------------------------------------------------------------
-\section{Evaluate}
+\section{Evaluate: How Do We Know It Works?}
 \label{sec:loan-evaluate}
 
-A credit memo is judged by the people who rely on it. The evaluation uses 50 recent approved deals: for each, D2 drafts a memo from the same documents the analyst had, and the result is compared with the memo actually approved.
+A credit memo is judged by the people who rely on it. The evaluation uses 50 recent approved deals: for each, the workflow design drafts a memo from the same documents the analyst had, and the result is compared with the memo actually approved.
 \begin{itemize}[itemsep=1pt]
   \item \emph{Number accuracy}: every figure in the draft checked against the approved memo's figures and the spreads. Threshold: 100\% traceable, zero wrong after the guardrail.
   \item \emph{Citation precision}: on a sample of 400 claims, the share whose citation supports the claim. Threshold: 98\%.
@@ -69,10 +73,15 @@ A credit memo is judged by the people who rely on it. The evaluation uses 50 rec
   \item \emph{Usefulness}: three credit officers rate each draft section on a four-point scale (``usable as is'', ``minor edits'', ``major edits'', ``rewrite''), blind to whether they are reading a draft or the approved memo's section. The share of ``usable'' or ``minor'' is the main quality measure.
   \item \emph{Time}: in the pilot, analyst hours per memo, measured from the case system.
 \end{itemize}
+\begin{quickcheck}
+Why are the credit officers not told whether they are reading a generated draft or the approved memo?
+\answer{Because knowing the source changes the rating. People are harsher on a machine's draft, or kinder to it, depending on what they expect; a blind rating measures the text.}
+\end{quickcheck}
+
 The evaluation set is kept for regression: every change to a model, instruction, template or checklist reruns the 50 deals before release, and model risk management receives the results as part of its ongoing validation.
 
 % ----------------------------------------------------------------------
-\section{Business Case and Rollout}
+\section{Business Case: Is It Worth It?}
 \label{sec:loan-business}
 
 Two days saved on each of 1{,}400 new-loan memos, and about a day on each of 3{,}000 annual reviews, frees roughly 5{,}800 analyst days a year---more than half of the analyst team's capacity. Summit plans to use it to grow lending without growing the team and to shorten decision times from twelve days to five, which relationship managers expect to win deals they currently lose to faster lenders. Against a three-year TCO of about \$1.3 million, the case is strong even if only a fraction of the freed time is redeployed.
@@ -97,7 +106,7 @@ The rollout follows the build in phases: spreading and calculation first (useful
 \end{tcolorbox}
 
 % ----------------------------------------------------------------------
-\section{Changed Requirement}
+\section{Changed Requirement: What If the World Changes?}
 \label{sec:loan-changed}
 
 \begin{enumerate}[itemsep=3pt]
@@ -135,8 +144,8 @@ The rollout follows the build in phases: spreading and calculation first (useful
 \addcontentsline{toc}{section}{Exercises}
 
 \begin{enumerate}[itemsep=2pt]
-  \item \textbf{(Design)} Write the node cards for the planner and the critic.
-  \item \textbf{(Design)} Draw D1, including the vendor's boundary and the bank's integrations. Where does each of \textsf{R1}--\textsf{R4} sit?
+  \item \textbf{(Design)} Write the component cards for the planner and the critic.
+  \item \textbf{(Design)} Write the vendor design as a design table, including the bank's integrations with the vendor, and mark where each of the four risks sits.
   \item \textbf{(Build)} Add uncertainty to \texttt{tco.py}: draw the build cost from a distribution skewed toward overruns and report the probability that the vendor is cheaper.
   \item \textbf{(Build)} Implement the numbers-trace guardrail for a rendered memo and the calculation server's output, with tests for rounding and units.
 \end{enumerate}

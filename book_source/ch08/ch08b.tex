@@ -2,7 +2,7 @@
 % Chapter 8 -- Part B: build, deploy, evaluate, business case, end matter
 % ======================================================================
 
-\section{Build}
+\section{Build: How Do We Make It?}
 \label{sec:fr-build}
 
 \subsection{The scoring server}
@@ -21,7 +21,7 @@ The case agent's instruction describes a fixed summary structure: \emph{what hap
 
 \subsection{Faithfulness}
 
-An explanation is \keyterm{faithful} if the reasons it gives are the reasons the model used. A plausible but unfaithful explanation---``unusual location at night'' when the model in fact reacted to a new device and a large amount---is worse than none, because it directs the analyst's attention to the wrong evidence (\textsf{R2}). Listing~\ref{lst:faithful} is the guardrail: it parses the factors cited in a summary and rejects any that are not among the model's top factors for that transaction.
+An explanation is \keyterm{faithful} if the reasons it gives are the reasons the model used. A plausible but unfaithful explanation---``unusual location at night'' when the model in fact reacted to a new device and a large amount---is worse than none, because it directs the analyst's attention to the wrong evidence (\risk{Unfaithful reason}). Listing~\ref{lst:faithful} is the guardrail: it parses the factors cited in a summary and rejects any that are not among the model's top factors for that transaction.
 
 \lstinputlisting[language=Python, caption={The faithfulness guardrail (\texttt{ch08/faithfulness.py}).}, label={lst:faithful}, firstline=2, lastline=21]{code/faithfulness.py}
 
@@ -34,7 +34,7 @@ bad:  ["cites 'geo_distance_km', which is not a top factor", "cites 'hour_of_day
 The check is deliberately narrow. It verifies that cited reasons are real; it does not verify that the prose around them is accurate. The evaluation measures that second property by sampling.
 
 % ----------------------------------------------------------------------
-\section{Deploy}
+\section{Deploy: How Do We Run It Safely?}
 \label{sec:fr-deploy}
 
 \paragraph{Out of the hot path.} The authorization path is untouched: same model, same serving infrastructure, same latency. The case agent runs on Cloud Run, triggered by queue events, in a project with no network route to the authorization systems. If it fails, analysts work the queue as they do today.
@@ -44,14 +44,16 @@ The check is deliberately narrow. It verifies that cited reasons are real; it do
 \paragraph{Model risk management.} In banking, any model used in decisions is subject to model risk management: documented purpose and limitations, independent validation, and ongoing monitoring \citep{fed2011sr117}. The scoring model already has this. The case agent is not making the decision, but it influences one, so Northgate's model risk team treats it as a model too: the instruction, the model version, the tools and the faithfulness check are documented, and the evaluation below is its validation evidence. Any change of model or instruction triggers revalidation, proportionate to the change.
 
 % ----------------------------------------------------------------------
-\section{Evaluate}
+\section{Evaluate: How Do We Know It Works?}
 \label{sec:fr-evaluate}
 
 Evaluation is the technical focus of this case, and fraud is where naive evaluation fails most visibly.
 
 \subsection{Why accuracy is useless here}
 
-With about one transaction in 800 fraudulent, a system that declares everything legitimate is 99.9\% accurate. Accuracy, and most metrics that average over all transactions, say almost nothing. Useful metrics are tied to decisions and costs:
+\begin{watchout}[Watch out: 99.9\% accurate and useless]
+With about one transaction in 800 fraudulent, a system that declares everything legitimate is 99.9\% accurate. Accuracy, and most metrics that average over all transactions, say almost nothing.
+\end{watchout} Useful metrics are tied to decisions and costs:
 \begin{itemize}[itemsep=1pt]
   \item \emph{fraud value caught within the review budget}---of the money at risk, how much reaches a block or an analyst who can act;
   \item \emph{false-positive ratio}---good customers declined or blocked per fraud caught;
@@ -61,6 +63,11 @@ With about one transaction in 800 fraudulent, a system that declares everything 
 \subsection{Delayed labels and time-based splits}
 
 Fraud labels arrive late. A cardholder may dispute a transaction weeks after it happened; chargebacks can take 60 to 90 days to settle. Two consequences follow. First, recent data looks cleaner than it is: if you evaluate on last week's transactions, much of last week's fraud is not yet labeled. Evaluation therefore uses a period that ended at least 90 days ago. Second, fraud changes as fraudsters adapt. A random split of historical data leaks the future into training; evaluation always trains on an earlier period and tests on a later one.
+
+\begin{quickcheck}
+You evaluate on last week's transactions and the fraud rate looks wonderfully low. What is the likely explanation?
+\answer{Most of last week's fraud has not been reported yet. Labels arrive weeks or months later, so recent data always looks cleaner than it is.}
+\end{quickcheck}
 
 \subsection{Evaluating the agent}
 
@@ -76,7 +83,7 @@ The case agent is evaluated on what it changes for analysts, in three parts.
 In production, Northgate monitors the score distribution (to detect drift in the transactions or the model), the review queue's depth and age, minutes per review, the faithfulness pass rate, and---as labels arrive---fraud value caught and false-positive ratio by month. The thresholds are recomputed quarterly from the latest labeled data, and immediately if the score distribution shifts.
 
 % ----------------------------------------------------------------------
-\section{Business Case and Rollout}
+\section{Business Case: Is It Worth It?}
 \label{sec:fr-business}
 
 At Northgate's volume, the simulation's difference between unassisted and assisted review is about \$1.6 million a year, mostly from fewer good customers blocked and slightly lower fraud losses. The run cost of the case agent---about 1{,}800 summaries a day at a few cents each, plus engineering---is under \$150{,}000 a year. The largest uncertainty is review time: if summaries save one minute instead of two and a half, most of the benefit disappears. The controlled comparison measures exactly that before any threshold is changed.
@@ -101,7 +108,7 @@ The rollout therefore has a particular order: summaries first, with thresholds u
 \end{tcolorbox}
 
 % ----------------------------------------------------------------------
-\section{Changed Requirement}
+\section{Changed Requirement: What If the World Changes?}
 \label{sec:fr-changed}
 
 \begin{enumerate}[itemsep=3pt]
@@ -127,7 +134,7 @@ The rollout therefore has a particular order: summaries first, with thresholds u
 \addcontentsline{toc}{section}{Review Questions}
 
 \begin{enumerate}[itemsep=2pt]
-  \item Why does D1 fail the design method at steps 3 and 4?
+  \item Why does the agent-judge design fail step 3 of the design method?
   \item Why does \texttt{explain\_score} return the score recorded at authorization rather than rescoring?
   \item Why is \texttt{score(features)} deliberately not exposed to the agent?
   \item Explain how faster reviews lead to fewer wrongly blocked customers in Listing~\ref{lst:fraud-policy}'s results.
@@ -141,8 +148,8 @@ The rollout therefore has a particular order: summaries first, with thresholds u
 \addcontentsline{toc}{section}{Exercises}
 
 \begin{enumerate}[itemsep=2pt]
-  \item \textbf{(Design)} Draw D3 in the notation, including the app-verification channel and its trust boundary.
-  \item \textbf{(Design)} Write the node card for the case agent, including three things it must never write.
+  \item \textbf{(Design)} Write the verification design as a design table, including the app-verification channel, and mark which of its inputs are untrusted.
+  \item \textbf{(Design)} Write the component card for the case agent, including three things it must never write.
   \item \textbf{(Build)} Plot total daily cost from Listing~\ref{lst:fraud-policy} as a surface over the two thresholds for 3.5-minute reviews. How flat is it near the optimum?
   \item \textbf{(Build)} Vary the cost of a wrongly blocked customer from \$2 to \$40. At what value does the optimal block threshold move above 0.75?
   \item \textbf{(Build)} Extend \texttt{faithfulness.py} to check that numbers cited in a summary (``9x the usual amount'') match the attribution's feature values within 10\%.

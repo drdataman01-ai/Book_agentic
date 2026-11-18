@@ -15,23 +15,23 @@ Starting point & Google ADK sample \texttt{customer-service}, pinned at commit \
 Technical focus & MCP tool design \\
 Business skill & Unit economics: cost per contact, by design and by path \\
 Patterns & Router; approval gate; retrieve-then-answer; multi-agent handoff \\
-Deliverables & Solution graphs for four designs, per-intent cost model, MCP servers, deployed agent, evaluation report, memo
+Deliverables & Design tables for four designs, per-intent cost model, MCP servers, deployed agent, evaluation report, memo
 \end{tabularx}
 \end{caseglance}
 
-\begin{objectives}
-After working through this case, you will be able to:
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Critique a tool-using agent's tool set and callbacks against principles of tool design.
-  \item Design MCP tools that are task-shaped, identity-safe, validated, idempotent and policy-enforcing, and implement one such server.
-  \item Build a cost-per-contact model that compares designs by intent, and use it to choose which intents to automate.
-  \item Pair a containment KPI with re-contact and satisfaction measures so that it cannot be gamed.
-  \item Deploy an agent to Agent Runtime with its tools on Cloud Run, and evaluate tool use, not only answers.
+  \item What makes a tool-using agent's tools and callbacks safe or unsafe?
+  \item How do you design MCP tools that are task-shaped, identity-safe, validated, idempotent and policy-enforcing?
+  \item How can a cost-per-contact model, intent by intent, decide which contacts to automate?
+  \item How do you stop a containment KPI from being gamed?
+  \item How do you deploy an agent to Agent Runtime with its tools on Cloud Run, and evaluate what it does as well as what it says?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
-\section{Business Brief and Current Process}
+\section{Business Brief: What Is Going Wrong Today?}
 \label{sec:support-brief}
 
 \subsection{The company}
@@ -42,6 +42,10 @@ Cymbal Home \& Garden sells tools, building supplies, plants and garden equipmen
 
 A month of tagged contacts gives the mix in Table~\ref{tab:intents}. The mix is the first thing a support designer should ask for, because the economics of every design depend on it.
 
+\begin{thinkabout}
+Look at Table~\ref{tab:intents} before reading further. If you could automate only one intent, which would you choose, and why? Keep your answer; the cost model later in the chapter will test it.
+\end{thinkabout}
+
 \begin{table}[htbp]
 \centering
 \small
@@ -49,7 +53,7 @@ A month of tagged contacts gives the mix in Table~\ref{tab:intents}. The mix is 
 \label{tab:intents}
 \begin{tabular}{@{}lrrl@{}}
 \toprule
-Intent & Share & Minutes & Typical example \\
+\rowcolor{coHead} Intent & Share & Minutes & Typical example \\
 \midrule
 Order status & 34\% & 4.5 & ``Where is my order A10294?'' \\
 Delivery issue & 14\% & 9.0 & ``The patio set arrived with a broken leg.'' \\
@@ -69,39 +73,63 @@ Weighting minutes by share, the average contact takes about 7.1 minutes of agent
 An audit of 400 contacts that ended in a return, refund or goodwill credit found that 2.2\% were granted against policy (outside the return window, or a refund larger than the item's price), and 0.8\% were applied to the wrong order. The second is rarer but worse: it can expose one customer's order details to another, and it is the kind of error that is hardest to explain to the affected customer.
 
 % ----------------------------------------------------------------------
-\section{Stakeholders, KPIs and Value Hypothesis}
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:support-kpis}
 
 \subsection{Stakeholders}
 
-\begin{description}[leftmargin=1em,itemsep=2pt]
-  \item[Sponsor.] Vice president of customer experience. Wants lower cost per contact without lower satisfaction.
-  \item[Users.] Customers; support agents, who will receive the contacts the system does not resolve.
-  \item[Approvers.] Finance, for refund and goodwill rules; legal, for what an automated assistant may say and must disclose; information security, for access to order and customer data.
-  \item[Owners.] The order-management team (orders and returns systems), the services team (scheduling), the e-commerce team (catalog), and the support-operations team (the contact-centre platform and the agent itself).
-\end{description}
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of support triage.}
+\label{tab:support-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is, and what they need \\
+\midrule
+\cotag{coBlue}{Sponsor} & The vice president of customer experience, who wants a lower cost per contact without lower satisfaction. \\
+\cotag{coGreen}{Users} & Customers, and the support agents who receive the contacts the system does not resolve. \\
+\cotag{coAmber}{Approvers} & Finance, for refund and goodwill rules; legal, for what an automated assistant may say and must disclose; and information security, for access to order and customer data. \\
+\cotag{coPurple}{Owners} & The order-management team (orders and returns), the services team (scheduling), the e-commerce team (catalog) and the support-operations team (the contact-centre platform and the agent itself). \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 Four system owners is typical of support, and it is the first hint about where MCP server boundaries belong. Each owner will want to control what any automated system can do to its systems. A server per owner gives each of them that control.
 
 \subsection{Containment and its partners}
 
-Support has its own version of the deflection trap from Chapter~\ref{ch:case-policy}. It is called \keyterm{containment}: the share of contacts resolved without a person. An assistant that tells every customer ``your refund is being processed'' contains every refund request, until the same customers come back angry. Containment must therefore be defined strictly and paired with measures that catch false resolution.
+Support has its own version of the deflection trap from Chapter~\ref{ch:case-policy}. It is called \keyterm{containment}: the share of contacts resolved without a person. Containment must therefore be defined strictly and paired with measures that catch false resolution.
 
-\begin{itemize}[itemsep=1pt]
-  \item[\textsf{K1}] Cost per contact, all-in (Equation~\eqref{eq:unit}): target at most \$3.75, from \$4.86.
-  \item[\textsf{K2}] 72-hour re-contact rate on the same issue: no higher than the baseline 18\%. This is containment's partner: it rises when the assistant claims to resolve what it did not.
-  \item[\textsf{K3}] CSAT: no lower than 3.9.
-  \item[\textsf{K4}] Median first response for e-mail: under one hour, from 19.
-  \item[\textsf{R1}] A return, refund or credit granted against policy.
-  \item[\textsf{R2}] An action taken on, or information shown from, another customer's order.
-  \item[\textsf{R3}] A customer who asks for a person and cannot reach one.
-  \item[\textsf{R4}] Discounts or credits obtained by manipulating the assistant.
-\end{itemize}
+\begin{watchout}[Watch out: the containment trap]
+An assistant that tells every customer ``your refund is being processed'' contains every refund request, until the same customers come back angry.
+\end{watchout}
 
-\textsf{R3} deserves a word. Customers who want a person and are kept talking to a machine are the commonest source of complaints about automated support, and in several jurisdictions rules on automated customer service are tightening. The design treats ``I want a person'' as an intent that is always honored.
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs (blue) and risks (red) for support triage.}
+\label{tab:support-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{Cost per contact} & All-in cost per contact (Equation~\eqref{eq:unit}). Target: at most \$3.75, from \$4.86. \\
+\kpi{Re-contact rate} & Contacts followed within 72 hours by another about the same issue. Target: no higher than the baseline 18\%. This is containment's partner: it rises when the assistant claims to resolve what it did not. \\
+\kpi{Satisfaction} & CSAT after a contact. Target: no lower than 3.9. \\
+\kpi{E-mail response} & Median first response for e-mail. Target: under one hour, from 19. \\
+\risk{Against policy} & A return, refund or credit granted against policy. \\
+\risk{Wrong customer} & An action taken on, or information shown from, another customer's order. \\
+\risk{No person} & A customer who asks for a person and cannot reach one. \\
+\risk{Manipulation} & Discounts or credits obtained by manipulating the assistant. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\risk{No person} deserves a word. Customers who want a person and are kept talking to a machine are the commonest source of complaints about automated support, and in several jurisdictions rules on automated customer service are tightening. The design treats ``I want a person'' as an intent that is always honored.
 
 \subsection{Value hypothesis}
 
-\begin{quote}
+\begin{keyidea}[The value hypothesis, in one sentence]
 \emph{If routine contacts---order status above all---are resolved instantly and correctly by automated paths with authoritative data, and agents receive the rest already triaged and summarized, cost per contact will fall by at least a quarter and e-mail will be answered within an hour, without more repeat contacts or lower satisfaction.}
-\end{quote}
+\end{keyidea}

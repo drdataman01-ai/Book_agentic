@@ -2,10 +2,14 @@
 % Chapter 13 -- Part B: releasing, operating, adopting; capstone project
 % ======================================================================
 
-\section{Releasing Agent Systems}
+\section{Releasing Agent Systems: How Do We Change Them Safely?}
 \label{sec:cap-release}
 
 \subsection{What changes, and what must be versioned}
+
+\begin{thinkabout}
+Your agent's answers got worse overnight, and nobody changed a line of code. What else could have changed?
+\end{thinkabout}
 
 An ordinary service changes when its code changes. An agent system changes when any of six things changes, and only the first is code:
 \begin{enumerate}[itemsep=1pt]
@@ -32,22 +36,40 @@ missing eval -> ('no-go', ['BLOCK leakage_cases: missing result', 'REVIEW tool_t
 \end{lstlisting}
 The model upgrade improves accuracy, latency and cost but regresses tool use within its threshold, so a person reviews it. The prompt change introduces claims without tool calls, a hard failure. And a release whose leakage test did not run is blocked: \emph{a missing result is a failed result}, the same fail-closed principle as Chapter~\ref{ch:case-invoice}, applied to the release process itself.
 
+\begin{keyidea}
+A missing result is a failed result.
+\end{keyidea}
+
 \subsection{Rollout and rollback}
 
-A release that passes its gates still reaches users gradually:
-\begin{itemize}[itemsep=1pt]
-  \item \emph{Shadow}: the new release processes real traffic in parallel and its outputs are compared with production's, without effect (Chapter~\ref{ch:case-invoice}).
-  \item \emph{Canary}: a small share of traffic---1\% to 5\%---is served by the new release, with the KPIs and agent SLOs of the solution watched for that share specifically.
-  \item \emph{Staged}: the share rises in steps, each with a hold period and an automatic stop on any breached guardrail metric.
-\end{itemize}
+A release that passes its gates still reaches users gradually, in the three stages of Table~\ref{tab:cap-rollout}.
+\begin{table}[htbp]
+\centering
+\small
+\caption{Three stages of rollout for a release that has passed its gates.}
+\label{tab:cap-rollout}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Stage & What happens & What is watched \\
+\midrule
+\cotag{coGray}{Shadow} & The new release processes real traffic in parallel, without effect (Chapter~\ref{ch:case-invoice}). & Its outputs compared with production's. \\
+\cotag{coAmber}{Canary} & A small share of traffic, 1\% to 5\%, is served by the new release. & The solution's KPIs and agent SLOs for that share specifically. \\
+\cotag{coGreen}{Staged} & The share rises in steps, each with a hold period. & Every guardrail metric, with an automatic stop on any breach. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 Rollback must be designed, not assumed. Two things make it hard for agents. First, \emph{state compatibility}: a conversation started under one release may resume under another. Session and case formats need versioning and migration, as ADK's own release notes show---sessions written by ADK~2.0 are readable by recent 1.x versions, but not by older ones. Second, \emph{side effects}: a rolled-back agent cannot un-send an e-mail or un-issue a refund. That is one more reason for the expiring holds, idempotency keys and approval gates of earlier chapters: they make the world easier to restore.
+
+\begin{watchout}[Watch out: you cannot roll back an e-mail]
+Rolling back the code does not roll back what the agent already did. Design the side effects to be reversible before you need to reverse them.
+\end{watchout}
 
 \subsection{Model changes are events}
 
 Model providers update and retire models on their own schedules. A model change, even ``the same model, newer version,'' is treated as a release: it passes the evaluation gate, runs in shadow, and rolls out by canary. Harbor's platform team keeps a calendar of announced retirements for every model in the registry and schedules each migration months ahead, so that no solution meets a retirement the way the bug-assistant sample did.
 
 % ----------------------------------------------------------------------
-\section{The Operating Model}
+\section{The Operating Model: Who Owns What?}
 \label{sec:cap-operating}
 
 \subsection{Who owns what}
@@ -61,7 +83,7 @@ Technology does not run itself, and agents least of all: their behavior depends 
 \label{tab:cap-raci}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
- & \shortstack{Solution\\owner} & \shortstack{Platform\\team} & \shortstack{Data/system\\owner} & \shortstack{Risk \&\\security} & \shortstack{AI review\\board} \\
+\rowcolor{coHead} & \shortstack{Solution\\owner} & \shortstack{Platform\\team} & \shortstack{Data/system\\owner} & \shortstack{Risk \&\\security} & \shortstack{AI review\\board} \\
 \midrule
 KPIs, value tracking & A/R & I & C & I & I \\
 Instructions and thresholds & A/R & C & C & C & I \\
@@ -85,17 +107,39 @@ Four roles deserve description.
 
 \subsection{Risk tiers}
 
-Not every solution needs the same governance. Harbor uses three tiers, set by what the solution can do: \emph{Tier~1} solutions inform people and change nothing (Chapter~\ref{ch:case-policy}'s assistant); \emph{Tier~2} solutions take reversible actions or prepare decisions that people make (Chapters~\ref{ch:case-support}, \ref{ch:case-incident}, \ref{ch:case-fraud}); \emph{Tier~3} solutions move money, affect customers' rights, or operate in regulated decisions (Chapters~\ref{ch:case-invoice}, \ref{ch:case-kyc}, \ref{ch:case-loan}). The tier sets the evaluation depth, the approval path, the rollout speed and the monitoring obligations. The solution graph makes the tier easy to determine: look at the write tools and what they touch.
+Not every solution needs the same governance. Harbor uses three tiers, set by what the solution can do (Table~\ref{tab:cap-tiers}). The tier sets the evaluation depth, the approval path, the rollout speed and the monitoring obligations. The design table makes the tier easy to determine: look at the steps that write to a system and at what they touch.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Harbor's three risk tiers, set by what a solution can change.}
+\label{tab:cap-tiers}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\toprule
+\rowcolor{coHead} Tier & What the solution can do & Cases in this book \\
+\midrule
+\cotag{coGreen}{Tier 1} & Informs people and changes nothing. & Chapter~\ref{ch:case-policy} \\
+\cotag{coAmber}{Tier 2} & Takes reversible actions, or prepares decisions that people make. & Chapters~\ref{ch:case-support}, \ref{ch:case-incident}, \ref{ch:case-fraud} \\
+\cotag{coRed}{Tier 3} & Moves money, affects customers' rights, or operates in regulated decisions. & Chapters~\ref{ch:case-invoice}, \ref{ch:case-kyc}, \ref{ch:case-loan} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Managing the portfolio}
 
 Each solution began with a memo that promised value. The operating model closes the loop: every quarter, each solution owner reports its KPIs against the memo's baseline and target, its run cost, its incidents and its adoption. Solutions that do not deliver are improved, narrowed or retired---and retiring a solution that did not work is a sign of a healthy portfolio, not a failed one. The portfolio view also shows what no single solution shows: shared costs, shared risks (three solutions depending on one model that is about to be retired), and opportunities to reuse servers and agents that one team built and others need.
 
 % ----------------------------------------------------------------------
-\section{Change Management and Adoption}
+\section{Change Management and Adoption: Will People Use It?}
 \label{sec:cap-change}
 
-Every case in this book changed someone's work: pricing analysts who check drafts instead of building quotes, AP clerks who see only risky invoices, fraud analysts who read summaries, credit analysts who edit instead of transcribe. Whether those changes deliver value depends on the people more than on the agents. Four practices recur in solutions that are adopted.
+Every case in this book changed someone's work: pricing analysts who check drafts instead of building quotes, AP clerks who see only risky invoices, fraud analysts who read summaries, credit analysts who edit instead of transcribe. Whether those changes deliver value depends on the people more than on the agents.
+
+\begin{thinkabout}
+Think of a new system you were once asked to use at work or school. What made you trust it, or work around it?
+\end{thinkabout}
+
+ Four practices recur in solutions that are adopted.
 
 \paragraph{Design with the people whose work changes.} Involve them from the process map onward. They know where the errors really come from, they will spot the step the design forgot, and they are more likely to trust a system they helped shape. Where employees are represented by works councils or unions, as at Alder \& Finch, involve the representatives early; their concerns are usually about monitoring and job security, and both can be addressed by design.
 
@@ -106,31 +150,34 @@ Every case in this book changed someone's work: pricing analysts who check draft
 \paragraph{Measure adoption as a KPI.} Every pilot in this book included an adoption criterion, and for good reason: a system that people route around delivers nothing, whatever its evaluation scores. Adoption is reported alongside value in the portfolio review, and low adoption is treated as a design problem to investigate, not a training problem to push.
 
 % ----------------------------------------------------------------------
-\section{The Designer's Habits}
+\section{The Designer's Habits: What Should You Take Away?}
 \label{sec:cap-habits}
 
-Twelve chapters of cases come down to a few habits, which apply far beyond the tools of this book:
-\begin{itemize}[itemsep=2pt]
+Twelve chapters of cases come down to a few habits, which apply far beyond the tools of this book.
+
+\begin{keyidea}[The designer's habits]
+\begin{itemize}[leftmargin=*,itemsep=2pt]
   \item Start from the business result and the current process, measured; choose technology last.
   \item Give each step the least autonomy that meets its target; let autonomy be earned with evidence.
   \item Put rules in code, knowledge in retrieval, judgment in agents, and actions behind task-shaped tools owned by the teams accountable for them.
-  \item Draw the design, compare at least two alternatives, and write down what would change your mind.
+  \item Write the design down as a design table, compare at least two alternatives, and write down what would change your mind.
   \item Put people where the risk is, show them evidence rather than conclusions, and fail closed where money, rights or access are at stake.
   \item Measure what the business cares about, before and after, and keep measuring after launch.
   \item Write the one page that lets a sponsor say yes---and the conditions under which you would say no.
 \end{itemize}
+\end{keyidea}
 Frameworks, models and cloud services will change many times over the life of this book. These habits will not.
 
 % ----------------------------------------------------------------------
-\section{Capstone Project}
+\section{Capstone Project: Can You Do It Yourself?}
 \label{sec:cap-project}
 
 \paragraph{Brief.} Teams of three or four design, build and present a cross-department solution for a company of their choice, real or fictional, in which at least two departments' agents or servers must cooperate. Harbor's order desk is an example; others are hospital patient discharge (clinical, pharmacy, transport, billing), university admissions (admissions, financial aid, housing), and insurance claims (intake, coverage, repair network, payments).
 
 \paragraph{Deliverables.}
 \begin{enumerate}[itemsep=1pt]
-  \item A business brief with a measured or carefully estimated current-process map, SUAO stakeholders, KPIs and risks.
-  \item Solution graphs for at least two alternatives, well formed under W1--W8, with each cross-team connection justified by Table~\ref{tab:cap-connect}.
+  \item A business brief with a measured or carefully estimated current-process map, stakeholders (sponsor, users, approvers and owners), KPIs and risks.
+  \item Design tables for at least two alternatives, each passing the eight checks of Section~\ref{sec:checks}, with each cross-team connection justified by Table~\ref{tab:cap-connect}.
   \item A trade-off table with money rows where possible, a sensitivity check, a failure walk-through and a decision record.
   \item A working deployment of the chosen design on Google Cloud, with at least one MCP server and, if the design calls for it, one A2A connection; an agent card for any A2A agent.
   \item An evaluation report with thresholds, results and a release gate that the team's own final change passed.
@@ -141,13 +188,8 @@ Frameworks, models and cloud services will change many times over the life of th
 \paragraph{Assessment.} The rubric in Appendix~D weights design (30\%), business case (25\%), build and deployment (20\%), evaluation (15\%) and presentation (10\%). Design-track teams may substitute a clickable prototype and a detailed build plan for the deployment, with that weight moved to the business case and evaluation design.
 
 
-% ======================================================================
-% Closing section for the capstone chapter
-% Designing Agentic AI Solutions, Chris Kuo
-% Section: The Whole Journey -- Capability Without Losing Control
-% ======================================================================
-
-\section{The Whole Journey: Capability Without Losing Control}
+% ----------------------------------------------------------------------
+\section{The Whole Journey: What Did Each New Power Cost?}
 \label{sec:journey}
 
 Chapter~\ref{ch:toolkit} opened at the moment Harbor's support assistant received its first tool (Section~\ref{sec:answering-acting}). This section follows the same assistant to the end of its development. Over that journey the assistant learns to act, to reach protected data, to remember, to forget, to consult another agent, to use written business knowledge, to talk with people in their own words, and finally to run in production. It is tempting to read that list as a sequence of technologies. The real story is different. Each new power brought a new risk, each risk needed a boundary, each boundary needed a test, and each test needed evidence that a reviewer could check. Table~\ref{tab:journey} summarizes the pattern, and the rest of the section walks through it one stage at a time.
@@ -159,7 +201,7 @@ Chapter~\ref{ch:toolkit} opened at the moment Harbor's support assistant receive
 \label{tab:journey}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
-New capability & New risk & Boundary & Test or evidence \\
+\rowcolor{coHead} New capability & \cellcolor{coRedBg}New risk & \cellcolor{coBlueBg}Boundary & \cellcolor{coGreenBg}Test or evidence \\
 \midrule
 Act through tools & A right answer reached by a wrong, costly or unsafe path & Narrow tools with fixed contracts & Check the path (tools, arguments, order) as well as the answer \\
 Reach protected data & The wrong authority is passed to a secure tool & Authority comes from the trusted session, never from the model & A denied request paired with a permitted one \\
@@ -177,9 +219,17 @@ Run in production & A bad version is released; costs go unseen & Release gates, 
 
 Two ideas follow, and they should be kept apart. The \keyterm{outcome} is the final result, and we judge it by asking whether it was correct. The \keyterm{trajectory} is the path the system took to reach it: which tools it called, with which arguments, in what order, and whether it kept within the requester's permissions. A system can reach a correct outcome by a wrong, expensive or unsafe trajectory, as Path~B in Table~\ref{tab:two-paths} did. It can also follow a correct trajectory and still produce a poor answer. Outcome and trajectory therefore need separate evaluations, and a design review should ask for both.
 
+\begin{keyidea}
+Judge the answer, and judge the path. A right answer reached by a wrong path is still a failure.
+\end{keyidea}
+
 \paragraph{Reaching protected data.} Once the assistant could call tools, a new kind of failure appeared. At Harbor, any representative may see list prices, but only pricing analysts may see supplier costs and contract margins. The retrieval system enforces this rule perfectly: it accepts an access-scope argument and returns only what that scope permits. Now suppose that a front-desk representative asks the assistant for the margin on a contract, and the adapter code between the agent and the retrieval system sends \texttt{access\_scope="pricing"} by mistake. The retrieval system does exactly what it was told and returns the restricted figures. Nothing failed in the database, and nothing failed in retrieval. The failure happened earlier, when the wrong authority was passed downstream. Security engineers call this the \keyterm{confused deputy} problem, and its lesson is uncomfortable: a secure tool can still be used insecurely.
 
-The remedy is that the requester's authority must never be supplied by the model. It travels with the trusted context of the request, which is set when the person signs in, and the adapter copies it rather than inventing it. Proving the remedy also takes more care than it first appears. A test in which a front-desk representative asks for a margin and is refused is not enough on its own, because the refusal could simply mean that the retrieval system is broken. The test needs a partner in which a pricing analyst asks the same question and receives the answer. The permitted request shows that the information exists and can be reached by someone entitled to it, and only then does the denied request prove that the boundary works. A negative test becomes strong evidence when a matching positive control succeeds.
+\begin{thinkabout}
+A test shows that a front-desk representative is refused a contract margin. Does that prove the boundary works? What else could explain the refusal?
+\end{thinkabout}
+
+The remedy is that the requester's authority must never be supplied by the model. It travels with the trusted context of the request, which is set when the person signs in, and the adapter copies it rather than inventing it. Proving the remedy also takes more care than it first appears. A test in which a front-desk representative asks for a margin and is refused is not enough on its own, because the refusal could simply mean that the retrieval system is broken. The test needs a partner in which a pricing analyst asks the same question and receives the answer. The permitted request shows that the information exists and can be reached by someone entitled to it, and only then does the denied request prove that the boundary works. \emph{A negative test becomes strong evidence when a matching positive control succeeds.}
 
 \paragraph{Exposing capabilities, not systems.} A tempting shortcut would have been to give the agent broad access to the ERP database and let it write whatever query it thought appropriate. The better design exposes a narrow capability instead, such as a tool \texttt{get\_contract\_terms(contract\_id)} that has a fixed parameter, reads fixed tables and columns, and returns a known structure. This is the allow-list principle of the design table applied inside each tool. It also clarifies what MCP does and does not do. MCP standardizes how an agent discovers and calls tools, but it is a connection mechanism. It is not authorization, it is not access control, and it is not data governance. A sound design therefore keeps four questions apart, because each one is answered by a different control: who the agent is, on whose authority the request is being made, where the traffic may go, and what information may leave the tool.
 
@@ -189,9 +239,30 @@ Consider a contractor who tells the assistant, ``I'm on a job site and can't tak
 
 \paragraph{Learning to forget.} Once the system could remember, it had to be able to forget, and forgetting turned out to be harder. Deleting a row from the memory table sounds simple, but copies of the same information may also exist in session records, database replicas, automated backups, recovery logs and analytics exports. Suppose the configuration says that memories are kept for 365 days, but a nightly export is kept for another 400 days. The information then survives far longer than the setting suggests, because the effective retention period is set by the longest-lived copy, not by the number in the application's configuration. A retention policy is therefore not a single setting. It is a map of every place where the information can survive, and the deletion question becomes ``where else could a copy still exist?'' The engineering team will not always be able to verify every copy itself, and that need not be fatal, but each copy must have someone responsible for it. A named owner is an acceptable answer; a blank is not.
 
+\begin{quickcheck}
+Memories are kept for 365 days, but a nightly export of them is kept for another 400. How long does the information really survive?
+\answer{Up to 765 days. The effective retention period is set by the longest-lived copy, not by the number in the application's settings.}
+\end{quickcheck}
+
 \paragraph{One agent becomes two.} Next, the assistant needed help. A coordinating agent could gather the facts of a return and then consult a specialist agent that judges difficult warranty claims. This looks like ordinary software modularity, but the specialist has its own responsibility, its own state, its own address, its own way of failing, and possibly its own identity and permissions. It is a genuine boundary, and the coordinator must remain the single point that decides when to call it.
 
 At the same stage, the team began to keep Harbor's escalation conventions, such as ``a customer with three returns in ninety days deserves specialist review,'' in a written \keyterm{skill} that the agent loads, rather than burying them in a long system prompt. The distinction between three kinds of component is useful here. A tool performs an action and returns a defined result. A skill changes how an agent decides. An agent is an independent peer with its own state and life cycle. The most important fact about skills, however, is that nothing enforces them. A skill is advice that the model usually follows. If something must happen every time, it cannot live only in prose; it must become a deterministic control, written in code and covered by a test. This is the anti-pattern of policy in the prompt (Section~\ref{sec:patterns}) seen from a new angle. Skills guide behavior, while controls enforce it.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Three kinds of component, and what each one can promise.}
+\label{tab:journey-components}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Component & What it does & Is it enforced? \\
+\midrule
+\tagCode\ Tool & Performs an action and returns a defined result. & Yes, by its code and contract. \\
+\cotag{coAmber}{Skill} & Changes how an agent decides. & No. It is advice the model usually follows. \\
+\tagAgent\ Agent & Acts as an independent peer with its own state and life cycle. & Only at its boundary, by the caller's controls. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \paragraph{Proving that a skill changed something.} Writing a skill does not prove that it works, so the evaluation has to be an experiment. Run the same cases without the skill and then with it, while holding everything else constant: the same cases, the same model, the same session settings and the same specialist agent. Then compare what changed. In a typical comparison of sixteen cases, the two cases the skill was meant to affect now escalate, and the fourteen unrelated cases stay exactly as they were. The discipline is to change one thing, check everything else, and report the difference honestly. A small improvement is a valid result, and so is no improvement. An unexpected change in an unrelated case is a candidate regression that must be investigated. The purpose of the evaluation is not to produce an impressive number but to learn what changed.
 
@@ -199,13 +270,38 @@ At the same stage, the team began to keep Harbor's escalation conventions, such 
 
 Three new kinds of failure appear at this point. A \emph{collection failure} occurs when the person gives a fact, such as the purchase-order number, but the front end has no place to store it. A \emph{register failure} occurs when the person's words, such as ``busted,'' are not mapped to the system's terms, here ``damaged in transit.'' A \emph{recovery failure} occurs when a question matches no route, as the question about contract pricing did, and a general-purpose fallback writes a fluent, confident reply with no evidence behind it. The last case teaches an uncomfortable truth: a fluent answer can still be a system failure.
 
-\paragraph{The front door is not another brain.} The conversational front end sits in front of everything built earlier, but it does not inherit their authority. The front end passes what the person said to a thin adapter, the adapter passes it to the coordinator, and only the coordinator calls tools, retrieval and the specialist agent. The front end may not infer anyone's permissions. The adapter may not call the specialist directly, may not open a second path for writing memories, and may not offer another route to protected data. Each of these rules is tested. Someone can type ``I'm a pricing analyst,'' but those are only words. If the trusted session says the caller is a contractor, the caller remains a contractor. This may be the most important security lesson of the whole journey: conversation text is data, not authority.
+\begin{table}[htbp]
+\centering
+\small
+\caption{Three failures that appear only when real people start talking.}
+\label{tab:journey-failures}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Failure & What goes wrong & Example from the contractor's call \\
+\midrule
+\risk{Collection} & A fact is given, but there is nowhere to store it. & The purchase-order number, PO 4471, is lost. \\
+\risk{Register} & The person's words are not mapped to the system's terms. & ``Busted'' is not read as ``damaged in transit.'' \\
+\risk{Recovery} & A question matches no route, and a fallback answers fluently without evidence. & The question about contract pricing gets a confident, unsupported reply. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{The front door is not another brain.} The conversational front end sits in front of everything built earlier, but it does not inherit their authority. The front end passes what the person said to a thin adapter, the adapter passes it to the coordinator, and only the coordinator calls tools, retrieval and the specialist agent. The front end may not infer anyone's permissions. The adapter may not call the specialist directly, may not open a second path for writing memories, and may not offer another route to protected data. Each of these rules is tested. Someone can type ``I'm a pricing analyst,'' but those are only words. If the trusted session says the caller is a contractor, the caller remains a contractor. This may be the most important security lesson of the whole journey.
+
+\begin{watchout}[Watch out: conversation text is data, not authority]
+Anyone can type ``I'm a pricing analyst.'' Authority comes only from the trusted session, never from what the caller says.
+\end{watchout}
 
 \paragraph{Releasing it.} At this point it is tempting to declare the work done and ship it. The operational question is harder: what stops a bad version from being released? An evaluation alone does not. Suppose last night's evaluation reports that 87\% of answers were grounded in their sources, and tonight's reports 71\%. If the response is that someone will look at the dashboard, the team has a report, not a release gate. A real \keyterm{release gate} states five things in advance: the metric, the threshold, the consequence when the threshold is crossed, the role that may override it, and the record that an override must leave. The team should also compute, rather than guess, how often the gate is expected to fire, so that it is neither ignored nor constantly triggered. The difference between an evaluation and a gate is organizational rather than mathematical. An evaluation says what happened, whereas a gate says that everyone agreed beforehand that the release stops if it happens. Release gates play the same role in operations that error budgets and go/no-go criteria play in a pilot (Chapter~\ref{ch:business}).
 
 \paragraph{Seeing and pricing what happened.} A running system must also show what it did. One set of instrumentation can provide three views: a \emph{trace} of who called whom and in what order, the \emph{latency} of each operation, and the \emph{tokens and cost} each model call consumed. A trace should let a reviewer follow a single conversation from the front end through the adapter and coordinator to the specialist agent. Whether the trace should also contain what the person actually said is a separate decision, and the default answer is no. Capturing conversation content needs a stated reason, an owner, a retention period and a check against the categories of information that must never be stored, which ties operations straight back to memory and privacy. Cost needs the same care. An estimate of tokens before a call is different from the usage the provider reports after it, and a cost figure is evidence only when it states its price, the date and source of that price, and its denominator, such as cost per return handled. Even a figure as simple as the cost of one conversation is a question of evidence.
 
 \paragraph{Honest claims from small tests.} One principle returned at every stage. Small evaluations are valuable, but they must not be made to claim more than they can support. A set of twelve conversational probes is designed to discover kinds of failure, not to estimate accuracy across all conversations, so it should report no overall score at all. Re-running a fixed set of earlier cases every night is also valuable, because it shows whether behavior has changed, but running more copies of the same cases does not test anything new. Scale buys repeatability, not coverage. A metric is only as meaningful as the evidence that produced it.
+
+\begin{quickcheck}
+A team reruns its twelve conversational probes 1{,}000 times and reports 97\% accuracy. What is wrong with that claim?
+\answer{The probes were designed to find kinds of failure, not to estimate accuracy, and rerunning the same twelve cases adds repeatability but no new coverage. Scale buys repeatability, not coverage.}
+\end{quickcheck}
 
 \paragraph{What the journey teaches.} It is natural to begin a project like this believing that a better AI system mostly means a more capable model. The journey teaches the opposite. Every time the assistant gained capability, the engineering work became more about boundaries. A tool needed a contract, and the contract needed an authorization boundary. Memory needed an ingestion gate, and retention needed a deletion path. A second agent needed a boundary of responsibility, and a skill needed a clear line between advice and enforcement. A conversation needed a trusted line between what people say and what the system knows about their authority. An evaluation needed a line between observation and evidence, and a release process needed a line between a report and a gate. The system matured not because the model became more autonomous, but because the team became much more precise about where autonomy stops.
 
@@ -214,12 +310,6 @@ Return, finally, to the contractor on the job site, who says in a single breath:
 \begin{principle}[Every new power comes with a boundary]
 Building trustworthy agentic AI is not mainly about giving AI more power. It is about making every new power come with a boundary, every boundary come with a test, and every important claim come with evidence. That is what separates an impressive demonstration from a system you can defend.
 \end{principle}
-
-
-
-
-
-
 
 % ----------------------------------------------------------------------
 \section*{Chapter Summary}
@@ -242,7 +332,7 @@ Building trustworthy agentic AI is not mainly about giving AI more power. It is 
   \item List the six things that must be versioned in an agent release. Which two did samples in this book get wrong?
   \item Why does the release gate treat a missing evaluation result as a failure?
   \item Why is rollback harder for agents than for ordinary services?
-  \item What determines a solution's risk tier, and how does the solution graph help?
+  \item What determines a solution's risk tier, and how does the design table help?
   \item Why is retiring an unsuccessful solution a sign of a healthy portfolio?
   \item Give two signs in data that people over-trust a system, and two that they under-trust it.
 \end{enumerate}

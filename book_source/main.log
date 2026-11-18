@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  17 NOV 2026 21:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  17 NOV 2026 21:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1034,7 +1034,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip65
 ) (./common/callouts.tex)
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 22
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 26
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/t1lmr.fd
@@ -1052,37 +1052,37 @@ File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 (./appendix/appB.aux) (./appendix/appC.aux) (./appendix/appD.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Info: Redefining \microtypecontext on input line 22.
-Package microtype Info: Applying patch `item' on input line 22.
-Package microtype Info: Applying patch `toc' on input line 22.
-Package microtype Info: Applying patch `eqnum' on input line 22.
-Package microtype Info: Applying patch `footnote' on input line 22.
-Package microtype Info: Applying patch `verbatim' on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Info: Redefining \microtypecontext on input line 26.
+Package microtype Info: Applying patch `item' on input line 26.
+Package microtype Info: Applying patch `toc' on input line 26.
+Package microtype Info: Applying patch `eqnum' on input line 26.
+Package microtype Info: Applying patch `footnote' on input line 26.
+Package microtype Info: Applying patch `verbatim' on input line 26.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 22.
+LaTeX Info: Redefining \showhyphens on input line 26.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1166,7 +1166,7 @@ Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks50
 \inpenc@posthook=\toks51
 )
-Package hyperref Info: Link coloring ON on input line 22.
+Package hyperref Info: Link coloring ON on input line 26.
  (./main.out)
 (./main.out)
 \@outlinefile=\write4
@@ -1179,7 +1179,7 @@ rsion <1.7>, but at most version <1.5> allowed
 <../cover/cover.pdf, id=1618, 542.025pt x 668.4975pt>
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf>
-Package pdftex.def Info: ../cover/cover.pdf  used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf  used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 
 
@@ -1187,7 +1187,7 @@ pdfTeX warning: pdflatex (file ../cover/cover.pdf): PDF inclusion: found PDF ve
 rsion <1.7>, but at most version <1.5> allowed
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf>
-Package pdftex.def Info: ../cover/cover.pdf  used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf  used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 
 
@@ -1200,23 +1200,23 @@ rsion <1.7>, but at most version <1.5> allowed
 <../cover/cover.pdf, id=1621, page=1, 542.025pt x 668.4975pt>
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
-Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
-Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
-Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
-Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
-Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 29.
+Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
 [1
 
@@ -1226,15 +1226,15 @@ dmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.en
 c}
 
 ]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 4
-6.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5
+0.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 <../cover/innovation_press.png, id=1650, 1232.605pt x 406.51875pt>
 File: ../cover/innovation_press.png Graphic file (type png)
 <use ../cover/innovation_press.png>
-Package pdftex.def Info: ../cover/innovation_press.png  used on input line 67.
+Package pdftex.def Info: ../cover/innovation_press.png  used on input line 71.
 (pdftex.def)             Requested size: 93.94957pt x 30.98383pt.
  [1
 
@@ -1243,35 +1243,35 @@ novation_press.png>] [2
 
 ]
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 7
-5.
+9.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
-5.
+9.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-75.
+79.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-75.
+79.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 75.
+(Font)              <12> on input line 79.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 75.
+(Font)              <8> on input line 79.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 75.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 75.
+(Font)              <6> on input line 79.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
 
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1280,7 +1280,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 75.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 79.
 
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1293,7 +1293,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.75 \tableofcontents
+l.79 \tableofcontents
                       [1
 
 ]
@@ -1301,7 +1301,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.75 \tableofcontents
+l.79 \tableofcontents
                       [2
 
 ] (./main.toc
@@ -1329,7 +1329,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.79 \part{Foundations}
+l.83 \part{Foundations}
                         [1
 
 ]
@@ -1337,7 +1337,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.79 \part{Foundations}
+l.83 \part{Foundations}
                         [2]
 \openout2 = `ch01/ch01.aux'.
 
@@ -1536,168 +1536,192 @@ Chapter 4.
 [65
 
 
-] [66]) (./ch04/ch04b.tex [67] [68] [69] [70]) (./ch04/ch04c.tex
+] [66] [67]) (./ch04/ch04b.tex [68]
+Overfull \hbox (5.97305pt too wide) in paragraph at lines 81--81
+[]|[] 
+ []
+
+[69] [70] [71]) (./ch04/ch04c.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [71]
-[72] [73] [74]
+ [72]
+[73] [74] [75]
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
-)
-(./ch04/code/rag_metrics.py [75]) [76]) (./ch04/ch04d.tex [77]
+) [76]
+(./ch04/code/rag_metrics.py [77]) [78]) (./ch04/ch04d.tex [79]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [78]
-[79] [80])) [81]
+ [80]
+[81] [82])) [83]
 \openout2 = `ch05/ch05.aux'.
 
- (./ch05/ch05.tex (./ch05/ch05a.tex [82
+ (./ch05/ch05.tex (./ch05/ch05a.tex [84
 
 
 
 
 ]
 Chapter 5.
-[83] [84]) (./ch05/ch05b.tex [85] (./ch05/code/unit_economics.py [86] [87])
-[88]) (./ch05/ch05c.tex [89] (./ch05/code/returns_server.py [90] [91]) [92]
-[93]) (./ch05/ch05d.tex [94]
+[85] [86]) (./ch05/ch05b.tex [87] [88] [89] (./ch05/code/unit_economics.py
+[90]) [91]) (./ch05/ch05c.tex [92] (./ch05/code/returns_server.py [93]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [94])
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [95]
-[96] [97])) [98]
+[96]) (./ch05/ch05d.tex [97] [98] [99] [100])) [101]
 \openout2 = `ch06/ch06.aux'.
 
- (./ch06/ch06.tex (./ch06/ch06a.tex
-Chapter 6.
-[99
-
-
-
-
-] [100] [101] (./ch06/code/review_policy.py [102])) (./ch06/ch06b.tex
-[103]
-Underfull \vbox (badness 1152) has occurred while \output is active []
-
- [104]
-(./ch06/code/decision.py) [105] [106] [107] [108])) [109]
-\openout2 = `ch07/ch07.aux'.
-
- (./ch07/ch07.tex
-(./ch07/ch07a.tex [110
+ (./ch06/ch06.tex
+(./ch06/ch06a.tex [102
 
 
 
 
 ]
+Chapter 6.
+[103] [104] [105] (./ch06/code/review_policy.py [106] [107]) [108])
+(./ch06/ch06b.tex [109] [110] (./ch06/code/decision.py) [111] [112] [113]))
+[114]
+\openout2 = `ch07/ch07.aux'.
+
+ (./ch07/ch07.tex (./ch07/ch07a.tex
 Chapter 7.
-[111] [112] [113] (./ch07/code/downtime.py) [114]) (./ch07/ch07b.tex
-(./ch07/code/catalog.py [115]) [116] [117] [118])) [119] [120
+[115
 
 
 
-] [121] [122]
+
+] [116]
+Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
+[]|[]|  
+ []
+
+
+Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
+[]|[]|  
+ []
+
+
+Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
+[]|[] 
+ []
+
+[117] [118] (./ch07/code/downtime.py) [119]) (./ch07/ch07b.tex [120]
+(./ch07/code/catalog.py) [121] [122] [123] [124])) [125] [126
+
+
+
+] [127] [128]
 \openout2 = `ch08/ch08.aux'.
 
 
 (./ch08/ch08.tex (./ch08/ch08a.tex
 Chapter 8.
-[123
+[129
 
 
-] [124] (./ch08/code/fraud_policy.py [125])) (./ch08/ch08b.tex [126]
-(./ch08/code/faithfulness.py [127]) [128] [129] [130])) [131]
+] [130] (./ch08/code/fraud_policy.py [131] [132]) [133]) (./ch08/ch08b.tex
+[134] (./ch08/code/faithfulness.py) [135] [136] [137])) [138]
 \openout2 = `ch09/ch09.aux'.
 
  (./ch09/ch09.tex
-(./ch09/ch09a.tex [132
-
-
-
-
-]
+(./ch09/ch09a.tex
 Chapter 9.
-[133]
-Overfull \hbox (2.6548pt too wide) in paragraph at lines 114--114
- [][]\T1/lmr/m/n/9 (-20) Compensation 
- []
+[139
 
-[134] (./ch09/code/surge.py [135])) (./ch09/ch09b.tex [136]
-(./ch09/code/case.py [137]) (./ch09/code/eu261.py [138]) [139]
-Underfull \vbox (badness 1221) has occurred while \output is active []
 
- [140]))
-[141]
+
+
+] [140] [141] (./ch09/code/surge.py [142])) (./ch09/ch09b.tex [143]
+(./ch09/code/case.py [144]) [145] (./ch09/code/eu261.py) [146]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [147]
+[148])) [149]
 \openout2 = `ch10/ch10.aux'.
 
- (./ch10/ch10.tex (./ch10/ch10a.tex [142
+ (./ch10/ch10.tex (./ch10/ch10a.tex [150
 
 
 
 
 ]
 Chapter 10.
+[151] [152]
+Overfull \hbox (6.6652pt too wide) in paragraph at lines 132--132
+[]|[]|  
+ []
 
-Underfull \vbox (badness 7433) has occurred while \output is active []
 
- [143]
-[144] [145]) (./ch10/ch10b.tex [146] (./ch10/code/audit_log.py) [147] [148]
-[149])) [150]
+Overfull \hbox (6.6652pt too wide) in paragraph at lines 132--132
+[]|[]|  
+ []
+
+[153]) (./ch10/ch10b.tex [154] [155] (./ch10/code/audit_log.py) [156] [157]
+[158])) [159]
 \openout2 = `ch11/ch11.aux'.
 
- (./ch11/ch11.tex (./ch11/ch11a.tex
-Chapter 11.
-
-Underfull \vbox (badness 1975) has occurred while \output is active []
-
- [151
+ (./ch11/ch11.tex (./ch11/ch11a.tex [160
 
 
 
 
 ]
-[152] (./ch11/code/replenish.py [153])) (./ch11/ch11b.tex [154] [155] [156]
-[157])) [158]
+Chapter 11.
+
+Underfull \vbox (badness 4569) has occurred while \output is active []
+
+ [161]
+[162] [163] (./ch11/code/replenish.py [164]) [165]) (./ch11/ch11b.tex [166]
+[167] [168])) [169]
 \openout2 = `ch12/ch12.aux'.
 
- (./ch12/ch12.tex (./ch12/ch12a.tex
+ (./ch12/ch12.tex (./ch12/ch12a.tex [170
+
+
+
+
+]
 Chapter 12.
-[159
+[171] [172] [173] (./ch12/code/tco.py) [174]) (./ch12/ch12b.tex [175] [176]
+[177] [178])) [179] [180
 
 
 
-
-] [160] (./ch12/code/tco.py) [161]) (./ch12/ch12b.tex [162] [163] [164]))
-[165] [166
-
-
-
-] [167] [168]
+] [181] [182]
 \openout2 = `ch13/ch13.aux'.
 
  (./ch13/ch13.tex (./ch13/ch13a.tex
 Chapter 13.
-[169
+[183
 
 
-] [170]) (./ch13/ch13b.tex [171] (./ch13/code/release_gate.py [172])
+] [184] [185]) (./ch13/ch13b.tex [186] (./ch13/code/release_gate.py)
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/8'.
 (microtype)             Ignoring protrusion settings for this character.
 
-[173] [174] [175] [176] [177] [178] [179])) [180]
+[187] [188] [189] [190] [191] [192] [193]
+Underfull \vbox (badness 1173) has occurred while \output is active []
+
+ [194]
+[195])) [196]
 \openout2 = `appendix/appA.aux'.
 
  (./appendix/appA.tex
 Appendix A.
-[181
+[197
 
 
 
 
-] [182] [183]) [184]
+] [198] [199]) [200]
 \openout2 = `appendix/appB.aux'.
 
  (./appendix/appB.tex
@@ -1705,13 +1729,13 @@ Appendix B.
 
 Underfull \vbox (badness 1253) has occurred while \output is active []
 
- [185
+ [201
 
 
 
 
 ])
-[186]
+[202]
 \openout2 = `appendix/appC.aux'.
 
  (./appendix/appC.tex
@@ -1724,29 +1748,29 @@ Underfull \hbox (badness 2005) in paragraph at lines 41--41
 
 Underfull \vbox (badness 2538) has occurred while \output is active []
 
- [187
+ [203
 
 
 
 
 ]
-[188]) [189]
+[204]) [205]
 \openout2 = `appendix/appD.aux'.
 
- (./appendix/appD.tex [190
+ (./appendix/appD.tex [206
 
 
 
 
 ]
 Appendix D.
-[191] [192]) [193] [194
+[207] [208]) [209] [210
 
 
 
-] (./main.bbl [195
+] (./main.bbl [211
 
-]) [196] (./main.aux (./preface.aux)
+]) [212] (./main.aux (./preface.aux)
 (./ch01/ch01.aux) (./ch02/ch02.aux) (./ch03/ch03.aux) (./ch04/ch04.aux)
 (./ch05/ch05.aux) (./ch06/ch06.aux) (./ch07/ch07.aux) (./ch08/ch08.aux)
 (./ch09/ch09.aux) (./ch10/ch10.aux) (./ch11/ch11.aux) (./ch12/ch12.aux)
@@ -1757,54 +1781,48 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B525D19416A54A0BEF6397FB1F7C024E;72126.
+(rerunfilecheck)             Checksum: FD0A69F91890D188DDD36DF2BA32EBDB;84345.
  ) 
 Here is how much of TeX's memory you used:
- 42102 strings out of 474116
- 803687 string characters out of 5743682
+ 41706 strings out of 474116
+ 798818 string characters out of 5743682
  2208187 words of memory out of 5000000
- 60423 multiletter control sequences out of 15000+600000
- 748676 words of font info for 504 fonts, out of 8000000 for 9000
+ 60049 multiletter control sequences out of 15000+600000
+ 733014 words of font info for 472 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  91i,25n,99p,1313b,2237s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/lo
 cal/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texliv
-e/2024/texmf-dist/fonts/type1/public/lm/lmbx6.pfb></usr/local/texlive/2024/texm
-f-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local/texlive/2024/texmf-dist/font
-s/type1/public/lm/lmbx9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/pub
-lic/lm/lmbxi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lm
-ex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><
-/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/
-texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/202
-4/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2024/texmf-dis
-t/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
-e1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/l
-m/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb
-></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local
-/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/202
-4/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2024/texmf-dist
-/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
-e1/public/lm/lmri12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/
-lm/lmri7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri8.pf
-b></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri9.pfb></usr/loc
-al/texlive/2024/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive
-/2024/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2024/texm
-f-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2024/texmf-dist/font
-s/type1/public/lm/lmss9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/pub
-lic/lm/lmssbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/l
-msy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><
-/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/
-texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/local/texlive/202
-4/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2024/texmf-di
-st/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2024/texmf-dist/fonts/t
-ype1/public/lm/lmtt8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public
-/lm/lmtt9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtti10
-.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
-am10.pfb>
-Output written on main.pdf (214 pages, 1839235 bytes).
+e/2024/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local/texlive/2024/texm
+f-dist/fonts/type1/public/lm/lmbx9.pfb></usr/local/texlive/2024/texmf-dist/font
+s/type1/public/lm/lmbxi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/p
+ublic/lm/lmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/l
+mmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><
+/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/
+texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/202
+4/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2024/texmf-dis
+t/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/public/lm/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/l
+m/lmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr6.pfb>
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/
+texlive/2024/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2024
+/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2024/texmf-dis
+t/fonts/type1/public/lm/lmri12.pfb></usr/local/texlive/2024/texmf-dist/fonts/ty
+pe1/public/lm/lmri8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/
+lm/lmri9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmro10.p
+fb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr
+/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/tex
+live/2024/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2024/t
+exmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/local/texlive/2024/texmf-dist/f
+onts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1
+/public/lm/lmtt10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm
+/lmtt8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/loc
+al/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on main.pdf (230 pages, 1845295 bytes).
 PDF statistics:
- 5895 PDF objects out of 6186 (max. 8388607)
- 5466 compressed objects within 55 object streams
- 2335 named destinations out of 2487 (max. 500000)
- 103158 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 6010 PDF objects out of 6186 (max. 8388607)
+ 5554 compressed objects within 56 object streams
+ 2371 named destinations out of 2487 (max. 500000)
+ 94966 words of extra memory for PDF output out of 106986 (max. 10000000)
 

@@ -15,23 +15,23 @@ Starting point & Google ADK sample \texttt{software-bug-assistant}, pinned at co
 Technical focus & Observability---of the system for the agent, and of the agent itself \\
 Business skill & Cost of downtime and service-level agreements \\
 Patterns & Event-triggered agent; planner--executor (bounded); retrieve-then-answer; approval gate \\
-Deliverables & Solution graphs, downtime model, safe-action catalog, agent SLOs and dashboard, incident-replay evaluation, memo
+Deliverables & Design tables, downtime model, safe-action catalog, agent SLOs and dashboard, incident-replay evaluation, memo
 \end{tabularx}
 \end{caseglance}
 
-\begin{objectives}
-After working through this case, you will be able to:
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Critique a conversational support agent for use in an event-driven, time-critical setting.
-  \item Model the cost of downtime by incident phase and use it to decide which phases an agent should speed up.
-  \item Design a safe-action catalog with tiers of autonomy tied to blast radius and reversibility.
-  \item Instrument an agent with traces, decision logs and its own service-level objectives.
-  \item Evaluate an incident agent by replaying past incidents rather than by asking it questions.
+  \item Why does a conversational support agent struggle in an event-driven, time-critical setting?
+  \item What does a minute of downtime cost, phase by phase, and which phases should an agent speed up?
+  \item How do you decide which actions an agent may take on its own, using tiers tied to blast radius and reversibility?
+  \item How do you watch an agent in production with traces, decision logs and its own service-level objectives?
+  \item How do you evaluate an incident agent by replaying past incidents rather than by asking it questions?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
-\section{Business Brief and Current Process}
+\section{Business Brief: What Is Going Wrong Today?}
 \label{sec:inc-brief}
 
 Parcelpoint's lockers sit in stations, shops and apartment buildings. Retailers send parcels to them, couriers load them, and customers open them with a code. Everything depends on Parcelpoint's cloud platform: if the platform is down, lockers cannot be loaded or opened, couriers wait, and retailers' customers complain to the retailer. Contracts with retailers promise 99.9\% monthly availability, with service credits when it is missed.
@@ -45,7 +45,7 @@ The platform's monitoring raises about 140 alerts a day. Most are noise or dupli
 \label{tab:inc-phases}
 \begin{tabular}{@{}lrrrrrrr@{}}
 \toprule
- & Per month & Detect & Acknowledge & Diagnose & Mitigate & Verify & Total \\
+\rowcolor{coHead} & Per month & Detect & Acknowledge & Diagnose & Mitigate & Verify & Total \\
 \midrule
 P1 & 3 & 6 & 9 & 38 & 15 & 6 & 74 \\
 P2 & 14 & 10 & 18 & 70 & 40 & 22 & 160 \\
@@ -53,34 +53,65 @@ P2 & 14 & 10 & 18 & 70 & 40 & 22 & 160 \\
 \end{tabular}
 \end{table}
 
+\begin{thinkabout}
+An alert fires at 3 a.m. and wakes the on-call engineer. What do they do in the first ten minutes? Which of those minutes could software save, and which could it make worse?
+\end{thinkabout}
+
 Diagnosis dominates. The on-call engineer, often woken at night, opens dashboards, searches logs, checks what was deployed recently, looks for a runbook, and asks in chat whether anyone has seen this before. Acknowledgment is slow at night because the engineer must first understand what the page means.
 
 Parcelpoint's finance team estimates the cost of a P1 minute at about \$1{,}200 (lost transactions, courier waiting time, service credits and support load) and of a P2 minute at about \$150. At those rates, incidents cost about \$600{,}000 a month. The 99.9\% commitment allows about 43 minutes of downtime a month; a single median P1 uses more than all of it.
 
 % ----------------------------------------------------------------------
-\section{Stakeholders, KPIs and Value Hypothesis}
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:inc-kpis}
 
-\paragraph{Stakeholders.} The sponsor is the vice president of engineering. Users are the on-call SREs and the service teams who own each service. Approvers include the head of security (production access) and the change advisory board, which governs changes to production. Owners are the SRE team (the agent and the action catalog) and each service team (its runbooks and its permitted actions).
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of incident response.}
+\label{tab:inc-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\cotag{coBlue}{Sponsor} & The vice president of engineering. \\
+\cotag{coGreen}{Users} & The on-call SREs, and the service teams who own each service. \\
+\cotag{coAmber}{Approvers} & The head of security, for production access, and the change advisory board, which governs changes to production. \\
+\cotag{coPurple}{Owners} & The SRE team, which owns the agent and the action catalog, and each service team, which owns its runbooks and its permitted actions. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\paragraph{KPIs and risks.}
-\begin{itemize}[itemsep=1pt]
-  \item[\textsf{K1}] Median P1 time to mitigate (MTTR): at most 50 minutes, from 74.
-  \item[\textsf{K2}] Monthly availability: at least 99.9\% in at least 11 months of 12.
-  \item[\textsf{K3}] Pages per on-call shift: halved, without missing a P1.
-  \item[\textsf{R1}] An automated action that makes an incident worse.
-  \item[\textsf{R2}] Production data, credentials or customer information leaving the company through a tool.
-  \item[\textsf{R3}] The agent being unavailable, or slow, during the incident it should help with.
-\end{itemize}
+\paragraph{KPIs and risks.} Table~\ref{tab:inc-kpis} lists them.
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs (blue) and risks (red) for incident response.}
+\label{tab:inc-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{P1 time to mitigate} & Median P1 time to mitigate (MTTR): at most 50 minutes, from 74. \\
+\kpi{Availability} & Monthly availability: at least 99.9\% in at least 11 months of 12. \\
+\kpi{Pages per shift} & Halved, without missing a P1. \\
+\risk{Worse incident} & An automated action that makes an incident worse. \\
+\risk{Data leaves} & Production data, credentials or customer information leaving the company through a tool. \\
+\risk{Agent down} & The agent being unavailable, or slow, during the incident it should help with. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\textsf{R3} is particular to this case. An incident agent runs during incidents, which are exactly the times when shared infrastructure is failing. If the agent depends on the systems it diagnoses, it fails when it is needed most.
+\begin{watchout}[Watch out: the agent that fails with the system]
+\risk{Agent down} is particular to this case. An incident agent runs during incidents, which are exactly the times when shared infrastructure is failing. If the agent depends on the systems it diagnoses, it fails when it is needed most.
+\end{watchout}
 
-\begin{quote}
-\emph{Value hypothesis.} If every incident opens with a correlated alert group, a brief that states the likely causes with evidence, and a short list of safe actions, on-call engineers will acknowledge and diagnose much faster and mitigate low-risk causes immediately, cutting MTTR by a third without new failure modes.
-\end{quote}
+\begin{keyidea}[The value hypothesis, in one sentence]
+If every incident opens with a correlated alert group, a brief that states the likely causes with evidence, and a short list of safe actions, on-call engineers will acknowledge and diagnose much faster and mitigate low-risk causes immediately, cutting MTTR by a third without new failure modes.
+\end{keyidea}
 
 % ----------------------------------------------------------------------
-\section{Alternative Designs}
+\section{Alternative Designs: What Could We Build?}
 \label{sec:inc-designs}
 
 \subsection{The sample as it stands}
@@ -94,19 +125,19 @@ As the starting point for incident response, it leaves seven gaps:
   \item \emph{It waits to be asked.} Incidents begin with alerts, at any hour. An assistant that starts working when someone types a question has already lost the acknowledgment phase.
   \item \emph{It cannot see the system.} It has no tools for metrics, logs, traces or deployment history---the evidence diagnosis depends on.
   \item \emph{Writes are ungated.} The ticket tools that change status and priority are available to the model without confirmation. In tickets this is minor; in production systems, the same pattern would be dangerous.
-  \item \emph{Internal details go to public search.} Web and Stack Overflow searches send whatever the model puts in the query---error messages, host names, stack traces---outside the company (\textsf{R2}).
+  \item \emph{Internal details go to public search.} Web and Stack Overflow searches send whatever the model puts in the query---error messages, host names, stack traces---outside the company (\risk{Data leaves}).
   \item \emph{A personal, long-lived credential.} GitHub is reached with a personal access token from an environment variable, so the agent acts with one person's permissions.
   \item \emph{A model pinned in code, now retired.} The agent's model name is a literal in \texttt{agent.py}: \texttt{gemini-2.5-flash}, which was scheduled to be withdrawn in October 2026. A sample that hard-codes its model stops working on someone else's schedule. Chapter~\ref{ch:foundations} gave the remedy: read the model name from configuration and regression-test every change.
   \item \emph{No notion of the agent's own health.} Nothing measures whether the assistant is up, fast or right.
 \end{enumerate}
 
-\subsection{D1: an on-call chat assistant}
+\subsection{The chat design: an on-call chat assistant}
 
-D1 keeps the sample's conversational shape and adds read-only tools for metrics, logs and deployments, and a runbook index. On-call engineers ask it questions in the incident channel.
+The chat design keeps the sample's conversational shape and adds read-only tools for metrics, logs and deployments, and a runbook index. On-call engineers ask it questions in the incident channel.
 
-\subsection{D2: event-triggered triage with safe actions}
+\subsection{The triage design: event-triggered triage with safe actions}
 
-D2 starts from the alert (Figure~\ref{fig:inc-d2}).
+The triage design starts from the alert. Table~\ref{tab:inc-d2} writes it down as a design table.
 \begin{itemize}[itemsep=1pt]
   \item Cloud Monitoring publishes alerts to Pub/Sub. \emph{Code} groups related alerts into one incident (same service, overlapping window, shared dependency), suppresses flapping alerts and pages the on-call engineer once.
   \item A \emph{triage agent} (Level~4, bounded to three minutes and twenty tool calls) investigates with read-only, task-shaped tools: error rate and latency for a service and window, recent deployments and configuration changes, log search limited to one service and window, and a runbook and past-incident index. It posts an \emph{incident brief} to the incident channel: what is affected, up to three hypotheses ranked by evidence, with links to the graphs and log lines behind each, and the runbook steps that apply.
@@ -114,45 +145,49 @@ D2 starts from the alert (Figure~\ref{fig:inc-d2}).
   \item After resolution, a \emph{postmortem agent} drafts the timeline from the incident channel, alerts and actions for the team to complete.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{table}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
-\node[sg sor] (mon) at (0,0) {Cloud Monitoring};
-\node[sg code] (cor) at (3.2,0) {Correlate, dedupe, page once};
-\node[sg agent] (tri) at (6.5,0) {Triage agent\\[-1pt]{\scriptsize L4; $\le$3 min, 20 calls; stop: brief}};
-\node[sg mcp, text width=2.5cm] (tel) at (10.4,1.0) {Telemetry\\[-1pt]{\scriptsize SRE team, read-only}\nodepart{two}{\tiny\ttfamily error\_rate, latency, search\_logs, recent\_changes}};
-\node[sg store] (rb) at (10.4,-1.5) {Runbooks \& past incidents};
-\node[sg code] (cat) at (6.5,-2.9) {Safe-action catalog\\[-1pt]{\scriptsize tiers, preconditions}};
-\node[sg human] (oc) at (3.2,-2.9) {On-call SRE\\[-1pt]{\scriptsize Tier 2 approval}};
-\node[sg mcp, text width=2.5cm] (act) at (6.5,-5.4) {Actions\\[-1pt]{\scriptsize SRE team}\nodepart{two}{\tiny\ttfamily scale\_within\_limits, restart\_one, rollback\_last}};
-\node[sg agent] (pm) at (0,-5.4) {Postmortem agent\\[-1pt]{\scriptsize drafts timeline}};
-\draw[sg event] (mon) -- node[sg lab, above] {alerts} (cor);
-\draw[sg flow] (cor) -- node[sg lab, above] {incident} (tri);
-\draw[sg call] (tri) -- (tel); \draw[sg data] (rb) -- (tri);
-\draw[sg flow] (tri) -- node[sg lab, right] {proposals} (cat);
-\draw[sg flow] (tri.south west) -- node[sg lab, sloped, above] {brief} (oc.north east);
-\draw[sg call] (cat) -- node[sg lab, right] {[Tier 1, preconditions hold]} (act);
-\draw[sg flow] (cat) -- node[sg lab, above] {[Tier 2]} (oc);
-\draw[sg call] (oc.south) |- node[sg lab, pos=0.75, below] {[approved]} (act.west);
-\draw[sg flow] (oc.south west) -- node[sg lab, sloped, above] {[resolved]} (pm.north east);
-\sgtag{cor}{K3}
-\sgtag{tri}{K1}
-\sgtag{cat}{R1}
-\sgtag{oc}{R1}
-\sgtag{tel}{R2}
-\sgtag{act}{K1 R1}
-\sgtag{pm}{K2}
-\end{tikzpicture}
-\caption{D2: event-triggered triage with a safe-action catalog. All telemetry tools are read-only and limited to one service and time window; actions come only from the catalog. The agent runs in a separate project and region from the platform it observes (not shown).}
-\label{fig:inc-d2}
-\end{figure}
+\small
+\caption{The triage design as a design table. Every telemetry tool is read-only and limited to one service and time window; actions come only from the catalog. The agent runs in a separate project and region from the platform it observes.}
+\label{tab:inc-d2}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.7cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+1 & Group related alerts into one incident, suppress flapping alerts and page once & \tagCode & Cloud Monitoring alerts, through Pub/Sub & \kpi{Pages per shift} \\
+2 & Investigate and post the incident brief & \tagAgent\ Level 4; at most 3 minutes and 20 calls; stops at the brief & Telemetry server (SRE team, read-only): \texttt{error\_rate}, \texttt{latency}, \texttt{search\_logs}, \texttt{recent\_changes}; runbooks and past incidents & \kpi{P1 time to mitigate} \\
+3 & Remove any hypothesis that has no evidence links & \tagGuardrail & The brief & \kpi{P1 time to mitigate} \\
+4 & Check each proposed action: tier, preconditions, blast radius and budget & \tagCode & Safe-action catalog (SRE team) & \risk{Worse incident} \\
+5 & Approve or reject a Tier~2 action & \tagPerson\ On-call SRE & The brief and the proposal & \risk{Worse incident} \\
+6 & Run a Tier~1 action, or an approved Tier~2 action & \tagCode & Actions server (SRE team): \texttt{scale\_within\_limits}, \texttt{restart\_one}, \texttt{rollback\_last} & \kpi{P1 time to mitigate} \risk{Worse incident} \\
+7 & After resolution, draft the postmortem timeline & \tagAgent\ Postmortem agent & Incident channel, alerts and actions & \kpi{Availability} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\subsection{D3: automatic remediation}
+\subsection{The auto-fix design: automatic remediation}
 
-D3 lets the triage agent choose and execute any action in the catalog, including rollbacks and regional failover, and notify the on-call engineer afterwards. It promises the shortest MTTR and carries the largest risk of making an incident worse.
+The auto-fix design lets the triage agent choose and execute any action in the catalog, including rollbacks and regional failover, and notify the on-call engineer afterwards. It promises the shortest MTTR and carries the largest risk of making an incident worse. Table~\ref{tab:inc-designs} compares the three designs.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The three incident designs side by side.}
+\label{tab:inc-designs}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} & Chat & Triage & Auto-fix \\
+\midrule
+Starts when & An engineer asks a question & An alert fires & An alert fires \\
+Sees the system through & Read-only telemetry tools & Read-only tools limited to one service and window & The same \\
+May act & Never & Tier~1 actions alone; Tier~2 with approval & Any action in the catalog \\
+The on-call engineer & Asks and acts & Reads the brief and approves Tier~2 & Is told afterwards \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 % ----------------------------------------------------------------------
-\section{Trade-offs}
+\section{Trade-offs: Which Design Should We Pilot?}
 \label{sec:inc-tradeoffs}
 
 \subsection{Cost of downtime, phase by phase}
@@ -161,27 +196,35 @@ Each design changes different phases of an incident. Listing~\ref{lst:downtime} 
 
 \lstinputlisting[language=Python, caption={Downtime cost by design (\texttt{ch07/downtime.py}).}, label={lst:downtime}, firstline=6, lastline=24]{code/downtime.py}
 
+\begin{thinkabout}
+Look only at the saving column in the output below. Which design would you choose? Then read the last three rows and ask whether your answer changes.
+\end{thinkabout}
+
 \begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=1.5em]
 baseline outage cost $602,400/month (P1 MTTR 74 min)
-D1 chat assistant          P1 MTTR  68.3 min  saving $   42,570/month
-D2 triage + safe actions   P1 MTTR  47.0 min  saving $  212,460/month
-D3 auto-remediate          P1 MTTR  41.6 min  saving $  264,900/month
+Chat assistant             P1 MTTR  68.3 min  saving $   42,570/month
+Triage + safe actions      P1 MTTR  47.0 min  saving $  212,460/month
+Auto-remediate             P1 MTTR  41.6 min  saving $  264,900/month
 
-D3 saving if a wrong action is more likely or more harmful:
+Auto-remediate saving if a wrong action is more likely or more harmful:
   p_wrong=0.08, +35 min  saving $  264,900/month
   p_wrong=0.15, +60 min  saving $  229,560/month
   p_wrong=0.25, +90 min  saving $  152,610/month
 \end{lstlisting}
 
-D1 helps little: it shortens diagnosis somewhat but leaves acknowledgment and mitigation alone, because it waits to be asked and cannot act. D2 saves about \$212{,}000 a month and brings median P1 MTTR under the 50-minute target. D3 saves more \emph{if} its wrong actions are rare and mild---but its error rate is the one number in the model that cannot be measured until D3 is running in production, and the bottom rows show how quickly the advantage erodes if that number is worse than hoped.
+The chat design helps little: it shortens diagnosis somewhat but leaves acknowledgment and mitigation alone, because it waits to be asked and cannot act. The triage design saves about \$212{,}000 a month and brings median P1 MTTR under the 50-minute target. The auto-fix design saves more \emph{if} its wrong actions are rare and mild---but its error rate is the one number in the model that cannot be measured until the auto-fix design is running in production, and the bottom rows show how quickly the advantage erodes if that number is worse than hoped.
 
 \subsection{Decision}
 
-Expected value alone favors D3. Three considerations reverse that for now. First, D3's advantage rests on an unmeasured parameter, while D2's rests mostly on measured ones. Second, D3's losses are concentrated: a wrong failover can turn a P2 into a P1, the kind of event that ends retailer contracts, which an average does not capture. Third, D2 is a step toward D3, not a fork: actions move from Tier~2 to Tier~1 one at a time as their record justifies it. The decision record therefore chooses D2 with an explicit promotion rule.
+Expected value alone favors the auto-fix design. Three considerations reverse that for now. First, the auto-fix design's advantage rests on an unmeasured parameter, while the triage design's rests mostly on measured ones. Second, the auto-fix design's losses are concentrated: a wrong failover can turn a P2 into a P1, the kind of event that ends retailer contracts, which an average does not capture. Third, the triage design is a step toward the auto-fix design, not a fork: actions move from Tier~2 to Tier~1 one at a time as their record justifies it. The decision record therefore chooses the triage design with an explicit promotion rule.
 
-\begin{tcolorbox}[colback=white, colframe=black!45, boxrule=0.4pt, arc=1pt, fontupper=\small, title={DR-INC-001: Event-triggered triage with tiered safe actions (D2)}, fonttitle=\bfseries\small, coltitle=black, colbacktitle=codefill]
-\textbf{Decision.} D2. Tier~1 actions at launch: scale a service within its configured limits; restart a single unhealthy instance. Rollback of the last deployment is Tier~2.\\
-\textbf{Reasons.} \$212{,}000 a month saving on measured inputs; meets \textsf{K1}; D3's advantage depends on an unmeasured error rate and carries concentrated risk.\\
+\begin{keyidea}
+When one design's advantage rests on an error rate nobody has measured, choose the design that measures it, and give the system more autonomy as the evidence comes in.
+\end{keyidea}
+
+\begin{tcolorbox}[colback=white, colframe=black!45, boxrule=0.4pt, arc=1pt, fontupper=\small, title={DR-INC-001: The triage design, with tiered safe actions}, fonttitle=\bfseries\small, coltitle=black, colbacktitle=codefill]
+\textbf{Decision.} The triage design. Tier~1 actions at launch: scale a service within its configured limits; restart a single unhealthy instance. Rollback of the last deployment is Tier~2.\\
+\textbf{Reasons.} \$212{,}000 a month saving on measured inputs; meets \kpi{P1 time to mitigate}; the auto-fix design's advantage depends on an unmeasured error rate and carries concentrated risk.\\
 \textbf{Promotion rule.} An action moves from Tier~2 to Tier~1 after 30 approved uses with no reversal and on-call agreement in at least 95\% of proposals. Any Tier~1 action that makes an incident worse returns to Tier~2 immediately.\\
-\textbf{Reversal triggers.} Reconsider D3 for a given service when all its common actions have reached Tier~1 under the promotion rule.
+\textbf{Reversal triggers.} Reconsider the auto-fix design for a given service when all its common actions have reached Tier~1 under the promotion rule.
 \end{tcolorbox}

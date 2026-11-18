@@ -15,23 +15,23 @@ Starting point & Original design (Part III) \\
 Technical focus & Sessions and state \\
 Business skill & Customer experience and cycle time \\
 Patterns & Multi-agent handoff; event-triggered agent; approval gate \\
-Deliverables & Solution graphs, surge model, handoff contract, compensation rules, evaluation by simulation, memo
+Deliverables & Design tables, surge model, handoff contract, compensation rules, evaluation by simulation, memo
 \end{tabularx}
 \end{caseglance}
 
-\begin{objectives}
-After working through this case, you will be able to:
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Model a demand surge with queueing theory and see why automation's value can be non-linear.
-  \item Design a multi-agent handoff with a typed case object, one owner at a time and allowed transitions.
-  \item Choose where each piece of state lives---conversation, case, user, application---and how long it lives.
-  \item Hold scarce inventory safely with expiring, idempotent holds.
-  \item Keep legally defined entitlements, such as compensation, in code, and let agents explain them.
+  \item Why can the value of automation jump suddenly in a surge, and how does queueing theory show it?
+  \item How do several agents hand a passenger's case to one another without losing it or fighting over it?
+  \item Where should each piece of state live---conversation, case, user or application---and for how long?
+  \item How do you hold scarce seats safely while thousands of passengers want them at once?
+  \item Why should legal entitlements such as compensation be computed in code and only explained by agents?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
-\section{Business Brief and Current Process}
+\section{Business Brief: What Is Going Wrong Today?}
 \label{sec:air-brief}
 
 On a bad winter day---a storm over a hub, a closed runway---Coral Air may cancel a hundred flights or more. Last February a single storm cancelled 120 flights and disrupted about 9{,}600 passengers in an afternoon. Each needed a new itinerary; many needed a hotel, meals or ground transport; some were owed compensation under EU Regulation 261/2004 (EU261), which sets fixed amounts depending on distance and circumstances.
@@ -40,6 +40,10 @@ Coral Air's reservation system already includes an automatic \emph{re-accommodat
 
 The contact centre can bring about 120 agents online at short notice; a disruption call takes about 11 minutes. Table~\ref{tab:air-today} summarizes last February's storm from the contact-centre and reservation logs.
 
+\begin{thinkabout}
+About 5{,}800 passengers contact the airline, 120 agents are available, and each call takes 11 minutes. Before doing any arithmetic, guess: how long does the last caller of the afternoon wait?
+\end{thinkabout}
+
 \begin{table}[htbp]
 \centering
 \small
@@ -47,7 +51,7 @@ The contact centre can bring about 120 agents online at short notice; a disrupti
 \label{tab:air-today}
 \begin{tabular}{@{}lr@{}}
 \toprule
-Measure & Value \\
+\rowcolor{coHead} Measure & Value \\
 \midrule
 Passengers on cancelled flights & 9{,}600 \\
 Contacted the airline & 5{,}760 (60\%) \\
@@ -62,37 +66,62 @@ Compensation claims paid in error (weather was extraordinary) & 4\% of claims au
 \end{table}
 
 % ----------------------------------------------------------------------
-\section{Stakeholders, KPIs and Value Hypothesis}
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:air-kpis}
 
-\paragraph{Stakeholders.} The sponsor is the chief customer officer. Users are passengers and contact-centre agents. Approvers include the legal team (EU261 and consumer law), the data protection officer, and revenue management, which controls seat inventory. Owners are the operations control centre (which declares disruptions), the reservation-systems team, the contact centre and the customer-relations team (compensation).
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of disruption rebooking.}
+\label{tab:air-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\cotag{coBlue}{Sponsor} & The chief customer officer. \\
+\cotag{coGreen}{Users} & Passengers and contact-centre agents. \\
+\cotag{coAmber}{Approvers} & The legal team (EU261 and consumer law), the data protection officer, and revenue management, which controls seat inventory. \\
+\cotag{coPurple}{Owners} & The operations control centre, which declares disruptions; the reservation-systems team; the contact centre; and the customer-relations team, which handles compensation. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\paragraph{KPIs and risks.}
-\begin{itemize}[itemsep=1pt]
-  \item[\textsf{K1}] Median time from cancellation to confirmed new itinerary: under 1 hour, from 7.5.
-  \item[\textsf{K2}] Disrupted passengers who reach a person when they need one within 20 minutes: at least 90\%.
-  \item[\textsf{K3}] Post-disruption satisfaction score: up 15 points.
-  \item[\textsf{R1}] A seat promised that cannot be issued (double sale, expired hold).
-  \item[\textsf{R2}] A compensation, refund or voucher decision that contradicts EU261 or Coral Air's policy.
-  \item[\textsf{R3}] A passenger with special needs---reduced mobility, an unaccompanied minor, a medical condition---handled only by automation.
-  \item[\textsf{R4}] One passenger's booking or personal data shown to another.
-\end{itemize}
+\paragraph{KPIs and risks.} Table~\ref{tab:air-kpis} lists them.
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs (blue) and risks (red) for disruption rebooking.}
+\label{tab:air-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{Time to itinerary} & Median time from cancellation to a confirmed new itinerary: under one hour, from 7.5. \\
+\kpi{Reach a person} & Disrupted passengers who reach a person, when they need one, within 20 minutes: at least 90\%. \\
+\kpi{Satisfaction} & Post-disruption satisfaction score: up 15 points. \\
+\risk{Seat not issued} & A seat promised that cannot be issued, through a double sale or an expired hold. \\
+\risk{Wrong entitlement} & A compensation, refund or voucher decision that contradicts EU261 or Coral Air's policy. \\
+\risk{Special needs} & A passenger with special needs---reduced mobility, an unaccompanied minor, a medical condition---handled only by automation. \\
+\risk{Wrong passenger} & One passenger's booking or personal data shown to another. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\begin{quote}
-\emph{Value hypothesis.} If most disrupted passengers can accept or change their new itinerary, and get care and compensation answers, in a conversation that starts the moment their flight is cancelled, the contact centre can keep up with the rest, and passengers will have confirmed plans within an hour instead of most of a day.
-\end{quote}
+\begin{keyidea}[The value hypothesis, in one sentence]
+If most disrupted passengers can accept or change their new itinerary, and get care and compensation answers, in a conversation that starts the moment their flight is cancelled, the contact centre can keep up with the rest, and passengers will have confirmed plans within an hour instead of most of a day.
+\end{keyidea}
 
 % ----------------------------------------------------------------------
-\section{Alternative Designs}
+\section{Alternative Designs: What Could We Build?}
 \label{sec:air-designs}
 
-\subsection{D1: one disruption agent}
+\subsection{The single-agent design: one disruption agent}
 
 One agent with tools for bookings, flight options, seat holds, ticket reissue, hotel vouchers, meal vouchers and compensation, available in the app and on the website. It is quick to build and flexible. It also concentrates every permission in one place, mixes three jobs with different rules in one instruction, and makes it hard to say at any moment what has been decided and what remains.
 
-\subsection{D2: handoff between specialized agents}
+\subsection{The handoff design: specialized agents, one case}
 
-D2 divides the work into the stages a good human agent goes through, and gives each stage an agent with only the tools and instructions it needs (Figure~\ref{fig:air-d2}).
+The handoff design divides the work into the stages a good human agent goes through, and gives each stage an agent with only the tools and instructions it needs. Table~\ref{tab:air-d2} writes it down as a design table.
 \begin{itemize}[itemsep=1pt]
   \item When operations control cancels a flight, an \emph{event} creates a \emph{case} for each booking and sends a push notification with the re-accommodation engine's proposal and three buttons: accept, change, or talk to us. ``Accept'' confirms without any agent.
   \item ``Change'' or ``talk to us'' opens a conversation with the \emph{intake agent} (Level~1), which confirms identity through the signed-in app, records needs (``travelling with an infant'', ``must be in Lisbon by Friday''), and routes. Any special-assistance need hands the case to a person at once.
@@ -101,46 +130,50 @@ D2 divides the work into the stages a good human agent goes through, and gives e
   \item Each handoff moves a typed \emph{case object} to the next owner. Any agent can hand the case to a person; a person can hand it back.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{table}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
-\node[sg sor] (ops) at (0,0) {Ops control\\[-1pt]{\scriptsize cancels flight}};
-\node[sg code] (create) at (3.2,0) {Create cases; push offer};
-\node[sg trigger] (pax) at (3.2,-2.4) {Passenger\\[-1pt]{\scriptsize signed-in app}};
-\node[sg agent] (in) at (6.4,-2.4) {Intake agent\\[-1pt]{\scriptsize L1; stop: needs, route}};
-\node[sg agent] (rb) at (9.6,-2.4) {Rebooking agent\\[-1pt]{\scriptsize L4; stop: confirmed}};
-\node[sg agent] (care) at (12.8,-2.4) {Care agent\\[-1pt]{\scriptsize L1; vouchers, explain}};
-\node[sg mcp, text width=2.4cm] (res) at (9.6,-4.9) {Reservations\\[-1pt]{\scriptsize Res. systems}\nodepart{two}{\tiny\ttfamily options, hold\_seats, reissue}};
-\node[sg code] (comp) at (12.8,-4.9) {Compensation rules\\[-1pt]{\scriptsize EU261; legal}};
-\node[sg human] (hum) at (6.4,-4.9) {Contact-centre agent};
-\draw[sg event] (ops) -- node[sg lab, above] {cancellation} (create);
-\draw[sg flow] (create) -- node[sg lab, right] {push} (pax);
-\draw[sg flow] (pax) -- node[sg lab, above] {[change]} (in);
-\draw[sg handoff] (in) -- (rb);
-\draw[sg handoff] (rb) -- node[sg lab, above] {[confirmed]} (care);
-\draw[sg call] (rb) -- (res);
-\draw[sg flow] (care) -- (comp);
-\draw[sg handoff] (in) -- node[sg lab, left] {[special needs]} (hum);
-\draw[sg handoff] (rb.south west) -- node[sg lab, sloped, below] {[any time]} (hum.north east);
+\small
+\caption{The handoff design as a design table. Accepting the engine's proposal involves no agent at all. Each handoff moves ownership of the case object, and any agent can hand the case to a person.}
+\label{tab:air-d2}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+1 & When a flight is cancelled, create a case for each booking and push the proposal with three buttons: accept, change, talk to us & \tagCode\ Triggered by the cancellation & Re-accommodation engine; case store & \kpi{Time to itinerary} \\
+2 & Accept: confirm the engine's proposal & \tagPerson\ Passenger; no agent involved & Reservation server & \kpi{Time to itinerary} \\
+3 & Change or talk to us: confirm identity, record needs and route. Any special need goes to a person at once & \tagAgent\ Intake, Level 1; stops at needs and route & Signed-in app; case store & \risk{Special needs} \risk{Wrong passenger} \\
+4 & Find options, hold the seats the passenger likes, and reissue after confirmation & \tagAgent\ Rebooking, Level 4; stops when confirmed & Reservation server (Reservation systems): \texttt{options}, \texttt{hold\_seats}, \texttt{reissue} & \kpi{Time to itinerary} \risk{Seat not issued} \\
+5 & Compute compensation from the case facts & \tagCode & EU261 rules (owner: Legal) & \risk{Wrong entitlement} \\
+6 & Issue vouchers within the rules and explain the compensation & \tagAgent\ Care, Level 1 & Voucher rules; the computed amount & \kpi{Satisfaction} \\
+7 & Take over any case handed to a person, at any stage & \tagPerson\ Contact-centre agent & The case and its history & \kpi{Reach a person} \risk{Special needs} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\sgtag{create}{K1}
-\sgtag{in}{R3 R4}
-\sgtag{rb}{K1 R1}
-\sgtag{care}{K3}
-\sgtag{comp}{R2}
-\sgtag{res}{R1}
-\sgtag{hum}{K2 R3}
-\end{tikzpicture}
-\caption{D2: handoff between specialized agents. ``Accept'' confirms the engine's proposal with no agent involved. Each double arrow moves ownership of the case object; any agent can hand the case to a person.}
-\label{fig:air-d2}
-\end{figure}
+\subsection{The self-service design: notification and a web page, no agents}
 
-\subsection{D3: notification and self-service, no agents}
+The self-service design keeps only the first step of the handoff design and a self-service web page: passengers receive the proposal and can accept it or pick from a list of alternatives; everything else goes to the contact centre. It is cheap, predictable and fast to build. Its limit is that the passengers who need to explain a constraint---``I can fly from either airport, but I need to be there by Friday''---still call. Table~\ref{tab:air-designs} compares the three designs.
 
-D3 keeps only the first step of D2 and a self-service web page: passengers receive the proposal and can accept it or pick from a list of alternatives; everything else goes to the contact centre. It is cheap, predictable and fast to build. Its limit is that the passengers who need to explain a constraint---``I can fly from either airport, but I need to be there by Friday''---still call.
+\begin{table}[htbp]
+\centering
+\small
+\caption{The three rebooking designs side by side.}
+\label{tab:air-designs}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} & Single agent & Handoff & Self-service \\
+\midrule
+Who handles a change & One agent with every tool & Intake, rebooking and care agents in turn & A web page of alternatives \\
+Permissions & All in one agent & Each agent holds only its own & None \\
+What is recorded & The conversation & A case object with one owner at a time & The booking \\
+Special needs & Depends on the prompt & Handed to a person at once & The passenger must call \\
+Self-service share (est.) & 70\% & 70\% & 50\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 % ----------------------------------------------------------------------
-\section{Trade-offs}
+\section{Trade-offs: Which Design Should We Pilot?}
 \label{sec:air-tradeoffs}
 
 \subsection{Why the value is non-linear}
@@ -163,7 +196,11 @@ self-service  55%: backlog after wave   376 calls, last caller waits about  2.9 
 
 The output carries the most important lesson of the case. Below about 65\% self-service, demand in the first wave exceeds what 120 agents can serve, and a queue builds that takes hours to clear; the steady-state formula reports an unbounded wait, and a simple backlog calculation puts the last caller's wait between three and eighteen hours. Above it, waiting almost disappears. Value is not proportional to automation: the last ten points of self-service before the break-even are worth far more than the first ten. A design that reaches 55\% is still a bad day for passengers; one that reaches 70\% is an ordinary one.
 
-That is why D3 alone is not enough. The re-accommodation engine's proposals are accepted by about 35\% of passengers; a better list of alternatives on the web lifts that to perhaps 50\%. Reaching 65--70\% requires handling the passengers who need to explain a constraint, which is what D2's conversation does.
+\begin{keyidea}
+In a surge, value is not proportional to automation. Below the break-even share, queues grow for hours; just above it, they nearly vanish.
+\end{keyidea}
+
+That is why the self-service design alone is not enough. The re-accommodation engine's proposals are accepted by about 35\% of passengers; a better list of alternatives on the web lifts that to perhaps 50\%. Reaching 65--70\% requires handling the passengers who need to explain a constraint, which is what the handoff design's conversation does.
 
 \subsection{Scores and decision}
 
@@ -174,20 +211,20 @@ That is why D3 alone is not enough. The re-accommodation engine's proposals are 
 \label{tab:air-tradeoff}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
- & Weight & D1 & D2 & D3 \\
+\rowcolor{coHead} & Weight & Single agent & Handoff & Self-service \\
 \midrule
 Self-service share (est.) & --- & 70\% & 70\% & 50\% \\
 \midrule
-Quality (\textsf{K1}, \textsf{K3}) & 0.25 & 4 & 5 & 3 \\
-Speed in surge (\textsf{K2}) & 0.20 & 5 & 5 & 2 \\
-Reliability (\textsf{R1}) & 0.15 & 2 & 4 & 5 \\
-Compliance (\textsf{R2}, \textsf{R3}) & 0.20 & 2 & 5 & 4 \\
-Security and privacy (\textsf{R4}) & 0.10 & 2 & 4 & 4 \\
+Quality & 0.25 & 4 & 5 & 3 \\
+Speed in a surge & 0.20 & 5 & 5 & 2 \\
+Reliability & 0.15 & 2 & 4 & 5 \\
+Compliance & 0.20 & 2 & 5 & 4 \\
+Security and privacy & 0.10 & 2 & 4 & 4 \\
 Maintainability & 0.10 & 2 & 3 & 5 \\
 \midrule
-Weighted score & 1.00 & 3.10 & 4.55 & 3.60 \\
+\rowcolor{coAmberBg} Weighted score & 1.00 & 3.10 & 4.55 & 3.60 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-D1 and D2 reach similar self-service, but D1 does it with one agent holding every permission and no clear record of what has been decided, which shows in reliability and compliance. D3 is the most reliable and the easiest to maintain, but it falls short of the break-even. The decision is D2, with D3's notification as its first step: passengers who accept the engine's proposal never meet an agent at all.
+The single-agent design and the handoff design reach similar self-service, but the single-agent design does it with one agent holding every permission and no clear record of what has been decided, which shows in reliability and compliance. The self-service design is the most reliable and the easiest to maintain, but it falls short of the break-even. The decision is the handoff design, with the self-service design's notification as its first step: passengers who accept the engine's proposal never meet an agent at all.

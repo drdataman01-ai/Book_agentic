@@ -3,27 +3,31 @@
 % end matter
 % ======================================================================
 
-\section{Business Case and Rollout}
+\section{Business Case: Is It Worth It?}
 \label{sec:policy-business}
 
 \subsection{The value case}
 
 The value case uses the method of Chapter~\ref{ch:business}, with every input marked measured or assumed in \texttt{ch04/value\_ch04.py}. Its base result (Table~\ref{tab:policy-value}) is modest, and it is worth understanding why.
 
+\begin{thinkabout}
+The floor case pays back in about 18 months. For an HR tool, is that good or bad? What else would you want to know before answering?
+\end{thinkabout}
+
 \begin{table}[htbp]
 \centering
 \small
-\caption{Annual value case for D2 (base assumptions). One-time build: \$120{,}000.}
+\caption{Annual value case for the grounded design (base assumptions). One-time build: \$120{,}000.}
 \label{tab:policy-value}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}r>{\raggedright\arraybackslash}X@{}}
 \toprule
-Line & \$ per year & Main input \\
+\rowcolor{coHead} Line & \$ per year & Main input \\
 \midrule
 HR capacity (60\% redeployed) & 97{,}800 & 50\% resolution rate (\emph{assumed}); 11 min per ticket (measured) \\
 Fewer wrong answers & 74{,}900 & 7\% $\to$ 3\% on resolved questions; \$120 per error (estimated) \\
 Run cost & $-94{,}000$ & 48{,}000 questions at \$0.02; platform; 0.3 engineer; 0.2 HR curator \\
 \midrule
-Net (floor case) & 78{,}700 & Payback about 18 months \\
+\rowcolor{coGreenBg} Net (floor case) & 78{,}700 & Payback about 18 months \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -53,12 +57,12 @@ A sponsor deciding on an 18-month payback with significant upside and a strong r
 \label{tab:policy-gonogo}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
 \toprule
-Criterion & Baseline & Go if \\
+\rowcolor{coHead} Criterion & Baseline & Go if \\
 \midrule
-\textsf{K1} UK policy tickets per 100 employees, vs.\ comparison offices & --- & $\ge$ 40\% lower \\
-\textsf{K2} Answer accuracy, weekly sampled review & 93\% (HR) & $\ge$ 97\% \\
-\textsf{K3} Median time to answer, questions passed to HR & 1.8 days & $\le$ 1 day \\
-\textsf{R2} Leakage (evaluation and production) & --- & 0 (stop rule) \\
+\kpi{Resolved without HR} UK policy tickets per 100 employees, vs.\ comparison offices & --- & $\ge$ 40\% lower \\
+\kpi{Answer accuracy} Answer accuracy, weekly sampled review & 93\% (HR) & $\ge$ 97\% \\
+\kpi{Time to answer} Median time to answer, questions passed to HR & 1.8 days & $\le$ 1 day \\
+\risk{Restricted leak} Leakage (evaluation and production) & --- & 0 (stop rule) \\
 Abstention recall on evaluation set & --- & $\ge$ 0.90 \\
 Share of UK employees who used it at least twice & --- & $\ge$ 40\% \\
 \bottomrule
@@ -89,14 +93,14 @@ Share of UK employees who used it at least twice & --- & $\ge$ 40\% \\
 \end{tcolorbox}
 
 % ----------------------------------------------------------------------
-\section{Changed Requirement}
+\section{Changed Requirement: What If the World Changes?}
 \label{sec:policy-changed}
 
-Choose one of the following changes. Redo the solution graph, the trade-off table, the failure walk-through and the memo. State which earlier decisions survive unchanged and which do not.
+Choose one of the following changes. Redo the design table, the trade-off table, the failure walk-through and the memo. State which earlier decisions survive unchanged and which do not.
 
 \begin{enumerate}[itemsep=3pt]
-  \item \textbf{A new constraint from the works council.} The German works council requires that no question text from German employees be stored at all, even for 30 days, and that no evaluation use real German questions. How do you keep measuring \textsf{K2} for German employees? Does this change the deployment, the evaluation, or the design itself?
-  \item \textbf{Ten times the users.} Alder \& Finch acquires a firm with 28{,}000 employees in nine more countries. Policies now differ across twelve countries and four collective agreements, and the library grows to 2{,}500 documents. Which parts of D2 scale unchanged? Does the case for D3's curated layer get stronger or weaker? What happens to the metadata burden?
+  \item \textbf{A new constraint from the works council.} The German works council requires that no question text from German employees be stored at all, even for 30 days, and that no evaluation use real German questions. How do you keep measuring \kpi{Answer accuracy} for German employees? Does this change the deployment, the evaluation, or the design itself?
+  \item \textbf{Ten times the users.} Alder \& Finch acquires a firm with 28{,}000 employees in nine more countries. Policies now differ across twelve countries and four collective agreements, and the library grows to 2{,}500 documents. Which parts of the grounded design scale unchanged? Does the case for the curated design's curated layer get stronger or weaker? What happens to the metadata burden?
   \item \textbf{Half the budget.} The sponsor approves the pilot but only \$50{,}000 a year to run it. The engineer and curator lines dominate the run cost. What do you cut, what risk does each cut raise, and what would you tell the sponsor?
 \end{enumerate}
 
@@ -118,11 +122,11 @@ Choose one of the following changes. Redo the solution graph, the trade-off tabl
 \addcontentsline{toc}{section}{Review Questions}
 
 \begin{enumerate}[itemsep=2pt]
-  \item List the six open decisions in the sample. Which one removes D1 from consideration, and why is it a constraint rather than a criterion?
-  \item Why is the seven-day rule in the definition of \textsf{K1} necessary? What failure would deflection alone hide?
-  \item Why does D2 filter before retrieval rather than check the answer after generation?
+  \item List the six open decisions in the sample. Which one removes the sample design from consideration, and why is it a constraint rather than a criterion?
+  \item Why is the seven-day rule in the definition of \kpi{Resolved without HR} necessary? What failure would deflection alone hide?
+  \item Why does the grounded design filter before retrieval rather than check the answer after generation?
   \item In Listing~\ref{lst:search-tool}, what would go wrong if the employee's country were a parameter of \texttt{search\_policies} chosen by the model?
-  \item D2 and D3 nearly tie. Give the three questions used to settle the tie, and the answer to each.
+  \item The grounded design and the curated design nearly tie. Give the three questions used to settle the tie, and the answer to each.
   \item What does the citation guardrail check, and what does it not check? How does the decision record handle that gap?
   \item Explain why the evaluation measures leakage at retrieval. Use the demonstration output in your answer.
   \item Why is the model name pinned to a specific version in deployment?
@@ -136,8 +140,8 @@ Choose one of the following changes. Redo the solution graph, the trade-off tabl
 \paragraph{Design track}
 \begin{enumerate}[itemsep=2pt]
   \item \textbf{KPI tree.} Draw the KPI tree described in Section~\ref{sec:policy-kpis}, with leaves taken from Table~\ref{tab:policy-thresholds}.
-  \item \textbf{Effective dates.} Policies are often published before they take effect. Extend D2 so that employees get the policy in force today by default but can ask about an upcoming change. Which nodes change?
-  \item \textbf{Node cards.} Write node cards for \texttt{search\_policies} and the citation check.
+  \item \textbf{Effective dates.} Policies are often published before they take effect. Extend the grounded design so that employees get the policy in force today by default but can ask about an upcoming change. Which steps change?
+  \item \textbf{Component cards.} Write component cards for \texttt{search\_policies} and the citation check.
   \item \textbf{Changed requirement.} Complete one of the three changes in Section~\ref{sec:policy-changed}.
 \end{enumerate}
 
@@ -152,23 +156,23 @@ Choose one of the following changes. Redo the solution graph, the trade-off tabl
 \section*{Lab 4: Deploy and Measure the Policy Assistant}
 \addcontentsline{toc}{section}{Lab 4: Deploy and Measure the Policy Assistant}
 
-\paragraph{Goal.} Deploy D1 and D2 against the same synthetic policy library, run the evaluation set against both, and explain the difference in terms of design decisions.
+\paragraph{Goal.} Deploy the sample design and the grounded design against the same synthetic policy library, run the evaluation set against both, and explain the difference in terms of design decisions.
 
 \paragraph{Time.} About three hours, including about 30 minutes waiting for infrastructure.
 
 \paragraph{Steps.}
 \begin{enumerate}[itemsep=2pt]
-  \item In \texttt{ch04/}, run the setup script. It copies the pinned sample, creates a Cloud Storage bucket, and loads a synthetic Alder \& Finch library of 60 policies for three countries, with manifests for both the unstructured (D1) and structured (D2) schemas.
+  \item In \texttt{ch04/}, run the setup script. It copies the pinned sample, creates a Cloud Storage bucket, and loads a synthetic Alder \& Finch library of 60 policies for three countries, with manifests for both the unstructured schema of the sample design and the structured schema of the grounded design.
   \item Provision two search data stores with the sample's Terraform, one per schema. Note the time each takes to become queryable.
-  \item Run D1 locally with \texttt{adk web} and ask three questions from the evaluation set as a UK, a US and a German employee would. Record what changes and what does not.
-  \item Build D2 from the provided skeleton by completing \texttt{build\_filter}, \texttt{search\_policies} and \texttt{citation\_check}. Run the unit tests.
-  \item Deploy D2 to Cloud Run with the command in Section~\ref{sec:policy-deploy}. Confirm that an unauthenticated request is refused.
-  \item Run \texttt{python run\_eval.py --design D1} and \texttt{--design D2}. The script replays the 240 questions with synthetic employee profiles and writes evaluation records; \texttt{rag\_metrics.py} turns them into Table~\ref{tab:policy-thresholds}'s metrics.
-  \item Publish a changed policy to the bucket and measure how long until D2 answers with the new version.
+  \item Run the sample design locally with \texttt{adk web} and ask three questions from the evaluation set as a UK, a US and a German employee would. Record what changes and what does not.
+  \item Build the grounded design from the provided skeleton by completing \texttt{build\_filter}, \texttt{search\_policies} and \texttt{citation\_check}. Run the unit tests.
+  \item Deploy the grounded design to Cloud Run with the command in Section~\ref{sec:policy-deploy}. Confirm that an unauthenticated request is refused.
+  \item Run \texttt{python run\_eval.py --design sample} and \texttt{--design grounded}. The script replays the 240 questions with synthetic employee profiles and writes evaluation records; \texttt{rag\_metrics.py} turns them into Table~\ref{tab:policy-thresholds}'s metrics.
+  \item Publish a changed policy to the bucket and measure how long until the grounded design answers with the new version.
   \item Run the cleanup script. Check in the console that the data stores, bucket and Cloud Run services are gone.
 \end{enumerate}
 
-\paragraph{Deliverable.} A results table for D1 and D2 against every threshold; for each failed threshold, the node responsible and the change you would make; and a one-paragraph answer to: \emph{should the curated layer of D3 be built?}
+\paragraph{Deliverable.} A results table for the sample design and the grounded design against every threshold; for each failed threshold, the step responsible and the change you would make; and a one-paragraph answer to: \emph{should the curated layer of the curated design be built?}
 
 % ----------------------------------------------------------------------
 \section*{Further Reading}

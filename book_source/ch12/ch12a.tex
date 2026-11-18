@@ -15,65 +15,94 @@ Starting point & Original design (Part III) \\
 Technical focus & Choosing the deployment target \\
 Business skill & Build versus buy; total cost of ownership \\
 Patterns & Planner--executor; retrieve-then-answer; reflection; approval gate \\
-Deliverables & Solution graphs, TCO model, deployment decision, memo-quality evaluation, memo
+Deliverables & Design tables, TCO model, deployment decision, memo-quality evaluation, memo
 \end{tabularx}
 \end{caseglance}
 
-\begin{objectives}
-After working through this case, you will be able to:
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item Compare building a solution with buying one on total cost of ownership, risk and control.
-  \item Design a long-running document-generation workflow in which every number comes from a tool and every claim cites a source.
-  \item Use the reflection pattern with an explicit checklist, and bound it.
-  \item Choose among Agent Runtime, Cloud Run and GKE with stated criteria, and recognize when the answer is a combination.
-  \item Evaluate generated professional documents with the people who will rely on them.
+  \item Should a bank build its own solution or buy one, once total cost, risk and control are counted?
+  \item How do you generate a long document in which every number comes from a tool and every claim cites a source?
+  \item How do you let one agent critique another's work without the loop running forever?
+  \item Should each part of the solution run on Agent Runtime, Cloud Run or GKE, and why is the answer often a mix?
+  \item How do you evaluate generated professional documents with the people who will rely on them?
 \end{enumerate}
-\end{objectives}
+\end{chapterquestions}
 
 % ----------------------------------------------------------------------
-\section{Business Brief and Current Process}
+\section{Business Brief: What Is Going Wrong Today?}
 \label{sec:loan-brief}
 
 Summit Regional Bank lends to companies with revenue between \$20 million and \$500 million: manufacturers, distributors, healthcare groups. Every new loan, and every existing loan at its annual review, needs a \emph{credit memo}: a document of 15 to 40 pages that describes the borrower, its industry, management, financial performance and projections, the loan's structure and collateral, the risks and their mitigants, and a recommended risk rating. A credit officer with sufficient lending authority approves or declines on the strength of it. About 1{,}400 new memos and 3{,}000 annual reviews are written each year.
 
 Forty credit analysts write them. For a new loan, an analyst spends about three and a half days: a day \emph{spreading} the borrower's financial statements (re-keying them into the bank's standard template), half a day computing ratios and checking covenants, a day reading filings, industry reports and management materials, and a day writing. Relationship managers complain that deals are lost to faster lenders; analysts complain that most of their time goes to transcription.
 
+\begin{thinkabout}
+A credit memo can contain several hundred numbers. If software drafted one for you, how would you convince yourself that every number in it was right?
+\end{thinkabout}
+
 The bank's chief credit officer is clear about one thing: the memo is the bank's record of why it lent money. Every number must be right, every claim must be traceable, and the judgment---the risk rating and the recommendation---belongs to the analyst and the credit officer.
 
 % ----------------------------------------------------------------------
-\section{Stakeholders, KPIs and Value Hypothesis}
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:loan-kpis}
 
-\paragraph{Stakeholders.} The sponsor is the chief credit officer. Users are credit analysts and credit officers; relationship managers benefit. Approvers include model risk management, information security, and procurement (for any vendor). Owners are credit administration (templates and policy), the data team (financial spreads) and the platform team.
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of the credit memo.}
+\label{tab:loan-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\cotag{coBlue}{Sponsor} & The chief credit officer. \\
+\cotag{coGreen}{Users} & Credit analysts and credit officers; relationship managers benefit. \\
+\cotag{coAmber}{Approvers} & Model risk management, information security, and procurement for any vendor. \\
+\cotag{coPurple}{Owners} & Credit administration (templates and policy), the data team (financial spreads) and the platform team. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\paragraph{KPIs and risks.}
-\begin{itemize}[itemsep=1pt]
-  \item[\textsf{K1}] Analyst days per new-loan memo: at most 1.5, from 3.5.
-  \item[\textsf{K2}] Days from complete application to credit decision: at most 5, from 12.
-  \item[\textsf{K3}] Memos returned by credit officers for missing or incorrect content: halved.
-  \item[\textsf{R1}] A wrong number in a memo.
-  \item[\textsf{R2}] A claim not supported by the borrower's documents or the bank's data.
-  \item[\textsf{R3}] Borrower confidential information leaving the bank's control.
-  \item[\textsf{R4}] Dependence on a vendor or platform that the bank cannot exit at reasonable cost.
-\end{itemize}
+\paragraph{KPIs and risks.} Table~\ref{tab:loan-kpis} lists them.
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs (blue) and risks (red) for the credit memo.}
+\label{tab:loan-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{Analyst days} & Analyst days per new-loan memo: at most 1.5, from 3.5. \\
+\kpi{Days to decision} & Days from a complete application to a credit decision: at most 5, from 12. \\
+\kpi{Memos returned} & Memos returned by credit officers for missing or incorrect content: halved. \\
+\risk{Wrong number} & A wrong number in a memo. \\
+\risk{Unsupported claim} & A claim not supported by the borrower's documents or the bank's data. \\
+\risk{Data leaves} & Borrower confidential information leaving the bank's control. \\
+\risk{Lock-in} & Dependence on a vendor or platform that the bank cannot exit at reasonable cost. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\begin{quote}
-\emph{Value hypothesis.} If spreading and calculation are automated and a complete, cited first draft of each memo section is ready when the analyst starts, analysts will spend their time on judgment, decisions will reach borrowers in days rather than weeks, and memos will be more complete---without any change in who decides.
-\end{quote}
+\begin{keyidea}[The value hypothesis, in one sentence]
+If spreading and calculation are automated and a complete, cited first draft of each memo section is ready when the analyst starts, analysts will spend their time on judgment, decisions will reach borrowers in days rather than weeks, and memos will be more complete---without any change in who decides.
+\end{keyidea}
 
 % ----------------------------------------------------------------------
-\section{Alternative Designs}
+\section{Alternative Designs: What Could We Build, or Buy?}
 \label{sec:loan-designs}
 
 This case's main design question is not only \emph{what} to build but \emph{whether} to build. Several vendors sell credit-memo platforms for banks. The alternatives are therefore one purchase and two builds.
 
-\subsection{D1: buy a vendor platform}
+\subsection{The vendor design: buy a platform}
 
 A vendor platform for commercial credit, configured with Summit's templates and policy, integrated with the loan origination system and the bank's financial-spreading data. The vendor hosts the platform and its models. Summit's work is configuration, integration, validation and change management.
 
-\subsection{D2: build a memo workflow}
+\subsection{The workflow design: build a memo workflow}
 
-D2 is built on ADK and Google Cloud (Figure~\ref{fig:loan-d2}).
+The workflow design is built on ADK and Google Cloud. Table~\ref{tab:loan-d2} writes it down as a design table.
 \begin{itemize}[itemsep=1pt]
   \item \emph{Spreading}: an extraction agent (Level~1) reads financial statements into the bank's spreading template; code validates that statements balance and that totals reconcile, and an analyst confirms the spread in the existing spreading tool. Spreading is a batch job that runs when documents arrive.
   \item \emph{Calculation}: an MCP server owned by credit administration computes ratios (debt-service coverage, leverage, liquidity), runs covenant tests, and compares the borrower with peers from the bank's portfolio. No number in the memo comes from anywhere else.
@@ -82,55 +111,57 @@ D2 is built on ADK and Google Cloud (Figure~\ref{fig:loan-d2}).
   \item \emph{People}: the analyst edits, assigns the risk rating and writes the recommendation; the credit officer decides.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{table}[htbp]
 \centering
-\begin{tikzpicture}[x=1cm, y=1cm, sg base/.append style={text width=1.9cm}]
-\node[sg trigger] (docs) at (0,0) {Borrower documents};
-\node[sg agent] (ext) at (3.1,0) {Spreading agent\\[-1pt]{\scriptsize L1}};
-\node[sg human] (an1) at (6.2,0) {Analyst confirms spread};
-\node[sg mcp, text width=2.4cm] (calc) at (9.6,0) {Calculation\\[-1pt]{\scriptsize Credit admin}\nodepart{two}{\tiny\ttfamily ratios, covenants, peers}};
-\node[sg agent] (plan) at (6.2,-2.5) {Planner\\[-1pt]{\scriptsize sections for this deal}};
-\node[sg subagent] (sec) at (9.6,-2.5) {Section agents\\[-1pt]{\scriptsize cite every claim}};
-\node[sg store] (kb) at (13.0,-2.5) {Documents \& industry research};
-\node[sg agent] (crit) at (9.6,-5.0) {Critic\\[-1pt]{\scriptsize policy checklist; $\le$2 rounds}};
-\node[sg guard] (num) at (6.2,-5.0) {Numbers\\trace?};
-\node[sg human] (an2) at (3.1,-5.0) {Analyst\\[-1pt]{\scriptsize rating, recommendation}};
-\node[sg human] (co) at (0,-5.0) {Credit officer\\[-1pt]{\scriptsize decides}};
-\draw[sg flow] (docs) -- (ext); \draw[sg flow] (ext) -- (an1);
-\draw[sg flow] (an1) -- node[sg lab, above] {spread} (calc);
-\draw[sg flow] (an1) -- (plan);
-\draw[sg call] (plan) -- (sec);
-\draw[sg call] (sec) -- (calc); \draw[sg data] (kb) -- (sec);
-\draw[sg flow] (sec) -- (crit);
-\draw[sg flow] (crit.east) to[bend right=50] node[sg lab, right] {[gaps]} (sec.east);
-\draw[sg flow] (crit) -- node[sg lab, above] {[complete]} (num);
-\draw[sg flow] (num) -- node[sg lab, above] {[pass]} (an2);
-\draw[sg flow] (an2) -- (co);
-\sgtag{ext}{K1}
-\sgtag{an1}{R1}
-\sgtag{calc}{R1}
-\sgtag{plan}{K1}
-\sgtag{sec}{K1 R2}
-\sgtag{crit}{K3}
-\sgtag{num}{R1}
-\sgtag{an2}{K3}
-\sgtag{co}{R2}
-\end{tikzpicture}
-\caption{D2: a built memo workflow. Numbers come only from the calculation server; claims carry citations; a bounded critic checks completeness; people rate and decide.}
-\label{fig:loan-d2}
-\end{figure}
+\small
+\caption{The workflow design as a design table. Numbers come only from the calculation server; claims carry citations; a bounded critic checks completeness; people rate and decide.}
+\label{tab:loan-d2}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+1 & Read the financial statements into the spreading template & \tagAgent\ Spreading agent, Level 1 & Borrower documents & \kpi{Analyst days} \\
+2 & Check that statements balance and totals reconcile, then confirm the spread & \tagCode\ then \tagPerson\ Analyst & The existing spreading tool & \risk{Wrong number} \\
+3 & Compute ratios, covenant tests and peer comparisons & \tagCode & Calculation server (Credit administration): \texttt{ratios}, \texttt{covenants}, \texttt{peers} & \risk{Wrong number} \\
+4 & Plan the memo: which sections, and how deep, for this deal & \tagAgent\ Planner & Memo template; deal characteristics & \kpi{Analyst days} \\
+5 & Write each section, citing every claim and taking every number from step 3 & \tagAgent\ Section agents & Borrower documents and industry research; the calculation server & \kpi{Analyst days} \risk{Unsupported claim} \\
+6 & Check the draft against the policy checklist and return gaps, at most twice & \tagAgent\ Critic & Credit-policy checklist & \kpi{Memos returned} \\
+7 & Check that every number traces to the calculation server or a cited document & \tagGuardrail & Calculation output; cited documents & \risk{Wrong number} \\
+8 & Edit, assign the risk rating and write the recommendation & \tagPerson\ Analyst & The draft & \kpi{Memos returned} \\
+9 & Approve or decline the loan & \tagPerson\ Credit officer & The memo & \risk{Unsupported claim} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\subsection{D3: build a drafting assistant only}
+\subsection{The assistant design: build a drafting assistant only}
 
-D3 is a single retrieval agent over the borrower's documents that analysts use to draft sections on request. It leaves spreading and calculation as they are. It is the cheapest build and the smallest change; it also leaves the day of spreading untouched.
+The assistant design is a single retrieval agent over the borrower's documents that analysts use to draft sections on request. It leaves spreading and calculation as they are. It is the cheapest build and the smallest change; it also leaves the day of spreading untouched. Table~\ref{tab:loan-designs} compares the three options.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Buy, build big or build small: the three options side by side.}
+\label{tab:loan-designs}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} & Vendor & Workflow build & Assistant build \\
+\midrule
+Who builds and runs it & The vendor, configured by Summit & Summit, on ADK and Google Cloud & Summit \\
+Spreading and calculation & In the vendor's platform & Automated; numbers from Summit's calculation server & Unchanged, by hand \\
+Drafting & The vendor's models & A planner, section agents and a critic & One retrieval agent, on request \\
+Borrower data & Hosted by the vendor & Stays in the bank & Stays in the bank \\
+Three-year cost (est.) & \$1.7 million & \$1.3 million & \$0.6 million \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 % ----------------------------------------------------------------------
-\section{Trade-offs: Build or Buy}
+\section{Trade-offs: Should We Build or Buy?}
 \label{sec:loan-tradeoffs}
 
 \subsection{Total cost of ownership}
 
-The business skill of this case is total cost of ownership (TCO): the full cost of a choice over its life, not its purchase price. For software, the life is usually taken as three to five years, and the cost includes building or licensing, integration, hosting and model usage, the people who run and change it, and the cost of leaving it. Listing~\ref{lst:tco} compares D1 with D2 on each of three deployment targets over three years.
+The business skill of this case is total cost of ownership (TCO): the full cost of a choice over its life, not its purchase price. For software, the life is usually taken as three to five years, and the cost includes building or licensing, integration, hosting and model usage, the people who run and change it, and the cost of leaving it. Listing~\ref{lst:tco} compares the vendor design with the workflow design on each of three deployment targets over three years.
 
 \lstinputlisting[language=Python, caption={Three-year TCO (\texttt{ch12/tco.py}). Every input is a planning figure to be replaced with quotes.}, label={lst:tco}, firstline=5, lastline=19]{code/tco.py}
 
@@ -147,13 +178,21 @@ volume  Agent Runtime      Cloud Run            GKE         Vendor
 15,000  $   1,392,000  $   1,546,000  $   2,160,000  $   2,299,000
 \end{lstlisting}
 
+\begin{thinkabout}
+Look at the volume rows in the output. If Summit's volume tripled, which option would you want to have chosen, and why?
+\end{thinkabout}
+
 Several lessons hold beyond these particular figures.
 \begin{itemize}[itemsep=2pt]
   \item \emph{People dominate.} The largest differences between the build options come from the engineering time needed to operate each target, not from hosting or model costs. GKE is the most capable target and, for a bank without a large platform team, the most expensive to run.
   \item \emph{Per-unit pricing scales against you.} The vendor's per-memo fee is modest at today's volume and becomes the largest line as volume grows. At 15{,}000 memos a year---plausible if the bank extends the system to smaller loans---the vendor costs more than any build.
   \item \emph{The build's risk is its estimate.} The cheapest build beats the vendor at current volume unless its build cost overruns by about two-thirds. Build estimates for new kinds of systems are notoriously optimistic; that margin is the number to discuss with the sponsor.
-  \item \emph{Exit costs belong in the model.} Leaving a vendor means migrating templates, validation evidence and integrations. Leaving a build means less, because the bank owns the code and its tools are MCP servers any framework can call (\textsf{R4}).
+  \item \emph{Exit costs belong in the model.} Leaving a vendor means migrating templates, validation evidence and integrations. Leaving a build means less, because the bank owns the code and its tools are MCP servers any framework can call (\risk{Lock-in}).
 \end{itemize}
+
+\begin{keyidea}
+Count the people who run a system, not just the servers it runs on. Over three years, operations staff usually cost more than hosting and models together.
+\end{keyidea}
 
 \subsection{Beyond cost}
 
@@ -166,20 +205,20 @@ Cost is not the whole decision. Table~\ref{tab:loan-tradeoff} adds the criteria 
 \label{tab:loan-tradeoff}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
- & Weight & D1 buy & D2 build & D3 build small \\
+\rowcolor{coHead} & Weight & Vendor & Workflow build & Assistant build \\
 \midrule
 Three-year TCO (est.) & --- & \$1.7M & \$1.3M & \$0.6M \\
 \midrule
-Quality (\textsf{K1}--\textsf{K3}) & 0.25 & 4 & 5 & 2 \\
+Quality & 0.25 & 4 & 5 & 2 \\
 Time to value & 0.15 & 5 & 3 & 4 \\
-Control and auditability (\textsf{R1}, \textsf{R2}) & 0.20 & 3 & 5 & 4 \\
-Security and data control (\textsf{R3}) & 0.15 & 3 & 5 & 5 \\
-Exit and flexibility (\textsf{R4}) & 0.10 & 2 & 5 & 5 \\
+Control and auditability & 0.20 & 3 & 5 & 4 \\
+Security and data control & 0.15 & 3 & 5 & 5 \\
+Exit and flexibility & 0.10 & 2 & 5 & 5 \\
 Maintainability & 0.15 & 5 & 3 & 4 \\
 \midrule
-Weighted score & 1.00 & 3.75 & 4.40 & 3.75 \\
+\rowcolor{coAmberBg} Weighted score & 1.00 & 3.75 & 4.40 & 3.75 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The vendor wins on time to value and maintainability: it is ready sooner, and someone else maintains it. D2 wins on control, data, exit and quality, and on cost at Summit's volume. D3 is cheap but leaves most of the analysts' time where it is. The decision is to build D2, with a stated condition: if the build's first phase (spreading and calculation) overruns its budget by more than 30\%, the bank reopens the vendor option before building the drafting stages.
+The vendor wins on time to value and maintainability: it is ready sooner, and someone else maintains it. The workflow design wins on control, data, exit and quality, and on cost at Summit's volume. The assistant design is cheap but leaves most of the analysts' time where it is. The decision is to build the workflow design, with a stated condition: if the build's first phase (spreading and calculation) overruns its budget by more than 30\%, the bank reopens the vendor option before building the drafting stages.
