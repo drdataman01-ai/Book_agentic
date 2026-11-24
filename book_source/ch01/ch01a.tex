@@ -32,7 +32,13 @@ The vice president asked two internal teams to show her what AI could do about t
 \paragraph{Team A} built an agent. They wrote a long set of instructions for a large language model that described the discount policy, and they connected the model to fourteen tools, including product search, price lookup, inventory, customer lookup, contract lookup, a margin calculator, an e-mail sender and a CRM updater. In the demo, a sales representative typed, ``Quote 40 units of the 3-inch stainless ball valve for Delta Water, they want 18\% off.'' Within a minute the agent had looked up the customer, found the contract, checked stock, computed a price and drafted an e-mail. The room applauded.
 
 Then the finance director asked three questions. 
-What stops the agent from approving 18\% when the policy caps discounts at 15\% unless a manager signs off? Where does the policy text come from, and what happens when the policy changes next quarter? How much does each quote cost to produce, and how will we know when a quote is wrong? Team A had only partial answers. The cap was ``in the prompt,'' and so was the policy. The cost was ``probably a few cents.'' Nobody had measured how often the agent made mistakes, because there was nothing to compare it against.
+\begin{enumerate}
+\item What stops the agent from approving 18\% when the policy caps discounts at 15\% unless a manager signs off? 
+\item Where does the policy text come from, and what happens when the policy changes next quarter? 
+\item How much does each quote cost to produce, and how will we know when a quote is wrong? 
+\end{enumerate}
+
+Team A had only partial answers. The cap was ``in the prompt,'' and so was the policy. The cost was ``probably a few cents.'' Nobody had measured how often the agent made mistakes, because there was nothing to compare it against.
 
 \input{fig-team-a}
 
@@ -131,7 +137,14 @@ Think of a tool that became easy to use during your career, such as spreadsheets
 
 A few years ago, it took real engineering effort to make a language model call a function, search a collection of documents, or keep working on a task until it was finished. Today a student can do all three in an afternoon. Open-source frameworks such as Google's Agent Development Kit, LangGraph, the OpenAI Agents SDK and the Claude Agent SDK handle most of the plumbing. Vendors publish sample agents for customer service, data analysis and document processing that can be deployed with a single command, and coding assistants write much of the remaining code.
 
-When building becomes cheap, the difficult part of the work moves somewhere else. The hard question is no longer whether we can make the system call the inventory system. The hard questions are about the business. Which parts of this process should a model decide at all, and which parts must never be left to a model? Where does the system's knowledge come from, who is allowed to see it, and how does it stay current? Which actions may the system take on its own, and which need a person to approve them? What does each transaction cost, what does a mistake cost, and does the whole thing pay off? Once the system is running, how will we know whether it is working?
+\textbf{When building becomes cheap, the difficult part of the work moves somewhere else.} The hard question is no longer whether we can make the system call the inventory system. The hard questions are about the business. 
+\begin{itemize}
+\item Which parts of this process should a model decide at all, and which parts must never be left to a model? 
+\item Where does the system's knowledge come from, who is allowed to see it, and how does it stay current? 
+\item Which actions may the system take on its own, and which need a person to approve them? 
+\item What does each transaction cost, what does a mistake cost, and does the whole thing pay off? 
+\item Once the system is running, how will we know whether it is working?
+\end{itemize}
 
 These are design questions, and courses and tutorials rarely teach them. Most teaching material covers RAG as a pipeline, agents as a loop and MCP as a protocol, each on its own. Vendor samples rarely answer the design questions either. A sample shows \emph{one} working design, and it seldom says what the alternatives were, why this one was chosen, or whether it would pay off for your business. That is not a criticism of the samples, whose job is to show how a framework works. Your job, as a designer, is different.
 
