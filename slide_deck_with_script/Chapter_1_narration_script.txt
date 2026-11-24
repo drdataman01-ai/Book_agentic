@@ -1,0 +1,225 @@
+=== Slide 1: From Building Agents to Designing Solutions ===
+
+Welcome to Chapter 1, From Building Agents to Designing Solutions. This chapter is the starting point for the whole book, and it introduces a company we will return to again and again: Harbor Industrial Supply, a regional distributor of pumps, valves and fittings.
+
+Before we begin, I would like you to think about a question. Have you ever seen an impressive demo that never became a real product? What got in the way?
+
+Take a moment to recall one example.
+
+When people answer this question, the same reasons come up again and again. Nobody owned the system after the demo. It cost too much to run. It could not be trusted with real data. Or nobody could explain how it would make money. Notice that none of these are problems with the technology itself. Each of them is a design problem, and design is what this book is about.
+
+=== Slide 2: Two demos on a Friday afternoon ===
+
+Let us start with a story. At Harbor, any order above 25,000 dollars, and any request for a discount, goes to a six-person pricing desk. About 400 requests arrive each week, and the typical request waits 26 hours for an answer. The vice president of sales believes Harbor is losing deals to faster competitors, so she asked two teams to show her what AI could do. Each team had two weeks.
+
+Team A built an agent. They connected one language model to fourteen tools and wrote a long prompt that described the discount policy. The 15 percent discount cap lived inside that prompt. When asked about cost, they said each quote probably cost a few cents. Nobody knew how often the agent was wrong.
+
+Team B designed a solution. They used one model step to read the sales representative's request. They enforced the rules with tested code. Every quote cited the version of the policy it followed. And they brought a diagram, a comparison and a one-page plan.
+
+Both systems worked. Which team would you fund, and what would you ask each team before deciding?
+
+Most people pick Team B, and the vice president did too. The reason matters. Team A's demo answered the question, can we? Team B answered harder questions: should we, how exactly, and is it worth it?
+
+=== Slide 3: The finance director asked Team A three questions ===
+
+After Team A's demo, the finance director asked three questions.
+
+The first question was, what does one quote cost? The answer has to count model calls, the minutes people spend on each quote, and the cost of mistakes.
+
+The second question was, what happens when the policy changes? Someone has to know who edits what, and how anyone can tell that the change took effect.
+
+The third question was, how often is it wrong? And just as important, how would we even find out?
+
+Which of these three questions could a demo answer on its own, and which ones need a design?
+
+The honest answer is that a demo cannot answer any of them. Cost needs an estimate of the cost per quote. Policy change needs us to know where the rule lives. And the error rate needs a set of test cases and a baseline to compare against. Team A had only partial answers, because they had built something, but they had not designed it. These three questions lead us directly to the five design skills.
+
+=== Slide 4 ===
+
+Here is the key idea of the chapter. Building an agent answers the question, can we? Designing a solution answers three harder questions: should we, how exactly, and is it worth it?
+
+Building has become cheap. Frameworks such as Google's Agent Development Kit handle most of the plumbing, vendors publish sample agents, and coding assistants write much of the remaining code. When building becomes cheap, the hard part of the work moves somewhere else. It moves to the business questions. Which parts of the process should a model decide at all? Which actions need a person to approve them? And does the whole thing pay off?
+
+Think about your own field. What is the difference there between building something and designing it?
+
+Here are two examples. A contractor can build a wall, but an architect decides where the wall goes and why. A cook can follow a recipe, but a chef designs the menu around cost, suppliers and customers. In this book, we want you to be the architect and the chef.
+
+=== Slide 5: Five skills close the design gap ===
+
+We call the distance between building an agent and designing a solution the design gap. Five skills close it, and each skill answers one plain question.
+
+The first skill is decomposition. It asks, what kind of work is each step? Some steps need judgment, some need knowledge from company documents, some need an action in a company system, and some simply follow a fixed rule.
+
+The second skill is boundaries. It asks, who decides, and where does each part stop?
+
+The third skill is trade-offs. It asks, why this design and not another?
+
+The fourth skill is production. It asks, can we test it, run it and watch it?
+
+The fifth skill is the business case. It asks, is it worth it, and to whom?
+
+Every case in this book exercises all five skills. Which of the five do you feel weakest in today? And which one do you think matters most to an executive?
+
+Students usually feel strongest in production or decomposition, and weakest in the business case. Executives, on the other hand, care most about the business case and the trade-offs. That gap is exactly why Chapter 3 is devoted to the business case.
+
+=== Slide 6: Four things you bring to every design review ===
+
+For every case in this book, you will bring four things to the design review.
+
+The first is a design table, which you learn in Chapter 2. It says what each step does, who or what does it, and why it is there.
+
+The second is a trade-off table, also from Chapter 2. It compares at least two designs on the same criteria and answers the question, why this design and not another?
+
+The third is a working deployment, which you build in every case. It shows that the design actually runs and that it can be tested.
+
+The fourth is a one-page memo to the executive sponsor, which you learn in Chapter 3. It answers, is it worth it, what could go wrong, and what do you need from the sponsor?
+
+Here is a question for you. If the vice president has only five minutes, which of the four will she read first, and why?
+
+She reads the memo first. The design table and the trade-off table are attachments for people who want to check the reasoning, and the deployment proves that the system runs. These four deliverables are exactly what Team B brought to the meeting, and that is why they won.
+
+=== Slide 7: What a language model cannot do on its own ===
+
+Now let us look at the technology itself. Every system in this book is built around a large language model, which is a program trained on a huge amount of text to predict what text should come next. It can read a messy e-mail, summarize a contract and write a polite note. But on its own, it has three serious gaps for business work.
+
+The first gap is that it does not know your company. It has never seen Harbor's price list, its discount policy or any customer's contract. The fix is retrieval-augmented generation, usually called RAG, which brings your documents into the prompt.
+
+The second gap is that it cannot act. It produces text and nothing else. The fix is to give it tools on MCP servers, which let it read and change company systems.
+
+The third gap is that it can sound sure and be wrong. The fix is citations, checks written in code, and people at the key decision points.
+
+Try this thought experiment. Paste the request, quote 40 valves for Delta Water at 18 percent off, into a general-purpose chatbot. What will it get right, and what will it get wrong?
+
+It will write a fluent, polite quote. But it will get wrong everything specific to Harbor: the price, the contract terms, the 15 percent cap, and the fact that 18 percent needs a manager's approval. Worse, it may state invented numbers with complete confidence. A fluent, confident answer that is not grounded in any real source is called a hallucination, and it looks exactly like a correct answer.
+
+=== Slide 8: How much should the model decide? ===
+
+The word agent is used loosely, so we need a sharper question. The most useful question to ask about any system is, who decides what happens next? This table shows six levels of autonomy, from the least to the most.
+
+At level 0, rules only, the programmer decides everything in advance, for example checking a discount against the 15 percent cap. At level 1, a single model call, the programmer decides and the model fills in one step, such as turning an e-mail into a quote form. At level 2, a fixed workflow, the programmer fixes the sequence of steps. At level 3, a routed workflow, the model picks one of a few fixed paths. At level 4, a tool-using agent, the model chooses tools in a loop until it is done. And at level 5, a multi-agent system, several agents hand work to one another.
+
+The levels are not a ranking of quality. Each step up buys flexibility, and pays for it with higher cost, slower responses and harder testing.
+
+Here is a question. A program always fetches five documents and asks a model to summarize them. Is it an agent, and which level is it?
+
+It is not an agent, because the steps are fixed in advance and the model never chooses what to do next. It is a fixed workflow at level 2, with one model step inside it. The lesson is that using a model is not the same as being an agent. Also note that a real solution mixes levels. Harbor's design is mostly a fixed workflow, with a single model call inside it and plain rules for the discount cap.
+
+=== Slide 9 ===
+
+This brings us to the principle we will use in every case: least sufficient autonomy. For each step in a process, choose the lowest level of autonomy that meets the step's quality target. Move a step to a higher level only when you can name the requirement that the lower level fails to meet, and only when you can test the higher level.
+
+This principle is not a prejudice against agents. Some steps genuinely need one. The principle simply places the burden of proof on the higher level, because the higher level is harder to test, harder to audit, and usually more expensive to run.
+
+So when would moving up a level be worth the extra cost and the harder testing? Think of one example.
+
+Good examples include requests that vary too much to list every path in advance, and research tasks where the number of steps is not known until the work is under way. Weak reasons include, agents are the future, or, it feels smarter. If you cannot name the requirement, stay at the lower level.
+
+=== Slide 10: Four building blocks, and when to use each ===
+
+We now have four building blocks, and each one fills a different gap.
+
+Plain code gives you certainty, the same answer every time. Use it when the rule can be written down. A useful warning sign is this: if you find yourself writing the word never, or a number, into a prompt, that rule probably belongs in code.
+
+RAG gives you knowledge from your own documents, with sources. Use it when the answer is in text the model never saw.
+
+An agent gives you judgment: reading messy input and choosing the next step. Use it when the right answer cannot be written down in advance.
+
+An MCP server gives you actions and exact facts from company systems. Use it when you must read or change a system of record, such as the ERP or the CRM.
+
+Here is a quick check. A sales representative asks for Delta Water's contract price on one particular valve. Which block should supply it?
+
+The answer is an MCP tool lookup. It is true that the model lacks this knowledge, but the contract price is a single exact number stored in the ERP. It must not come from document search, which finds passages that are similar to the question and could return the price of a similar part that costs more. Retrieval is for passages of text, such as the policy that explains the price.
+
+=== Slide 11: How RAG works, in two phases ===
+
+Let us look more closely at how RAG works. A useful comparison is the difference between a closed-book exam and an open-book exam. RAG gives the model an open book. It works in two phases.
+
+The first phase, shown in blue, is done ahead of time, and again whenever the documents change. Step one splits the documents into chunks of a few paragraphs each. Step two turns each chunk into a list of numbers called an embedding, which represents what the chunk means. Texts with similar meanings get similar numbers, even when they share few words. Step three stores the chunks, their embeddings and their source details in a vector index.
+
+The second phase, shown in orange, happens for every question. Step four finds the chunks closest in meaning to the question, and drops any the user is not allowed to read. Step five places those chunks in the prompt, together with their sources. And step six is the model answering from those passages and citing them.
+
+Here is a question to consider. Why not simply paste all of Harbor's documents into every prompt, or train the model on them?
+
+Pasting everything is too long, too slow and too costly, and it would show every user documents they may not be allowed to see. Training is slow and expensive, it goes out of date the moment the policy changes, and a trained model cannot point to the paragraph it relied on. RAG gives the model only the few passages it needs, from today's version of each document, with citations.
+
+=== Slide 12: Five ways an agent fails ===
+
+An agent is a model in a loop. At each turn it either asks for a tool, which the framework runs, or it gives a final answer. Agents are powerful, but they fail in five characteristic ways, and a designer should expect every one of them.
+
+The first is the wrong tool or input. At Harbor, the agent might look up Delta Waterworks instead of Delta Water. The response is fewer, better-shaped tools, and confirming the customer before quoting.
+
+The second is an unsupported claim, such as stating a contract term that no tool returned. The response is a rule that every number must come from a tool result.
+
+The third is looping, where the agent calls the same lookups again and again. The response is limits on the number of steps and the cost of each request.
+
+The fourth is drift, such as following an instruction hidden inside a customer's e-mail. The response is short instructions and automatic checks on inputs.
+
+The fifth is overreach, such as sending an e-mail that should have waited for a person. The response is that a person approves any action that leaves the company.
+
+Which of these five failures would hurt Harbor most, and why?
+
+Most groups pick unsupported claims or overreach, because those reach customers and cost money. Looping mostly costs money internally. This points to an idea we develop in Chapter 3: the cost of an error, and not just how often it happens, decides how much protection it deserves.
+
+=== Slide 13: MCP: one plug for every system ===
+
+The fourth building block is the Model Context Protocol, or MCP. Think of it as the USB-C port for AI applications: one standard plug for every system.
+
+Without a standard, every AI application needs its own custom connection to every company system. If Harbor has three AI applications and three systems, that is three times three, or nine custom integrations, each built and maintained separately.
+
+With MCP, each system is wrapped once by an MCP server, owned by the team that owns the system. Each application contains an MCP client. Three plus three is six pieces, and any client can use any server. The model never touches the ERP directly. It sees only the tool descriptions the server publishes, and every request passes through a server that can check permissions and log what happened.
+
+Now try the arithmetic yourself. With 10 AI applications and 10 company systems, how many integrations would you need without MCP, and how many pieces with it?
+
+Without a standard you would need 100 custom integrations, but with MCP you need only 20 pieces. One caution: MCP standardizes the connection, but it is not access control on its own. A good server offers a few narrow tools shaped around business tasks, such as get item pricing, and never a single tool that can run any database query.
+
+=== Slide 14: Breaking the pricing desk into steps ===
+
+Now we put the blocks to work on Harbor's pricing desk. The method is decomposition: write down today's process step by step, and decide what each step needs.
+
+Step one, reading the request, needs judgment, so one model call fills in the quote form. Step two, checking that the request is complete, is a rule, so code checks the form. Step three, looking up prices and stock, is an action, handled by an MCP server over the ERP. Step four, looking up the contract, needs both an action and knowledge: an MCP tool returns the structured contract fields, and RAG explains the special terms. Step five, checking the discount against policy, needs knowledge and a rule: code enforces the cap and the margin floor, while retrieval cites the policy section and version. Step six, approving an exception, belongs to a person, the sales manager. Step seven, writing the cover note, needs judgment, so the model drafts the words, while code fills in every number. And step eight, recording and sending the quote, is an action through the CRM server, and sending waits for the representative's click.
+
+Which step would you never hand to a model, even a very good one? And why?
+
+Most people choose step five or step six. The discount cap is a written rule, so code enforces it, and the exception decision belongs to the manager by policy. Here is the summary of the whole design in one sentence: the model writes the words, code supplies the numbers, retrieval explains the policy, and people make the decisions that belong to them.
+
+=== Slide 15 ===
+
+Let us return to the finance director's first question: what does one quote cost? The cost of a quote is the model and computing cost, plus the cost of the analyst minutes spent on it, plus the minutes managers spend reviewing the quotes that need approval.
+
+Today, with no AI, a pricing analyst spends about 35 minutes on a quote. Team B's design aims to cut that to about 5 minutes, because the analyst only spot-checks the draft, while adding a model cost of a few cents. Even if the model cost turned out ten times higher than planned, it would still be small next to the analyst time saved.
+
+So here is the key point. A quote costs the model's few cents plus the people's minutes. The minutes, and the mistakes that slip through, decide the business case. The real risks lie elsewhere: sending too many quotes to managers, and the cost of errors, which Chapter 3 shows how to estimate.
+
+Where in your own organization would people's minutes dwarf the cost of the model?
+
+The answer is almost everywhere knowledge work is involved: claims handling, support tickets, invoice processing and legal review. The model's cost dominates only at very high volume with very low value per transaction, such as content moderation.
+
+=== Slide 16: Ten stages from design to production ===
+
+A design is not finished until it runs somewhere real. Every case in this book follows the same ten-stage lifecycle, grouped into three parts.
+
+Stage one is design: the goals, the steps and the trade-offs.
+
+Stages two to five are building and testing: a local build, tools connected through MCP, knowledge through RAG, and evaluation.
+
+Stages six to ten are running the system for real: deployment, state and memory, security, observability, and day-to-day operations. And when requirements change, the cycle starts again at design.
+
+The book does not teach all ten stages in full depth in every chapter. Instead, each case goes deep on one stage and briefly applies the stages already taught.
+
+A demo usually stops after stage two or three. Which of the skipped stages worries you most for a real, customer-facing system?
+
+Security and evaluation are the most common answers. Remember this distinction: a demo proves that something can work, while production proves that it keeps working, safely and affordably, when real people use it every day.
+
+=== Slide 17: What to take away from Chapter 1 ===
+
+Let us close with three takeaways from Chapter 1.
+
+First, design, do not just build. Team B won because it brought answers, not a flashier demo.
+
+Second, pick the right block for each step. Use code for rules, RAG for text, tools for company systems, and models for judgment.
+
+Third, use the least autonomy that does the job. Give each step the lowest level that meets its quality bar, and make any higher level earn its place.
+
+Before the next class, here is a short exercise. Pick a process you know from work or study, such as expense reimbursement or returns at an online store. Break it into steps, and for each step decide whether it needs judgment, knowledge, an action, a rule or a person. You will reuse this exercise in Chapter 2, where we turn exactly this kind of sorting into a design table.
+
+Thank you, and I will see you in Chapter 2.

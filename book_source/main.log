@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  17 NOV 2026 21:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  24 NOV 2026 14:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1172,31 +1172,15 @@ Package hyperref Info: Link coloring ON on input line 26.
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-
-
-pdfTeX warning: pdflatex (file ../cover/cover.pdf): PDF inclusion: found PDF ve
-rsion <1.7>, but at most version <1.5> allowed
 <../cover/cover.pdf, id=1618, 542.025pt x 668.4975pt>
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf>
 Package pdftex.def Info: ../cover/cover.pdf  used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
-
-
-pdfTeX warning: pdflatex (file ../cover/cover.pdf): PDF inclusion: found PDF ve
-rsion <1.7>, but at most version <1.5> allowed
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf>
 Package pdftex.def Info: ../cover/cover.pdf  used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
-
-
-pdfTeX warning: pdflatex (file ../cover/cover.pdf): PDF inclusion: found PDF ve
-rsion <1.7>, but at most version <1.5> allowed
-
-
-pdfTeX warning: pdflatex (file ../cover/cover.pdf): PDF inclusion: found PDF ve
-rsion <1.7>, but at most version <1.5> allowed
 <../cover/cover.pdf, id=1621, page=1, 542.025pt x 668.4975pt>
 File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
@@ -1218,7 +1202,7 @@ File: ../cover/cover.pdf Graphic file (type pdf)
 <use ../cover/cover.pdf, page 1>
 Package pdftex.def Info: ../cover/cover.pdf , page1 used on input line 33.
 (pdftex.def)             Requested size: 542.02367pt x 668.49586pt.
-[1
+ [1
 
 
  <../cover/cover.pdf>] [2{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/up
@@ -1231,47 +1215,50 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5
  (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<../cover/innovation_press.png, id=1650, 1232.605pt x 406.51875pt>
+<../cover/innovation_press.png, id=1660, 1232.605pt x 406.51875pt>
 File: ../cover/innovation_press.png Graphic file (type png)
 <use ../cover/innovation_press.png>
 Package pdftex.def Info: ../cover/innovation_press.png  used on input line 71.
 (pdftex.def)             Requested size: 93.94957pt x 30.98383pt.
- [1
+
+[1
 
 {/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <../cover/in
 novation_press.png>] [2
 
+
 ]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 7
-9.
- (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ot1lmr.fd
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 8
+2.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
-9.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 8
+2.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-79.
+82.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-79.
+82.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 79.
+(Font)              <12> on input line 82.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 79.
+(Font)              <8> on input line 82.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 79.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
+(Font)              <6> on input line 82.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 82.
 
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1280,7 +1267,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 79.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 82.
 
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1293,7 +1280,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.79 \tableofcontents
+l.82 \tableofcontents
                       [1
 
 ]
@@ -1301,43 +1288,40 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.79 \tableofcontents
+l.82 \tableofcontents
                       [2
 
 ] (./main.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 7.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 7.
- [3] [4] [5] [6] [7] [8] [9])
+(Font)              <10.95> on input line 7.
+ [3] [4] [5] [6] [7] [8] [9] [10])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [10]
+
+[11]
 \openout2 = `preface.aux'.
 
-
-(./preface.tex [11
-
-
-] [12]) [13] [14
+ (./preface.tex [12
 
 
-
-]
+] [13] [14] [15]) [16]
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.83 \part{Foundations}
+l.86 \part{Foundations}
                         [1
+
+
+
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.83 \part{Foundations}
+l.86 \part{Foundations}
                         [2]
 \openout2 = `ch01/ch01.aux'.
 
@@ -1352,12 +1336,17 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 28.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 28.
  [3
 
 
 ]
+(./ch01/fig-team-a.tex) [4]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 6
-0.
+2.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1366,11 +1355,15 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [4] [5] [6]
-[7] [8] [9]) (./ch01/ch01b.tex [10]
-Underfull \vbox (badness 2707) has occurred while \output is active []
+ [5]
+Underfull \vbox (badness 1237) has occurred while \output is active []
 
- [11]
+ [6]
+[7] [8]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [9]
+[10] [11]) (./ch01/ch01b.tex [12]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <9> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 115.
 
@@ -1403,14 +1396,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 117--117
 Q3]: No quote may result in a gross
  []
 
-[12] [13] [14] [15{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.
-enc}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-[16] [17] (./ch01/fig-integrated.tex) [18] [19{/usr/local/texlive/2024/texmf-di
-st/fonts/enc/dvips/lm/lm-mathit.enc}]
+[13] [14]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [20])
-(./ch01/ch01c.tex [21{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-
+ [15]
+[16] [17] [18{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{
+/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [19]
+[20] [21] (./ch01/fig-integrated.tex) [22{/usr/local/texlive/2024/texmf-dist/fo
+nts/enc/dvips/lm/lm-mathit.enc}]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23])
+(./ch01/ch01c.tex [24{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-
 mathex.enc}]
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
 nput line 20.
@@ -1433,42 +1430,51 @@ Package microtype Info: Loading generic protrusion settings for font family
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/it/10'.
 (microtype)             Ignoring protrusion settings for this character.
- [22] [23] [24]
-[25] [26] [27] [28] [29])) [30]
+ [25] [26] [27]
+[28] [29] [30] [31] [32] [33] [34])) [35]
 \openout2 = `ch02/ch02.aux'.
 
  (./ch02/ch02.tex (./ch02/ch02a.tex
-Chapter 2.
-[31
-
-
-
-
-] [32] [33] [34] [35]) (./ch02/ch02b.tex [36] [37] [38]
-Underfull \vbox (badness 1472) has occurred while \output is active []
-
- [39])
-(./ch02/ch02c.tex [40] [41] [42] [43] [44] [45])) [46]
-\openout2 = `ch03/ch03.aux'.
-
- (./ch03/ch03.tex
-(./ch03/ch03a.tex
-Chapter 3.
-[47
+[36
 
 
 
 
 ]
+Chapter 2.
+
+Underfull \vbox (badness 2680) has occurred while \output is active []
+
+ [37]
+[38] [39] [40] [41] [42]) (./ch02/ch02b.tex
+Underfull \vbox (badness 1448) has occurred while \output is active []
+
+ [43]
+[44] [45] [46] [47]) (./ch02/ch02c.tex [48] [49]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [50]
+[51] [52] [53] [54])) [55]
+\openout2 = `ch03/ch03.aux'.
+
+ (./ch03/ch03.tex (./ch03/ch03a.tex [56
+
+
+
+
+]
+Chapter 3.
+[57]
 Underfull \hbox (badness 1939) in paragraph at lines 94--94
  []\T1/lmr/m/n/8 (+20) median, all steps
  []
 
-[48] [49]) (./ch03/ch03b.tex [50] [51] (./ch03/code/value_case.py
+[58] [59] [60]) (./ch03/ch03b.tex [61] (./ch03/code/value_case.py [62]
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/10'.
 (microtype)             Ignoring protrusion settings for this character.
- [52])
+)
+[63]
 Underfull \hbox (badness 10000) in paragraph at lines 95--95
  [][]\T1/lmr/bx/n/9 (+20) Rise in win rate
  []
@@ -1498,7 +1504,7 @@ Underfull \hbox (badness 3250) in paragraph at lines 95--95
  [][]\T1/lmr/bx/n/9 (+20) Model cost per quote
  []
 
-[53] [54]
+[64] [65] [66]
 Underfull \hbox (badness 6204) in paragraph at lines 183--183
  [][]\T1/lmr/bx/n/9 (+20) False pos-i-tive
  []
@@ -1508,7 +1514,7 @@ Underfull \hbox (badness 5548) in paragraph at lines 186--186
  [][]\T1/lmr/bx/n/9 (+20) False neg-a-tive
  []
 
-[55]
+[67]
 Overfull \hbox (2.24179pt too wide) in paragraph at lines 236--236
 []|[]|  
  []
@@ -1523,81 +1529,96 @@ Overfull \hbox (9.07924pt too wide) in paragraph at lines 236--236
 []|[]|  
  []
 
-) (./ch03/ch03c.tex [56] [57] [58] [59] [60])) [61] [62
+) (./ch03/ch03c.tex [68] [69] [70] [71] [72] [73])) [74] [75
 
 
 
-] [63] [64]
+] [76]
 \openout2 = `ch04/ch04.aux'.
 
 
 (./ch04/ch04.tex (./ch04/ch04a.tex
 Chapter 4.
-[65
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [77
 
 
-] [66] [67]) (./ch04/ch04b.tex [68]
+]
+[78] [79]) (./ch04/ch04b.tex [80] [81] [82]
 Overfull \hbox (5.97305pt too wide) in paragraph at lines 81--81
 []|[] 
  []
 
-[69] [70] [71]) (./ch04/ch04c.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[83] [84] [85]) (./ch04/ch04c.tex
+Underfull \vbox (badness 1024) has occurred while \output is active []
 
- [72]
-[73] [74] [75]
+ [86]
+[87] [88] [89]
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
-) [76]
-(./ch04/code/rag_metrics.py [77]) [78]) (./ch04/ch04d.tex [79]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+)
+Underfull \vbox (badness 1496) has occurred while \output is active []
 
- [80]
-[81] [82])) [83]
+ [90]
+(./ch04/code/rag_metrics.py [91]) [92]) (./ch04/ch04d.tex [93] [94] [95]
+[96] [97])) [98]
 \openout2 = `ch05/ch05.aux'.
 
- (./ch05/ch05.tex (./ch05/ch05a.tex [84
-
-
-
-
-]
+ (./ch05/ch05.tex (./ch05/ch05a.tex
 Chapter 5.
-[85] [86]) (./ch05/ch05b.tex [87] [88] [89] (./ch05/code/unit_economics.py
-[90]) [91]) (./ch05/ch05c.tex [92] (./ch05/code/returns_server.py [93]
+[99
+
+
+
+
+] [100]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [94])
+ [101])
+(./ch05/ch05b.tex [102] [103] [104] (./ch05/code/unit_economics.py [105])
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [95]
-[96]) (./ch05/ch05d.tex [97] [98] [99] [100])) [101]
+ [106]
+[107]) (./ch05/ch05c.tex [108] (./ch05/code/returns_server.py [109]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [110])
+[111] [112] [113]) (./ch05/ch05d.tex [114]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [115]
+[116] [117] [118])) [119]
 \openout2 = `ch06/ch06.aux'.
 
- (./ch06/ch06.tex
-(./ch06/ch06a.tex [102
+ (./ch06/ch06.tex (./ch06/ch06a.tex [120
 
 
 
 
 ]
 Chapter 6.
-[103] [104] [105] (./ch06/code/review_policy.py [106] [107]) [108])
-(./ch06/ch06b.tex [109] [110] (./ch06/code/decision.py) [111] [112] [113]))
-[114]
+[121] [122] [123] [124] [125] (./ch06/code/review_policy.py) [126])
+(./ch06/ch06b.tex [127] [128] [129] (./ch06/code/decision.py) [130] [131]
+[132] [133])) [134]
 \openout2 = `ch07/ch07.aux'.
 
  (./ch07/ch07.tex (./ch07/ch07a.tex
 Chapter 7.
-[115
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [135
 
 
 
 
-] [116]
+]
+[136] [137]
 Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
 []|[]|  
  []
@@ -1612,48 +1633,45 @@ Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
 []|[] 
  []
 
-[117] [118] (./ch07/code/downtime.py) [119]) (./ch07/ch07b.tex [120]
-(./ch07/code/catalog.py) [121] [122] [123] [124])) [125] [126
+[138] [139] (./ch07/code/downtime.py) [140]) (./ch07/ch07b.tex [141]
+(./ch07/code/catalog.py) [142] [143] [144] [145] [146])) [147] [148
 
 
 
-] [127] [128]
+] [149]
+[150]
 \openout2 = `ch08/ch08.aux'.
 
-
-(./ch08/ch08.tex (./ch08/ch08a.tex
+ (./ch08/ch08.tex (./ch08/ch08a.tex
 Chapter 8.
-[129
+[151
 
 
-] [130] (./ch08/code/fraud_policy.py [131] [132]) [133]) (./ch08/ch08b.tex
-[134] (./ch08/code/faithfulness.py) [135] [136] [137])) [138]
+] [152] [153] (./ch08/code/fraud_policy.py [154]) [155]) (./ch08/ch08b.tex
+[156] (./ch08/code/faithfulness.py [157]) [158] [159] [160] [161])) [162]
 \openout2 = `ch09/ch09.aux'.
 
- (./ch09/ch09.tex
-(./ch09/ch09a.tex
+
+(./ch09/ch09.tex (./ch09/ch09a.tex
 Chapter 9.
-[139
+[163
 
 
 
 
-] [140] [141] (./ch09/code/surge.py [142])) (./ch09/ch09b.tex [143]
-(./ch09/code/case.py [144]) [145] (./ch09/code/eu261.py) [146]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [147]
-[148])) [149]
+] [164] [165] (./ch09/code/surge.py [166]) [167]) (./ch09/ch09b.tex
+[168] (./ch09/code/case.py [169]) [170] (./ch09/code/eu261.py) [171] [172]
+[173] [174])) [175]
 \openout2 = `ch10/ch10.aux'.
 
- (./ch10/ch10.tex (./ch10/ch10a.tex [150
+ (./ch10/ch10.tex (./ch10/ch10a.tex [176
 
 
 
 
 ]
 Chapter 10.
-[151] [152]
+[177] [178]
 Overfull \hbox (6.6652pt too wide) in paragraph at lines 132--132
 []|[]|  
  []
@@ -1663,79 +1681,73 @@ Overfull \hbox (6.6652pt too wide) in paragraph at lines 132--132
 []|[]|  
  []
 
-[153]) (./ch10/ch10b.tex [154] [155] (./ch10/code/audit_log.py) [156] [157]
-[158])) [159]
+[179] [180]) (./ch10/ch10b.tex [181] [182] (./ch10/code/audit_log.py) [183]
+[184] [185] [186])) [187]
 \openout2 = `ch11/ch11.aux'.
 
- (./ch11/ch11.tex (./ch11/ch11a.tex [160
+ (./ch11/ch11.tex (./ch11/ch11a.tex [188
 
 
 
 
 ]
 Chapter 11.
-
-Underfull \vbox (badness 4569) has occurred while \output is active []
-
- [161]
-[162] [163] (./ch11/code/replenish.py [164]) [165]) (./ch11/ch11b.tex [166]
-[167] [168])) [169]
+[189] [190] [191] [192] (./ch11/code/replenish.py) [193]) (./ch11/ch11b.tex
+[194] [195] [196] [197] [198])) [199]
 \openout2 = `ch12/ch12.aux'.
 
- (./ch12/ch12.tex (./ch12/ch12a.tex [170
+ (./ch12/ch12.tex (./ch12/ch12a.tex
+[200
 
 
 
 
 ]
 Chapter 12.
-[171] [172] [173] (./ch12/code/tco.py) [174]) (./ch12/ch12b.tex [175] [176]
-[177] [178])) [179] [180
+[201] [202] [203] [204] (./ch12/code/tco.py) [205]) (./ch12/ch12b.tex
+Underfull \vbox (badness 2951) has occurred while \output is active []
+
+ [206]
+[207] [208] [209] [210])) [211] [212
 
 
 
-] [181] [182]
+] [213] [214]
 \openout2 = `ch13/ch13.aux'.
 
- (./ch13/ch13.tex (./ch13/ch13a.tex
+ (./ch13/ch13.tex
+(./ch13/ch13a.tex
 Chapter 13.
-[183
+[215
 
 
-] [184] [185]) (./ch13/ch13b.tex [186] (./ch13/code/release_gate.py)
+] [216] [217] [218]) (./ch13/ch13b.tex (./ch13/code/release_gate.py
+[219])
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/8'.
 (microtype)             Ignoring protrusion settings for this character.
-
-[187] [188] [189] [190] [191] [192] [193]
-Underfull \vbox (badness 1173) has occurred while \output is active []
-
- [194]
-[195])) [196]
+ [220] [221] [222] [223] [224] [225] [226] [227] [228] [229] [230]))
+[231]
 \openout2 = `appendix/appA.aux'.
 
- (./appendix/appA.tex
+ (./appendix/appA.tex [232
+
+
+
+
+]
 Appendix A.
-[197
-
-
-
-
-] [198] [199]) [200]
+[233] [234] [235] [236]) [237]
 \openout2 = `appendix/appB.aux'.
 
- (./appendix/appB.tex
+ (./appendix/appB.tex [238
+
+
+
+
+]
 Appendix B.
-
-Underfull \vbox (badness 1253) has occurred while \output is active []
-
- [201
-
-
-
-
-])
-[202]
+) [239] [240]
 \openout2 = `appendix/appC.aux'.
 
  (./appendix/appC.tex
@@ -1745,32 +1757,27 @@ Underfull \hbox (badness 2005) in paragraph at lines 41--41
 []|\T1/lmr/bx/n/10 (+20) Cost and la-tency
  []
 
-
-Underfull \vbox (badness 2538) has occurred while \output is active []
-
- [203
+[241
 
 
 
 
-]
-[204]) [205]
+] [242]) [243]
 \openout2 = `appendix/appD.aux'.
 
- (./appendix/appD.tex [206
+ (./appendix/appD.tex [244
 
 
 
 
 ]
 Appendix D.
-[207] [208]) [209] [210
+[245] [246]) [247] [248] (./main.bbl [249
 
 
 
-] (./main.bbl [211
 
-]) [212] (./main.aux (./preface.aux)
+]) [250] (./main.aux (./preface.aux)
 (./ch01/ch01.aux) (./ch02/ch02.aux) (./ch03/ch03.aux) (./ch04/ch04.aux)
 (./ch05/ch05.aux) (./ch06/ch06.aux) (./ch07/ch07.aux) (./ch08/ch08.aux)
 (./ch09/ch09.aux) (./ch10/ch10.aux) (./ch11/ch11.aux) (./ch12/ch12.aux)
@@ -1780,17 +1787,21 @@ Appendix D.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: FD0A69F91890D188DDD36DF2BA32EBDB;84345.
  ) 
 Here is how much of TeX's memory you used:
- 41706 strings out of 474116
- 798818 string characters out of 5743682
- 2208187 words of memory out of 5000000
- 60049 multiletter control sequences out of 15000+600000
- 733014 words of font info for 472 fonts, out of 8000000 for 9000
+ 41775 strings out of 474116
+ 800473 string characters out of 5743682
+ 2213187 words of memory out of 5000000
+ 60172 multiletter control sequences out of 15000+600000
+ 729742 words of font info for 428 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 91i,25n,99p,1313b,2237s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 91i,25n,99p,1295b,2237s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/lo
 cal/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texliv
 e/2024/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/local/texlive/2024/texm
@@ -1800,29 +1811,28 @@ ublic/lm/lmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/l
 mmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><
 /usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/
 texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/202
-4/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2024/texmf-dis
-t/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
-e1/public/lm/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/l
-m/lmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr6.pfb>
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/
-texlive/2024/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2024
-/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2024/texmf-dis
-t/fonts/type1/public/lm/lmri12.pfb></usr/local/texlive/2024/texmf-dist/fonts/ty
-pe1/public/lm/lmri8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/
-lm/lmri9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmro10.p
-fb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr
-/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/tex
-live/2024/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2024/t
-exmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/local/texlive/2024/texmf-dist/f
-onts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1
-/public/lm/lmtt10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm
-/lmtt8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/loc
-al/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (230 pages, 1845295 bytes).
+4/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2024/texmf-dis
+t/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/public/lm/lmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/l
+m/lmr6.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><
+/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/t
+exlive/2024/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/202
+4/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/texlive/2024/texmf-di
+st/fonts/type1/public/lm/lmri8.pfb></usr/local/texlive/2024/texmf-dist/fonts/ty
+pe1/public/lm/lmri9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/
+lm/lmro10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx1
+0.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></us
+r/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/tex
+live/2024/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2024/
+texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2024/texmf-dist
+/fonts/type1/public/lm/lmtt8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type
+1/public/lm/lmtt9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm
+/lmtti10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/sy
+mbols/msam10.pfb>
+Output written on main.pdf (270 pages, 2451717 bytes).
 PDF statistics:
- 6010 PDF objects out of 6186 (max. 8388607)
- 5554 compressed objects within 56 object streams
- 2371 named destinations out of 2487 (max. 500000)
- 94966 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 6193 PDF objects out of 7423 (max. 8388607)
+ 5688 compressed objects within 57 object streams
+ 2412 named destinations out of 2487 (max. 500000)
+ 97014 words of extra memory for PDF output out of 106986 (max. 10000000)
 
