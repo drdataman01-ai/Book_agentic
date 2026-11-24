@@ -1,0 +1,116 @@
+% ======================================================================
+% Designing Agentic AI Solutions -- master file
+% Build from this folder:   latexmk -pdf main.tex
+% (or: pdflatex main; bibtex main; pdflatex main; pdflatex main)
+%
+% Folder layout:
+%   main.tex, preface.tex
+%   common/    preamble.tex, sg-styles.tex, refs.bib
+%   ch01/ ... ch13/   each with chNN.tex, its parts, main-chNN.tex, code/
+%   appendix/  appA.tex ... appD.tex
+% ======================================================================
+\documentclass[11pt]{book}
+\newcommand{\chtwocode}{ch02/code/}
+
+\title{Designing Agentic AI Solutions\\[6pt]
+  \large Ten Business Cases with RAG, Agents, and MCP}
+\author{Chris Kuo}
+\date{\textit{An Information Systems Approach}}
+
+\input{common/preamble}      % your existing line (or your \usepackage lines)
+\input{common/callouts}  
+
+
+
+
+\begin{document}
+
+
+\includepdf[
+  pages=1,
+  fitpaper=true,
+  scale=1
+]{../cover/cover.pdf}
+
+
+% =========================
+% Front Matter
+% =========================
+
+\frontmatter
+%\pagenumbering{arabic}
+
+% ----- Copyright -----
+\clearpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\footnotesize
+
+\noindent
+© 2027 Chris Kuo
+
+\vspace{0.5cm}
+
+\noindent 
+ISBN: 979-8-9825592-0-3\\
+First edition: January, 2027
+
+\vspace{0.5cm}
+\noindent All rights reserved. No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, scanning, or otherwise, except as permitted under Section 107 or 108 of the 1976 United States Copyright Act, without the prior written permission of the publisher, or in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law. 
+
+While every effort has been made to ensure the reliability of the information presented in this publication, Innovation Press assumes no responsibility for errors or omissions. However, neither the author nor Innovation Press assumes any liability for damages resulting from the use of the information contained herein. 
+
+Email address: ck2869@columbia.edu
+
+
+\vfill
+
+\noindent The Innovation Press, \\
+\noindent Ann Arbor, MI 
+\begin{figure}[!htbp]
+  \includegraphics[width=0.20\textwidth]{cover/innovation_press.png}% Replace example-image with the filename of your image
+\end{figure}
+\vfill
+
+% End of copyright page: restore the body size so \footnotesize above
+% applies only to this page.
+\clearpage
+\normalsize
+
+\frontmatter
+\maketitle
+\tableofcontents
+\include{preface}
+
+\mainmatter
+\part{Foundations}
+\include{ch01/ch01}
+\include{ch02/ch02}
+\include{ch03/ch03}
+
+\part{Critique and Redesign}
+\include{ch04/ch04}
+\include{ch05/ch05}
+\include{ch06/ch06}
+\include{ch07/ch07}
+
+\part{Original Designs}
+\include{ch08/ch08}
+\include{ch09/ch09}
+\include{ch10/ch10}
+\include{ch11/ch11}
+\include{ch12/ch12}
+
+\part{Capstone}
+\include{ch13/ch13}
+
+\appendix
+\include{appendix/appA}
+\include{appendix/appB}
+\include{appendix/appC}
+\include{appendix/appD}
+
+\backmatter
+\bibliographystyle{plainnat}
+\bibliography{common/refs}
+\end{document}

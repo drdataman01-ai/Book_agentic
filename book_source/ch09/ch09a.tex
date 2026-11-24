@@ -36,7 +36,7 @@ By the end of this case you will be able to answer these questions:
 
 On a bad winter day---a storm over a hub, a closed runway---Coral Air may cancel a hundred flights or more. Last February a single storm cancelled 120 flights and disrupted about 9{,}600 passengers in an afternoon. Each needed a new itinerary; many needed a hotel, meals or ground transport; some were owed compensation under EU Regulation 261/2004 (EU261), which sets fixed amounts depending on distance and circumstances.
 
-Coral Air's reservation system already includes an automatic \emph{re-accommodation} engine: when a flight is cancelled, it moves passengers to the next available flight according to rules. But the automatic choice often does not suit the passenger---it is the wrong day, the wrong airport, or splits a family---and about 60\% of disrupted passengers contact the airline to change it, ask about hotels, or ask about compensation. Most contact in the first two hours.
+Coral Air's reservation system already includes an automatic \textbf{re-accommodation} engine: when a flight is cancelled, it moves passengers to the next available flight according to rules. But the automatic choice often does not suit the passenger---it is the wrong day, the wrong airport, or splits a family---and about 60\% of disrupted passengers contact the airline to change it, ask about hotels, or ask about compensation. Most contact in the first two hours.
 
 The contact centre can bring about 120 agents online at short notice; a disruption call takes about 11 minutes. Table~\ref{tab:air-today} summarizes last February's storm from the contact-centre and reservation logs.
 
@@ -121,13 +121,13 @@ One agent with tools for bookings, flight options, seat holds, ticket reissue, h
 
 \subsection{The handoff design: specialized agents, one case}
 
-The handoff design divides the work into the stages a good human agent goes through, and gives each stage an agent with only the tools and instructions it needs. Table~\ref{tab:air-d2} writes it down as a design table.
+The handoff design divides the work into the stages a good human agent goes through, and gives each stage an agent with only the tools and instructions it needs. Table~\ref{tab:air-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item When operations control cancels a flight, an \emph{event} creates a \emph{case} for each booking and sends a push notification with the re-accommodation engine's proposal and three buttons: accept, change, or talk to us. ``Accept'' confirms without any agent.
-  \item ``Change'' or ``talk to us'' opens a conversation with the \emph{intake agent} (Level~1), which confirms identity through the signed-in app, records needs (``travelling with an infant'', ``must be in Lisbon by Friday''), and routes. Any special-assistance need hands the case to a person at once.
-  \item The \emph{rebooking agent} (Level~4) searches options through the reservation server, places an expiring \emph{hold} on the seats the passenger likes, and reissues the ticket only after the passenger confirms.
-  \item The \emph{care agent} (Level~1) issues hotel and meal vouchers within rules, and explains compensation. Whether compensation is owed, and how much, is computed by a \emph{code step} from the case facts, never by a model.
-  \item Each handoff moves a typed \emph{case object} to the next owner. Any agent can hand the case to a person; a person can hand it back.
+  \item When operations control cancels a flight, an \textbf{event} creates a \textbf{case} for each booking and sends a push notification with the re-accommodation engine's proposal and three buttons: accept, change, or talk to us. ``Accept'' confirms without any agent.
+  \item ``Change'' or ``talk to us'' opens a conversation with the \textbf{intake agent} (Level~1), which confirms identity through the signed-in app, records needs (``travelling with an infant'', ``must be in Lisbon by Friday''), and routes. Any special-assistance need hands the case to a person at once.
+  \item The \textbf{rebooking agent} (Level~4) searches options through the reservation server, places an expiring \textbf{hold} on the seats the passenger likes, and reissues the ticket only after the passenger confirms.
+  \item The \textbf{care agent} (Level~1) issues hotel and meal vouchers within rules, and explains compensation. Whether compensation is owed, and how much, is computed by a \textbf{code step} from the case facts, never by a model.
+  \item Each handoff moves a typed \textbf{case object} to the next owner. Any agent can hand the case to a person; a person can hand it back.
 \end{itemize}
 
 \begin{table}[htbp]

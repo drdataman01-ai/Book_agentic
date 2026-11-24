@@ -8,7 +8,7 @@
 
 \subsection{Numbers from tools, words from models}
 
-The rule Harbor's quote design followed in Chapter~\ref{ch:foundations}---the model writes the words, code supplies the numbers---matters even more in a credit memo, which may contain several hundred figures. Section agents are instructed to obtain every figure from the calculation server and to write it as a reference, for example \texttt{\{calc:dscr\_fy2025\}}, which the rendering step replaces with the value and its source. The numbers-trace guardrail then checks the rendered memo: every number in the text must match a value returned by the calculation server for this deal, or appear verbatim in a cited document. A number that matches neither blocks the draft.
+The rule Harbor's quote design followed in Chapter~\ref{ch:foundations}---the model writes the words, code supplies the numbers---matters even more in a credit memo, which may contain several hundred figures. Section agents are instructed to obtain every figure from the calculation server and to write it as a reference, for example \texttt{\{calc:dscr\_fy2025\}}, which the rendering step replaces with the value and its source. The numbers-trace guardrail\index{guardrail} then checks the rendered memo: every number in the text must match a value returned by the calculation server for this deal, or appear verbatim in a cited document. A number that matches neither blocks the draft.
 
 \begin{keyidea}
 The model writes the words; tools supply the numbers; a guardrail checks that every number came from a tool.
@@ -49,10 +49,10 @@ Portability & Platform-specific runtime & Any container & Any container \\
 
 No single target is best for every component, and the decision reflects that:
 \begin{itemize}[itemsep=1pt]
-  \item The \emph{agents}---planner, section agents, critic---run on \emph{Agent Runtime}, whose managed sessions and support for long-running work fit the drafting workflow and minimize operations effort, the largest cost in Listing~\ref{lst:tco}.
-  \item The \emph{MCP servers}---calculation, document retrieval---run on \emph{Cloud Run}, owned by their teams, stateless, and portable.
-  \item The \emph{spreading batch} runs as a \emph{Cloud Run job} triggered when documents arrive.
-  \item \emph{GKE} is not used. It would be the right choice if the bank already ran a large Kubernetes platform with a team to operate it, or needed hardware or networking that the managed services cannot provide.
+  \item The \textbf{agents}---planner, section agents, critic---run on \textbf{Agent Runtime}, whose managed sessions and support for long-running work fit the drafting workflow and minimize operations effort, the largest cost in Listing~\ref{lst:tco}.
+  \item The \textbf{MCP servers}---calculation, document retrieval---run on \textbf{Cloud Run}, owned by their teams, stateless, and portable.
+  \item The \textbf{spreading batch} runs as a \textbf{Cloud Run job} triggered when documents arrive.
+  \item \textbf{GKE} is not used. It would be the right choice if the bank already ran a large Kubernetes platform with a team to operate it, or needed hardware or networking that the managed services cannot provide.
 \end{itemize}
 
 Portability is addressed at the boundaries rather than by choosing the most portable runtime for everything: the agents' tools are MCP servers in containers, and the agents themselves are ADK code that can be redeployed to Cloud Run if needed. The bank accepts some platform dependence for the agents in exchange for lower operations cost, and keeps its business logic---the calculations, the templates, the policy checklist---in components it can move.
@@ -67,10 +67,10 @@ Different components of one solution have different shapes. Choose each componen
 
 A credit memo is judged by the people who rely on it. The evaluation uses 50 recent approved deals: for each, the workflow design drafts a memo from the same documents the analyst had, and the result is compared with the memo actually approved.
 \begin{itemize}[itemsep=1pt]
-  \item \emph{Number accuracy}: every figure in the draft checked against the approved memo's figures and the spreads. Threshold: 100\% traceable, zero wrong after the guardrail.
-  \item \emph{Citation precision}: on a sample of 400 claims, the share whose citation supports the claim. Threshold: 98\%.
-  \item \emph{Completeness}: the policy checklist applied to the draft by a credit officer. Threshold: at least 90\% of items addressed before the analyst edits.
-  \item \emph{Usefulness}: three credit officers rate each draft section on a four-point scale (``usable as is'', ``minor edits'', ``major edits'', ``rewrite''), blind to whether they are reading a draft or the approved memo's section. The share of ``usable'' or ``minor'' is the main quality measure.
+  \item \textbf{Number accuracy}: every figure in the draft checked against the approved memo's figures and the spreads. Threshold: 100\% traceable, zero wrong after the guardrail.
+  \item \textbf{Citation precision}: on a sample of 400 claims, the share whose citation supports the claim. Threshold: 98\%.
+  \item \textbf{Completeness}: the policy checklist applied to the draft by a credit officer. Threshold: at least 90\% of items addressed before the analyst edits.
+  \item \textbf{Usefulness}: three credit officers rate each draft section on a four-point scale (``usable as is'', ``minor edits'', ``major edits'', ``rewrite''), blind to whether they are reading a draft or the approved memo's section. The share of ``usable'' or ``minor'' is the main quality measure.
   \item \emph{Time}: in the pilot, analyst hours per memo, measured from the case system.
 \end{itemize}
 \begin{quickcheck}

@@ -24,8 +24,8 @@ By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
   \item What can go wrong in an event-driven approval workflow, including the way it reads a person's decision?
   \item Which items should a person review, and why is an amount threshold usually the wrong rule?
-  \item What defines a good human checkpoint: what the reviewer sees, may decide and must do on time, and how do we know they are really reviewing?
-  \item How do you build an ADK~2 graph workflow with routing in code and a pause for a person?
+  \item What defines a good human checkpoint\index{human checkpoint}: what the reviewer sees, may decide and must do on time, and how do we know they are really reviewing?
+  \item How do you build an ADK\index{Agent Development Kit (ADK)}~2 graph workflow with routing in code and a pause for a person?
   \item How do you roll out a workflow that moves money without risking money on day one?
 \end{enumerate}
 \end{chapterquestions}
@@ -64,8 +64,8 @@ Weighted by how often each step occurs, a clerk spends about 12.5 minutes per in
 
 Three business problems follow:
 \begin{enumerate}[itemsep=1pt]
-  \item \emph{Lost discounts.} About a fifth of spend comes from suppliers offering a 2\% discount for payment within 10 days. Meridian captures only about 35\% of those discounts, because most invoices are not approved in time.
-  \item \emph{Leakage.} An internal audit found duplicate payments, payments above the purchase-order price, and, twice last year, payments to fraudsters who had persuaded a clerk to change a supplier's bank details by e-mail.
+  \item \textbf{Lost discounts.} About a fifth of spend comes from suppliers offering a 2\% discount for payment within 10 days. Meridian captures only about 35\% of those discounts, because most invoices are not approved in time.
+  \item \textbf{Leakage.} An internal audit found duplicate payments, payments above the purchase-order price, and, twice last year, payments to fraudsters who had persuaded a clerk to change a supplier's bank details by e-mail.
   \item \emph{Cost and growth.} Meridian plans to acquire a regional distributor, which would add 40\% to invoice volume. The controller does not want to hire four more clerks.
 \end{enumerate}
 
@@ -158,13 +158,13 @@ The amount-routed design keeps the sample's structure and changes only its input
 
 \subsection{The risk-routed design: controls first, review by risk}
 
-The risk-routed design puts the deterministic accounts-payable controls first and uses people where the risk is. Table~\ref{tab:inv-d2} writes it down as a design table.
+The risk-routed design puts the deterministic accounts-payable controls first and uses people where the risk is. Table~\ref{tab:inv-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item An \emph{extraction agent} (Level~1) reads PDFs into a strict invoice schema. Code validates the result: line totals must sum to the invoice total, tax must be consistent, and the supplier must exist. Failures go to a clerk.
-  \item \emph{Code} performs the three-way match against the ERP, checks for duplicates (same supplier, amount and date within a window, or same invoice number with variations), and checks whether the supplier's bank details changed recently.
-  \item A \emph{risk score} combines the checks with a small model trained on past exceptions. Code routes: a clean match with low risk is approved without a person; a high score goes to a clerk with an \emph{evidence pack}; any bank-detail change goes to treasury, always.
-  \item An \emph{explanation agent} (Level~1) writes the evidence pack: what failed, the relevant lines of the purchase order and receipt, and the supplier's recent history. It recommends nothing.
-  \item \emph{Budget-holder approval} follows the existing authority matrix, enforced in code, with a deadline and escalation.
+  \item An \textbf{extraction agent} (Level~1) reads PDFs into a strict invoice schema. Code validates the result: line totals must sum to the invoice total, tax must be consistent, and the supplier must exist. Failures go to a clerk.
+  \item \textbf{Code} performs the three-way match against the ERP, checks for duplicates (same supplier, amount and date within a window, or same invoice number with variations), and checks whether the supplier's bank details changed recently.
+  \item A \textbf{risk score} combines the checks with a small model trained on past exceptions. Code routes: a clean match with low risk is approved without a person; a high score goes to a clerk with an \textbf{evidence pack}; any bank-detail change goes to treasury, always.
+  \item An \textbf{explanation agent} (Level~1) writes the evidence pack: what failed, the relevant lines of the purchase order and receipt, and the supplier's recent history. It recommends nothing.
+  \item \textbf{Budget-holder approval} follows the existing authority matrix, enforced in code, with a deadline and escalation.
 \end{itemize}
 
 \begin{table}[htbp]

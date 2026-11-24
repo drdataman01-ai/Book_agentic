@@ -23,7 +23,7 @@ Deliverables & Design tables, threshold and capacity model, scoring server, expl
 By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
   \item Where should a language model sit in a fraud system, and where must it never sit?
-  \item How do you offer a statistical anomaly model to an agent as an MCP tool, with its score and its reasons?
+  \item How do you offer a statistical anomaly model to an agent as an MCP\index{Model Context Protocol (MCP)} tool, with its score and its reasons?
   \item How do you set block and review thresholds when errors cost very different amounts and analysts are scarce?
   \item How do you check that an agent's explanation matches what the model actually used?
   \item How do you evaluate a fraud system when labels arrive months late and accuracy means nothing?
@@ -46,9 +46,9 @@ Which mistake would you rather make: block a good customer's card, or let a frau
 
 The economics are asymmetric in a way that dominates every design choice:
 \begin{itemize}[itemsep=1pt]
-  \item A \emph{missed fraud} costs Northgate the transaction amount (for card-not-present fraud, the issuer usually bears it) plus about \$25 of chargeback handling.
+  \item A \textbf{missed fraud} costs Northgate the transaction amount (for card-not-present fraud, the issuer usually bears it) plus about \$25 of chargeback handling.
   \item A \emph{wrongly declined or blocked good customer} costs much less per case---about \$6 in calls and goodwill---but there are many more good customers than fraudsters, and some of them stop using the card.
-  \item An \emph{analyst review} costs about \$0.70 a minute.
+  \item An \textbf{analyst review} costs about \$0.70 a minute.
 \end{itemize}
 
 Fraud losses run at about 9 basis points (0.09\%) of card-not-present volume; the head of fraud wants them lower without declining more good customers, and the analysts' queue has grown 30\% in a year.
@@ -106,16 +106,16 @@ If analysts receive each flagged transaction with a faithful summary of why the 
 
 \subsection{The agent-judge design: an agent that judges each transaction}
 
-The design a team new to agents often proposes is to give a model each flagged transaction, the cardholder's history and some tools, and ask it whether the transaction is fraud. It fails step~3 of the design method on two of its four questions, judgment or rule and what must be known: the judgment ``is this fraud?'' is exactly what a statistical model trained on millions of labeled transactions does well, and what a language model reading a few dozen does poorly and expensively. If the agent-judge design is placed in the authorization path it also violates \risk{Model in hot path}: authorization needs an answer in 100 milliseconds, every time, which no agent loop can promise. We score the agent-judge design for completeness.
+The design a team new to agents often proposes is to give a model each flagged transaction, the cardholder's history and some tools, and ask it whether the transaction is fraud. It fails step~3 of the design method\index{design method} on two of its four questions, judgment or rule and what must be known: the judgment ``is this fraud?'' is exactly what a statistical model trained on millions of labeled transactions does well, and what a language model reading a few dozen does poorly and expensively. If the agent-judge design is placed in the authorization path it also violates \risk{Model in hot path}: authorization needs an answer in 100 milliseconds, every time, which no agent loop\index{agent loop} can promise. We score the agent-judge design for completeness.
 
 \subsection{The assistant design: the model scores, the agent assists the analyst}
 
-The assistant design assigns each block to what it does best. Table~\ref{tab:fr-d2} writes it down as a design table.
+The assistant design assigns each block to what it does best. Table~\ref{tab:fr-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item The \emph{scoring model} stays in the authorization path, served with low latency by the authorization platform. It is also exposed, read-only, through an MCP server owned by fraud analytics, which returns for any transaction its score, the model version and the features that contributed most to the score (its \emph{attributions}).
-  \item \emph{Code} applies two thresholds: above the block threshold, the card is blocked at once; between the review and block thresholds, the transaction is approved and queued for review. Both thresholds are configuration, owned by fraud strategy and set by the analysis in Section~\ref{sec:fr-tradeoffs}.
-  \item For each queued transaction, a \emph{case agent} (Level~4, at most eight tool calls) gathers what an analyst would: the attributions, the cardholder's recent transactions and devices, the merchant's fraud history, and similar confirmed cases. It writes a \emph{case summary}: the facts, the model's top factors in plain language, and what is unusual against the cardholder's own history.
-  \item A \emph{faithfulness guardrail} checks that every reason the summary cites is one of the model's top factors (Section~\ref{sec:fr-build}). Summaries that fail are regenerated once, then shown with a warning.
+  \item The \textbf{scoring model} stays in the authorization path, served with low latency by the authorization platform. It is also exposed, read-only, through an MCP server\index{Model Context Protocol (MCP)!server} owned by fraud analytics, which returns for any transaction its score, the model version and the features that contributed most to the score (its \emph{attributions}).
+  \item \textbf{Code} applies two thresholds: above the block threshold, the card is blocked at once; between the review and block thresholds, the transaction is approved and queued for review. Both thresholds are configuration, owned by fraud strategy and set by the analysis in Section~\ref{sec:fr-tradeoffs}.
+  \item For each queued transaction, a \textbf{case agent} (Level~4, at most eight tool calls\index{tool call}) gathers what an analyst would: the attributions, the cardholder's recent transactions and devices, the merchant's fraud history, and similar confirmed cases. It writes a \textbf{case summary}: the facts, the model's top factors in plain language, and what is unusual against the cardholder's own history.
+  \item A \textbf{faithfulness guardrail\index{guardrail}} checks that every reason the summary cites is one of the model's top factors (Section~\ref{sec:fr-build}). Summaries that fail are regenerated once, then shown with a warning.
   \item The \emph{analyst} decides, through the existing case tool. The agent has no write tools.
 \end{itemize}
 

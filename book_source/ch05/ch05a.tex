@@ -23,7 +23,7 @@ Deliverables & Design tables for four designs, per-intent cost model, MCP server
 By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
   \item What makes a tool-using agent's tools and callbacks safe or unsafe?
-  \item How do you design MCP tools that are task-shaped, identity-safe, validated, idempotent and policy-enforcing?
+  \item How do you design MCP\index{Model Context Protocol (MCP)} tools that are task-shaped, identity-safe, validated, idempotent and policy-enforcing?
   \item How can a cost-per-contact model, intent by intent, decide which contacts to automate?
   \item How do you stop a containment KPI from being gamed?
   \item How do you deploy an agent to Agent Runtime with its tools on Cloud Run, and evaluate what it does as well as what it says?
@@ -95,11 +95,11 @@ An audit of 400 contacts that ended in a return, refund or goodwill credit found
 \end{tabularx}
 \end{table}
 
-Four system owners is typical of support, and it is the first hint about where MCP server boundaries belong. Each owner will want to control what any automated system can do to its systems. A server per owner gives each of them that control.
+Four system owners is typical of support, and it is the first hint about where MCP server\index{Model Context Protocol (MCP)!server} boundaries belong. Each owner will want to control what any automated system can do to its systems. A server per owner gives each of them that control.
 
 \subsection{Containment and its partners}
 
-Support has its own version of the deflection trap from Chapter~\ref{ch:case-policy}. It is called \keyterm{containment}: the share of contacts resolved without a person. Containment must therefore be defined strictly and paired with measures that catch false resolution.
+Support has its own version of the deflection trap from Chapter~\ref{ch:case-policy}. It is called \keyterm{containment}\index{containment|textbf}: the share of contacts resolved without a person. Containment must therefore be defined strictly and paired with measures that catch false resolution.
 
 \begin{watchout}[Watch out: the containment trap]
 An assistant that tells every customer ``your refund is being processed'' contains every refund request, until the same customers come back angry.

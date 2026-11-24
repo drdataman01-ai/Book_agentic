@@ -1,0 +1,154 @@
+% ======================================================================
+% Chapter 4 -- Case: Company Policy and Knowledge Assistant
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: case at a glance; business brief; stakeholders, KPIs, value
+% ======================================================================
+
+\chapter{Case: A Company Policy Assistant}
+\label{ch:case-policy}
+
+\begin{caseglance}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm}X@{}}
+Company & Alder \& Finch, an engineering consultancy with 3{,}200 employees in the United States, the United Kingdom and Germany \\
+Process & Employees' questions about company policy: leave, travel and expenses, remote work, benefits, equipment \\
+Starting point & Google ADK sample \texttt{rag-agent-search}, pinned at commit \texttt{ede41c7} (2 October 2026) \\
+Technical focus & First deployment; retrieval quality \\
+Business skill & Defining KPIs for a solution whose product is information \\
+Patterns & Retrieve-then-answer; approval gate (handoff to HR) \\
+Deliverables & Design tables for three designs, trade-off table, deployed assistant, evaluation report, memo
+\end{tabularx}
+\end{caseglance}
+
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item How well does a published Google RAG sample hold up against the design method and the eight checks of Chapter~\ref{ch:toolkit}?
+  \item How do you define KPIs for a product whose output is information, without falling into the deflection trap?
+  \item How do you make retrieval permission-aware, current and cited, and what does each change cost?
+  \item How do you deploy an ADK agent to Cloud Run for the first time, safely?
+  \item How do you measure retrieval separately from the answers it feeds?
+\end{enumerate}
+\end{chapterquestions}
+
+This is the first case chapter. It follows the nine-section template introduced in Chapter~\ref{ch:foundations}, and the first alternative design is a Google sample exactly as published. Because it is the first case, it goes more slowly than later ones and explains some steps that later cases will take for granted.
+
+% ----------------------------------------------------------------------
+\section{Business Brief: What Is Going Wrong Today?}
+\label{sec:policy-brief}
+
+\begin{thinkabout}
+Think about the last time you needed a company rule, such as how much leave you had left or whether a flight could be business class. Did you search the intranet, ask a colleague, or open a ticket? Your answer already describes the problem this case sets out to solve.
+\end{thinkabout}
+
+\subsection{The company}
+
+Alder \& Finch designs bridges, water systems and industrial plants. Its 3{,}200 employees work from offices in the United States (about 2{,}000), the United Kingdom (700) and Germany (500), and many spend weeks at a time on client sites. The People Operations team---Alder \& Finch's name for human resources---maintains about 340 policy documents on the intranet. Roughly 25 of them change each month.
+
+Policies differ by country, as employment law requires. Annual leave, parental leave, sick pay and pension contributions are set separately for each country. Some policies also differ by grade: the travel policy, for example, allows business-class flights over six hours only from grade 7 upward. And some documents are restricted. The guidance on performance calibration and the disciplinary procedure, among others, are for people managers only.
+
+\subsection{The pain}
+
+Employees find the intranet hard to search, so they ask. About 2{,}600 policy questions a month arrive at the People Operations service desk as tickets, and four HR generalists answer them. People Operations' director, who is the sponsor of this case, describes three problems.
+
+\begin{enumerate}[itemsep=1pt]
+  \item \emph{Slow answers.} The median ticket waits 1.8 business days for an answer. Engineers on client sites, who often need an answer about travel or expenses before they can book, find this unworkable.
+  \item \emph{Wrong answers.} An audit of 300 answered tickets found that 7\% were wrong or incomplete. Most errors came from applying another country's version of a policy, or an outdated one.
+  \item \emph{Expensive answers.} The generalists spend most of their week on repetitive questions, leaving little time for work only they can do, such as supporting managers through difficult cases.
+\end{enumerate}
+
+\subsection{The current process}
+
+Table~\ref{tab:policy-map} maps the process today. The median touch time per ticket is 11 minutes, and nearly all of the 1.8 days is queue time. The two error points match the audit. The first is an answer that uses the wrong country's or an outdated version of a policy (5.1\% of tickets), and the second is a confident answer to a question the policies do not actually address (1.9\%).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Alder \& Finch's policy-question process today. Waits are medians from the ticketing system; touch times come from a two-week HR time log.}
+\label{tab:policy-map}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}r>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{3.3cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Who & Touch & Wait before & Errors entering here \\
+\midrule
+1 & Search the intranet, then give up & Employee & 9 min & --- & --- \\
+2 & Open a ticket & Employee & 3 min & --- & --- \\
+3 & Find the right policy and version & HR generalist & 6 min & 1.7 days & \risk{Wrong version} 5.1\% \\
+4 & Write the answer & HR generalist & 5 min & --- & \risk{Silent policy} 1.9\% \\
+5 & Read the answer and act on it & Employee & --- & --- & 12\% of tickets reopened \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+One step on the map is easy to overlook: the nine minutes an employee spends searching the intranet before giving up. It never appears in the HR budget, but across 2{,}600 tickets a month it is about 390 hours of engineers' time, and it does not count the employees who give up without asking.
+
+% ----------------------------------------------------------------------
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
+\label{sec:policy-kpis}
+
+\subsection{Stakeholders}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of the policy assistant.}
+\label{tab:policy-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is, and what they need \\
+\midrule
+\cotag{coBlue}{Sponsor} & The director of People Operations, who wants faster, more consistent answers and the generalists' time back. \\
+\cotag{coGreen}{Users} & All employees, who ask the questions, and the HR generalists, who receive the questions the assistant cannot answer. \\
+\cotag{coAmber}{Approvers} & The data protection officer, who must approve any system that processes employee data; the German works council, which under German law has a say in systems that could monitor employees; and IT security. \\
+\cotag{coPurple}{Owners} & People Operations' policy team, which owns the documents and their metadata; the internal platform team, which owns hosting and identity; and the HR systems team, which owns ticketing. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The works council deserves attention early. Its concern is not whether the assistant gives good answers but whether it could be used to track individual employees---who asked about parental leave, who asked about the disciplinary procedure. That concern becomes a constraint on logging and evaluation, and Section~\ref{sec:policy-changed} returns to it.
+
+\subsection{The deflection trap}
+
+The most common KPI for an information assistant is \keyterm{deflection}: the share of questions answered without a human. It is a tempting KPI because it is easy to count and maps directly to labor savings.
+
+\begin{watchout}[Watch out: the deflection trap]
+Deflection violates the pairing rule from Chapter~\ref{ch:business}. An assistant that answers every question confidently, right or wrong, has a deflection rate of 100\%. So does an assistant so frustrating that employees give up and ask a colleague instead.
+\end{watchout}
+
+To be a usable KPI, deflection must be defined so that it counts only questions that were actually resolved, and it must be paired with a measure of whether the answers were right. Alder \& Finch adopted these definitions:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Resolved without HR}: the assistant answered, and the same employee did not open an HR ticket on the same topic within seven days.
+  \item \emph{Answer accuracy}: the share of answers judged correct by an HR reviewer, on a weekly random sample of 100 answered questions.
+\end{itemize}
+The seven-day rule catches the employee who asked the assistant, did not believe it, and asked HR anyway. The sampled review catches the employee who believed a wrong answer---the more expensive failure, because no one notices it until a wrong expense claim or a miscalculated leave balance surfaces months later.
+
+\subsection{KPIs and risks}
+
+Table~\ref{tab:policy-kpis} lists the three KPIs and three risks. Each has a short name that the rest of the chapter uses, shown in blue for a KPI and red for a risk.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs and risks for the policy assistant.}
+\label{tab:policy-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{Resolved without HR} & Questions resolved without HR, as defined above. Target: 50\% of questions that would previously have become tickets. \\
+\kpi{Answer accuracy} & Accuracy on the weekly sampled review. Target: at least 97\% (HR's own answers: 93\%). \\
+\kpi{Time to answer} & Median time to a correct answer. Target: under one minute for resolved questions and under one business day for questions passed to HR (baseline 1.8 days). \\
+\risk{Wrong version} & An answer that applies the wrong country's or grade's version of a policy, or an outdated one. \\
+\risk{Restricted leak} & An employee shown any part of a document they are not entitled to see. This is a constraint, not a criterion: the budget is zero. \\
+\risk{Silent policy} & A confident answer where the policies are silent or ambiguous. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Notice that \risk{Wrong version} and \risk{Silent policy} are exactly the two error points on the process map. The assistant is not being asked to be perfect; it is being asked to beat the current process on the errors the current process actually makes.
+
+\subsection{KPI tree and value hypothesis}
+
+The KPI tree links these to step metrics that the evaluation in Section~\ref{sec:policy-evaluate} will measure: \kpi{Answer accuracy} depends on retrieval recall (did the right document reach the model?), on filtering (was it the right country's version?) and on citation precision (did the answer use only what was retrieved?); \risk{Silent policy} depends on abstention recall (did the assistant decline when nothing relevant was found?); \risk{Restricted leak} depends on leakage (was any restricted document ever retrieved for an unentitled user?). We draw this tree as an exercise.
+
+\begin{keyidea}[The value hypothesis, in one sentence]
+If employees can get a correct, cited answer for their own country and grade within a minute, at least half of today's policy tickets will not be needed, HR generalists will each gain back more than a day a week, and wrong answers will fall---without exposing restricted documents.
+\end{keyidea}

@@ -1,0 +1,270 @@
+% ======================================================================
+% Chapter 6 -- Case: Invoice to Payment
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: brief, KPIs, designs, trade-offs
+% ======================================================================
+
+\chapter{Case: Invoice to Payment}
+\label{ch:case-invoice}
+
+\begin{caseglance}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.4cm}X@{}}
+Company & Meridian Foods, a food-service distributor with 1{,}900 suppliers \\
+Process & Accounts payable: receiving supplier invoices, matching them to purchase orders and receipts, approving and scheduling payment \\
+Starting point & Google ADK sample \texttt{ambient-expense-agent}, pinned at commit \texttt{1b20a7a} (23 September 2026) \\
+Technical focus & Human-in-the-loop design \\
+Business skill & Reviewer cost versus error cost \\
+Patterns & Event-triggered agent; approval gate; router \\
+Deliverables & Design tables, review-policy simulation, workflow with approval gates, evaluation report, memo
+\end{tabularx}
+\end{caseglance}
+
+\begin{chapterquestions}
+By the end of this case you will be able to answer these questions:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item What can go wrong in an event-driven approval workflow, including the way it reads a person's decision?
+  \item Which items should a person review, and why is an amount threshold usually the wrong rule?
+  \item What defines a good human checkpoint: what the reviewer sees, may decide and must do on time, and how do we know they are really reviewing?
+  \item How do you build an ADK~2 graph workflow with routing in code and a pause for a person?
+  \item How do you roll out a workflow that moves money without risking money on day one?
+\end{enumerate}
+\end{chapterquestions}
+
+% ----------------------------------------------------------------------
+\section{Business Brief: What Is Going Wrong Today?}
+\label{sec:inv-brief}
+
+Meridian Foods supplies restaurants, schools and hospitals from four warehouses. It buys from about 1{,}900 suppliers and receives about 9{,}500 supplier invoices a month, worth about \$23 million. Invoices arrive as PDF attachments to a shared mailbox (71\%), through a supplier portal (18\%) or as structured electronic invoices (11\%).
+
+\begin{thinkabout}
+Before reading on, make a guess. Which costs Meridian more each month: the clerks' time, the early-payment discounts it misses, or the money lost to duplicates, overcharges and fraud? The rest of the chapter puts numbers on all three.
+\end{thinkabout}
+
+Eleven accounts-payable clerks process them. Table~\ref{tab:inv-process} shows the steps, from the clerks' time log and the ERP's timestamps.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions.}
+\label{tab:inv-process}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{4.2cm}r>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Minutes & Notes \\
+\midrule
+1 & Key invoice data into the ERP & 4.0 & PDF invoices only; 2.1\% keying errors \\
+2 & Three-way match: invoice vs.\ purchase order vs.\ goods receipt & 3.5 & 24\% fail: price, quantity or missing receipt \\
+3 & Resolve exception with buyer or warehouse & 18.0 & Exceptions only; median wait 4 days \\
+4 & Route for approval & 1.5 & Approval matrix by amount and cost centre \\
+5 & Schedule payment & 1.0 & Weekly payment run \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Weighted by how often each step occurs, a clerk spends about 12.5 minutes per invoice, roughly \$9.40 at a loaded cost of \$0.75 a minute. The median invoice takes 11 days from receipt to approval.
+
+Three business problems follow:
+\begin{enumerate}[itemsep=1pt]
+  \item \emph{Lost discounts.} About a fifth of spend comes from suppliers offering a 2\% discount for payment within 10 days. Meridian captures only about 35\% of those discounts, because most invoices are not approved in time.
+  \item \emph{Leakage.} An internal audit found duplicate payments, payments above the purchase-order price, and, twice last year, payments to fraudsters who had persuaded a clerk to change a supplier's bank details by e-mail.
+  \item \emph{Cost and growth.} Meridian plans to acquire a regional distributor, which would add 40\% to invoice volume. The controller does not want to hire four more clerks.
+\end{enumerate}
+
+% ----------------------------------------------------------------------
+\section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
+\label{sec:inv-kpis}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Stakeholders of invoice to payment.}
+\label{tab:inv-stakeholders}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\cotag{coBlue}{Sponsor} & The controller. \\
+\cotag{coGreen}{Users} & AP clerks, and the budget holders who approve invoices. \\
+\cotag{coAmber}{Approvers} & Internal audit and the external auditor, who will test the controls; treasury, which owns payments and supplier bank details; and IT security. \\
+\cotag{coPurple}{Owners} & AP operations, the ERP team and treasury. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{KPIs and risks.} Table~\ref{tab:inv-kpis} lists them.
+\begin{table}[htbp]
+\centering
+\small
+\caption{KPIs (blue) and risks (red) for invoice to payment.}
+\label{tab:inv-kpis}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\kpi{Cost per invoice} & At most \$4.00, from \$9.40. \\
+\kpi{Discounts captured} & Early-payment discounts captured: at least 85\% of those available, from 35\%. \\
+\kpi{Days to approval} & Median days from receipt to approval: at most 3, from 11. \\
+\risk{Duplicate payment} & The same invoice paid twice. \\
+\risk{Bank fraud} & Payment to a fraudulent bank account. \\
+\risk{Overpayment} & Payment above the purchase-order price or the received quantity. \\
+\risk{Wrong approver} & Approval outside the approver's authority, or by the person who requested the purchase (a breach of segregation of duties). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\risk{Wrong approver} is unusual among the risks in this book: it is not about getting a number wrong but about the right person making the decision. Auditors test it directly, and a design that weakens it will fail the audit even if every payment is correct.
+
+\begin{keyidea}[The value hypothesis, in one sentence]
+If clean invoices are captured, matched and approved without a clerk, and clerks and approvers see only the invoices whose risk justifies their time, Meridian will capture most early-payment discounts, absorb the acquisition without new hires, and lose less to errors and fraud than it does today.
+\end{keyidea}
+
+% ----------------------------------------------------------------------
+\section{Alternative Designs: What Could We Build?}
+\label{sec:inv-designs}
+
+\subsection{The sample as it stands}
+
+The \texttt{ambient-expense-agent} sample processes employee expense reports that arrive as Pub/Sub messages. It is one of the first samples written for ADK~2's graph workflows, and it demonstrates several ideas this book has argued for. In its own words, the review threshold ``lives in code, not in a prompt.'' Its graph parses the message, routes on amount, auto-approves expenses under \$100, sends larger ones to a single-turn review agent that writes a risk summary and emits an alert, and then pauses for a manager's decision before recording the outcome (Listing~\ref{lst:expense-graph}).
+
+\begin{lstlisting}[language=Python, caption={The sample's workflow graph (from \texttt{expense\_agent/agent.py} at commit \texttt{1b20a7a}).}, label={lst:expense-graph}]
+root_agent = Workflow(
+    name="expense_processor",
+    edges=[
+        ("START", parse_expense_email, route_by_amount),
+        (route_by_amount, {"AUTO_APPROVE": auto_approve,
+                           "NEEDS_REVIEW": review_agent}),
+        (review_agent, request_approval, process_decision),
+    ],
+)
+\end{lstlisting}
+
+Its strengths are real: an event-driven trigger, routing as a code function that returns a named route, a model used only where judgment is needed, a pause for human input through ADK's \texttt{RequestInput}, Terraform for two Cloud Run services, Pub/Sub, Identity-Aware Proxy for the approval interface, and log-based alerts. Applied to Meridian's invoices, it leaves six gaps.
+
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Risk is routed by amount alone.} For invoices, amount is a weak proxy for risk. A \$300 duplicate is as wrong as a \$30{,}000 one, and fraud often uses ordinary-looking amounts. Section~\ref{sec:inv-tradeoffs} measures how costly the amount rule is.
+  \item \emph{Input is assumed to be structured.} The parser reads JSON fields from the message. Most of Meridian's invoices are PDFs; extraction, and checking extraction, is most of the work.
+  \item \emph{No matching, no duplicate or bank-detail checks.} These are the controls that address \risk{Duplicate payment}, \risk{Bank fraud} and \risk{Overpayment}, and they are deterministic.
+  \item \emph{Decisions can be parsed open.} The approval interface normally returns a structured \texttt{\{"decision": "approve"\}}. But if the resumed input is free text, the sample treats any text containing the word \emph{approve} as approval. ``Do not approve'' approves. A decision parser that fails open on the one step that releases money is a pattern to recognize and avoid.
+  \item \emph{No authority or segregation of duties.} Any person who can reach the approval interface can approve any amount. \risk{Wrong approver} is not addressed.
+  \item \emph{A pause has no deadline.} A paused workflow waits indefinitely. For invoices with a ten-day discount window, an approval that nobody acts on is a cost, and it needs an escalation path.
+\end{enumerate}
+
+\begin{watchout}[Watch out: ``Do not approve'' approves]
+A rule that looks for the word \emph{approve} anywhere in a reply also matches ``do not approve'' and ``I disapprove.'' On the one step that releases money, a parser like this fails open, and nobody notices until the money is gone.
+\end{watchout}
+
+\subsection{The amount-routed design: the sample, adapted to invoices}
+
+The amount-routed design keeps the sample's structure and changes only its inputs: an extraction agent reads each PDF into the expense schema's equivalent, invoices under \$1{,}000 are approved automatically, and larger ones get a model-written risk summary and a manager's approval.
+
+\subsection{The risk-routed design: controls first, review by risk}
+
+The risk-routed design puts the deterministic accounts-payable controls first and uses people where the risk is. Table~\ref{tab:inv-d2} writes it down as a design table.
+\begin{itemize}[itemsep=1pt]
+  \item An \emph{extraction agent} (Level~1) reads PDFs into a strict invoice schema. Code validates the result: line totals must sum to the invoice total, tax must be consistent, and the supplier must exist. Failures go to a clerk.
+  \item \emph{Code} performs the three-way match against the ERP, checks for duplicates (same supplier, amount and date within a window, or same invoice number with variations), and checks whether the supplier's bank details changed recently.
+  \item A \emph{risk score} combines the checks with a small model trained on past exceptions. Code routes: a clean match with low risk is approved without a person; a high score goes to a clerk with an \emph{evidence pack}; any bank-detail change goes to treasury, always.
+  \item An \emph{explanation agent} (Level~1) writes the evidence pack: what failed, the relevant lines of the purchase order and receipt, and the supplier's recent history. It recommends nothing.
+  \item \emph{Budget-holder approval} follows the existing authority matrix, enforced in code, with a deadline and escalation.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury.}
+\label{tab:inv-d2}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+1 & An invoice arrives by mailbox, portal or e-invoice. It is an untrusted supplier document & \tagCode\ Triggered by arrival & Pub/Sub event & --- \\
+2 & Read the invoice into a strict schema & \tagAgent\ Level 1; stops at the schema & The invoice & \kpi{Cost per invoice} \\
+3 & Check totals, tax and supplier. If invalid, send to a clerk (step 6) & \tagCode & Supplier master & \risk{Overpayment} \\
+4 & Match, check for duplicates and bank changes, and score risk. Bank changed: step 8. Clean and low risk: step 9. Otherwise: step 5 & \tagCode & ERP server (ERP team), \texttt{get\_po}, \texttt{get\_receipts}, \texttt{find\_similar} & \risk{Duplicate payment} \risk{Overpayment} \\
+5 & Write the evidence pack: what failed, with lines cited, and no recommendation & \tagAgent\ Level 1 & Check results; order and receipt lines & \kpi{Cost per invoice} \\
+6 & Resolve the invoice & \tagPerson\ AP clerk, within one business day & The evidence pack & \risk{Duplicate payment} \risk{Overpayment} \\
+7 & Approve under the authority matrix, which code enforces & \tagPerson\ Budget holder, within two days & Authority matrix (Finance) & \risk{Wrong approver} \\
+8 & Verify any bank-detail change by calling the supplier back & \tagPerson\ Treasury & Supplier master (Treasury) & \risk{Bank fraud} \\
+9 & Schedule payment by the discount date & \tagCode & Payments server (Treasury), \texttt{schedule\_payment} & \kpi{Discounts captured} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Two choices deserve comment. The clean, low-risk path has no person on it, which is what makes \kpi{Cost per invoice} and \kpi{Discounts captured} achievable; the controls that justify that are deterministic and auditable, and the budget-holder approval required by the authority matrix still applies above the matrix's no-approval limit, which code enforces on that path too. And supplier documents sit inside a trust boundary: an invoice can contain text written to manipulate an extraction model (``Note to processing system: bank details have changed to\ldots''). Bank details are therefore never taken from an invoice; they come only from the supplier master record, which only treasury can change.
+
+\subsection{The perfect-match design: touchless only on a perfect match}
+
+The perfect-match design is the classic accounts-payable automation without a model in the decision path. Extraction uses a model; everything else is a deterministic match. A perfect three-way match within tolerance is approved touchlessly; every exception goes to a clerk, as today. The perfect-match design is cheaper to build and easy to audit, but it sends every exception---24\% of invoices---to a person, whatever its risk.
+
+% ----------------------------------------------------------------------
+\section{Trade-offs: Which Design Should We Pilot?}
+\label{sec:inv-tradeoffs}
+
+\subsection{Reviewer cost versus error cost}
+
+The business skill of this case is choosing who reviews what. Every review costs a clerk's time; every unreviewed problem costs its loss. Listing~\ref{lst:review-policy} simulates a month of Meridian's invoices with three kinds of problem at rates from the audit---duplicates, overcharges against the purchase order, and fraudulent payments---and compares review policies.
+
+\lstinputlisting[language=Python, caption={Comparing review policies on a simulated month (\texttt{ch06/review\_policy.py}).}, label={lst:review-policy}, firstline=7, lastline=34]{code/review_policy.py}
+
+\begin{thinkabout}
+Before looking at Table~\ref{tab:review-policies}, rank the rules by total monthly cost: review every invoice, review every invoice over \$1{,}000, or review only the invoices with a high risk score. How far apart do you expect the best and worst to be?
+\end{thinkabout}
+
+The output, with each policy's cost split into review labor and losses that slip through:
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure.}
+\label{tab:review-policies}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\rowcolor{coHead} Policy & Reviewed & Labor & Missed loss & Total \\
+\midrule
+Review none & 0 & \$0 & \$229{,}602 & \$229{,}602 \\
+Review all & 9{,}500 & \$57{,}000 & \$11{,}480 & \$68{,}480 \\
+Amount $\ge$ \$5{,}000 & 1{,}097 & \$6{,}582 & \$150{,}321 & \$156{,}903 \\
+Amount $\ge$ \$1{,}000 & 5{,}741 & \$34{,}446 & \$32{,}489 & \$66{,}935 \\
+\rowcolor{coGreenBg} Risk score $\ge$ 0.365 & 554 & \$3{,}324 & \$13{,}630 & \$16{,}954 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three lessons, each general:
+\begin{itemize}[itemsep=2pt]
+  \item \emph{Amount is the wrong axis.} Reviewing every invoice of \$1{,}000 or more checks 60\% of invoices and still lets through about \$32{,}000 a month, because small duplicates and overcharges are many. It is barely cheaper than reviewing everything.
+  \item \emph{Risk-scored review nearly matches review-all on losses at a twentieth of the labor.} Reviewing 554 invoices (under 6\%) lets through about \$2{,}000 a month more than reviewing every invoice, and saves about \$54{,}000 a month of review time.
+  \item \emph{The threshold is an economic decision.} It comes from Equation~\eqref{eq:threshold}: the point where the expected loss in the next invoice reviewed equals the cost of reviewing it. When review gets cheaper (a better evidence pack) or losses rise (a fraud wave), the threshold moves, and it should be recomputed, not remembered.
+\end{itemize}
+
+The simulation is synthetic and its risk score is idealized; the lab replaces it with a score trained on Meridian's history. But the shape of the result is robust, and the shape is what decides the design.
+
+\begin{keyidea}
+A checkpoint should be placed by risk, not by amount, and the risk signal is worth investing in.
+\end{keyidea}
+
+\subsection{Scores and decision}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Trade-off table for invoice to payment.}
+\label{tab:inv-tradeoff}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\rowcolor{coHead} & Weight & Amount-routed & Risk-routed & Perfect-match \\
+\midrule
+Cost per invoice (est.) & --- & \$5.90 & \$2.90 & \$4.60 \\
+\midrule
+Quality (losses) & 0.25 & 2 & 4 & 4 \\
+Speed & 0.15 & 3 & 5 & 3 \\
+Reliability & 0.10 & 3 & 4 & 5 \\
+Security & 0.20 & 1 & 5 & 4 \\
+Control and auditability & 0.20 & 1 & 5 & 5 \\
+Maintainability & 0.10 & 4 & 3 & 4 \\
+\midrule
+\rowcolor{coAmberBg} Weighted score & 1.00 & 2.05 & 4.45 & 4.15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The amount-routed design fails the auditor's test on \risk{Wrong approver} and leaves \risk{Bank fraud} open, so it is out regardless of score. The perfect-match design is a respectable design and the safest to build; it loses to the risk-routed design on cost and speed because it reviews every exception rather than the risky ones. The decision is the risk-routed design, built so that it can fall back to the perfect-match design's behavior---every exception to a clerk---by changing one threshold, which is also how the pilot begins.

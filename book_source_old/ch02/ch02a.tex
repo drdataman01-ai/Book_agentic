@@ -1,0 +1,198 @@
+% ======================================================================
+% Chapter 2 -- The Designer's Toolkit
+% Designing Agentic AI Solutions, Chris Kuo
+% Part A: the design method at a glance; understanding the work (steps 1-3)
+% ======================================================================
+
+\chapter{The Designer's Toolkit}
+\label{ch:toolkit}
+
+\begin{chapterquestions}
+By the end of this chapter you will be able to answer these questions:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item What changes when an AI system can act, and not just answer?
+  \item What are the seven steps that lead from a business goal to a design decision?
+  \item How do I write a design down so that everyone reads it the same way?
+  \item Which two patterns appear in almost every case, and which three traps should I avoid?
+  \item How do I compare designs, find their weak points, and record the decision?
+\end{enumerate}
+\end{chapterquestions}
+
+Chapter~\ref{ch:foundations} introduced the building blocks of an agentic solution and showed one informal sketch of a design. This chapter turns that sketch into a method you can repeat. The method has seven steps. The first three help you understand the work before any technology is chosen, the fourth writes each candidate design down in a plain table, and the last three compare the candidates, test the favorite for weak points, and record the decision. Every case in the book follows the same seven steps, so the chapter keeps each of them short and leaves the details to the cases. We use one running example throughout, a returns process at Harbor, so that you can watch a design take shape from the first question to the final decision. Before the method itself, Section~\ref{sec:answering-acting} shows why a method is needed at all, by following what happens when an assistant that only answers questions is gradually allowed to act.
+
+% ----------------------------------------------------------------------
+\section{What Changes When an AI Can Act?}
+\label{sec:answering-acting}
+
+\begin{thinkabout}
+Would you let a chatbot approve a credit of \$1{,}800 to a customer on its own? If your answer is ``it depends,'' what exactly does it depend on? Keep your list; this section will add to it.
+\end{thinkabout}
+
+Many companies arrive at an agentic system without ever designing one. The story below shows how that usually happens. It is set at Harbor's returns desk, but it could take place at almost any company, and it explains why the rest of this chapter insists on a deliberate method.
+
+\paragraph{An assistant that only answers.} Three weeks after a plumbing contractor installs a batch of Harbor's pressure-reducing valves, one of them starts to leak at the seal. The contractor opens Harbor's support chat and types, ``One of the valves I bought three weeks ago is leaking at the seal.'' Within seconds the assistant asks two questions, suggests checking the seating torque against the installation guide, and explains what the warranty covers. The exchange is polite, quick and useful. Behind it sits the retrieve-then-answer arrangement of Chapter~\ref{ch:foundations}: the assistant searches the product manuals, troubleshooting guides and warranty documents, and writes its answer from what it finds. Its role is purely informational. It knows things, but it does not do things.
+
+An assistant that only answers works in a relatively safe environment. If its answer is wrong, the usual result is inconvenience. The contractor becomes frustrated, satisfaction scores dip, and someone ends up calling a representative. None of these outcomes is welcome, but all of them are manageable, because nothing in the company's systems has changed. In effect, the assistant is a capable search engine with a conversation wrapped around it.
+
+\paragraph{The first tool.} The support team then noticed a pattern. When troubleshooting failed, contractors had to leave the chat and call a representative, who looked up the order and checked the warranty by hand. An engineer proposed a modest improvement: instead of explaining the warranty policy, the assistant could check the contractor's warranty status directly. The change seemed harmless, because the assistant would still make no decisions and would only retrieve a fact.
+
+From the contractor's side, nothing changed. The conversation was as smooth as before, and the screen looked exactly the same. Behind the scenes, however, the architecture had changed completely. Before, the contractor's message went to the model and the answer came straight back. Now the model sends a request through a server to the ERP, receives the result, and only then answers. For the first time, the assistant stands between a person and an operational system, and it relies on an action rather than on knowledge alone. That sounds like a technical detail, but it changes what the company must be able to trust.
+
+\paragraph{One promotion after another.} Once the warranty lookup worked, more requests followed. Could the assistant open a return case automatically? It could. Could it create the shipping label? It could. Could it issue the return authorization? It could. And finally, could it approve the credit on its own? Each addition looked like a small improvement, and each one shortened the contractor's wait. Taken together, however, they turned an assistant that explained the company's process into an agent that took part in it. This is how the do-everything agent of Section~\ref{sec:patterns} is usually born. It is not designed; it grows through a series of reasonable promotions, none of which is ever weighed against the whole. Figure~\ref{fig:promotions} shows the climb.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \i/\c/\t in {
+  1/coGreen/{Answer questions},
+  2/coGreen!60!coAmber/{Check warranty status},
+  3/coAmber/{Open a return case},
+  4/coAmber!60!coRed/{Create the shipping label},
+  5/coRed!80!coAmber/{Issue the return authorization},
+  6/coRed/{Approve the credit}} {
+  \fill[\c!22, draw=\c, rounded corners=2pt] ({(\i-1)*2.35},0) rectangle ++(2.2,{0.55*\i});
+  \node[font=\scriptsize, align=center, text width=2.05cm, anchor=south] at ({(\i-1)*2.35+1.1},{0.55*\i+0.05}) {\t};
+  \node[font=\sffamily\bfseries\small, text=\c!85!black] at ({(\i-1)*2.35+1.1},{0.275*\i}) {\i};
+}
+\draw[-{Stealth[length=2.2mm]}, very thick, black!45] (0,-0.45) -- (13.9,-0.45);
+\node[font=\scriptsize\itshape, anchor=west] at (0,-0.8) {knows things};
+\node[font=\scriptsize\itshape, anchor=east] at (13.9,-0.8) {does things, and spends money};
+\end{tikzpicture}
+\caption{The assistant's promotions. Each step up looked small, but the cost of a mistake grows at every step, from a frustrated customer at the bottom to money paid out at the top.}
+\label{fig:promotions}
+\end{figure}
+
+\paragraph{Same outcome, different process.} When the assistant only answered, evaluating it was straightforward: we asked whether its answer was accurate, relevant, helpful and clear. Those questions still matter once the assistant can act, but a second question becomes just as important, namely how the system arrived at its result. Table~\ref{tab:two-paths} compares two ways in which the agent could approve the same credit for the leaking valve.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Two paths to the same credit. The contractor sees an identical outcome, but only the first path follows Harbor's policy.}
+\label{tab:two-paths}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Step & \cellcolor{coGreenBg}Path A: trustworthy & \cellcolor{coRedBg}Path B: untrustworthy \\
+\midrule
+Identify the customer and order & Matches the contractor's account to the order number & Assumes the customer from the e-mail address and picks the most recent order \\
+Verify the item & Checks the valve's lot number against the order & Skips the check \\
+Check eligibility & Applies the warranty table in code & Decides from the warranty text in its instructions \\
+Systems used & Only the ERP server, with two tools: read the order and create the credit & The ERP, warehouse and CRM, through an account that can call every ERP function \\
+Approval & Sends any credit above \$2{,}000 to the finance manager & Approves the credit itself \\
+\midrule
+\textbf{Result} & \cellcolor{coGreenBg}Credit issued & \cellcolor{coRedBg}Credit issued \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The contractor receives the same credit either way. Yet one process is trustworthy and the other is not, and nobody who looks only at outcomes can tell them apart.
+
+\paragraph{Outcome and process are different things.} Different people look at the same result in different ways. The contractor sees that the claim was approved. A designer asks which systems were touched, a controller asks under what authority the credit was granted, and a security analyst asks what path led there. These questions exist because organizations rarely fail only at the point of outcome. Failures usually build up along the way, and a system that reaches the right result through the wrong process is creating the conditions for a larger failure later. Under Path B, for example, the next contractor who writes from a shared office e-mail address may receive a colleague's credit.
+
+\paragraph{Capability creates obligations.} Every promotion in the story improved the service. Contractors waited less, managers welcomed the efficiency, and engineers enjoyed watching the system become more capable. But each new capability brought an obligation with it. A tool that reads data must be governed, a tool that creates records must be auditable, a tool that spends money must be controlled, and a tool that approves credits must be accountable. The engineering question therefore changes on the day the assistant receives its first tool. Before that day, the team asks whether the model understands the question and whether its answer is accurate. After it, the team must also ask when the system should act, and whether it can show that what it did was right. The first pair of questions measures intelligence, while the second measures responsibility.
+
+\begin{principle}[Every action needs a chain of responsibility]
+Each capability that lets a system act needs a boundary that limits it, a rule that says when it may be used, a test that shows the rule holds, and evidence that the test was passed.
+\end{principle}
+
+The rest of this chapter turns that chain into everyday design practice. The design table of Section~\ref{sec:design-table} draws the boundary, because it lists for each step the only tools that step may use. The rules live in code rather than in a model's instructions, and the eight checks of Section~\ref{sec:checks} confirm that they do. The component cards set the quality targets that tests measure, and the failure walk-through and decision record of Section~\ref{sec:failure-walk} leave the evidence that a reviewer or auditor will ask for. Most importantly, the method raises these questions before any capability is added, rather than after a series of promotions has already produced an agent that nobody designed.
+
+% ----------------------------------------------------------------------
+\section{What Are the Seven Steps?}
+\label{sec:method}
+
+Good designs start from the business and work inward. The most tempting question, ``what should the agent do?'', is also the most dangerous one to ask first, because it assumes that an agent is needed before anyone has looked at the work. The method therefore postpones technology until the third step, when you know what the work is for and who is involved, and it postpones the choice of design until the fifth step, when you have at least two designs to choose between. Table~\ref{tab:method} lists the seven steps, the question each one answers, and the mistake most often made at each.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The seven-step design method.}
+\label{tab:method}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} \# & Step & Question it answers & Common mistake \\
+\midrule
+1 & Set the goal and measures & What business result must change, and how will we measure it? & Starting from the technology (``we need a returns agent'') \\
+2 & List the people and systems & Who and what is involved in the work today? & Forgetting people further down the line, such as the warehouse \\
+3 & Ask four questions of each step & For each step of the work: is it judgment or a rule, what must be known, which systems are read or changed, and who must decide? & Calling a step judgment because staff find it tedious \\
+4 & Draft designs and write them down & What are two or three reasonable ways to do the work, and who or what does each step in each of them? & Drafting only the design you already favor \\
+5 & Compare the designs & Which design does best on the criteria the business cares about, and how sure are we? & Letting the designer's taste set the weights \\
+6 & Walk through the failures & How can each step of the chosen design fail, and what happens then? & Listing only model failures, not failures of tools, data or people \\
+7 & Record the decision & What did we choose, why, and what would make us reopen the choice? & Leaving the reasons in people's heads \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,
+  st/.style={circle, minimum size=11mm, font=\sffamily\bfseries, text=white, inner sep=0pt},
+  lab/.style={font=\scriptsize, align=center, text width=1.75cm, anchor=north}]
+\fill[coBlueBg, rounded corners=6pt] (-0.9,-2.05) rectangle (5.0,0.95);
+\fill[coAmberBg, rounded corners=6pt] (5.2,-2.05) rectangle (7.4,0.95);
+\fill[coGreenBg, rounded corners=6pt] (7.6,-2.05) rectangle (14.1,0.95);
+\node[font=\sffamily\bfseries\small, text=coBlue] at (2.05,0.6) {Understand the work};
+\node[font=\sffamily\bfseries\small, text=coAmber] at (6.3,0.6) {Draft};
+\node[font=\sffamily\bfseries\small, text=coGreen] at (10.85,0.6) {Choose and record};
+\draw[line width=2pt, black!25] (0,0) -- (13.2,0);
+\foreach \i/\x/\c/\t in {1/0/coBlue/{Goal and measures}, 2/2/coBlue/{People and systems}, 3/4/coBlue/{Four questions per step},
+  4/6.3/coAmber/{Draft and write down designs},
+  5/8.6/coGreen/{Compare designs}, 6/10.9/coGreen/{Walk through failures}, 7/13.2/coGreen/{Record the decision}} {
+  \node[st, fill=\c] (s\i) at (\x,0) {\i};
+  \node[lab] at (\x,-0.7) {\t};
+}
+\end{tikzpicture}
+\caption{The seven steps of the design method, in three groups. Every case in the book walks this same path.}
+\label{fig:roadmap}
+\end{figure}
+
+The steps fall into three natural groups, as Figure~\ref{fig:roadmap} shows. Steps 1 to 3 are about understanding, and they are covered in Section~\ref{sec:understand}. Step 4 is about drafting, and Section~\ref{sec:design-table} introduces the design table while Section~\ref{sec:patterns} offers proven arrangements to draft from. Steps 5 to 7 are about choosing, and they are covered in Sections~\ref{sec:criteria} and~\ref{sec:failure-walk}. Chapter~\ref{ch:business} then adds the business numbers that steps 1 and 5 depend on.
+
+\paragraph{The running example.} We run the method on a new process at Harbor, product returns. Contractors sometimes receive a defective valve, the wrong part, or more than they need, and they report it by web form or e-mail. A customer-service representative reads the request, finds the order, checks the warranty terms, and decides whether to issue a \emph{return authorization} (often called an RMA) together with a shipping label. When the item reaches the warehouse, an inspector checks whether the defect is covered or the item was misused, and finance then issues a credit. Credits above \$2{,}000 need a finance manager's approval. Harbor handles about 1{,}100 returns a month. A representative spends a median of 22 minutes on each, customers wait a median of three business days for an authorization, and an internal audit found that about 6\% of credits went to items outside their warranty, mostly because representatives misread the warranty table.
+
+% ----------------------------------------------------------------------
+\section{Steps 1 to 3: What Is the Work, Really?}
+\label{sec:understand}
+
+The first three steps take less time than the later ones, but they decide most of the design. By the end of them you should know what the solution is for, who it touches, and which parts of the work actually need a model.
+
+\paragraph{Step 1: Set the goal and measures.} The returns manager wants speed, and the controller wants to stop paying for items that are out of warranty. The measures are therefore \emph{time to authorization}, which should fall below one business day, \emph{representative minutes per return}, which should fall below 8, and \emph{out-of-warranty credits}, which should fall below 1\%. The two main risks are a \emph{credit that the policy does not allow} and \emph{abuse by repeat returners}. Notice that ``use AI'' appears nowhere in this list. If a clearer warranty table alone would meet the targets, that is a legitimate design, and the method should be allowed to find it.
+
+\paragraph{Step 2: List the people and systems.} The people involved are the customer, the representative, the warehouse inspector, the finance clerk who issues credits, and the finance manager who approves large ones. The systems are the ERP, which holds orders and credits, the warehouse system, which records what arrived and what the inspector found, and the shipping system, which creates labels. Two pieces of reference material also matter: the warranty table and the product bulletins that describe known defects. Making this list surfaced someone the sponsor had forgotten, the warehouse inspector, whose finding decides whether a credit is paid.
+
+\paragraph{Step 3: Ask four questions of each step.} Now walk through the work one step at a time and ask the same four questions of every step.
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Is it judgment or a rule?} A step needs judgment when the right answer cannot be written down in advance, as when a request arrives as free text. A step is a rule when the answer can be written down, even if people find it tedious to apply. Judgment is a candidate for a model, and rules belong in code.
+  \item \emph{What must be known?} Some steps need text that a person would read, such as a policy or a bulletin, and that text belongs in a knowledge store that the solution can search. Other steps need an exact fact, such as an order date, which should be looked up in a system rather than searched for.
+  \item \emph{Which systems are read or changed?} Each read or change becomes a tool on an MCP server. List only the few tasks the solution needs, not every function the system offers.
+  \item \emph{Who must decide?} Some decisions belong to a person, either because policy says so or because a wrong decision would be costly. These become human checkpoints.
+\end{enumerate}
+\begin{tryit}
+Before reading Table~\ref{tab:returns-steps}, take the six returns steps (understand the request, find the order, check the warranty, issue the authorization and label, inspect the item, issue the credit) and ask the four questions of each one yourself. Which steps would you give to a model?
+\end{tryit}
+
+Table~\ref{tab:returns-steps} shows the answers for the returns process. Reading across a row tells you what that step needs, and reading down a column tells you how much of each kind of component the design will contain.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four questions answered for each step of Harbor's returns process.}
+\label{tab:returns-steps}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{2.2cm}@{}}
+\toprule
+\rowcolor{coHead} Step of the work & Judgment or rule? & What must be known & Systems read or changed & Who must decide \\
+\midrule
+Understand the request & \tagJudgment\ The request is free text and may mention several orders & Product bulletins, so the reply can mention known problems & None & Nobody \\
+Find the order & \tagRule\ Match the customer and the order number & Nothing beyond the order & ERP (read the order) & Nobody \\
+Check the warranty & \tagRule\ The warranty table, which people misread but which is not ambiguous & The warranty table, kept as configuration & None & Nobody \\
+Issue the authorization and label & \tagRule\ Once eligibility is known, issuing is mechanical & Nothing more & ERP (create the RMA); shipping (create the label) & Open question: a representative for every one? \\
+Inspect the item & \tagJudgment\ Policy assigns it to the inspector & Nothing more & Warehouse system (record the finding) & The inspector \\
+Issue the credit & \tagRule\ The amount follows from the order and the finding & Nothing more & ERP (create the credit) & The finance manager, above \$2{,}000 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The table makes the shape of the design visible before any design has been drafted. Only one step, understanding the request, is a candidate for a model. Warranty eligibility looks like judgment, because representatives got it wrong 6\% of the time, but the audit traced the errors to people misreading the table rather than to any ambiguity in it, so it is a rule and belongs in code. Because the warranty terms are a table, they are configuration rather than knowledge, and the only text worth searching is the product bulletins. The systems group into three MCP servers by owner, one each for the ERP, the warehouse and shipping. Two decisions belong to people by policy, the inspector's and the finance manager's, and one decision is still open: should a representative review every authorization before it is issued? That open question is where the real design choice lies, and the rest of the chapter settles it. This is typical. The first three steps narrow the space so that the important choices stand out.
+
+\begin{watchout}[Watch out: tedious is not the same as judgment]
+People often say a step ``needs judgment'' because it is slow or boring, or because staff make mistakes at it. The real test is whether the right answer could be written down in advance. If it could, the step is a rule, and code will do it faster and more reliably than any model.
+\end{watchout}

@@ -18,7 +18,7 @@ git clone <companion-repository-url> agentic-solutions
 cd agentic-solutions/ch01
 uv sync            # or: python -m venv .venv && pip install -r requirements.txt
 \end{lstlisting}
-  Each chapter pins its own versions of ADK, the MCP SDK and other libraries, so labs keep working when new versions are released.
+  Each chapter pins its own versions of ADK\index{Agent Development Kit (ADK)}, the MCP\index{Model Context Protocol (MCP)} SDK and other libraries, so labs keep working when new versions are released.
   \item \textbf{Google Cloud CLI.} Install \texttt{gcloud} and sign in twice---once for the CLI and once for application default credentials, which ADK and the client libraries use:
 \begin{lstlisting}[language=bash, numbers=none]
 gcloud auth login
@@ -80,7 +80,7 @@ echo $BILLING                            # check it before linking
 
 Do not paste \texttt{XXXXXX-XXXXXX-XXXXXX} as written; it is a placeholder, and the link command fails with it. These commands assume you have already signed in with both \texttt{gcloud auth login} and \texttt{gcloud auth application-default login} (Section~\ref{sec:app-tools}). Keep \texttt{BILLING} set in the same terminal: the budget command in the cost-controls section below uses it too.
 
-The first service in the list provides access to Gemini models and Agent Platform services (formerly Vertex AI). Service names occasionally change after product renames; if a command reports an unknown service, check the repository's \texttt{setup/apis.txt} for the current list. Labs that use search, sessions or other managed services enable those APIs in their own setup scripts.
+The first service in the list provides access to Gemini models and Agent Platform\index{Gemini Enterprise Agent Platform} services (formerly Vertex AI). Service names occasionally change after product renames; if a command reports an unknown service, check the repository's \texttt{setup/apis.txt} for the current list. Labs that use search, sessions or other managed services enable those APIs in their own setup scripts.
 
 Each lab's \texttt{.env.example} lists the variables it needs. Copy it to \texttt{.env} and set at least the project, the region and the model name. Never commit \texttt{.env}.
 

@@ -13,7 +13,7 @@ These templates collect the deliverables used in every case. Editable versions--
 
 \begin{template}{Solution graph: well-formedness (Chapter~\ref{ch:toolkit})}
 \begin{enumerate}[label=\textbf{W\arabic*.}, leftmargin=2.3em, itemsep=1pt]
-  \item Every agent states its autonomy level and stop condition.
+  \item Every agent states its autonomy level\index{autonomy spectrum} and stop condition.
   \item Every write action has a checkpoint or guardrail before it, or a note saying why not.
   \item No agent touches a system of record except through an MCP server.
   \item Thresholds and rules live in code nodes, not agent annotations.
@@ -86,7 +86,7 @@ Include failures of tools, data and people, not only models. Mark the rows that 
 \textbf{Decision.}\\
 \textbf{Reasons.} Including the sensitivity result.\\
 \textbf{Consequences.} What changes for whom; what new obligations it creates.\\
-\textbf{Reversal triggers.} Observable conditions under which this decision is reopened.
+\textbf{Reversal triggers\index{reversal trigger}.} Observable conditions under which this decision is reopened.
 \end{template}
 
 \section{One-page memo}
@@ -94,11 +94,11 @@ Include failures of tools, data and people, not only models. Mark the rows that 
 \begin{template}{Memo to the executive sponsor}
 \textbf{To / From / Re / Decision needed by.}\\
 \textbf{Recommendation.} What you ask for, and its cost.\\
-\textbf{The problem.} In the sponsor's numbers, from the process map.\\
+\textbf{The problem.} In the sponsor's numbers, from the process map\index{current-process map}.\\
 \textbf{What changes.} In business terms; no framework or model names.\\
-\textbf{Value.} Floor case from measured inputs; upside to be tested; the assumption the case rests on.\\
+\textbf{Value.} Floor case\index{floor case} from measured inputs; upside to be tested; the assumption the case rests on.\\
 \textbf{Risks and safeguards.} The two or three that matter, and how they are controlled.\\
-\textbf{Pilot and decision.} Scope, comparison, duration, go/no-go criteria, owner.\\
+\textbf{Pilot and decision.} Scope, comparison, duration, go/no-go\index{go/no-go criteria} criteria, owner.\\
 \textbf{What we need from you.} Including any decision only the sponsor can make.
 \end{template}
 
@@ -114,6 +114,6 @@ Adoption & & \\
 \end{tabular}
 
 \smallskip
-Stop rules: \underline{\hspace{9cm}}\\
+Stop rules\index{stop rule}: \underline{\hspace{9cm}}\\
 Owner of the decision: \underline{\hspace{8cm}}
 \end{template}

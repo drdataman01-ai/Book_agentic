@@ -34,7 +34,7 @@ By the end of this case you will be able to answer these questions:
 \section{Business Brief: What Is Going Wrong Today?}
 \label{sec:loan-brief}
 
-Summit Regional Bank lends to companies with revenue between \$20 million and \$500 million: manufacturers, distributors, healthcare groups. Every new loan, and every existing loan at its annual review, needs a \emph{credit memo}: a document of 15 to 40 pages that describes the borrower, its industry, management, financial performance and projections, the loan's structure and collateral, the risks and their mitigants, and a recommended risk rating. A credit officer with sufficient lending authority approves or declines on the strength of it. About 1{,}400 new memos and 3{,}000 annual reviews are written each year.
+Summit Regional Bank lends to companies with revenue between \$20 million and \$500 million: manufacturers, distributors, healthcare groups. Every new loan, and every existing loan at its annual review, needs a \textbf{credit memo}: a document of 15 to 40 pages that describes the borrower, its industry, management, financial performance and projections, the loan's structure and collateral, the risks and their mitigants, and a recommended risk rating. A credit officer with sufficient lending authority approves or declines on the strength of it. About 1{,}400 new memos and 3{,}000 annual reviews are written each year.
 
 Forty credit analysts write them. For a new loan, an analyst spends about three and a half days: a day \emph{spreading} the borrower's financial statements (re-keying them into the bank's standard template), half a day computing ratios and checking covenants, a day reading filings, industry reports and management materials, and a day writing. Relationship managers complain that deals are lost to faster lenders; analysts complain that most of their time goes to transcription.
 
@@ -102,10 +102,10 @@ A vendor platform for commercial credit, configured with Summit's templates and 
 
 \subsection{The workflow design: build a memo workflow}
 
-The workflow design is built on ADK and Google Cloud. Table~\ref{tab:loan-d2} writes it down as a design table.
+The workflow design is built on ADK\index{Agent Development Kit (ADK)} and Google Cloud. Table~\ref{tab:loan-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item \emph{Spreading}: an extraction agent (Level~1) reads financial statements into the bank's spreading template; code validates that statements balance and that totals reconcile, and an analyst confirms the spread in the existing spreading tool. Spreading is a batch job that runs when documents arrive.
-  \item \emph{Calculation}: an MCP server owned by credit administration computes ratios (debt-service coverage, leverage, liquidity), runs covenant tests, and compares the borrower with peers from the bank's portfolio. No number in the memo comes from anywhere else.
+  \item \textbf{Spreading}: an extraction agent (Level~1) reads financial statements into the bank's spreading template; code validates that statements balance and that totals reconcile, and an analyst confirms the spread in the existing spreading tool. Spreading is a batch job that runs when documents arrive.
+  \item \emph{Calculation}: an MCP server\index{Model Context Protocol (MCP)!server} owned by credit administration computes ratios (debt-service coverage, leverage, liquidity), runs covenant tests, and compares the borrower with peers from the bank's portfolio. No number in the memo comes from anywhere else.
   \item \emph{Drafting}: a planner agent reads the memo template and the deal's characteristics and assigns sections to section agents (business, industry, management, financial analysis, structure and collateral, risks). Each section agent retrieves from the borrower's documents and the bank's industry research, calls the calculation server for numbers, and writes its section with a citation for every claim. This is the planner--executor pattern: the set of sections and the depth of each depend on the deal.
   \item \emph{Review}: a critic agent checks the draft against the credit policy's required-content checklist and against the citations, and returns specific gaps to the section agents, at most twice (the reflection pattern). Code then checks that every number in the text appears in the calculation server's output.
   \item \emph{People}: the analyst edits, assigns the risk rating and writes the recommendation; the credit officer decides.

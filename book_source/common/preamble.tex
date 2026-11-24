@@ -141,6 +141,14 @@
 \newcommand{\fakelabel}[2]{\expandafter\gdef\csname r@#1\endcsname{{#2}{}{}{}{}}}
 \makeatother
 
+% ---------- index ------------------------------------------------------
+% Key terms are indexed where they are defined (bold page number, |textbf)
+% and at their first mention in each later chapter.  The index is printed
+% by \printindex at the end of main.tex.  imakeidx runs makeindex itself;
+% with latexmk, nothing else is needed.
+\usepackage{imakeidx}
+\makeindex[intoc, columns=2, title=Index]
+
 % ---------- citations and links (hyperref last) ----------------------
 \usepackage[round]{natbib}
 \usepackage[colorlinks=true, linkcolor=boxframe, citecolor=noteframe,

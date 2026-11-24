@@ -5,7 +5,7 @@
 \chapter{Concept-to-Framework Mapping}
 \label{app:mapping}
 
-The designs in this book are framework-independent; the builds use Google's ADK. Table~\ref{tab:mapping} shows where each design concept lives in ADK and in three other widely used frameworks: LangGraph, the OpenAI Agents SDK and the Claude Agent SDK. All four support MCP, so the MCP servers built in the cases work unchanged with any of them.
+The designs in this book are framework-independent; the builds use Google's ADK. Table~\ref{tab:mapping} shows where each design concept lives in ADK and in three other widely used frameworks: LangGraph, the OpenAI Agents SDK and the Claude Agent SDK. All four support MCP, so the MCP servers\index{Model Context Protocol (MCP)!server} built in the cases work unchanged with any of them.
 
 Treat the table as a map, not an API reference. These frameworks release frequently, and names, signatures and capabilities change. Each framework's documentation is the authority; the companion repository keeps a version of this table with links, checked at each repository release.
 
@@ -40,9 +40,9 @@ Agent-to-agent & A2A built in (expose and call) & Via A2A libraries & Via A2A li
 
 Because the cases keep business logic in code, tools in MCP servers and policy in configuration, moving a design to another framework mostly means re-expressing the orchestration:
 \begin{itemize}[itemsep=1pt]
-  \item \emph{MCP servers} move unchanged.
-  \item \emph{Routing functions and guardrails} written as plain Python move unchanged; only the way they are attached to the graph or loop differs.
-  \item \emph{Workflows} map to LangGraph graphs naturally; in the OpenAI and Claude SDKs, which are centered on the agent loop, a fixed workflow is written as ordinary code that calls agents in sequence.
-  \item \emph{Human-in-the-loop pauses} differ most: check how each framework persists a paused run, how long it can wait, and how a resumed run proves who resumed it.
-  \item \emph{Evaluation sets} move unchanged if they are stored as data (inputs, expected tool calls, reference answers), as the repository stores them.
+  \item \textbf{MCP servers} move unchanged.
+  \item \textbf{Routing functions and guardrails\index{guardrail}} written as plain Python move unchanged; only the way they are attached to the graph or loop differs.
+  \item \textbf{Workflows} map to LangGraph graphs naturally; in the OpenAI and Claude SDKs, which are centered on the agent loop\index{agent loop}, a fixed workflow\index{workflow} is written as ordinary code that calls agents in sequence.
+  \item \textbf{Human-in-the-loop pauses} differ most: check how each framework persists a paused run, how long it can wait, and how a resumed run proves who resumed it.
+  \item \textbf{Evaluation sets} move unchanged if they are stored as data (inputs, expected tool calls\index{tool call}, reference answers), as the repository stores them.
 \end{itemize}

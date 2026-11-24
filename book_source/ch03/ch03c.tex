@@ -6,7 +6,7 @@
 \section{Can We Put Dollars on the Trade-off?}
 \label{sec:money-tradeoff}
 
-Chapter~\ref{ch:toolkit} scored designs on a 1--5 scale for all eight criteria. With the tools of this chapter, three of the criteria can usually be replaced by money per transaction: \emph{cost} becomes the run-cost term of Equation~\eqref{eq:unit}, \emph{human workload} becomes the human-time term, and much of \emph{quality} becomes the expected-error-cost term. The other five---speed, reliability, security and privacy, control and auditability, maintainability---usually stay as scores, because their value is either already inside a KPI (speed drives Harbor's win rate) or shows up mainly as risk.
+Chapter~\ref{ch:toolkit} scored designs on a 1--5 scale for all eight criteria\index{evaluation criteria}. With the tools of this chapter, three of the criteria can usually be replaced by money per transaction: \textbf{cost} becomes the run-cost term of Equation~\eqref{eq:unit}, \textbf{human workload} becomes the human-time term, and much of \textbf{quality} becomes the expected-error-cost term. The other five---speed, reliability, security and privacy, control and auditability, maintainability---usually stay as scores, because their value is either already inside a KPI (speed drives Harbor's win rate) or shows up mainly as risk.
 
 A mixed table, with a dollar row and score rows, is more honest than an all-score table. It shows the sponsor exactly what money is at stake, and keeps the judgment calls visible as judgment calls. Table~\ref{tab:money} applies the idea to Team~A's and Team~B's quote designs from Chapter~\ref{ch:foundations}.
 
@@ -43,14 +43,14 @@ Team A's design is more than five times as expensive to run, but that is not why
 Imagine the pilot ends and the numbers look wonderful. What could make those wonderful numbers misleading? List two possibilities before you read the six parts of a good pilot plan.
 \end{thinkabout}
 
-No sponsor should be asked to approve a full launch on the strength of a design document. The usual request is for a \keyterm{pilot}: a limited, time-boxed trial with a decision at the end. A good pilot plan has six parts.
+No sponsor should be asked to approve a full launch on the strength of a design document. The usual request is for a \keyterm{pilot}\index{pilot|textbf}: a limited, time-boxed trial with a decision at the end. A good pilot plan has six parts.
 
 \begin{enumerate}[itemsep=2pt]
   \item \emph{Scope.} Who and what is in the pilot, and who is not. Harbor: two of six sales regions; quotes up to \$250{,}000; standard catalog items only.
   \item \emph{Comparison.} What the pilot results will be compared against. Harbor: the four non-pilot regions over the same weeks, and the same two regions over the previous year's same weeks. Without a comparison group, a seasonal upswing will be credited to the AI.
   \item \emph{Duration.} Long enough to measure the most uncertain benefit. Win rate on large quotes moves slowly; Harbor's analysts estimated that eight weeks would give roughly 1{,}000 pilot quotes, enough to detect a two-point change in win rate with reasonable confidence but probably not a one-point change. The plan says so: the pilot can confirm the floor case, and can only bound the growth case.
-  \item \emph{Go/no-go criteria.} Stated in advance, measurable, and tied to KPIs and error budgets (Table~\ref{tab:gonogo}). Criteria agreed after the results are known are not criteria.
-  \item \emph{Stop rules.} Conditions that halt the pilot at once, before the scheduled decision: any below-floor quote issued; any customer data exposure.
+  \item \emph{Go/no-go criteria.}\index{go/no-go criteria|textbf} Stated in advance, measurable, and tied to KPIs and error budgets (Table~\ref{tab:gonogo}). Criteria agreed after the results are known are not criteria.
+  \item \emph{Stop rules.}\index{stop rule|textbf} Conditions that halt the pilot at once, before the scheduled decision: any below-floor quote issued; any customer data exposure.
   \item \emph{Owner.} One named person who makes the go/no-go call and owns the solution afterward. Committees review; owners decide.
 \end{enumerate}
 
@@ -84,7 +84,7 @@ After the pilot, the decision has three outcomes, not two: \cotag{coGreen}{Go} m
 \section{How Do We Ask for a Yes?}
 \label{sec:memo}
 
-Every case in this book ends with a memo to the executive sponsor, and every memo follows the same outline. The limit of one page is a discipline, not a formatting rule: if the case cannot be made in a page, it is not yet clear, and an executive will not read the second page anyway. Figure~\ref{fig:memo} is Harbor's.
+Every case in this book ends with a memo to the executive sponsor, and every memo follows the same outline.\index{one-page memo|textbf} The limit of one page is a discipline, not a formatting rule: if the case cannot be made in a page, it is not yet clear, and an executive will not read the second page anyway. Figure~\ref{fig:memo} is Harbor's.
 
 \begin{figure}[htbp]
 \begin{tcolorbox}[colback=white, colframe=black!60, boxrule=0.6pt, arc=1pt, left=10pt, right=10pt, top=8pt, bottom=8pt, fontupper=\small]
@@ -119,7 +119,7 @@ Five features of the memo are deliberate and should be copied:
 \begin{itemize}[itemsep=1pt]
   \item The \emph{recommendation comes first}, with the money and the decision requested.
   \item The \emph{problem is stated in the sponsor's numbers}, from the process map.
-  \item \emph{What changes} is described in business terms. Words like \emph{agent}, \emph{RAG} and \emph{MCP} do not appear; the design table is an attachment for those who want it.
+  \item \emph{What changes} is described in business terms. Words like \textbf{agent}, \textbf{RAG\index{retrieval-augmented generation (RAG)}} and \textbf{MCP\index{Model Context Protocol (MCP)}} do not appear; the design table is an attachment for those who want it.
   \item The \emph{value is split into floor and upside}, with the source of each.
   \item The memo \emph{ends with what the sponsor must do}, including the decision that only she can make: what to do with the freed capacity, without which the labor benefit stays on paper.
 \end{itemize}
@@ -135,7 +135,7 @@ From Chapter~\ref{ch:case-policy} onward, each case applies this chapter in the 
   \item Section 4, \emph{trade-offs}: unit economics per design, with money rows where they can be measured.
   \item Section 8, \emph{business case and rollout}: the value case with its tornado analysis, error budgets, the pilot plan and the memo.
 \end{itemize}
-Each case also has a \emph{business skill} it emphasizes. Chapter~\ref{ch:case-policy} focuses on defining KPIs for a solution whose output is information rather than transactions; Chapter~\ref{ch:case-support} on unit economics at high volume; and so on through the book.
+Each case also has a \textbf{business skill} it emphasizes. Chapter~\ref{ch:case-policy} focuses on defining KPIs for a solution whose output is information rather than transactions; Chapter~\ref{ch:case-support} on unit economics at high volume; and so on through the book.
 
 % ----------------------------------------------------------------------
 \section*{Chapter Summary}
@@ -187,7 +187,7 @@ value hypothesis
   \item Explain Equation~\eqref{eq:threshold} in words. Why should the threshold for sending quotes to a manager differ from the accuracy-maximizing threshold?
   \item What is an error budget, and how does one become a go/no-go criterion?
   \item Why does the pilot need a comparison group? What could mislead Harbor without one?
-  \item Why does the memo avoid words like \emph{agent} and \emph{MCP}?
+  \item Why does the memo avoid words like \textbf{agent} and \textbf{MCP}?
   \item A pilot ends with mixed results: turnaround and analyst time pass, adoption reaches only 55\%. What should the owner decide, and what information would help?
 \end{enumerate}
 

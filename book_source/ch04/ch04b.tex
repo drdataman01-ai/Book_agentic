@@ -49,13 +49,13 @@ None of these is a bug in the sample. The sample's job is to show the shortest p
 
 \subsection{The grounded design: permission-aware, cited and current}
 
-The grounded design keeps the sample's skeleton---one agent, one search service---and closes the six gaps. Table~\ref{tab:policy-d2} writes it down as a design table.
+The grounded design keeps the sample's skeleton---one agent, one search service---and closes the six gaps. Table~\ref{tab:policy-d2} writes it down as a design table\index{design table}.
 
 \begin{itemize}[itemsep=2pt]
-  \item \emph{Identity first.} The employee signs in through the company's identity provider. A code step looks up the employee's country, grade and manager status from the HR directory, through a read-only MCP tool, and stores them in the session state. The model never chooses these values.
+  \item \emph{Identity first.} The employee signs in through the company's identity provider. A code step looks up the employee's country, grade and manager status from the HR directory, through a read-only MCP\index{Model Context Protocol (MCP)} tool, and stores them in the session state\index{memory!session state}. The model never chooses these values.
   \item \emph{Metadata and filtered retrieval.} Each policy is re-imported as a structured document with fields \texttt{country} (or \texttt{GLOBAL}), \texttt{min\_grade}, \texttt{audience} (\texttt{all} or \texttt{managers}), \texttt{version} and \texttt{effective\_from}. The agent's only search tool is a code wrapper that adds a filter built from the employee's profile. Restricted documents are filtered out \emph{before} retrieval, not after generation.
   \item \emph{Grounding and citations.} The instruction forbids answers not supported by retrieved passages and requires a citation for each claim, in a fixed format: document ID, section and version.
-  \item \emph{A citation guardrail.} Code checks that every citation in the answer refers to a document retrieved in this turn. If any does not, or there are none, the answer is replaced with an abstention.
+  \item \emph{A citation guardrail\index{guardrail}.} Code checks that every citation in the answer refers to a document retrieved in this turn. If any does not, or there are none, the answer is replaced with an abstention.
   \item \emph{Abstain and hand off.} When the policies do not answer the question, the assistant says so and offers to open an HR ticket containing the question and what it found. The employee confirms before the ticket is created; the ticket then hands the case to an HR generalist.
   \item \emph{Event-driven freshness.} Publishing a policy writes it to a bucket; the write emits an event that triggers an immediate import. The freshness target is one hour from publication to answerable.
 \end{itemize}
@@ -144,7 +144,7 @@ Human workload & 0.15 & 3 & 4 & 3 \\
 
 \subsection{A near tie}
 
-The grounded design and the curated design are separated by 0.05 points. The sensitivity check from Chapter~\ref{ch:toolkit}, run on the two viable designs, finds the curated design ahead in about 65\% of perturbed weightings and the grounded design in about 35\%. That is not a decision the numbers can make. When a trade-off table produces a near tie, three further questions usually settle it:
+The grounded design and the curated design are separated by 0.05 points. The sensitivity check from Chapter~\ref{ch:toolkit}, run on the two viable designs, finds the curated design ahead in about 65\% of perturbed weightings and the grounded design in about 35\%. That is not a decision the numbers can make. When a trade-off table\index{trade-off table} produces a near tie, three further questions usually settle it:
 \begin{enumerate}[itemsep=1pt]
   \item \emph{Is one option a superset of the other?} Here, yes: the curated design is the grounded design plus a front layer. Building the grounded design first loses nothing; the curated layer can be added later without rework.
   \item \emph{Which option teaches us more?} The curated design needs HR to choose 150 questions and write answers for them now, on the basis of guesses about which questions matter. The grounded design in pilot produces the data to make that choice: which questions are asked most, and which are answered worst.
@@ -164,7 +164,7 @@ When two designs score within the noise of the estimates and one extends the oth
 
 \subsection{Failure walk-through}
 
-Table~\ref{tab:policy-failwalk} walks the grounded design. The most instructive row is the second: the filter can be correct and still fail if the \emph{metadata} is wrong. A German policy tagged \texttt{country = GLOBAL} is shown to everyone. Metadata is now part of the system's correctness, and it needs an owner and a test.
+Table~\ref{tab:policy-failwalk} walks the grounded design. The most instructive row is the second: the filter can be correct and still fail if the \textbf{metadata} is wrong. A German policy tagged \texttt{country = GLOBAL} is shown to everyone. Metadata is now part of the system's correctness, and it needs an owner and a test.
 
 \begin{table}[htbp]
 \centering
@@ -194,8 +194,8 @@ The fifth row records a known limit rather than a fix. The citation check verifi
 \begin{tcolorbox}[colback=white, colframe=black!45, boxrule=0.4pt, arc=1pt, fontupper=\small, title={DR-POL-001: Pilot the grounded design; curated layer as conditional phase 2}, fonttitle=\bfseries\small, coltitle=black, colbacktitle=codefill]
 \textbf{Context.} 2{,}600 policy tickets a month; 1.8-day median wait; 7\% wrong answers. Constraint \risk{Restricted leak}: zero exposure of restricted documents.\\
 \textbf{Options.} The sample design, Google's sample as is (fails \risk{Restricted leak}); the grounded design, filtered, cited and event-refreshed; the curated design, the grounded design plus curated answers.\\
-\textbf{Decision.} Pilot the grounded design, with metadata validation at publication added from the failure walk-through.\\
+\textbf{Decision.} Pilot the grounded design, with metadata validation at publication added from the failure walk-through\index{failure walk-through}.\\
 \textbf{Reasons.} The grounded design and the curated design tie within estimate noise; the curated design extends the grounded design without rework; the grounded design's pilot data is needed to choose which answers to curate.\\
 \textbf{Consequences.} Policy team owns metadata as well as text; publishing is blocked on invalid metadata.\\
-\textbf{Reversal triggers.} Build the curated layer if, in the pilot, answer accuracy on the 50 most frequent questions is below 97\%, or if more than 30\% of volume falls on fewer than 50 questions. Revisit the citation guard if sampled review finds unsupported cited claims in more than 2\% of answers.
+\textbf{Reversal triggers\index{reversal trigger}.} Build the curated layer if, in the pilot, answer accuracy on the 50 most frequent questions is below 97\%, or if more than 30\% of volume falls on fewer than 50 questions. Revisit the citation guard if sampled review finds unsupported cited claims in more than 2\% of answers.
 \end{tcolorbox}

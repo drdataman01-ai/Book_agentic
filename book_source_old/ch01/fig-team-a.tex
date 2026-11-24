@@ -1,0 +1,36 @@
+% Figure: Team A's design, reconstructed from their demo (Chapter 1, Section 1.1).
+% Place after the Team A paragraph, before the \begin{thinkabout} box.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners=2pt, align=center, font=\footnotesize, minimum height=9mm},
+  tool/.style={box, fill=mcpfill, text width=1.65cm, font=\scriptsize},
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  spoke/.style={{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}, thick, dashed, blue!60!black}
+]
+% the one agent, with everything in its prompt
+\node[box, fill=agentfill, text width=3.0cm, minimum height=16mm, very thick] (agent) at (0,0)
+  {\textbf{One agent}\\{\scriptsize long prompt: instructions, discount policy text, ``never more than 15\% without a manager''}};
+
+% fourteen tools in two rows (eight named in the story, six more)
+\foreach \x/\name [count=\i] in {-4/Product search, -2/Price lookup, 0/Inventory, 2/Customer lookup, 4/Contract lookup} {
+  \node[tool] (u\i) at (\x,2.5) {\name};
+  \draw[spoke] (agent) -- (u\i);
+}
+\foreach \x/\name [count=\i] in {-3/Margin calculator, -1/CRM updater, 1/E-mail sender, 3/{6 more tools}} {
+  \node[tool] (d\i) at (\x,-2.5) {\name};
+  \draw[spoke] (agent) -- (d\i);
+}
+
+% input and output
+\node[box, fill=white, text width=1.8cm] (rep) at (-5.7,0) {Sales rep\\(chat)};
+\node[box, fill=white, text width=1.8cm] (out) at (5.7,0) {Price and drafted e-mail};
+\draw[arr] (rep) -- (agent);
+\draw[arr] (agent) -- (out);
+
+\node[font=\scriptsize\itshape, text=black!60, align=center] at (0,-3.5)
+  {the model chooses any tool, in any order, any number of times};
+\end{tikzpicture}
+\caption{Team A's design, reconstructed from their demo; Team A brought no diagram of their own. One agent with a long prompt chooses among fourteen tools. Shading follows Figure~\ref{fig:quote-sketch}: blue for the language model and green for tools that reach Harbor's systems. Compare the two figures box by box.}
+\label{fig:team-a}
+\end{figure}

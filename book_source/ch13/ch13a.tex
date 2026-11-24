@@ -10,7 +10,7 @@
 \begin{chapterquestions}
 By the end of this chapter you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item When should agents owned by different teams talk through the Agent2Agent protocol, through MCP tools, or inside one workflow?
+  \item When should agents owned by different teams talk through the Agent2Agent\index{Agent2Agent (A2A)} protocol, through MCP\index{Model Context Protocol (MCP)} tools, or inside one workflow?
   \item What must two teams agree on before one team's agent may call the other's: skills, task states, identity, timeouts and fallbacks?
   \item How do you release a change to an agent system when models, instructions, tools and evaluation sets can all change?
   \item Who should own what in a company that runs many agents, and how is governance kept in proportion to risk?
@@ -47,12 +47,12 @@ Suppose you lead the sales team. Would you rather build stock allocation into yo
 There are three ways to connect a capability owned by another team, and the choice matters more than any single agent's design.
 
 \begin{description}[leftmargin=1em,itemsep=3pt]
-  \item[Inside one workflow.] The sales team builds the whole order flow in its own ADK application, including steps for stock, credit and logistics. This is simplest when one team owns all the logic and releases it together. Across departments it fails: the sales team ends up maintaining operations' allocation rules and finance's credit policy, which change without their knowledge.
+  \item[Inside one workflow.] The sales team builds the whole order flow in its own ADK\index{Agent Development Kit (ADK)} application, including steps for stock, credit and logistics. This is simplest when one team owns all the logic and releases it together. Across departments it fails: the sales team ends up maintaining operations' allocation rules and finance's credit policy, which change without their knowledge.
   \item[As MCP tools.] Operations exposes \texttt{check\_availability} and \texttt{reserve\_stock}; finance exposes \texttt{check\_credit}. The sales agent calls them. This is right when the capability is \emph{a function}: deterministic or nearly so, with a clear input and output, and no judgment that the owning team needs to exercise in the moment.
-  \item[As agents, over A2A.] Operations exposes an \emph{allocation agent} that accepts a task---``find 400 valves for Delta within 48 hours''---and works on it with its own tools, its own rules and its own judgment, possibly for many minutes, possibly asking a planner, and returns a result or a request for more information. This is right when the capability \emph{needs the owning team's judgment and policies}, takes time, or may need a person on the owning side.
+  \item[As agents, over A2A.] Operations exposes an \textbf{allocation agent} that accepts a task---``find 400 valves for Delta within 48 hours''---and works on it with its own tools, its own rules and its own judgment, possibly for many minutes, possibly asking a planner, and returns a result or a request for more information. This is right when the capability \emph{needs the owning team's judgment and policies}, takes time, or may need a person on the owning side.
 \end{description}
 
-The Agent2Agent protocol (A2A) is the open standard for the third option \citep{a2a2026spec}. Introduced by Google in 2025 and now governed under the Linux Foundation, it reached version~1.0 in 2026. Each agent publishes an \keyterm{agent card}: a JSON document describing who it is, its \emph{skills}, the interfaces and versions it supports, and how callers must authenticate. A client agent sends a message that creates a \emph{task}; the task moves through states such as \emph{working}, \emph{input-required} and \emph{completed}, and can stream progress or push notifications. Crucially, neither agent sees the other's prompts, tools or memory. Where MCP connects an agent to tools, A2A connects an agent to another agent as a peer.
+The Agent2Agent protocol (A2A) is the open standard for the third option \citep{a2a2026spec}. Introduced by Google in 2025 and now governed under the Linux Foundation, it reached version~1.0 in 2026. Each agent publishes an \keyterm{agent card}\index{agent card|textbf}: a JSON document describing who it is, its \textbf{skills}, the interfaces and versions it supports, and how callers must authenticate. A client agent sends a message that creates a \textbf{task}; the task moves through states such as \textbf{working}, \textbf{input-required} and \textbf{completed}, and can stream progress or push notifications. Crucially, neither agent sees the other's prompts, tools or memory. Where MCP connects an agent to tools, A2A connects an agent to another agent as a peer.
 
 Table~\ref{tab:cap-connect} turns this into a decision rule.
 
@@ -81,7 +81,7 @@ Call a tool when you need a function. Ask an agent when you need the owning team
 
 \subsection{Harbor's order desk}
 
-Applying the rule to Delta's emergency order gives the design in Table~\ref{tab:cap-order}. The sales \emph{order-desk agent} coordinates. Credit is a function---a limit check and, above the limit, a request for approval---so finance exposes it as an MCP tool. Allocation needs operations' judgment about other customers and suppliers, and sometimes a planner, so operations exposes an A2A agent. Logistics is a function of the carrier systems, exposed as an MCP tool. The quote itself is built by the existing quote workflow, which the order-desk agent calls as a sub-agent because sales owns both.
+Applying the rule to Delta's emergency order gives the design in Table~\ref{tab:cap-order}. The sales \textbf{order-desk agent} coordinates. Credit is a function---a limit check and, above the limit, a request for approval---so finance exposes it as an MCP tool. Allocation needs operations' judgment about other customers and suppliers, and sometimes a planner, so operations exposes an A2A agent. Logistics is a function of the carrier systems, exposed as an MCP tool. The quote itself is built by the existing quote workflow, which the order-desk agent calls as a sub-agent because sales owns both.
 
 \begin{table}[htbp]
 \centering
@@ -94,7 +94,7 @@ Applying the rule to Delta's emergency order gives the design in Table~\ref{tab:
 \midrule
 Order-desk agent & \cellcolor{coBlueBg}Sales & \tagAgent\ The coordinator, Level 4 & Takes the buyer's request from the sales rep and gathers each department's answer. \\
 Quote workflow & \cellcolor{coBlueBg}Sales & \tagAgent\ Sub-agent, the design of Chapters~\ref{ch:foundations}--\ref{ch:business} & Builds the quote; the \tagPerson\ sales rep sends it. \\
-Allocation agent & \cellcolor{coGreenBg}Operations & \tagAgent\ A2A agent, called with a task & Applies operations' allocation policy; when the task is \emph{input-required}, an \tagPerson\ operations planner decides. \\
+Allocation agent & \cellcolor{coGreenBg}Operations & \tagAgent\ A2A agent, called with a task & Applies operations' allocation policy; when the task is \textbf{input-required}, an \tagPerson\ operations planner decides. \\
 Credit & \cellcolor{coAmberBg}Finance & \tagCode\ MCP tools \texttt{check\_credit}, \texttt{request\_increase} & Checks the limit; above it, a \tagPerson\ credit manager approves. \\
 Logistics & \cellcolor{coPurpleBg}Logistics & \tagCode\ MCP tool \texttt{delivery\_options} & Returns what the carriers can deliver, and when. \\
 \bottomrule
@@ -137,7 +137,7 @@ An A2A connection is a contract between teams. Five clauses make it work in prod
 
 \subsection{The agent registry}
 
-With more than a handful of agents, Harbor needs a \keyterm{agent registry}: one catalog of every agent and MCP server in production, with its owner, card or tool list, version, risk tier, SLOs, data it can access, and the systems it can change. The registry is how a new team finds the allocation agent instead of building its own; how security reviews who can reach what; and how an incident commander answers, at 3~a.m., ``which agents call the ERP?'' Google Cloud's agent platform and several independent products offer registries; a spreadsheet is a poor substitute but a far better one than nothing.
+With more than a handful of agents, Harbor needs a \keyterm{agent registry}\index{agent registry|textbf}: one catalog of every agent and MCP server\index{Model Context Protocol (MCP)!server} in production, with its owner, card or tool list, version, risk tier, SLOs, data it can access, and the systems it can change. The registry is how a new team finds the allocation agent instead of building its own; how security reviews who can reach what; and how an incident commander answers, at 3~a.m., ``which agents call the ERP?'' Google Cloud's agent platform\index{Gemini Enterprise Agent Platform} and several independent products offer registries; a spreadsheet is a poor substitute but a far better one than nothing.
 
 \begin{quickcheck}
 The allocation agent has not answered after 15 minutes, and Delta's buyer wants a quote by noon. What should the order desk do?

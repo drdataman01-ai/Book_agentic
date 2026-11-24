@@ -5,7 +5,7 @@
 \section{How Do We Build an Agent with ADK?}
 \label{sec:adk}
 
-Every case in this book is built with Google's open-source \keyterm{Agent Development Kit (ADK)}. ADK is a code-first framework: you define agents, tools and the flow between them in ordinary code, then run them locally, evaluate them, and deploy them. It is available for Python, TypeScript, Go, Java and Kotlin; this book uses Python. ADK is optimized for Google's Gemini models and Google Cloud but is not tied to them: through its LiteLLM integration an ADK agent can use models from other providers \citep{adkdocs}.
+Every case in this book is built with Google's open-source \keyterm{Agent Development Kit (ADK)}\index{Agent Development Kit (ADK)|textbf}. ADK is a code-first framework: you define agents, tools and the flow between them in ordinary code, then run them locally, evaluate them, and deploy them. It is available for Python, TypeScript, Go, Java and Kotlin; this book uses Python. ADK is optimized for Google's Gemini models and Google Cloud but is not tied to them: through its LiteLLM integration an ADK agent can use models from other providers \citep{adkdocs}.
 
 This section is a tour, not a manual. Its goal is that you recognize each part of ADK when a case uses it, and that you can connect what you see in the code to the agent loop and the MCP conversation described in Section~\ref{sec:blocks}. Appendix~A covers installation and project setup in detail.
 
@@ -192,9 +192,9 @@ The remaining parts of ADK appear as the cases need them. A brief preview:
 \begin{description}[leftmargin=1em,itemsep=2pt]
   \item[Workflows.] ADK~2 can express a fixed flow as a graph whose nodes are agents, tools or plain functions, with edges for sequence, routing, fan-out and loops, and pauses for human input. This is how fixed and routed workflows (Levels~2 and~3 in Table~\ref{tab:autonomy}) are built without asking a model to decide the order of the steps. A sequential flow is as short as \texttt{Workflow(name="root\_agent", edges=[("START", extract, validate, draft)])}. Chapter~\ref{ch:case-invoice} uses workflows with approval gates.
   \item[Agents as tools and sub-agents.] An agent can call another agent as a tool, or delegate to sub-agents. These are the building blocks of the router, planner--executor and handoff patterns in Chapter~\ref{ch:toolkit}.
-  \item[Sessions, state and memory.] A \emph{session} holds one conversation's events; \emph{state} is a key--value store scoped to that session (or to a user or the whole app); \emph{memory} holds information across sessions. Chapter~\ref{ch:case-airline} goes deep.
+  \item[Sessions, state and memory.] A \textbf{session} holds one conversation's events; \textbf{state} is a key--value store scoped to that session (or to a user or the whole app); \textbf{memory} holds information across sessions. Chapter~\ref{ch:case-airline} goes deep.
   \item[Callbacks.] Functions that run before or after a model call, tool call or agent step. They are the natural home for guardrails, logging and cost limits.
-  \item[Evaluation.] ADK can replay saved conversations (\emph{eval sets}) against an agent and score both the final response and the sequence of tool calls. Chapter~\ref{ch:case-fraud} makes evaluation the technical focus.
+  \item[Evaluation.] ADK can replay saved conversations (\textbf{eval sets}) against an agent and score both the final response and the sequence of tool calls. Chapter~\ref{ch:case-fraud} makes evaluation the technical focus.
 \end{description}
 
 % ----------------------------------------------------------------------
@@ -204,7 +204,7 @@ The remaining parts of ADK appear as the cases need them. A brief preview:
 A design is not finished until it runs somewhere real. The cases deploy on Google Cloud so that, from the first case to the last, you move from a local prototype to production on one consistent platform. The design sections stay independent of the platform; Appendix~B maps each concept to other frameworks and clouds.
 
 \begin{versionnote}
-In April 2026 Google consolidated Vertex AI into the \keyterm{Gemini Enterprise Agent Platform} and renamed several services: Vertex AI Agent Engine became \emph{Agent Runtime}, Vertex AI RAG Engine became \emph{RAG Engine}, Vertex AI Search became \emph{Agent Search}, and so on \citep{gcpnames2026}. Older tutorials, and some command-line flags, still use the previous names. This book uses the current names and gives the old one in parentheses the first time each appears.
+In April 2026 Google consolidated Vertex AI into the \keyterm{Gemini Enterprise Agent Platform}\index{Gemini Enterprise Agent Platform|textbf} and renamed several services: Vertex AI Agent Engine became \textbf{Agent Runtime}, Vertex AI RAG Engine became \textbf{RAG Engine}, Vertex AI Search became \textbf{Agent Search}, and so on \citep{gcpnames2026}. Older tutorials, and some command-line flags, still use the previous names. This book uses the current names and gives the old one in parentheses the first time each appears.
 \end{versionnote}
 
 Table~\ref{tab:gcp} lists the services the cases use, grouped by the need they meet. You do not need to learn them now; return to the table when a case introduces one.
@@ -267,7 +267,7 @@ Every case follows the same lifecycle, shown in Figure~\ref{fig:lifecycle}: desi
 A demo proves that something \emph{can} work. Production proves that it \emph{keeps} working, safely and affordably, when real people use it every day.
 \end{keyidea}
 
-The book does not teach all ten stages at full depth in every chapter; that would make each case three times as long and repeat itself. Instead, each case goes deep on one stage, its \emph{technical focus}, and briefly applies the stages already taught. By the capstone you will have practiced every stage in depth once and in summary many times.
+The book does not teach all ten stages at full depth in every chapter; that would make each case three times as long and repeat itself. Instead, each case goes deep on one stage, its \textbf{technical focus}, and briefly applies the stages already taught. By the capstone you will have practiced every stage in depth once and in summary many times.
 
 \begin{figure}[htbp]
 \centering
@@ -306,9 +306,9 @@ The book does not teach all ten stages at full depth in every chapter; that woul
 \section{How Should You Read This Book?}
 \label{sec:how-to-use}
 
-\paragraph{Two tracks.} The \emph{design track}---the business brief, design tables, trade-offs and business case---needs no programming. The \emph{build track} adds the ADK implementation and Google Cloud deployment. MBA and executive-education readers can follow the design track alone and treat the build sections as demonstrations. Computer science, data science and information systems readers should do both.
+\paragraph{Two tracks.} The \textbf{design track}---the business brief, design tables, trade-offs and business case---needs no programming. The \textbf{build track} adds the ADK implementation and Google Cloud deployment. MBA and executive-education readers can follow the design track alone and treat the build sections as demonstrations. Computer science, data science and information systems readers should do both.
 
-\paragraph{One template.} Chapters~\ref{ch:case-policy} to~\ref{ch:case-loan} share the same nine sections: business brief and current process; stakeholders, KPIs and value hypothesis; alternative designs; trade-offs; build; deploy; evaluate; business case and rollout; and a changed-requirement exercise. Once you have worked through one case you will know where to find everything in the next.
+\paragraph{One template.} Chapters~\ref{ch:case-policy} to~\ref{ch:case-loan} share the same nine sections: business brief and current process; stakeholders, KPIs and value hypothesis\index{value hypothesis}; alternative designs; trade-offs; build; deploy; evaluate; business case and rollout; and a changed-requirement exercise. Once you have worked through one case you will know where to find everything in the next.
 
 \paragraph{From critique to blank page.} The cases grow harder in a deliberate way. In Part~II (Chapters~\ref{ch:case-policy}--\ref{ch:case-incident}) each case starts from a published Google ADK sample, pinned to a fixed version. Your first alternative design is the sample as it stands; your job is to critique it and redesign it for a specific business. Critiquing a working design is easier than inventing one, and it teaches you to read other people's designs with a sharp eye. In Part~III (Chapters~\ref{ch:case-fraud}--\ref{ch:case-loan}) you design from a blank page. The capstone in Part~IV joins several designs across departments.
 
@@ -319,7 +319,7 @@ The book does not teach all ten stages at full depth in every chapter; that woul
 \addcontentsline{toc}{section}{Chapter Summary}
 
 \begin{itemize}[itemsep=2pt]
-  \item Building an agent has become cheap. Designing a solution, which means deciding what the system should do, choosing a block for each part, comparing alternatives and tying the result to business outcomes, has not. The distance between the two is the \emph{design gap}.
+  \item Building an agent has become cheap. Designing a solution, which means deciding what the system should do, choosing a block for each part, comparing alternatives and tying the result to business outcomes, has not. The distance between the two is the \textbf{design gap}.
   \item Closing the gap takes five skills: decomposition, boundaries, trade-offs, production and business justification. Every case produces four deliverables: a design table, a trade-off table, a working deployment and a one-page memo.
   \item A language model turns a prompt into text. On its own it does not know the company, cannot act, has no standard way to reach company systems, and cannot guarantee rules or arithmetic. RAG, agents with tools, MCP and plain code fill these four gaps.
   \item RAG indexes documents ahead of time as chunks with embeddings, finds the passages closest in meaning to each question, and places them in the prompt so that the model can answer from them and cite them.
@@ -403,7 +403,7 @@ workflow
 \begin{enumerate}[resume, itemsep=2pt]
   \item \textbf{Complete the lab} below and submit the \texttt{adk web} trace of one successful quote request and one request above the cap.
   \item \textbf{Tighten a tool.} The \texttt{check\_margin} tool in Listing~\ref{lst:server} fails with an exception on an unknown SKU and accepts discounts above 100\%. Fix both, and explain why a tool should return a structured error rather than raise one.
-  \item \textbf{Add a resource.} Expose Harbor's discount policy text as an MCP \emph{resource} on the pricing server. Explain why a resource, not a tool, is the right choice here.
+  \item \textbf{Add a resource.} Expose Harbor's discount policy text as an MCP \textbf{resource} on the pricing server. Explain why a resource, not a tool, is the right choice here.
 \end{enumerate}
 
 % ----------------------------------------------------------------------

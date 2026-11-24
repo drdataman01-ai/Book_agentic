@@ -22,7 +22,7 @@ Deliverables & Design tables, newsvendor and compute models, forecast MCP server
 \begin{chapterquestions}
 By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item How do you put a time-series foundation model behind an MCP server, and when should it run in batch rather than on demand?
+  \item How do you put a time-series foundation model behind an MCP server\index{Model Context Protocol (MCP)!server}, and when should it run in batch rather than on demand?
   \item Why is ordering the expected demand wrong for perishable food, and what should you order instead?
   \item Where does an agent pay for itself in a pipeline of 480{,}000 forecasts a night?
   \item What will a nightly pipeline cost, how long will it take, and how much of that is the agent?
@@ -34,7 +34,7 @@ By the end of this case you will be able to answer these questions:
 \section{Business Brief: What Is Going Wrong Today?}
 \label{sec:fc-brief}
 
-Greenleaf Grocers sells about 6{,}000 products in each of its 80 stores. Every night, the replenishment system computes an order for each product in each store---about 480{,}000 store--product combinations, or \emph{series}---and sends the orders to Greenleaf's distribution centre and direct-delivery suppliers by 4~a.m. For most products, the system uses a moving average of recent sales with safety stock. Twelve planners review exceptions and override orders for promotions, holidays, weather and new products; they spend most of their day doing so.
+Greenleaf Grocers sells about 6{,}000 products in each of its 80 stores. Every night, the replenishment system computes an order for each product in each store---about 480{,}000 store--product combinations, or \textbf{series}---and sends the orders to Greenleaf's distribution centre and direct-delivery suppliers by 4~a.m. For most products, the system uses a moving average of recent sales with safety stock. Twelve planners review exceptions and override orders for promotions, holidays, weather and new products; they spend most of their day doing so.
 
 The results are worst where they cost most. Fresh produce, bakery and dairy are perishable: too much is thrown away, too little leaves empty shelves. Fresh waste runs at 6.8\% of fresh sales, and fresh items are out of stock at the time of a customer's visit about 7.5\% of the time. Both numbers are measured: waste from store write-offs, availability from shelf audits and sales gaps.
 
@@ -100,12 +100,12 @@ An agent reads each series' recent sales, the promotion calendar and the weather
 
 \subsection{The foundation-model design: batch forecasts, rules for orders, an agent for exceptions}
 
-The foundation-model design assigns each job to the right block. Table~\ref{tab:fc-d2} writes it down as a design table.
+The foundation-model design assigns each job to the right block. Table~\ref{tab:fc-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item A \emph{time-series foundation model}---a model pretrained on very large collections of time series that can forecast new series without being trained on them, such as Chronos or TimesFM \citep{ansari2024chronos,das2024timesfm}---runs as a \emph{nightly batch} over all series, producing quantile forecasts. The results are stored, and an MCP server owned by supply-chain analytics serves them.
-  \item \emph{Code} computes each order from the forecast's quantiles with the newsvendor rule (Section~\ref{sec:fc-tradeoffs}) and existing constraints (pack sizes, shelf capacity, delivery days).
-  \item \emph{Code} flags \emph{exceptions}: series with a promotion starting, a holiday, a severe-weather alert, a new product, or a large gap between recent forecasts and sales. About 2\% of series are flagged each night.
-  \item An \emph{exception agent} (Level~4, budget of ten tool calls per series) investigates each flagged series: promotion details, weather, local events, similar products' history, and a \emph{what-if} forecast with the promotion as a covariate. It proposes an adjusted order with a short rationale. Code rejects any adjustment outside $\pm$40\% of the computed order.
+  \item A \textbf{time-series foundation model}---a model pretrained on very large collections of time series that can forecast new series without being trained on them, such as Chronos or TimesFM \citep{ansari2024chronos,das2024timesfm}---runs as a \textbf{nightly batch} over all series, producing quantile forecasts. The results are stored, and an MCP server owned by supply-chain analytics serves them.
+  \item \textbf{Code} computes each order from the forecast's quantiles with the newsvendor rule (Section~\ref{sec:fc-tradeoffs}) and existing constraints (pack sizes, shelf capacity, delivery days).
+  \item \textbf{Code} flags \emph{exceptions}: series with a promotion starting, a holiday, a severe-weather alert, a new product, or a large gap between recent forecasts and sales. About 2\% of series are flagged each night.
+  \item An \textbf{exception agent} (Level~4, budget of ten tool calls\index{tool call} per series) investigates each flagged series: promotion details, weather, local events, similar products' history, and a \emph{what-if} forecast with the promotion as a covariate. It proposes an adjusted order with a short rationale. Code rejects any adjustment outside $\pm$40\% of the computed order.
   \item \emph{Planners} approve, edit or reject adjustments in a morning queue, sorted by money at stake. Unreviewed adjustments by 3~a.m. fall back to the computed order.
 \end{itemize}
 
@@ -156,12 +156,12 @@ Run cost per year (est.) & Over \$2 million & About \$0.1 million & About \$0.05
 
 \subsection{Inventory economics: order a quantile, not the mean}
 
-The business skill of this case is inventory economics, and its central result is old and still widely ignored. For a perishable item, each unit ordered beyond demand costs the purchase price minus any salvage value ($c_o$, the cost of over-ordering); each unit of demand not met costs the lost margin ($c_u$, the cost of under-ordering). The order that maximizes expected profit is the quantile of the demand distribution at the \emph{critical ratio}:
+The business skill of this case is inventory economics, and its central result is old and still widely ignored. For a perishable item, each unit ordered beyond demand costs the purchase price minus any salvage value ($c_o$, the cost of over-ordering); each unit of demand not met costs the lost margin ($c_u$, the cost of under-ordering). The order that maximizes expected profit is the quantile of the demand distribution at the \textbf{critical ratio}:
 \begin{equation}
   q^\ast = F^{-1}\!\left(\frac{c_u}{c_u + c_o}\right),
   \label{eq:newsvendor}
 \end{equation}
-where $F$ is the forecast distribution of demand \citep{silver2017inventory}. This is the \keyterm{newsvendor rule}. It needs a \emph{probabilistic} forecast---a distribution or its quantiles---not just a single number, which is one reason the forecasting model's ability to produce quantiles matters.
+where $F$ is the forecast distribution of demand \citep{silver2017inventory}. This is the \keyterm{newsvendor rule}\index{newsvendor rule|textbf}. It needs a \emph{probabilistic} forecast---a distribution or its quantiles---not just a single number, which is one reason the forecasting model's ability to produce quantiles matters.
 
 Listing~\ref{lst:replenish} applies the rule to a simulated fresh item that sells for \$4.00, costs \$2.60 and salvages at \$0.20, so that $c_u = 1.40$ and $c_o = 2.40$.
 
@@ -224,4 +224,4 @@ Maintainability & 0.20 & 2 & 3 & 4 \\
 \end{tabular}
 \end{table}
 
-The foundation-model design leads on the provisional scores, but its quality advantage over the statistical design is an assumption until it is measured on Greenleaf's own data. The decision record makes that explicit: the foundation-model design is chosen \emph{on condition} that the foundation model beats the statistical design's models in the backtest by a stated margin; if it does not, Greenleaf builds the statistical design with the foundation-model design's exception agent added, which is still a large improvement on moving averages.
+The foundation-model design leads on the provisional scores, but its quality advantage over the statistical design is an assumption until it is measured on Greenleaf's own data. The decision record\index{decision record} makes that explicit: the foundation-model design is chosen \emph{on condition} that the foundation model beats the statistical design's models in the backtest by a stated margin; if it does not, Greenleaf builds the statistical design with the foundation-model design's exception agent added, which is still a large improvement on moving averages.

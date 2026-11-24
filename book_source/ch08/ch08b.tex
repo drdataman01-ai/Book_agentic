@@ -21,7 +21,7 @@ The case agent's instruction describes a fixed summary structure: \emph{what hap
 
 \subsection{Faithfulness}
 
-An explanation is \keyterm{faithful} if the reasons it gives are the reasons the model used. A plausible but unfaithful explanation---``unusual location at night'' when the model in fact reacted to a new device and a large amount---is worse than none, because it directs the analyst's attention to the wrong evidence (\risk{Unfaithful reason}). Listing~\ref{lst:faithful} is the guardrail: it parses the factors cited in a summary and rejects any that are not among the model's top factors for that transaction.
+An explanation is \keyterm{faithful}\index{faithfulness|textbf} if the reasons it gives are the reasons the model used. A plausible but unfaithful explanation---``unusual location at night'' when the model in fact reacted to a new device and a large amount---is worse than none, because it directs the analyst's attention to the wrong evidence (\risk{Unfaithful reason}). Listing~\ref{lst:faithful} is the guardrail: it parses the factors cited in a summary and rejects any that are not among the model's top factors for that transaction.
 
 \lstinputlisting[language=Python, caption={The faithfulness guardrail (\texttt{ch08/faithfulness.py}).}, label={lst:faithful}, firstline=2, lastline=21]{code/faithfulness.py}
 
@@ -56,8 +56,8 @@ With about one transaction in 800 fraudulent, a system that declares everything 
 \end{watchout} Useful metrics are tied to decisions and costs:
 \begin{itemize}[itemsep=1pt]
   \item \emph{fraud value caught within the review budget}---of the money at risk, how much reaches a block or an analyst who can act;
-  \item \emph{false-positive ratio}---good customers declined or blocked per fraud caught;
-  \item \emph{total cost}, as in Listing~\ref{lst:fraud-policy}, plotted against thresholds as a \emph{cost curve}, so that the sensitivity of the optimum is visible.
+  \item \textbf{false-positive ratio}---good customers declined or blocked per fraud caught;
+  \item \emph{total cost}, as in Listing~\ref{lst:fraud-policy}, plotted against thresholds as a \textbf{cost curve}, so that the sensitivity of the optimum is visible.
 \end{itemize}
 
 \subsection{Delayed labels and time-based splits}
@@ -73,9 +73,9 @@ You evaluate on last week's transactions and the fraud rate looks wonderfully lo
 
 The case agent is evaluated on what it changes for analysts, in three parts.
 \begin{enumerate}[itemsep=2pt]
-  \item \emph{Offline checks} on 2{,}000 historical cases: faithfulness pass rate (target 99\% after one regeneration); sampled accuracy of the prose by senior analysts (target 97\%); and no full card numbers or names in any summary.
-  \item \emph{A controlled comparison.} For two weeks, analysts are randomly assigned cases with and without summaries. Measured: minutes per review, decision accuracy against the eventual label, and agreement with senior reviewers. The value case requires that review time fall to about 3.5 minutes \emph{without} a fall in decision accuracy; a faster but less accurate review moves cost from analysts to losses.
-  \item \emph{Automation bias.} Analysts are shown, without being told, a small number of summaries with a seeded unfaithful reason. The share of analysts who follow the wrong reason to a wrong decision measures how much they rely on the summary rather than check it. If it is high, the summary design changes---for example, to show the model's raw factors beside the prose.
+  \item \textbf{Offline checks} on 2{,}000 historical cases: faithfulness pass rate (target 99\% after one regeneration); sampled accuracy of the prose by senior analysts (target 97\%); and no full card numbers or names in any summary.
+  \item \emph{A controlled comparison.} For two weeks, analysts are randomly assigned cases with and without summaries. Measured: minutes per review, decision accuracy against the eventual label, and agreement with senior reviewers. The value case\index{value case} requires that review time fall to about 3.5 minutes \emph{without} a fall in decision accuracy; a faster but less accurate review moves cost from analysts to losses.
+  \item \textbf{Automation bias.} Analysts are shown, without being told, a small number of summaries with a seeded unfaithful reason. The share of analysts who follow the wrong reason to a wrong decision measures how much they rely on the summary rather than check it. If it is high, the summary design changes---for example, to show the model's raw factors beside the prose.
 \end{enumerate}
 
 \subsection{Monitoring}

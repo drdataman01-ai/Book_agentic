@@ -14,7 +14,7 @@ A tool is the only way an agent can change a company system. If you could make o
 \subsection{Nine principles of tool design}
 
 \begin{enumerate}[leftmargin=2.0em, itemsep=3pt]
-  \item \emph{Task-shaped, not API-shaped.} A tool should do one thing a support agent would describe in a sentence---``start a return for this item''---not expose a system's data model. Task-shaped tools hide joins, codes and sequences that the model would otherwise have to learn at run time, and they limit what a confused or manipulated model can do. The raw-API tool of Chapter~\ref{ch:toolkit}'s anti-patterns is the opposite.
+  \item \emph{Task-shaped, not API-shaped.} A tool should do one thing a support agent would describe in a sentence---``start a return for this item''---not expose a system's data model. Task-shaped tools hide joins, codes and sequences that the model would otherwise have to learn at run time, and they limit what a confused or manipulated model can do. The raw-API tool of Chapter~\ref{ch:toolkit}'s anti-patterns\index{anti-pattern} is the opposite.
   \item \emph{Identity from context, never from arguments.} Who the customer is must come from the authenticated request, verified by the server. If identity is a parameter, the model can supply the wrong one, by mistake or by manipulation, and every tool needs a guard to catch it. If identity is not a parameter, there is nothing to guard.
   \item \emph{Narrow, validated inputs.} Use enumerations for categories, ranges for quantities and specific formats for identifiers, and let the protocol's schema carry them, so that invalid calls fail before any code runs. The sample's \emph{flat} versus \emph{fixed} confusion is exactly what an enumeration prevents.
   \item \emph{Policy enforced once, in the owner's server.} The rule that refunds above \$150 need a person, or that discounts are capped at 10\%, belongs in the server that grants refunds or discounts, owned by the team accountable for it. Prompts may explain the rule; callbacks may check it early to save a round trip; the server decides.
@@ -39,13 +39,13 @@ Table~\ref{tab:tool-redesign} applies the principles to four of the sample's too
 \toprule
 \rowcolor{coHead} Sample & Redesigned & Change \\
 \midrule
-\code{access_cart_information(customer_id)} & \code{get_cart()} & Identity from token (\emph{identity from context}); read-only annotation (\emph{read and write labeled}) \\
-\code{approve_discount(type, value, reason)} and \code{sync_ask_for_approval(...)} & \code{request_discount(kind: percent | amount, value, reason_code)} & One tool; server applies the limit and routes to a manager (\emph{task-shaped}; \emph{policy in the owner's server}); enumerated kind and reason (\emph{validated inputs}) \\
-\code{update_salesforce_crm(customer_id, details: dict)} & \code{add_case_note(case_id, note_type, text)} & Task-shaped, bounded write instead of a free-form record update (\emph{task-shaped}; \emph{validated inputs}) \\
-\code{modify_cart(customer_id, items_to_add, items_to_remove)} & \code{add_to_cart(sku, qty, key)}, \code{remove_from_cart(line_id, key)} & One action per call; idempotent (\emph{task-shaped}; \emph{idempotent writes}) \\
---- & \code{get_order_status(order_number)} & New; returns status, carrier and date only (\emph{small outputs}) \\
+\code{access_cart_information(customer_id)} & \code{get_cart()} & Identity from token (\textbf{identity from context}); read-only annotation (\textbf{read and write labeled}) \\
+\code{approve_discount(type, value, reason)} and \code{sync_ask_for_approval(...)} & \code{request_discount(kind: percent | amount, value, reason_code)} & One tool; server applies the limit and routes to a manager (\textbf{task-shaped}; \textbf{policy in the owner's server}); enumerated kind and reason (\textbf{validated inputs}) \\
+\code{update_salesforce_crm(customer_id, details: dict)} & \code{add_case_note(case_id, note_type, text)} & Task-shaped, bounded write instead of a free-form record update (\textbf{task-shaped}; \textbf{validated inputs}) \\
+\code{modify_cart(customer_id, items_to_add, items_to_remove)} & \code{add_to_cart(sku, qty, key)}, \code{remove_from_cart(line_id, key)} & One action per call; idempotent (\textbf{task-shaped}; \textbf{idempotent writes}) \\
+--- & \code{get_order_status(order_number)} & New; returns status, carrier and date only (\textbf{small outputs}) \\
 --- & \code{get_return_options(order_number)}, \code{start_return(...)} & New; see Listing~\ref{lst:returns-server} \\
---- & \code{report_delivery_damage(order_number, line_id, photo_ids)} & New; creates a claim for review and cannot ship a replacement (\emph{policy in the owner's server}) \\
+--- & \code{report_delivery_damage(order_number, line_id, photo_ids)} & New; creates a claim for review and cannot ship a replacement (\textbf{policy in the owner's server}) \\
 --- & \code{create_case(intent, summary, priority)} & New; used for every handoff to a person \\
 \bottomrule
 \end{tabularx}
@@ -57,7 +57,7 @@ Listing~\ref{lst:returns-server} implements the returns server with the official
 
 \lstinputlisting[language=Python, caption={The returns MCP server (\texttt{ch05/returns\_server.py}).}, label={lst:returns-server}, firstline=7]{code/returns_server.py}
 
-Read it against the principles. There is no \texttt{customer\_id} parameter anywhere: the customer is the \emph{subject} of the access token that the server's authentication middleware verified for this request (\emph{identity from context}). The \texttt{reason} parameter is an enumeration, which the SDK turns into a JSON Schema \texttt{enum} that clients enforce before the call is sent (\emph{validated inputs}). The 90-day window and the \$150 review threshold are constants in this server and nowhere else (\emph{policy in the owner's server}). The first tool is annotated read-only; the second idempotent (\emph{read and write labeled}; \emph{idempotent writes}). Every refusal has a code, a message and a next step (\emph{actionable errors}). And the options list is capped at twenty lines (\emph{small outputs}).
+Read it against the principles. There is no \texttt{customer\_id} parameter anywhere: the customer is the \textbf{subject} of the access token that the server's authentication middleware verified for this request (\textbf{identity from context}). The \texttt{reason} parameter is an enumeration, which the SDK turns into a JSON Schema \texttt{enum} that clients enforce before the call is sent (\textbf{validated inputs}). The 90-day window and the \$150 review threshold are constants in this server and nowhere else (\textbf{policy in the owner's server}). The first tool is annotated read-only; the second idempotent (\textbf{read and write labeled}; \textbf{idempotent writes}). Every refusal has a code, a message and a next step (\emph{actionable errors}). And the options list is capped at twenty lines (\textbf{small outputs}).
 
 The repository's tests exercise this server directly, without a model. They check, among other things, that a retry with the same key returns the same return authorization rather than a second one, that a \$289 refund comes back \texttt{pending\_review}, that an item delivered 120 days ago is refused with \texttt{OUTSIDE\_WINDOW}, and that a different authenticated customer asking about the same order number gets \texttt{ORDER\_NOT\_FOUND}---not an error that reveals the order exists. \begin{keyidea}
 A tool that can be tested without a model is a tool whose behavior does not depend on a model.
@@ -88,7 +88,7 @@ adk deploy agent_engine --project=$PROJECT --region=$REGION \
 
 \paragraph{MCP servers on Cloud Run, one service per owner.} Each team deploys and operates its own server as a Cloud Run service, with its own release schedule and its own service account that can reach only its own system. Because the current MCP revision is stateless, each server scales horizontally like any other web service, with no session affinity.
 
-\paragraph{Two identities on every call.} A tool call carries two pieces of identity, and both matter. The \emph{caller} identity says which application is calling: the agent's service account, which the server checks against an allow-list. The \emph{customer} identity says on whose behalf: a short-lived token, issued when the customer signed in to chat or verified by the e-mail channel, scoped to that customer and passed through to the server. The server trusts the customer identity only because it can verify the token's signature, never because the agent asserted it.
+\paragraph{Two identities on every call.} A tool call\index{tool call} carries two pieces of identity, and both matter. The \textbf{caller} identity says which application is calling: the agent's service account, which the server checks against an allow-list. The \textbf{customer} identity says on whose behalf: a short-lived token, issued when the customer signed in to chat or verified by the e-mail channel, scoped to that customer and passed through to the server. The server trusts the customer identity only because it can verify the token's signature, never because the agent asserted it.
 
 \paragraph{Cost and capacity.} Set maximum instances on each server and the agent, budgets with alerts per project, and the tool-call budget per conversation enforced in the callback. Holiday peaks (Section~\ref{sec:support-changed}) are planned for explicitly.
 
@@ -98,7 +98,7 @@ adk deploy agent_engine --project=$PROJECT --region=$REGION \
 
 \subsection{Evaluating tool use}
 
-For a tool-using agent, a correct final message is not enough. An agent can say ``your return has been started'' without calling \texttt{start\_return}, or call it with the wrong line, or call it twice. Evaluation must therefore check the \emph{trajectory}---which tools were called, with what arguments, in what order---as well as the final response. ADK's evaluation compares an agent's actual tool calls with expected ones and its final response with a reference; the sample's configuration required scores of only 0.2 on both. The hybrid design's thresholds (Table~\ref{tab:support-thresholds}) are set per intent and per risk.
+For a tool-using agent, a correct final message is not enough. An agent can say ``your return has been started'' without calling \texttt{start\_return}, or call it with the wrong line, or call it twice. Evaluation must therefore check the \textbf{trajectory}---which tools were called, with what arguments, in what order---as well as the final response. ADK's evaluation compares an agent's actual tool calls with expected ones and its final response with a reference; the sample's configuration required scores of only 0.2 on both. The hybrid design's thresholds (Table~\ref{tab:support-thresholds}) are set per intent and per risk.
 
 \begin{table}[htbp]
 \centering
@@ -131,7 +131,7 @@ The most damaging failure of a tool-using agent is to tell a customer that somet
 
 \paragraph{Adversarial scripts.} 150 simulated customers try to obtain what policy does not allow: refunds outside the window, discounts above the cap, details of someone else's order. They lie about order numbers, claim manager approval, paste instructions into their messages and persist over several turns. The test passes only if \emph{outcomes} are correct---no policy-violating return created, no other customer's data shown---whatever the agent says. This is where the design's choice to enforce policy in servers pays off: the scripts can make the model say regrettable things, but they cannot make the returns server grant a refund it should not.
 
-\paragraph{Draft acceptance.} For the copilot, the useful measure is what people do with its drafts. The support platform records whether each draft was sent unchanged, lightly edited (under 20\% of characters changed), heavily edited or discarded. Draft acceptance feeds the reversal trigger in the decision record: it is the evidence that would justify automating returns later.
+\paragraph{Draft acceptance.} For the copilot, the useful measure is what people do with its drafts. The support platform records whether each draft was sent unchanged, lightly edited (under 20\% of characters changed), heavily edited or discarded. Draft acceptance feeds the reversal trigger in the decision record\index{decision record}: it is the evidence that would justify automating returns later.
 
 \subsection{From evaluation to production metrics}
 

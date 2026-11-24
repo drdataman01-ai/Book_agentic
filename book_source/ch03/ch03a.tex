@@ -44,7 +44,7 @@ In Chapter~\ref{ch:foundations}, Harbor's vice president of sales chose Team~B's
 
 Chapter~\ref{ch:toolkit} used KPIs and risks as given and scored designs on a five-point scale. This chapter supplies what that left out: where the KPIs come from, how to put money on them, how to price errors, and how to propose a rollout someone can say yes to. These are the skills that turn a technically sound design into a funded one. They are also design skills in their own right. A value case regularly changes the design, because it reveals which step carries the money and which risk deserves the most protection.
 
-The chapter fits into the seven-step design method of Chapter~\ref{ch:toolkit} at four places. The process map and the KPIs give step~1 its goal and measures. The stakeholder roles sharpen step~2, the list of people and systems. The value case, unit economics and the cost of errors put money into step~5, the comparison of designs. And the pilot plan and the memo complete step~7, because they turn a recorded decision into an approved one. We return to Harbor's pricing desk throughout the chapter, so that every tool can be shown on a case you already know.
+The chapter fits into the seven-step design method\index{design method} of Chapter~\ref{ch:toolkit} at four places. The process map and the KPIs give step~1 its goal and measures. The stakeholder roles sharpen step~2, the list of people and systems. The value case, unit economics and the cost of errors put money into step~5, the comparison of designs. And the pilot plan and the memo complete step~7, because they turn a recorded decision into an approved one. We return to Harbor's pricing desk throughout the chapter, so that every tool can be shown on a case you already know.
 
 % ----------------------------------------------------------------------
 \section{Where Does the Time Go Today?}
@@ -54,15 +54,15 @@ The chapter fits into the seven-step design method of Chapter~\ref{ch:toolkit} a
 Harbor's analysts spend about 35 minutes on a quote, yet customers wait 26 hours for it. If you could shrink only one thing, the analysts' 35 minutes or everything else, which would you choose? Hold that thought until you have seen the map.
 \end{thinkabout}
 
-Every claim a design makes is a claim of \emph{change}: faster, cheaper, fewer errors. Change from what? The \keyterm{current-process map} is the answer. It records how the work is done today---who does each step, how long it takes, how long it waits, what it costs, and where it goes wrong---so that the design's claims can be checked against a baseline rather than against a hope.
+Every claim a design makes is a claim of \emph{change}: faster, cheaper, fewer errors. Change from what? The \keyterm{current-process map}\index{current-process map|textbf} is the answer. It records how the work is done today---who does each step, how long it takes, how long it waits, what it costs, and where it goes wrong---so that the design's claims can be checked against a baseline rather than against a hope.
 
 \subsection{Steps, times and error points}
 
 The simplest map is a table with one row for each step of the work, in the order the work flows. Each row says who performs the step, and three further columns turn an ordinary list of steps into a business tool:
 \begin{itemize}[itemsep=1pt]
-  \item \emph{Touch time}: how long someone actually works on the step.
-  \item \emph{Wait time}: how long the work sits before the step starts. In knowledge work, waiting usually dwarfs working.
-  \item \emph{Error points}: where mistakes enter, with a rate if one can be measured.
+  \item \textbf{Touch time}\index{touch time and wait time|textbf}: how long someone actually works on the step.
+  \item \textbf{Wait time}: how long the work sits before the step starts. In knowledge work, waiting usually dwarfs working.
+  \item \textbf{Error points}: where mistakes enter, with a rate if one can be measured.
 \end{itemize}
 
 Table~\ref{tab:harbor-map} maps Harbor's quote process as it was before any AI was involved. The data came from three sources: the CRM's timestamps, a two-week time log kept by the six pricing analysts, and an audit of 500 issued quotes by Harbor's controller.
@@ -129,7 +129,7 @@ Baseline measurement is not a formality. If the baseline is not measured before 
 Who at Harbor might quietly hope that this project fails, and why? It is a slightly uncomfortable question, but asking it early is much cheaper than discovering the answer after launch.
 \end{thinkabout}
 
-A solution has more than one customer inside the company. It helps to distinguish four roles, because each one needs something different from the design. Table~\ref{tab:stakeholders} lists them for Harbor's quote design.
+A solution has more than one customer inside the company. It helps to distinguish four roles\index{stakeholder roles (sponsor, users, approvers, owners)|textbf}, because each one needs something different from the design. Table~\ref{tab:stakeholders} lists them for Harbor's quote design.
 
 \begin{table}[htbp]
 \centering
@@ -148,7 +148,7 @@ A solution has more than one customer inside the company. It helps to distinguis
 \end{tabularx}
 \end{table}
 
-Two practical consequences follow. Every \emph{approver} appears in the design table as a person who decides a step, or as a constraint that every design must respect, and every \emph{owner} is named next to the server, store or rule that they own. If a stakeholder has no place in the design table, either the table or the stakeholder list is wrong. And the roles often pull in different directions. The sponsor wants speed; the controller wants control; the representatives want fewer clicks; IT security wants fewer permissions. A design that satisfies only the sponsor will be blocked by an approver or quietly abandoned by its users. The weights in a trade-off table (Section~\ref{sec:tradeoff}) are, in practice, a negotiated settlement among these roles, which is why they must be written down and shown to them.
+Two practical consequences follow. Every \textbf{approver} appears in the design table\index{design table} as a person who decides a step, or as a constraint that every design must respect, and every \textbf{owner} is named next to the server, store or rule that they own. If a stakeholder has no place in the design table, either the table or the stakeholder list is wrong. And the roles often pull in different directions. The sponsor wants speed; the controller wants control; the representatives want fewer clicks; IT security wants fewer permissions. A design that satisfies only the sponsor will be blocked by an approver or quietly abandoned by its users. The weights in a trade-off table\index{trade-off table} (Section~\ref{sec:tradeoff}) are, in practice, a negotiated settlement among these roles, which is why they must be written down and shown to them.
 
 % ----------------------------------------------------------------------
 \section{How Will We Know It Worked?}
@@ -156,7 +156,7 @@ Two practical consequences follow. Every \emph{approver} appears in the design t
 
 \subsection{What makes a good KPI}
 
-A \keyterm{key performance indicator} is a number that tells the sponsor whether the business result is changing. Good KPIs for an AI solution share five properties:
+A \keyterm{key performance indicator}\index{key performance indicator (KPI)|textbf} is a number that tells the sponsor whether the business result is changing. Good KPIs for an AI solution share five properties:
 \begin{enumerate}[itemsep=1pt]
   \item \emph{Business-facing:} the sponsor already cares about it, or would recognize it at once (turnaround, cost per case, error rate, revenue), rather than a technical proxy (model accuracy).
   \item \emph{Measured today:} it has a baseline from the process map.
@@ -173,7 +173,7 @@ Harbor therefore pairs its two speed measures, quote turnaround and analyst minu
 
 \subsection{The KPI tree}
 
-KPIs live at the top of an organization's attention, while models and tools live at the bottom. A \keyterm{KPI tree} connects the two. Its root is the business result, its middle layer holds the operational measures that drive the result, and its leaves are technical metrics, each owned by one step of the design. The tree is easiest to read as a table, with one row for each operational measure. Table~\ref{tab:kpi-tree} shows Harbor's.
+KPIs live at the top of an organization's attention, while models and tools live at the bottom. A \keyterm{KPI tree}\index{key performance indicator (KPI)!KPI tree|textbf} connects the two. Its root is the business result, its middle layer holds the operational measures that drive the result, and its leaves are technical metrics, each owned by one step of the design. The tree is easiest to read as a table, with one row for each operational measure. Table~\ref{tab:kpi-tree} shows Harbor's.
 
 \begin{table}[htbp]
 \centering

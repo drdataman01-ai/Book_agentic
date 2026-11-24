@@ -22,10 +22,10 @@ Deliverables & Design tables for three designs, trade-off table, deployed assist
 \begin{chapterquestions}
 By the end of this case you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
-  \item How well does a published Google RAG sample hold up against the design method and the eight checks of Chapter~\ref{ch:toolkit}?
+  \item How well does a published Google RAG\index{retrieval-augmented generation (RAG)} sample hold up against the design method\index{design method} and the eight checks of Chapter~\ref{ch:toolkit}?
   \item How do you define KPIs for a product whose output is information, without falling into the deflection trap?
   \item How do you make retrieval permission-aware, current and cited, and what does each change cost?
-  \item How do you deploy an ADK agent to Cloud Run for the first time, safely?
+  \item How do you deploy an ADK\index{Agent Development Kit (ADK)} agent to Cloud Run for the first time, safely?
   \item How do you measure retrieval separately from the answers it feeds?
 \end{enumerate}
 \end{chapterquestions}
@@ -51,14 +51,14 @@ Policies differ by country, as employment law requires. Annual leave, parental l
 Employees find the intranet hard to search, so they ask. About 2{,}600 policy questions a month arrive at the People Operations service desk as tickets, and four HR generalists answer them. People Operations' director, who is the sponsor of this case, describes three problems.
 
 \begin{enumerate}[itemsep=1pt]
-  \item \emph{Slow answers.} The median ticket waits 1.8 business days for an answer. Engineers on client sites, who often need an answer about travel or expenses before they can book, find this unworkable.
-  \item \emph{Wrong answers.} An audit of 300 answered tickets found that 7\% were wrong or incomplete. Most errors came from applying another country's version of a policy, or an outdated one.
-  \item \emph{Expensive answers.} The generalists spend most of their week on repetitive questions, leaving little time for work only they can do, such as supporting managers through difficult cases.
+  \item \textbf{Slow answers.} The median ticket waits 1.8 business days for an answer. Engineers on client sites, who often need an answer about travel or expenses before they can book, find this unworkable.
+  \item \textbf{Wrong answers.} An audit of 300 answered tickets found that 7\% were wrong or incomplete. Most errors came from applying another country's version of a policy, or an outdated one.
+  \item \textbf{Expensive answers.} The generalists spend most of their week on repetitive questions, leaving little time for work only they can do, such as supporting managers through difficult cases.
 \end{enumerate}
 
 \subsection{The current process}
 
-Table~\ref{tab:policy-map} maps the process today. The median touch time per ticket is 11 minutes, and nearly all of the 1.8 days is queue time. The two error points match the audit. The first is an answer that uses the wrong country's or an outdated version of a policy (5.1\% of tickets), and the second is a confident answer to a question the policies do not actually address (1.9\%).
+Table~\ref{tab:policy-map} maps the process today. The median touch time\index{touch time and wait time} per ticket is 11 minutes, and nearly all of the 1.8 days is queue time. The two error points match the audit. The first is an answer that uses the wrong country's or an outdated version of a policy (5.1\% of tickets), and the second is a confident answer to a question the policies do not actually address (1.9\%).
 
 \begin{table}[htbp]
 \centering
@@ -107,7 +107,7 @@ The works council deserves attention early. Its concern is not whether the assis
 
 \subsection{The deflection trap}
 
-The most common KPI for an information assistant is \keyterm{deflection}: the share of questions answered without a human. It is a tempting KPI because it is easy to count and maps directly to labor savings.
+The most common KPI for an information assistant is \keyterm{deflection}\index{deflection|textbf}: the share of questions answered without a human. It is a tempting KPI because it is easy to count and maps directly to labor savings.
 
 \begin{watchout}[Watch out: the deflection trap]
 Deflection violates the pairing rule from Chapter~\ref{ch:business}. An assistant that answers every question confidently, right or wrong, has a deflection rate of 100\%. So does an assistant so frustrating that employees give up and ask a colleague instead.
@@ -116,7 +116,7 @@ Deflection violates the pairing rule from Chapter~\ref{ch:business}. An assistan
 To be a usable KPI, deflection must be defined so that it counts only questions that were actually resolved, and it must be paired with a measure of whether the answers were right. Alder \& Finch adopted these definitions:
 \begin{itemize}[itemsep=1pt]
   \item \emph{Resolved without HR}: the assistant answered, and the same employee did not open an HR ticket on the same topic within seven days.
-  \item \emph{Answer accuracy}: the share of answers judged correct by an HR reviewer, on a weekly random sample of 100 answered questions.
+  \item \textbf{Answer accuracy}: the share of answers judged correct by an HR reviewer, on a weekly random sample of 100 answered questions.
 \end{itemize}
 The seven-day rule catches the employee who asked the assistant, did not believe it, and asked HR anyway. The sampled review catches the employee who believed a wrong answer---the more expensive failure, because no one notices it until a wrong expense claim or a miscalculated leave balance surfaces months later.
 
@@ -143,11 +143,11 @@ Table~\ref{tab:policy-kpis} lists the three KPIs and three risks. Each has a sho
 \end{tabularx}
 \end{table}
 
-Notice that \risk{Wrong version} and \risk{Silent policy} are exactly the two error points on the process map. The assistant is not being asked to be perfect; it is being asked to beat the current process on the errors the current process actually makes.
+Notice that \risk{Wrong version} and \risk{Silent policy} are exactly the two error points on the process map\index{current-process map}. The assistant is not being asked to be perfect; it is being asked to beat the current process on the errors the current process actually makes.
 
 \subsection{KPI tree and value hypothesis}
 
-The KPI tree links these to step metrics that the evaluation in Section~\ref{sec:policy-evaluate} will measure: \kpi{Answer accuracy} depends on retrieval recall (did the right document reach the model?), on filtering (was it the right country's version?) and on citation precision (did the answer use only what was retrieved?); \risk{Silent policy} depends on abstention recall (did the assistant decline when nothing relevant was found?); \risk{Restricted leak} depends on leakage (was any restricted document ever retrieved for an unentitled user?). We draw this tree as an exercise.
+The KPI tree\index{key performance indicator (KPI)!KPI tree} links these to step metrics that the evaluation in Section~\ref{sec:policy-evaluate} will measure: \kpi{Answer accuracy} depends on retrieval recall (did the right document reach the model?), on filtering (was it the right country's version?) and on citation precision (did the answer use only what was retrieved?); \risk{Silent policy} depends on abstention recall (did the assistant decline when nothing relevant was found?); \risk{Restricted leak} depends on leakage (was any restricted document ever retrieved for an unentitled user?). We draw this tree as an exercise.
 
 \begin{keyidea}[The value hypothesis, in one sentence]
 If employees can get a correct, cited answer for their own country and grade within a minute, at least half of today's policy tickets will not be needed, HR generalists will each gain back more than a day a week, and wrong answers will fall---without exposing restricted documents.

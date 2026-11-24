@@ -95,7 +95,7 @@ def search_policies(query: str, tool_context: ToolContext) -> dict:
 Four details in this listing are design decisions, not coding style:
 \begin{itemize}[itemsep=1pt]
   \item The profile comes from a verified identity set at sign-in, never from the conversation. If the model or the user could supply the country, the filter would be only as trustworthy as the prompt.
-  \item The tool \emph{fails closed}: with no profile, it refuses to search rather than searching without a filter.
+  \item The tool \textbf{fails closed}: with no profile, it refuses to search rather than searching without a filter.
   \item The search limit is counted in code. The instruction mentions it so that the model plans within it; the code enforces it.
   \item The tool records which documents it returned. The citation guardrail needs that list, and so does the evaluation.
 \end{itemize}
@@ -141,7 +141,7 @@ This is the book's first deployment, so we take it step by step. The technical f
 
 \subsection{Choosing where it runs}
 
-Chapter~\ref{ch:foundations} described three targets. For this pilot the team chose Cloud Run, for two reasons. First, identity: Alder \& Finch already protects internal web applications with Identity-Aware Proxy (IAP), which signs users in with the company's identity provider and passes a verified identity to the service. A Cloud Run service behind IAP fits that pattern without new infrastructure. Second, the HR directory and ticketing MCP servers will also run on Cloud Run, so the whole solution uses one operational model. Agent Runtime would have been a reasonable alternative, with managed sessions as its main advantage; Chapter~\ref{ch:case-loan} compares the targets in full.
+Chapter~\ref{ch:foundations} described three targets. For this pilot the team chose Cloud Run, for two reasons. First, identity: Alder \& Finch already protects internal web applications with Identity-Aware Proxy (IAP), which signs users in with the company's identity provider and passes a verified identity to the service. A Cloud Run service behind IAP fits that pattern without new infrastructure. Second, the HR directory and ticketing MCP servers\index{Model Context Protocol (MCP)!server} will also run on Cloud Run, so the whole solution uses one operational model. Agent Runtime would have been a reasonable alternative, with managed sessions as its main advantage; Chapter~\ref{ch:case-loan} compares the targets in full.
 
 \subsection{Steps}
 
@@ -229,7 +229,7 @@ Total & 240 & \\
 
 \subsection{Thresholds and judging}
 
-The thresholds in Table~\ref{tab:policy-thresholds} are part of the go/no-go criteria for the pilot and are rerun before every change of model, instruction or index configuration. Correctness of the final answer is judged two ways: by a model-based judge using a rubric that compares the answer with HR's reference answer, and by HR reviewers on a random 60 questions. The model judge is used for routine regression runs only after its verdicts agree with the human reviewers' on at least 90\% of the 60.
+The thresholds in Table~\ref{tab:policy-thresholds} are part of the go/no-go\index{go/no-go criteria} criteria for the pilot and are rerun before every change of model, instruction or index configuration. Correctness of the final answer is judged two ways: by a model-based judge using a rubric that compares the answer with HR's reference answer, and by HR reviewers on a random 60 questions. The model judge is used for routine regression runs only after its verdicts agree with the human reviewers' on at least 90\% of the 60.
 
 \begin{table}[htbp]
 \centering

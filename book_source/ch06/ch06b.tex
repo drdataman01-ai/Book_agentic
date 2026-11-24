@@ -71,7 +71,7 @@ Imagine you are the clerk. An invoice arrives flagged as a possible duplicate. W
 
 \paragraph{What if nobody decides?} Each pause has a deadline: one business day for clerks, two for budget holders, or less if the discount date is nearer. A scheduled job finds paused workflows past their deadline and escalates to the reviewer's manager, then to the controller. Nothing is approved by timeout.
 
-\paragraph{Is the reviewer really reviewing?} Reviewers who see mostly clean items learn to approve quickly; this is called \keyterm{rubber-stamping}, and it silently converts a control into a delay. Three measures detect it. \emph{Canaries}: about 1\% of review items are seeded copies of known problems (a duplicate, an inflated price), and each reviewer's catch rate is tracked. \emph{Time on task}: decisions made in a few seconds on items with failed controls are flagged. \emph{Agreement}: a sample of each reviewer's decisions is re-reviewed by a senior clerk.
+\paragraph{Is the reviewer really reviewing?} Reviewers who see mostly clean items learn to approve quickly; this is called \keyterm{rubber-stamping}\index{rubber-stamping|textbf}, and it silently converts a control into a delay. Three measures detect it. \textbf{Canaries}: about 1\% of review items are seeded copies of known problems (a duplicate, an inflated price), and each reviewer's catch rate is tracked. \emph{Time on task}: decisions made in a few seconds on items with failed controls are flagged. \textbf{Agreement}: a sample of each reviewer's decisions is re-reviewed by a senior clerk.
 
 \subsection{Failing closed}
 
@@ -124,7 +124,7 @@ The sample's Terraform provides most of what the risk-routed design needs: a Clo
 Invoice total and supplier extracted correctly (PDFs) & Extraction, validation & $\ge$ 99.5\% \\
 Invalid extraction reaching the controls & Validation & 0 \\
 Seeded duplicates detected & Controls & 100\% \\
-Share of problem \emph{value} routed to review, at review budget & Risk score & $\ge$ 90\% \\
+Share of problem \textbf{value} routed to review, at review budget & Risk score & $\ge$ 90\% \\
 Bank-detail changes routed to treasury & Router & 100\% \\
 Evidence-pack claims supported by the cited lines & Explanation agent & $\ge$ 98\% \\
 Approvals outside authority or by the requester & Decision node & 0 \\
@@ -139,7 +139,7 @@ Two features of the evaluation are specific to human-in-the-loop systems. First,
 A control that has not been tried is an assertion, not a control.
 \end{keyidea}
 
-The risk score is evaluated on the share of problem \emph{value} that reaches review, not on accuracy. A score that is 99\% accurate because 96\% of invoices are clean is useless; what matters is how much of the money at risk it puts in front of a person within the review budget.
+The risk score is evaluated on the share of problem \textbf{value} that reaches review, not on accuracy. A score that is 99\% accurate because 96\% of invoices are clean is useless; what matters is how much of the money at risk it puts in front of a person within the review budget.
 
 % ----------------------------------------------------------------------
 \section{Business Case: Is It Worth It?}
@@ -185,7 +185,7 @@ Which of the value lines above rests on a measured input, and which on an assump
 
 \begin{enumerate}[itemsep=3pt]
   \item \textbf{E-invoicing mandate.} Two of Meridian's markets will require structured electronic invoices from suppliers within two years. Which steps become unnecessary for those invoices? Does the case for the risk-routed design over the perfect-match design get weaker?
-  \item \textbf{Different systems after the acquisition.} The acquired company runs a different ERP. Should the risk-routed design call both ERPs through one MCP server or two? Who owns each?
+  \item \textbf{Different systems after the acquisition.} The acquired company runs a different ERP. Should the risk-routed design call both ERPs through one MCP server\index{Model Context Protocol (MCP)!server} or two? Who owns each?
   \item \textbf{Dual approval.} The external auditor requires two approvers for any invoice above \$50{,}000. Change the design table and the decision step. What happens to \kpi{Days to approval} for large invoices, and how would you protect it?
 \end{enumerate}
 

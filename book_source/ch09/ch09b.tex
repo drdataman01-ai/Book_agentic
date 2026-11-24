@@ -10,7 +10,7 @@ The technical focus of this case is state: what the system remembers, where, for
 
 \subsection{Where each piece of state lives}
 
-ADK distinguishes state by scope, using prefixes on state keys: keys without a prefix belong to the current conversation (session); \texttt{user:} keys persist across a user's sessions; \texttt{app:} keys are shared across the application; and \texttt{temp:} keys last only for the current invocation. Beyond session state, Agent Platform's Memory Bank can hold longer-term memories across sessions. These are tools, not a design; Table~\ref{tab:air-state} is the design.
+ADK\index{Agent Development Kit (ADK)} distinguishes state by scope, using prefixes on state keys: keys without a prefix belong to the current conversation (session); \texttt{user:} keys persist across a user's sessions; \texttt{app:} keys are shared across the application; and \texttt{temp:} keys last only for the current invocation. Beyond session state\index{memory!session state}, Agent Platform\index{Gemini Enterprise Agent Platform}'s Memory Bank can hold longer-term memories across sessions. These are tools, not a design; Table~\ref{tab:air-state} is the design.
 
 \begin{table}[htbp]
 \centering

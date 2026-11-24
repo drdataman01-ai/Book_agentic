@@ -7,11 +7,11 @@
 
 \subsection{The sample as it stands}
 
-Google's \texttt{customer-service} sample was one of the most widely used ADK samples; a version of it appeared in the Google Cloud Next 2025 keynote. It builds ``Project Pro,'' an assistant for Cymbal Home \& Garden that greets a returning customer by name, identifies plants (including from video), recommends products, manages the cart, offers discounts within limits or asks a manager for larger ones, books planting appointments, sends care instructions and generates discount QR codes. It is a single agent with twelve tools and four callbacks. The tools are mocks, as its README states clearly: they return plausible responses without touching any real system.\footnote{The sample was removed from the main branch of \texttt{google/adk-samples} on 9 September 2026 as part of a clean-up of older samples. The companion repository vendors it at commit \texttt{a9dc177}, the last commit that contains it, under its Apache 2.0 license.}
+Google's \texttt{customer-service} sample was one of the most widely used ADK\index{Agent Development Kit (ADK)} samples; a version of it appeared in the Google Cloud Next 2025 keynote. It builds ``Project Pro,'' an assistant for Cymbal Home \& Garden that greets a returning customer by name, identifies plants (including from video), recommends products, manages the cart, offers discounts within limits or asks a manager for larger ones, books planting appointments, sends care instructions and generates discount QR codes. It is a single agent with twelve tools and four callbacks. The tools are mocks, as its README states clearly: they return plausible responses without touching any real system.\footnote{The sample was removed from the main branch of \texttt{google/adk-samples} on 9 September 2026 as part of a clean-up of older samples. The companion repository vendors it at commit \texttt{a9dc177}, the last commit that contains it, under its Apache 2.0 license.}
 
 There is much to learn from it, both from what it does well and from what a production design must change. Its strengths first:
 \begin{itemize}[itemsep=1pt]
-  \item Callbacks are used as guardrails. A before-tool callback checks that any \texttt{customer\_id} a tool is called with matches the customer in the session---the right instinct about \risk{Wrong customer}.
+  \item Callbacks are used as guardrails\index{guardrail}. A before-tool callback checks that any \texttt{customer\_id} a tool is called with matches the customer in the session---the right instinct about \risk{Wrong customer}.
   \item Defense in depth for discounts: the QR-code tool re-checks the discount limit itself, with a comment explaining that this guards against prompts that try to talk the agent into larger discounts.
   \item Tools return structured, recoverable errors. A rejected discount comes back as a status and a message telling the model what limit applies, so the conversation can continue sensibly.
   \item It ships an evaluation folder and unit tests for its tools.
@@ -20,7 +20,7 @@ There is much to learn from it, both from what it does well and from what a prod
 Now the gaps, measured against Cymbal's support process and the principles of this chapter:
 \begin{enumerate}[itemsep=2pt]
   \item \emph{It is a sales assistant, not a support system.} Of Cymbal's seven intents, it covers product questions and scheduling. It has no tools for order status, delivery problems, returns or refunds, which are two-thirds of the volume. Its instruction asks it to be proactive about upselling, a goal that sits uneasily with a customer reporting a broken delivery.
-  \item \emph{Identity is an argument.} The customer's profile is written into the global instruction (customer \texttt{123} in the mock), and tools take \texttt{customer\_id} as an argument chosen by the model. The callback's check against session state mitigates this, but the safer design removes the argument entirely, so that the model has nothing to get wrong.
+  \item \emph{Identity is an argument.} The customer's profile is written into the global instruction (customer \texttt{123} in the mock), and tools take \texttt{customer\_id} as an argument chosen by the model. The callback's check against session state\index{memory!session state} mitigates this, but the safer design removes the argument entirely, so that the model has nothing to get wrong.
   \item \emph{The discount rule lives in three places.} The 10\% limit is a constant in the callbacks module, a separate constant in the tools module, and is checked again in the QR-code tool. The vocabulary also disagrees: the approval tools describe discount types as \emph{percentage} or \emph{flat}, while the QR-code tool checks \emph{percentage} or \emph{fixed}. A policy that exists in three copies with two vocabularies will eventually exist in three versions.
   \item \emph{Approval is decided by a callback.} When the agent asks a manager for a discount of 10 or less, the callback answers ``approved, no manager needed'' without calling the tool; above 10, the mocked manager always approves. In a real system the approval rule belongs to the system that grants the discount.
   \item \emph{A callback that silently does nothing.} The before-tool callback calls a helper to lowercase all tool arguments but discards the helper's return value, so the arguments are never changed. It is a small slip, and an instructive one: rewriting the model's arguments in a callback is fragile, and validating them in the tool, against an explicit schema, is safer.
@@ -34,11 +34,11 @@ To compare like with like, the single-agent design extends the sample in its own
 
 \subsection{The triage design: routing with task-shaped tools}
 
-The triage design separates \emph{understanding} a contact from \emph{acting} on it. Table~\ref{tab:support-d2} writes it down as a design table. A Level~3 triage agent reads the message, identifies the intent and the key entities (order number, product), and routes. Each intent then has its own path, with the least autonomy that works:
+The triage design separates \emph{understanding} a contact from \emph{acting} on it. Table~\ref{tab:support-d2} writes it down as a design table\index{design table}. A Level~3 triage agent reads the message, identifies the intent and the key entities (order number, product), and routes. Each intent then has its own path, with the least autonomy that works:
 \begin{itemize}[itemsep=1pt]
   \item \emph{Order status} is a Level~2 workflow: code fetches the order's status from the orders server and a Level~1 agent turns it into a friendly reply. No agent decides anything; there is nothing to decide.
   \item \emph{Returns and refunds} go to a Level~4 returns agent with two tools on the returns server. The refund limit and return window are enforced by the server, and refunds above \$150 are queued for a returns specialist.
-  \item \emph{Product questions} use retrieve-then-answer over the catalog and care guides.
+  \item \emph{Product questions} use retrieve-then-answer\index{retrieve-then-answer} over the catalog and care guides.
   \item \emph{Scheduling} uses a Level~4 agent with the scheduling server's two tools.
   \item \emph{Complaints, ``I want a person'', and anything else} are handed to a human agent with a summary and the customer's recent orders already attached.
 \end{itemize}
@@ -100,7 +100,7 @@ Customer identity & A tool argument & Verified token & Verified token & Verified
 
 \subsection{Cost per contact, by design and by intent}
 
-This case's business skill is unit economics, and at 52{,}000 contacts a month it decides the design. Listing~\ref{lst:support-econ} implements Equation~\eqref{eq:unit} for each design, intent by intent. Each design has an automation rate per intent (the share resolved without a person, from a pilot on 2{,}000 historical transcripts replayed against prototypes), a model cost per automated contact, an error rate and cost on automated contacts, and fixed monthly costs for the engineers and servers that keep it running. Escalated contacts cost an extra 1.5 agent minutes, because the agent has to catch up; the triage design saves 3 minutes on complaints by handing them over summarized.
+This case's business skill is unit economics\index{unit economics}, and at 52{,}000 contacts a month it decides the design. Listing~\ref{lst:support-econ} implements Equation~\eqref{eq:unit} for each design, intent by intent. Each design has an automation rate per intent (the share resolved without a person, from a pilot on 2{,}000 historical transcripts replayed against prototypes), a model cost per automated contact, an error rate and cost on automated contacts, and fixed monthly costs for the engineers and servers that keep it running. Escalated contacts cost an extra 1.5 agent minutes, because the agent has to catch up; the triage design saves 3 minutes on complaints by handing them over summarized.
 
 \lstinputlisting[language=Python, caption={Cost per contact by design and intent (\texttt{ch05/unit\_economics.py}, inputs).}, label={lst:support-econ}, firstline=6, lastline=30]{code/unit_economics.py}
 
@@ -169,7 +169,7 @@ Table~\ref{tab:support-tradeoff} combines the money row with scores for the crit
 
 \subsection{Failure walk-through and decision}
 
-The failure walk-through for the hybrid design (an exercise) surfaces one change worth recording here: triage itself can misroute a refund request into the automated delivery path, where a ``broken item'' report could lead to a replacement being shipped. The fix is in the tool, not the router: the delivery server's \texttt{report\_delivery\_damage} tool creates a claim for review and cannot ship a replacement itself. \begin{keyidea}
+The failure walk-through\index{failure walk-through} for the hybrid design (an exercise) surfaces one change worth recording here: triage itself can misroute a refund request into the automated delivery path, where a ``broken item'' report could lead to a replacement being shipped. The fix is in the tool, not the router: the delivery server's \texttt{report\_delivery\_damage} tool creates a claim for review and cannot ship a replacement itself. \begin{keyidea}
 When routing can fail, the tools on the wrong path should be unable to do harm.
 \end{keyidea}
 
@@ -179,5 +179,5 @@ When routing can fail, the tools on the wrong path should be unable to do harm.
 \textbf{Decision.} The hybrid design. Automate order status, delivery issues, product questions and scheduling; assist people on returns and refunds, complaints and other contacts.\\
 \textbf{Reasons.} The hybrid design costs within \$0.02 of the triage design per contact (about \$1{,}000 a month) and keeps a person on every refund; it meets \kpi{E-mail response}, which the assist design does not.\\
 \textbf{Consequences.} Five MCP servers, owned by four teams. The returns server is built now, for the copilot, and is ready for automation later.\\
-\textbf{Reversal triggers.} Automate returns under \$150 if the copilot's drafts for returns are accepted unedited in more than 90\% of cases over a month, with no policy errors in the sampled review. Move back to assist for any automated intent whose 72-hour re-contact rate exceeds its baseline.
+\textbf{Reversal triggers\index{reversal trigger}.} Automate returns under \$150 if the copilot's drafts for returns are accepted unedited in more than 90\% of cases over a month, with no policy errors in the sampled review. Move back to assist for any automated intent whose 72-hour re-contact rate exceeds its baseline.
 \end{tcolorbox}

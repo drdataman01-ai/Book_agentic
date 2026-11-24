@@ -83,7 +83,7 @@ A chained log does not prevent tampering; write-once storage with a retention lo
 
 \subsection{Guardrails}
 
-Four guardrails run in code: the schema check on extraction; a reconciliation check that flags any extracted value that disagrees with the questionnaire; an output filter on everything the file agent writes, blocking any language about suspicion or reporting from reaching places an applicant could see; and a completeness check on the KYC memo, which must cite evidence for each required element (identity, business purpose, ownership, screening, risk rationale) before an analyst can submit a decision. The last one addresses \kpi{Documented rationale} directly: the examination finding was about missing rationale, and the memo cannot be filed without it.
+Four guardrails\index{guardrail} run in code: the schema check on extraction; a reconciliation check that flags any extracted value that disagrees with the questionnaire; an output filter on everything the file agent writes, blocking any language about suspicion or reporting from reaching places an applicant could see; and a completeness check on the KYC memo, which must cite evidence for each required element (identity, business purpose, ownership, screening, risk rationale) before an analyst can submit a decision. The last one addresses \kpi{Documented rationale} directly: the examination finding was about missing rationale, and the memo cannot be filed without it.
 
 % ----------------------------------------------------------------------
 \section{Deploy: How Do We Run It Safely?}
@@ -91,12 +91,12 @@ Four guardrails run in code: the schema check on extraction; a reconciliation ch
 
 The deployment adds controls that are standard for regulated workloads on Google Cloud:
 \begin{itemize}[itemsep=1pt]
-  \item \emph{A service perimeter} (VPC Service Controls) around the projects holding applicant data, so that data cannot be copied to services outside it, even by a component with valid credentials.
-  \item \emph{Separate service accounts} for each agent and server, matching the permission matrix; no shared credentials. Vendor API keys are in Secret Manager, readable only by the server that needs them.
-  \item \emph{No internet egress} for the document agent's runtime.
-  \item \emph{Customer-managed encryption keys} for stored documents and the case store.
+  \item \textbf{A service perimeter} (VPC Service Controls) around the projects holding applicant data, so that data cannot be copied to services outside it, even by a component with valid credentials.
+  \item \textbf{Separate service accounts} for each agent and server, matching the permission matrix; no shared credentials. Vendor API keys are in Secret Manager, readable only by the server that needs them.
+  \item \textbf{No internet egress} for the document agent's runtime.
+  \item \textbf{Customer-managed encryption keys} for stored documents and the case store.
   \item \emph{Retention}: documents and audit entries are retained for the period the bank's records policy requires (at least five years) in storage with a retention lock, and deleted on schedule after that.
-  \item \emph{Access reviews}: quarterly review of who and what holds each permission, with the permission matrix as the reference.
+  \item \textbf{Access reviews}: quarterly review of who and what holds each permission, with the permission matrix as the reference.
 \end{itemize}
 
 % ----------------------------------------------------------------------

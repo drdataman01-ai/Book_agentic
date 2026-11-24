@@ -7,6 +7,7 @@
 
 \chapter{From Building Agents to Designing Solutions}
 \label{ch:foundations}
+\index{MCP|see{Model Context Protocol (MCP)}}\index{RAG|see{retrieval-augmented generation (RAG)}}\index{ADK|see{Agent Development Kit (ADK)}}\index{LLM|see{large language model (LLM)}}\index{A2A|see{Agent2Agent (A2A)}}\index{KPI|see{key performance indicator (KPI)}}\index{checkpoint, human|see{human checkpoint}}
 
 \begin{chapterquestions}
 By the end of this chapter you will be able to answer these questions:
@@ -119,7 +120,7 @@ Outcome & \cellcolor{coRedBg}Not funded & \cellcolor{coGreenBg}Funded \\
 
 Team A's engineers were at least as skilled as Team B's. Their agent was impressive, and with a few more weeks it might have worked well. The difference was that Team B had \emph{designed a solution}. They had decided what the system should do and what it should not do, they had chosen a component for each part of the work on purpose, they had compared their choice with an alternative, and they had tied the whole thing to a business result that someone could check. Team A had \emph{built an agent} and hoped that the business case would follow.
 
-This book is about doing what Team B did, again and again, for real business problems. If some of the words in the story, such as \emph{agent}, \emph{RAG}, \emph{MCP} or \emph{tool}, are new to you, that is expected. This chapter explains each of them from the beginning.
+This book is about doing what Team B did, again and again, for real business problems. If some of the words in the story, such as \textbf{agent}, \textbf{RAG}, \textbf{MCP} or \textbf{tool}, are new to you, that is expected. This chapter explains each of them from the beginning.
 
 \begin{keyidea}
 Building an agent answers the question ``Can we?'' Designing a solution answers three harder questions: ``Should we? How exactly? And is it worth it?''
@@ -150,7 +151,7 @@ These are design questions, and courses and tutorials rarely teach them. Most te
 
 \subsection{Five design skills}
 
-We will call the distance between being able to build an agent and being able to design a solution the \keyterm{design gap}. Closing the gap takes five skills, and every case in this book exercises all five. Each skill answers one plain question, as Figure~\ref{fig:five-skills} shows.
+We will call the distance between being able to build an agent and being able to design a solution the \keyterm{design gap}\index{design gap|textbf}. Closing the gap takes five skills, and every case in this book exercises all five. Each skill answers one plain question, as Figure~\ref{fig:five-skills} shows.
 
 \begin{figure}[htbp]
 \centering
@@ -172,11 +173,34 @@ We will call the distance between being able to build an agent and being able to
 \end{figure}
 
 \begin{description}[leftmargin=1em,itemsep=3pt]
-  \item[Decomposition.] This skill breaks a business process into steps and decides, for each step, what kind of work it is. Some steps need \emph{judgment}, which a model can supply. Some need \emph{knowledge} from company documents, which document search can supply. Some need an \emph{action} in a company system, which a tool can perform. The rest follow a \emph{fixed rule}, which ordinary code handles best. Most poor designs go wrong right here. They hand a model a decision that a three-line \texttt{if} statement would make more reliably, or they hard-code a judgment that really needs a model.
-  \item[Boundaries.] This skill decides where one component ends and the next begins, which agent owns which decision, which capabilities the model may use and which are kept away from it, and where a person must step in.
-  \item[Trade-offs.] This skill compares two or more designs on the same fixed criteria, such as quality, cost, speed, security and the workload placed on people, and then writes down the decision and what would change it.
-  \item[Production.] This skill carries a design through testing, deployment, security, monitoring and daily operation. A design that cannot be tested or monitored is not finished.
-  \item[Business justification.] This skill ties the design to the numbers the business already watches, to the cost of each transaction and each error, to the main risks and to a rollout plan, and then explains all of it to an executive on one page.
+  \item[Decomposition.] This skill breaks a business process into steps and decides, for each step, what kind of work it is. Some steps need \textbf{judgment}, which a model can supply. Some need \textbf{knowledge} from company documents, which document search can supply. Some need an \textbf{action} in a company system, which a tool can perform. The rest follow a \textbf{fixed rule}, which ordinary code handles best. Most poor designs go wrong right here. They hand a model a decision that a three-line \texttt{if} statement would make more reliably, or they hard-code a judgment that really needs a model. \emph{How the book builds it:} 
+\begin{itemize}
+\item   Section~\ref{sec:decompose} walks you through your first decomposition, of Harbor's quote process. 
+\item Chapter~\ref{ch:toolkit} turns the result into a design table\index{design table}. Every case then opens with a process map\index{current-process map} and asks you to assign a building block to each step, and the five cases in Part~III ask you to do it from a blank page.
+\item Chapter~\ref{ch:business} shows how to map the current process before you break it apart, and 
+\end{itemize}
+  \item[Boundaries.] This skill decides where one component ends and the next begins, which agent owns which decision, which capabilities the model may use and which are kept away from it, and where a person must step in. \emph{How the book builds it:} 
+\begin{itemize}
+\item You draw boundaries in three places throughout the book. The first is the MCP server, where you decide which tools each agent may see; Chapter~\ref{ch:case-support} is devoted to tool design, and Chapter~\ref{ch:case-kyc} applies least privilege under strict regulation. 
+\item The second is the human checkpoint, which Chapter~\ref{ch:case-invoice} develops as an approval gate\index{approval gate}. 
+\item The third is the line between agents, which the capstone in Chapter~\ref{ch:capstone} draws across departments and companies.
+\end{itemize}
+  \item[Trade-offs.] This skill compares two or more designs on the same fixed criteria, such as quality, cost, speed, security and the workload placed on people, and then writes down the decision and what would change it. \emph{How the book builds it:} 
+\begin{itemize}
+\item Chapter~\ref{ch:toolkit} gives you the trade-off table\index{trade-off table} and the criteria it uses. In every case you compare at least two alternative designs. 
+\item In Part~II the first alternative is always a published Google sample, which you critique before you redesign it. Each case ends with a changed-requirement exercise, in which a new regulation, more traffic or a smaller budget may reverse your decision, so that you practice recording what would change it.
+\end{itemize}
+  \item[Production.] This skill carries a design through testing, deployment, security, monitoring and daily operation. A design that cannot be tested or monitored is not finished. \emph{How the book builds it:} 
+\begin{itemize}
+\item  Every case ends in a working deployment, built with ADK and deployed on Google Cloud, so you practice this skill in every chapter. 
+\item Each case also goes deep on one stage of the production lifecycle in Section~\ref{sec:lifecycle}: evaluation in Chapter~\ref{ch:case-fraud}, state and memory in Chapter~\ref{ch:case-airline}, security in Chapter~\ref{ch:case-kyc}, observability in Chapter~\ref{ch:case-incident}, and operations in Chapter~\ref{ch:capstone}.
+\end{itemize}
+  \item[Business justification.] This skill ties the design to the numbers the business already watches, to the cost of each transaction and each error, to the main risks and to a rollout plan, and then explains all of it to an executive on one page. \emph{How the book builds it:} 
+\begin{itemize}  
+\item  Chapter~\ref{ch:business} teaches the tools: KPIs, unit economics\index{unit economics} such as the cost per quote, the cost of errors, and the one-page memo\index{one-page memo}. 
+\item Every case then has its own business-case section and ends with a memo to the executive sponsor that includes a rollout plan and go/no-go\index{go/no-go criteria} criteria. 
+\item Along the way, each case develops one business skill in depth, such as pricing asymmetric fraud errors in Chapter~\ref{ch:case-fraud}, weighing cost against latency in Chapter~\ref{ch:case-forecast}, and comparing deployment costs in Chapter~\ref{ch:case-loan}.
+\end{itemize}
 \end{description}
 
 \subsection{What exactly is a design?}
@@ -184,12 +208,12 @@ We will call the distance between being able to build an agent and being able to
 Throughout the book we use the word \emph{design} in a specific sense.
 
 \begin{definition}
-A \keyterm{solution design} is a set of decisions about how a business process will be carried out by people, software and AI components, together with the reasons for those decisions, the alternatives that were rejected, and the measurements that will show whether the decisions were right.
+A \keyterm{solution design}\index{solution design|textbf} is a set of decisions about how a business process will be carried out by people, software and AI components, together with the reasons for those decisions, the alternatives that were rejected, and the measurements that will show whether the decisions were right.
 \end{definition}
 
-A design is not a diagram, although it usually includes one, and it is not code, although code carries it out. The definition has three parts on purpose. The \emph{decisions} say what the system does. The \emph{reasons and alternatives} let someone else check the thinking and change it later when conditions change. The \emph{measurements} turn the design into a claim that can be tested once the system is running.
+A design is not a diagram, although it usually includes one, and it is not code, although code carries it out. The definition has three parts on purpose. The \textbf{decisions} say what the system does. The \textbf{reasons and alternatives} let someone else check the thinking and change it later when conditions change. The \textbf{measurements} turn the design into a claim that can be tested once the system is running.
 
-The definition leads directly to the four deliverables you will produce for every case in this book, listed in Table~\ref{tab:deliverables}. A \keyterm{design table} lists every step of the solution and says who or what does it, what it uses and why it is there. A \keyterm{trade-off table} scores at least two alternative designs on the same criteria and records the decision. A \emph{working deployment} shows that the chosen design runs, built with ADK on Google Cloud. A \keyterm{one-page memo} to the executive sponsor states the business case, the risks and a rollout plan. Team B brought all four to the meeting, and that is why they won.
+The definition leads directly to the four deliverables you will produce for every case in this book, listed in Table~\ref{tab:deliverables}.
 
 \begin{table}[htbp]
 \centering
@@ -216,13 +240,13 @@ The definition leads directly to the four deliverables you will produce for ever
 Suppose you paste the request ``Quote 40 units of the 3-inch stainless ball valve for Delta Water, they want 18\% off'' into a general-purpose chatbot. What do you expect it to get right? What do you expect it to get wrong? Keep your guesses in mind as you read this section.
 \end{thinkabout}
 
-Every technology in this book is built around a \keyterm{large language model} (LLM), so we start there. A language model is a program that has been trained on a very large amount of text to predict what text should come next. You give it some text, called the \keyterm{prompt}, and it writes a continuation. That sounds modest, but a model trained at a large enough scale learns to do many useful things through this one ability. It can read a messy e-mail and pick out the customer, the products and the quantities. It can summarize a contract, follow written instructions, answer questions, and write a polite note to a manager. It can also produce its answer in a strict format, such as a filled-in form, when asked to.
+Every technology in this book is built around a \keyterm{large language model}\index{large language model (LLM)|textbf} (LLM), so we start there. A language model is a program that has been trained on a very large amount of text to predict what text should come next. You give it some text, called the \keyterm{prompt}\index{prompt|textbf}, and it writes a continuation. That sounds modest, but a model trained at a large enough scale learns to do many useful things through this one ability. It can read a messy e-mail and pick out the customer, the products and the quantities. It can summarize a contract, follow written instructions, answer questions, and write a polite note to a manager. It can also produce its answer in a strict format, such as a filled-in form, when asked to.
 
-Two facts about how a model works matter for everything that follows. The first is that a model has no memory between requests. Each time a program sends it a prompt, the model starts fresh, and the only information it has, beyond what it learned during training, is the text in that prompt. The space available for the prompt is called the \keyterm{context window}. It is large, often hundreds of pages, but it is not unlimited, and every page placed in it costs time and money. The second fact is that a model's output is produced by probability, not by rules. A model that follows an instruction correctly ninety-nine times may still break it the hundredth time, especially if the input is unusual or written to mislead it.
+Two facts about how a model works matter for everything that follows. The first is that a model has \textbf{no memory} between requests. Each time a program sends it a prompt, the model starts fresh, and the only information it has, beyond what it learned during training, is the text in that prompt. The space available for the prompt is called the \keyterm{context window}\index{context window|textbf}. It is large, often hundreds of pages, but it is not unlimited, and every page placed in it costs time and money. The second fact is that a model's output is produced by probability, not by rules. A model that follows an instruction correctly ninety-nine times may still break it the hundredth time, especially if the input is unusual or written to mislead it.
 
 These two facts explain why a language model on its own is not enough for business work. Imagine giving Team A's request about Delta Water to a model with no help at all. Three things would go wrong.
 
-First, the model \emph{does not know Harbor}. It learned from public text up to a cutoff date, and it has never seen Harbor's discount policy, its price list or Delta Water's contract. Asked for the contract price, it will not say ``I don't know.'' It is more likely to produce a plausible number, because producing plausible text is what it was trained to do. An answer of this kind, fluent and confident but not grounded in any real source, is called a \keyterm{hallucination}.
+First, the model \emph{does not know Harbor}. It learned from public text up to a cutoff date, and it has never seen Harbor's discount policy, its price list or Delta Water's contract. Asked for the contract price, it will not say ``I don't know.'' It is more likely to produce a plausible number, because producing plausible text is what it was trained to do. An answer of this kind, fluent and confident but not grounded in any real source, is called a \keyterm{hallucination}\index{hallucination|textbf}.
 
 \begin{watchout}
 A hallucination does not look like an error. It looks exactly like a correct answer: the same confident tone, the same tidy format, sometimes even a made-up policy number. That is why the designs in this book never let a model be the only source of a fact that matters.
@@ -232,7 +256,7 @@ Second, the model \emph{cannot act}. It produces text and nothing else. It canno
 
 Third, the model \emph{cannot guarantee a rule or a calculation}. If its instructions say that discounts above 15\% need a manager, it will usually respect that, but ``usually'' is not good enough for a rule that protects the company's margin. Arithmetic on a legally binding quote has the same problem.
 
-Each of these gaps has a standard remedy, and together the remedies make up the building blocks of this book (Figure~\ref{fig:llm-gaps}). Missing knowledge is supplied by \emph{retrieval-augmented generation}, which searches the company's documents and places the relevant passages in the prompt. The inability to act is solved by giving the model \emph{tools} it can ask to use, inside a loop that lets it take one step after another; a model working this way is called an \emph{agent}. The many company systems an agent must reach are connected through a common standard, the \emph{Model Context Protocol}. Rules and calculations are taken away from the model altogether and given to \emph{plain code}, which is exact. Section~\ref{sec:blocks} explains each remedy in turn.
+Each of these gaps has a standard remedy, and together the remedies make up the building blocks of this book (Figure~\ref{fig:llm-gaps}). Missing knowledge is supplied by \textbf{retrieval-augmented generation}, which searches the company's documents and places the relevant passages in the prompt. The inability to act is solved by giving the model \textbf{tools} it can ask to use, inside a loop that lets it take one step after another; a model working this way is called an \textbf{agent}. The many company systems an agent must reach are connected through a common standard, the \textbf{Model Context Protocol}. Rules and calculations are taken away from the model altogether and given to \textbf{plain code}, which is exact. Section~\ref{sec:blocks} explains each remedy in turn.
 
 \begin{figure}[htbp]
 \centering
@@ -277,7 +301,7 @@ A representative asks for Delta Water's contract price on part \texttt{BV-316-3}
 \section{How Much Should the Model Decide?}
 \label{sec:autonomy}
 
-The word \emph{agent} is used loosely. Marketing material calls nearly any system with a language model in it an agent, and to design well we need sharper terms. The most useful question to ask about any proposed system is a simple one: \emph{who decides what happens next?} In a traditional program, the programmer decides in advance, by writing the steps in a fixed order. In an agent, the model decides while the program is running, one step at a time. Figure~\ref{fig:workflow-vs-agent} shows the difference on Harbor's quote problem.
+The word \textbf{agent} is used loosely. Marketing material calls nearly any system with a language model in it an agent, and to design well we need sharper terms. The most useful question to ask about any proposed system is a simple one: \emph{who decides what happens next?} In a traditional program, the programmer decides in advance, by writing the steps in a fixed order. In an agent, the model decides while the program is running, one step at a time. Figure~\ref{fig:workflow-vs-agent} shows the difference on Harbor's quote problem.
 
 \begin{figure}[htbp]
 \centering
@@ -317,12 +341,12 @@ The word \emph{agent} is used loosely. Marketing material calls nearly any syste
 \end{figure}
 
 \begin{definition}
-An \keyterm{agent}, in this book, is a software component in which a language model chooses, while the program runs, which action to take next---which tool to use, with what inputs, or whether to stop---based on the goal it was given and the results of its earlier actions.
+An \keyterm{agent}\index{agent|textbf}, in this book, is a software component in which a language model chooses, while the program runs, which action to take next---which tool to use, with what inputs, or whether to stop---based on the goal it was given and the results of its earlier actions.
 \end{definition}
 
-A system can contain a language model without being an agent in this sense. A program that always searches for five documents and then asks a model to summarize them uses a model, but the programmer fixed the steps. Anthropic's engineering guidance draws the same line between \emph{workflows}, in which code guides the model along predefined paths, and \emph{agents}, in which the model directs its own process and its use of tools, and it recommends starting with the simplest option that works \citep{anthropic2024effective}. We take the same stance and turn it into a rule later in this section.
+A system can contain a language model without being an agent in this sense. A program that always searches for five documents and then asks a model to summarize them uses a model, but the programmer fixed the steps. Anthropic's engineering guidance draws the same line between \textbf{workflows}\index{workflow|textbf}, in which code guides the model along predefined paths, and \textbf{agents}, in which the model directs its own process and its use of tools, and it recommends starting with the simplest option that works \citep{anthropic2024effective}. We take the same stance and turn it into a rule later in this section.
 
-Between a program with no model at all and a group of cooperating agents lies a range of options. Table~\ref{tab:autonomy} lays out six of them, from the least autonomous to the most. The levels are not a ranking of quality. Each step up the table buys flexibility, and pays for it with higher cost, slower responses, less predictable behavior and harder testing.
+Between a program with no model at all and a group of cooperating agents lies a range of options.\index{autonomy spectrum|textbf} Table~\ref{tab:autonomy} lays out six of them, from the least autonomous to the most. The levels are not a ranking of quality. Each step up the table buys flexibility, and pays for it with higher cost, slower responses, less predictable behavior and harder testing.
 
 \begin{table}[htbp]
 \centering
@@ -354,7 +378,7 @@ A program always searches for five documents and then asks a model to summarize 
 \answer{It is not an agent, because the programmer fixed the steps in advance and the model never chooses what to do next. It is a fixed workflow at Level~2, with one model step inside it.}
 \end{quickcheck}
 
-\begin{principle}[Least sufficient autonomy]
+\begin{principle}[Least sufficient autonomy]\index{least sufficient autonomy|textbf}
 For each step in a process, choose the lowest level of autonomy that meets the step's quality target. Move a step to a higher level only when you can name the requirement that the lower level fails to meet, and only when you can test the higher level.
 \end{principle}
 

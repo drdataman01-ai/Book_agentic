@@ -8,13 +8,13 @@
 
 \subsection{State the hypothesis first}
 
-Before estimating any money, write one sentence that says how the design creates value. This is the \keyterm{value hypothesis}.
+Before estimating any money, write one sentence that says how the design creates value. This is the \keyterm{value hypothesis}\index{value hypothesis|textbf}.
 
 \begin{keyidea}[Harbor's value hypothesis, in one sentence]
 \emph{If quotes reach customers in under four hours instead of a day, Harbor will win more of the orders it quotes; and if analysts only check drafts instead of building quotes, they can spend the freed time on large, complex deals---without lowering realized margin.}
 \end{keyidea}
 
-The hypothesis names the mechanism (faster quotes, freed analyst time), the result (more orders won, better use of analysts), and the guardrail (margin holds). Every number in the value case should map to a clause of the hypothesis. A number that does not is a sign that the case is being padded.
+The hypothesis names the mechanism (faster quotes, freed analyst time), the result (more orders won, better use of analysts), and the guardrail\index{guardrail} (margin holds). Every number in the value case should map to a clause of the hypothesis. A number that does not is a sign that the case is being padded.
 
 \subsection{Four kinds of benefit}
 
@@ -41,7 +41,7 @@ Risk reduction & A lower chance of a rare, expensive event, such as a fine or a 
 A business case that counts every freed minute as saved salary is the most common overstatement in the field. Unless someone decides what the freed people will do, or the team stops hiring, the minutes never reach the bank.
 \end{watchout}
 
-\subsection{Harbor's value case}
+\subsection{Harbor's value case}\index{value case|textbf}
 
 Listing~\ref{lst:value} computes Harbor's annual value with every assumption in one place. Each input is either measured (from the process map and the controller's audit) or explicitly assumed; the assumed ones are the inputs the pilot must test.
 
@@ -100,11 +100,11 @@ A payback of under one month should make you suspicious rather than pleased. The
 \label{fig:tornado}
 \end{figure}
 
-This kind of chart comes from a \keyterm{tornado analysis}, and you can see where the name comes from: with the bars sorted from widest to narrowest, it looks like a funnel cloud. Its message is blunt. The entire case swings on one assumption, the win-rate lift: at zero lift the net value is about \$335{,}000 a year; at two points it is nearly \$5 million. Everything else, including a tenfold change in model cost, moves the answer by a few percent.
+This kind of chart comes from a \keyterm{tornado analysis}\index{tornado analysis|textbf}, and you can see where the name comes from: with the bars sorted from widest to narrowest, it looks like a funnel cloud. Its message is blunt. The entire case swings on one assumption, the win-rate lift: at zero lift the net value is about \$335{,}000 a year; at two points it is nearly \$5 million. Everything else, including a tenfold change in model cost, moves the answer by a few percent.
 
 This changes how the case should be presented and how the pilot should be designed:
 \begin{itemize}[itemsep=1pt]
-  \item \emph{Present the floor case.} With zero growth benefit, the design still returns about \$335{,}000 a year and pays back its build cost in about six and a half months. That is the case to lead with, because it rests on measured inputs. The growth benefit is upside to be tested, not promised.
+  \item \emph{Present the floor case.}\index{floor case|textbf} With zero growth benefit, the design still returns about \$335{,}000 a year and pays back its build cost in about six and a half months. That is the case to lead with, because it rests on measured inputs. The growth benefit is upside to be tested, not promised.
   \item \emph{Design the pilot to measure the uncertain input.} Win rate can only be measured by comparing quotes handled by the new system with comparable quotes handled the old way, over enough weeks to see a difference. That requirement goes into the rollout plan (Section~\ref{sec:rollout}).
   \item \emph{Stop optimizing what does not matter.} Choosing a cheaper model to save a fraction of a cent per quote would be wasted effort at Harbor. Choosing a model that makes intake more accurate, and so cuts clarification round trips, might matter a great deal. The value case tells the engineers where their effort pays.
 \end{itemize}
@@ -117,7 +117,7 @@ Build the value case so that its conservative version rests only on measured inp
 \section{What Does One Transaction Cost?}
 \label{sec:unit-econ}
 
-Annual totals persuade sponsors; \keyterm{unit economics} guide design. The unit is one transaction---one quote, one ticket, one invoice---and the question is what it costs to process one, by design and by path. Chapter~\ref{ch:foundations} gave a first version for Harbor (Equation~1.1). The full version adds the cost of errors:
+Annual totals persuade sponsors; \keyterm{unit economics}\index{unit economics|textbf} guide design. The unit is one transaction---one quote, one ticket, one invoice---and the question is what it costs to process one, by design and by path. Chapter~\ref{ch:foundations} gave a first version for Harbor (Equation~1.1). The full version adds the cost of errors:
 \begin{equation}
   \begin{split}
   C_{\text{unit}} \;=\; & \underbrace{c_{\text{model}} + c_{\text{tools}} + c_{\text{plat}}}_{\text{run cost}}
@@ -163,18 +163,18 @@ Every AI component makes mistakes, and so do the people and rules around it. The
 
 \subsection{Pricing an error}
 
-For each error type $k$ in the failure walk-through, estimate $L_k$, the average cost when it happens. The components are usually some mix of:
+For each error type $k$ in the failure walk-through\index{failure walk-through}, estimate $L_k$, the average cost when it happens. The components are usually some mix of:
 \begin{itemize}[itemsep=1pt]
-  \item \emph{direct loss}: margin given away, a refund, a payment to the wrong party;
+  \item \textbf{direct loss}: margin given away, a refund, a payment to the wrong party;
   \item \emph{rework}: the staff time to find and fix it;
   \item \emph{customer effect}: a lost order, a complaint, churn;
   \item \emph{exposure}: fines, audit findings, legal cost, typically rare but large.
 \end{itemize}
 At Harbor, a below-floor quote that is won (31\% of quotes are) costs on average \$1{,}150 in margin given away. A quote that applies the wrong customer's contract costs less in money but more in trust; the sales director put it at one lost repeat order in five such errors.
 
-\subsection{Asymmetric errors}
+\subsection{Asymmetric errors}\index{asymmetric error cost|textbf}
 
-Most decisions can go wrong in two directions, and the two directions rarely cost the same. Consider the manager-approval branch in Harbor's policy engine. A \emph{false negative}---an exception that should have gone to a manager but did not---risks a below-floor quote, about \$1{,}150 when it matters. A \emph{false positive}---a routine quote sent to a manager unnecessarily---costs six manager minutes, about \$10, plus some hours of delay. The first is roughly a hundred times as expensive as the second, as Figure~\ref{fig:asym} shows.
+Most decisions can go wrong in two directions, and the two directions rarely cost the same. Consider the manager-approval branch in Harbor's policy engine. A \textbf{false negative}---an exception that should have gone to a manager but did not---risks a below-floor quote, about \$1{,}150 when it matters. A \textbf{false positive}---a routine quote sent to a manager unnecessarily---costs six manager minutes, about \$10, plus some hours of delay. The first is roughly a hundred times as expensive as the second, as Figure~\ref{fig:asym} shows.
 
 \begin{figure}[htbp]
 \centering
@@ -203,7 +203,7 @@ Harbor's design sidesteps the problem for its most expensive error in a way wort
 
 \subsection{Error budgets}
 
-An \keyterm{error budget} is the rate of a given error the business agrees to accept, stated before launch. It converts a vague hope (``the system should be accurate'') into a commitment that can be monitored and that triggers action when exceeded. Harbor's budgets for the pilot were:
+An \keyterm{error budget}\index{error budget|textbf} is the rate of a given error the business agrees to accept, stated before launch. It converts a vague hope (``the system should be accurate'') into a commitment that can be monitored and that triggers action when exceeded. Harbor's budgets for the pilot were:
 \begin{itemize}[itemsep=1pt]
   \item For quotes issued below the margin floor, the budget is zero, and any occurrence stops the pilot for review.
   \item For quotes that apply the wrong customer or contract, the budget is 0.3\% of quotes, against 0.9\% today.
@@ -215,7 +215,7 @@ Budgets are set from the error's cost and the baseline: the new design should be
 \section{What Else Could Go Wrong?}
 \label{sec:risk}
 
-Errors are the risks you can count. A \keyterm{risk register} also lists the ones you cannot count easily, each with an owner and a response. Table~\ref{tab:risk} shows the top of Harbor's.
+Errors are the risks you can count. A \keyterm{risk register}\index{risk register|textbf} also lists the ones you cannot count easily, each with an owner and a response. Table~\ref{tab:risk} shows the top of Harbor's.
 
 \begin{table}[htbp]
 \centering
@@ -237,5 +237,5 @@ Growth benefit does not appear & \cotag{coAmber}{Business case} & Lead with floo
 \end{table}
 
 \begin{inpractice}
-Two risks in the table have nothing to do with models: adoption and the business case itself. In practice these sink more AI projects than hallucination does. A design that the people it serves will not use has a value of zero, whatever its evaluation scores.
+Two risks in the table have nothing to do with models: adoption and the business case itself. In practice these sink more AI projects than hallucination\index{hallucination} does. A design that the people it serves will not use has a value of zero, whatever its evaluation scores.
 \end{inpractice}

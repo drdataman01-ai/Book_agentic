@@ -99,13 +99,13 @@ One agent receives the application, reads the documents, calls identity verifica
 
 \subsection{The controls-as-code design: agents as clerks}
 
-The controls-as-code design treats the bank's AML program as a set of controls and asks, for each, whether code, a model or a person should perform it. Table~\ref{tab:kyc-d2} writes it down as a design table.
+The controls-as-code design treats the bank's AML program as a set of controls and asks, for each, whether code, a model or a person should perform it. Table~\ref{tab:kyc-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item A \emph{document agent} (Level~1) extracts fields from uploaded documents into strict schemas. It runs inside a trust boundary with \emph{no tools at all}: it receives document contents and returns structured fields, nothing else.
-  \item \emph{Code} reconciles extracted fields with the questionnaire, checks beneficial-ownership completeness (do the owners listed add up, is a control person named), and calls identity verification and sanctions screening through vendor MCP servers.
-  \item A \emph{screening agent} (Level~4, read-only) helps with possible sanctions matches and adverse media: it gathers the vendor's match details and searches a licensed news database, and writes a match analysis. It never clears a match.
-  \item The \emph{risk rating} is the bank's validated model, run as code.
-  \item \emph{Routing in code}: an applicant who is low risk, fully verified, with no screening hits, no open questions and complete beneficial ownership is approved by rule. Every other file goes to an analyst, assembled by a \emph{file agent} that writes the KYC memo with citations to the evidence.
+  \item A \textbf{document agent} (Level~1) extracts fields from uploaded documents into strict schemas. It runs inside a trust boundary with \emph{no tools at all}: it receives document contents and returns structured fields, nothing else.
+  \item \textbf{Code} reconciles extracted fields with the questionnaire, checks beneficial-ownership completeness (do the owners listed add up, is a control person named), and calls identity verification and sanctions screening through vendor MCP servers\index{Model Context Protocol (MCP)!server}.
+  \item A \textbf{screening agent} (Level~4, read-only) helps with possible sanctions matches and adverse media: it gathers the vendor's match details and searches a licensed news database, and writes a match analysis. It never clears a match.
+  \item The \textbf{risk rating} is the bank's validated model, run as code.
+  \item \textbf{Routing in code}: an applicant who is low risk, fully verified, with no screening hits, no open questions and complete beneficial ownership is approved by rule. Every other file goes to an analyst, assembled by a \textbf{file agent} that writes the KYC memo with citations to the evidence.
   \item \emph{People decide} every decline, every enhanced-due-diligence case, every match clearance and every escalation to the financial-intelligence unit. The system never contacts the applicant about screening or suspicion.
 \end{itemize}
 

@@ -12,60 +12,60 @@
 \contentsline {subsection}{\numberline {1.2.1}Building is getting cheap; designing is not}{6}{subsection.1.2.1}%
 \contentsline {subsection}{\numberline {1.2.2}Five design skills}{7}{subsection.1.2.2}%
 \contentsline {subsection}{\numberline {1.2.3}What exactly is a design?}{8}{subsection.1.2.3}%
-\contentsline {section}{\numberline {1.3}What Can a Language Model Do on Its Own?}{8}{section.1.3}%
-\contentsline {section}{\numberline {1.4}How Much Should the Model Decide?}{10}{section.1.4}%
-\contentsline {section}{\numberline {1.5}What Are the Four Building Blocks?}{12}{section.1.5}%
-\contentsline {subsection}{\numberline {1.5.1}Plain code: the block that never guesses}{12}{subsection.1.5.1}%
+\contentsline {section}{\numberline {1.3}What Can a Language Model Do on Its Own?}{9}{section.1.3}%
+\contentsline {section}{\numberline {1.4}How Much Should the Model Decide?}{11}{section.1.4}%
+\contentsline {section}{\numberline {1.5}What Are the Four Building Blocks?}{13}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Plain code: the block that never guesses}{13}{subsection.1.5.1}%
 \contentsline {subsection}{\numberline {1.5.2}Retrieval-augmented generation (RAG): an open book for the model}{13}{subsection.1.5.2}%
 \contentsline {paragraph}{The problem RAG solves.}{13}{section*.17}%
-\contentsline {paragraph}{How RAG works.}{13}{section*.18}%
-\contentsline {paragraph}{What an embedding is.}{13}{section*.19}%
-\contentsline {paragraph}{What the model actually sees.}{14}{section*.20}%
-\contentsline {paragraph}{When RAG is the right block.}{14}{section*.21}%
+\contentsline {paragraph}{How RAG works.}{14}{section*.18}%
+\contentsline {paragraph}{What an embedding is.}{14}{section*.19}%
+\contentsline {paragraph}{What the model actually sees.}{15}{section*.20}%
+\contentsline {paragraph}{When RAG is the right block.}{16}{section*.21}%
 \contentsline {subsection}{\numberline {1.5.3}The agent: a model that can ask for actions}{16}{subsection.1.5.3}%
 \contentsline {paragraph}{Tools: how a model asks for an action.}{16}{section*.22}%
 \contentsline {paragraph}{The agent loop.}{16}{section*.23}%
-\contentsline {paragraph}{An agent at work.}{16}{section*.24}%
+\contentsline {paragraph}{An agent at work.}{17}{section*.24}%
 \contentsline {paragraph}{When an agent is the right block.}{17}{section*.25}%
 \contentsline {paragraph}{How agents fail.}{17}{section*.26}%
-\contentsline {subsection}{\numberline {1.5.4}The Model Context Protocol (MCP): one plug for every system}{18}{subsection.1.5.4}%
-\contentsline {paragraph}{The problem MCP solves.}{18}{section*.27}%
-\contentsline {paragraph}{Host, client and server.}{18}{section*.28}%
-\contentsline {paragraph}{A conversation over MCP.}{19}{section*.29}%
-\contentsline {paragraph}{Tools, resources and prompts.}{19}{section*.30}%
-\contentsline {paragraph}{Local and remote servers.}{20}{section*.31}%
-\contentsline {paragraph}{Why MCP matters for design.}{20}{section*.32}%
-\contentsline {subsection}{\numberline {1.5.5}Which block should I choose?}{21}{subsection.1.5.5}%
-\contentsline {subsection}{\numberline {1.5.6}How the blocks work together}{21}{subsection.1.5.6}%
-\contentsline {section}{\numberline {1.6}How Do We Break a Process into Steps?}{22}{section.1.6}%
-\contentsline {subsection}{\numberline {1.6.1}What questions are still open?}{24}{subsection.1.6.1}%
-\contentsline {section}{\numberline {1.7}How Do We Build an Agent with ADK?}{24}{section.1.7}%
-\contentsline {subsection}{\numberline {1.7.1}Project layout and the development loop}{25}{subsection.1.7.1}%
-\contentsline {subsection}{\numberline {1.7.2}Agents and function tools}{25}{subsection.1.7.2}%
-\contentsline {paragraph}{Designing the docstring.}{26}{section*.33}%
-\contentsline {subsection}{\numberline {1.7.3}Connecting to an MCP server}{27}{subsection.1.7.3}%
-\contentsline {subsection}{\numberline {1.7.4}Workflows, sessions and the rest}{29}{subsection.1.7.4}%
-\contentsline {section}{\numberline {1.8}Where Will Our Agents Run?}{29}{section.1.8}%
-\contentsline {subsection}{\numberline {1.8.1}Three places to run an agent}{29}{subsection.1.8.1}%
-\contentsline {subsection}{\numberline {1.8.2}Cost control from day one}{31}{subsection.1.8.2}%
-\contentsline {section}{\numberline {1.9}What Does It Take to Reach Production?}{31}{section.1.9}%
-\contentsline {section}{\numberline {1.10}How Should You Read This Book?}{31}{section.1.10}%
-\contentsline {paragraph}{Two tracks.}{31}{section*.34}%
-\contentsline {paragraph}{One template.}{32}{section*.35}%
-\contentsline {paragraph}{From critique to blank page.}{32}{section*.36}%
-\contentsline {paragraph}{The companion repository.}{32}{section*.37}%
-\contentsline {section}{Chapter Summary}{32}{section*.38}%
-\contentsline {section}{Key Terms}{33}{section*.39}%
-\contentsline {section}{Review Questions}{33}{section*.40}%
-\contentsline {section}{Exercises}{34}{section*.41}%
-\contentsline {paragraph}{Design track}{34}{section*.42}%
-\contentsline {paragraph}{Build track}{34}{section*.43}%
-\contentsline {section}{Lab 1: A First Quote Assistant}{34}{section*.44}%
-\contentsline {paragraph}{Goal.}{34}{section*.45}%
-\contentsline {paragraph}{Time.}{34}{section*.46}%
-\contentsline {paragraph}{Steps.}{35}{section*.47}%
-\contentsline {paragraph}{Deliverable.}{35}{section*.48}%
-\contentsline {section}{Further Reading}{35}{section*.49}%
+\contentsline {subsection}{\numberline {1.5.4}The Model Context Protocol (MCP): one plug for every system}{19}{subsection.1.5.4}%
+\contentsline {paragraph}{The problem MCP solves.}{19}{section*.27}%
+\contentsline {paragraph}{Host, client and server.}{19}{section*.28}%
+\contentsline {paragraph}{A conversation over MCP.}{20}{section*.29}%
+\contentsline {paragraph}{Tools, resources and prompts.}{20}{section*.30}%
+\contentsline {paragraph}{Local and remote servers.}{21}{section*.31}%
+\contentsline {paragraph}{Why MCP matters for design.}{21}{section*.32}%
+\contentsline {subsection}{\numberline {1.5.5}Which block should I choose?}{22}{subsection.1.5.5}%
+\contentsline {subsection}{\numberline {1.5.6}How the blocks work together}{22}{subsection.1.5.6}%
+\contentsline {section}{\numberline {1.6}How Do We Break a Process into Steps?}{23}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}What questions are still open?}{25}{subsection.1.6.1}%
+\contentsline {section}{\numberline {1.7}How Do We Build an Agent with ADK?}{25}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Project layout and the development loop}{26}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}Agents and function tools}{26}{subsection.1.7.2}%
+\contentsline {paragraph}{Designing the docstring.}{27}{section*.33}%
+\contentsline {subsection}{\numberline {1.7.3}Connecting to an MCP server}{28}{subsection.1.7.3}%
+\contentsline {subsection}{\numberline {1.7.4}Workflows, sessions and the rest}{30}{subsection.1.7.4}%
+\contentsline {section}{\numberline {1.8}Where Will Our Agents Run?}{30}{section.1.8}%
+\contentsline {subsection}{\numberline {1.8.1}Three places to run an agent}{30}{subsection.1.8.1}%
+\contentsline {subsection}{\numberline {1.8.2}Cost control from day one}{32}{subsection.1.8.2}%
+\contentsline {section}{\numberline {1.9}What Does It Take to Reach Production?}{32}{section.1.9}%
+\contentsline {section}{\numberline {1.10}How Should You Read This Book?}{32}{section.1.10}%
+\contentsline {paragraph}{Two tracks.}{32}{section*.34}%
+\contentsline {paragraph}{One template.}{33}{section*.35}%
+\contentsline {paragraph}{From critique to blank page.}{33}{section*.36}%
+\contentsline {paragraph}{The companion repository.}{33}{section*.37}%
+\contentsline {section}{Chapter Summary}{33}{section*.38}%
+\contentsline {section}{Key Terms}{34}{section*.39}%
+\contentsline {section}{Review Questions}{34}{section*.40}%
+\contentsline {section}{Exercises}{35}{section*.41}%
+\contentsline {paragraph}{Design track}{35}{section*.42}%
+\contentsline {paragraph}{Build track}{35}{section*.43}%
+\contentsline {section}{Lab 1: A First Quote Assistant}{35}{section*.44}%
+\contentsline {paragraph}{Goal.}{35}{section*.45}%
+\contentsline {paragraph}{Time.}{36}{section*.46}%
+\contentsline {paragraph}{Steps.}{36}{section*.47}%
+\contentsline {paragraph}{Deliverable.}{36}{section*.48}%
+\contentsline {section}{Further Reading}{36}{section*.49}%
 \contentsline {chapter}{\numberline {2}The Designer's Toolkit}{37}{chapter.2}%
 \contentsline {section}{\numberline {2.1}What Changes When an AI Can Act?}{37}{section.2.1}%
 \contentsline {paragraph}{An assistant that only answers.}{38}{section*.50}%
@@ -86,7 +86,7 @@
 \contentsline {section}{\numberline {2.5}Patterns and Traps: Do We Have to Start from Scratch?}{46}{section.2.5}%
 \contentsline {section}{\numberline {2.6}Step 5: Which Design Is Best?}{48}{section.2.6}%
 \contentsline {subsection}{\numberline {2.6.1}Three designs for returns}{49}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Scoring, weighting and checking the result}{49}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.2}Scoring, weighting and checking the result}{50}{subsection.2.6.2}%
 \contentsline {section}{\numberline {2.7}Steps 6 and 7: What Could Go Wrong, and What Did We Decide?}{51}{section.2.7}%
 \contentsline {section}{\numberline {2.8}The Method in Every Case}{52}{section.2.8}%
 \contentsline {section}{Chapter Summary}{53}{section*.61}%
@@ -498,15 +498,15 @@
 \contentsline {paragraph}{Learning to remember.}{226}{section*.207}%
 \contentsline {paragraph}{Learning to forget.}{227}{section*.208}%
 \contentsline {paragraph}{One agent becomes two.}{227}{section*.209}%
-\contentsline {paragraph}{Proving that a skill changed something.}{227}{section*.210}%
+\contentsline {paragraph}{Proving that a skill changed something.}{228}{section*.210}%
 \contentsline {paragraph}{A person walks in.}{228}{section*.211}%
 \contentsline {paragraph}{The front door is not another brain.}{228}{section*.212}%
 \contentsline {paragraph}{Releasing it.}{229}{section*.213}%
 \contentsline {paragraph}{Seeing and pricing what happened.}{229}{section*.214}%
 \contentsline {paragraph}{Honest claims from small tests.}{229}{section*.215}%
-\contentsline {paragraph}{What the journey teaches.}{229}{section*.216}%
+\contentsline {paragraph}{What the journey teaches.}{230}{section*.216}%
 \contentsline {section}{Chapter Summary}{230}{section*.217}%
-\contentsline {section}{Review Questions}{230}{section*.218}%
+\contentsline {section}{Review Questions}{231}{section*.218}%
 \contentsline {chapter}{\numberline {A}Setting Up ADK and Google Cloud}{233}{appendix.A}%
 \contentsline {section}{\numberline {A.1}Local tools}{233}{section.A.1}%
 \contentsline {section}{\numberline {A.2}A Google Cloud account and project for the course}{233}{section.A.2}%
@@ -543,3 +543,4 @@
 \contentsline {section}{\numberline {D.5}Rubrics}{247}{section.D.5}%
 \contentsline {section}{\numberline {D.6}Running design reviews in class}{247}{section.D.6}%
 \contentsline {section}{\numberline {D.7}The free design coach}{248}{section.D.7}%
+\contentsline {chapter}{Index}{251}{section*.228}%

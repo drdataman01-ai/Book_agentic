@@ -1,0 +1,167 @@
+% ======================================================================
+% Chapter 12 -- Part B: build, deploy (choosing the target), evaluate,
+% business case, end matter
+% ======================================================================
+
+\section{Build: How Do We Make It?}
+\label{sec:loan-build}
+
+\subsection{Numbers from tools, words from models}
+
+The rule Harbor's quote design followed in Chapter~\ref{ch:foundations}---the model writes the words, code supplies the numbers---matters even more in a credit memo, which may contain several hundred figures. Section agents are instructed to obtain every figure from the calculation server and to write it as a reference, for example \texttt{\{calc:dscr\_fy2025\}}, which the rendering step replaces with the value and its source. The numbers-trace guardrail then checks the rendered memo: every number in the text must match a value returned by the calculation server for this deal, or appear verbatim in a cited document. A number that matches neither blocks the draft.
+
+\begin{keyidea}
+The model writes the words; tools supply the numbers; a guardrail checks that every number came from a tool.
+\end{keyidea}
+
+\subsection{Long-running work}
+
+Generating a full draft takes ten to twenty minutes: dozens of retrievals, tens of calculations, six section agents and up to two critic rounds. Nobody waits for that in a chat window. The workflow is started when the analyst confirms the spread, runs in the background, records progress per section in the case, and notifies the analyst when the draft is ready. A failure in one section is retried or marked for the analyst; it does not discard the others. This long-running, resumable shape is one of the main inputs to the deployment decision below.
+
+\subsection{Bounded reflection}
+
+The critic agent checks the draft against a checklist derived from the credit policy: does the financial section address each year presented, each covenant, the borrower's largest customers and suppliers; does the risk section pair each risk with a mitigant; is collateral described with its valuation date. It returns specific gaps, each tied to a checklist item, and section agents revise at most twice. The checklist is the critic's instruction and its evaluation rubric at once, which keeps the reflection loop from drifting into general polishing. Gaps remaining after two rounds are listed at the top of the draft for the analyst.
+
+% ----------------------------------------------------------------------
+\section{Deploy: Where Should Each Part Run?}
+\label{sec:loan-deploy}
+
+The technical focus of this case is the deployment decision deferred since Chapter~\ref{ch:foundations}. Table~\ref{tab:loan-targets} compares the three targets on the criteria that matter for this workload.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Deployment targets for Summit's memo workflow.}
+\label{tab:loan-targets}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{coHead} Criterion & Agent Runtime & Cloud Run & GKE \\
+\midrule
+Long-running, resumable runs & Built for long-running agents with managed sessions & Jobs suit batch steps; services need external state for long runs & Full control; team builds it \\
+Sessions and memory & Managed & Team provides a store & Team provides a store \\
+Network isolation and private access to core systems & Supported in the bank's perimeter (to verify with security) & Supported & Most flexible \\
+Operations effort & Lowest & Low & Highest \\
+Fit for MCP servers & Not its purpose & Natural fit & Possible \\
+Portability & Platform-specific runtime & Any container & Any container \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+No single target is best for every component, and the decision reflects that:
+\begin{itemize}[itemsep=1pt]
+  \item The \emph{agents}---planner, section agents, critic---run on \emph{Agent Runtime}, whose managed sessions and support for long-running work fit the drafting workflow and minimize operations effort, the largest cost in Listing~\ref{lst:tco}.
+  \item The \emph{MCP servers}---calculation, document retrieval---run on \emph{Cloud Run}, owned by their teams, stateless, and portable.
+  \item The \emph{spreading batch} runs as a \emph{Cloud Run job} triggered when documents arrive.
+  \item \emph{GKE} is not used. It would be the right choice if the bank already ran a large Kubernetes platform with a team to operate it, or needed hardware or networking that the managed services cannot provide.
+\end{itemize}
+
+Portability is addressed at the boundaries rather than by choosing the most portable runtime for everything: the agents' tools are MCP servers in containers, and the agents themselves are ADK code that can be redeployed to Cloud Run if needed. The bank accepts some platform dependence for the agents in exchange for lower operations cost, and keeps its business logic---the calculations, the templates, the policy checklist---in components it can move.
+
+\begin{principle}[Choose targets per component]
+Different components of one solution have different shapes. Choose each component's runtime by its shape---long-running agent, stateless tool, batch job---and keep business logic in the components that are easiest to move.
+\end{principle}
+
+% ----------------------------------------------------------------------
+\section{Evaluate: How Do We Know It Works?}
+\label{sec:loan-evaluate}
+
+A credit memo is judged by the people who rely on it. The evaluation uses 50 recent approved deals: for each, the workflow design drafts a memo from the same documents the analyst had, and the result is compared with the memo actually approved.
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Number accuracy}: every figure in the draft checked against the approved memo's figures and the spreads. Threshold: 100\% traceable, zero wrong after the guardrail.
+  \item \emph{Citation precision}: on a sample of 400 claims, the share whose citation supports the claim. Threshold: 98\%.
+  \item \emph{Completeness}: the policy checklist applied to the draft by a credit officer. Threshold: at least 90\% of items addressed before the analyst edits.
+  \item \emph{Usefulness}: three credit officers rate each draft section on a four-point scale (``usable as is'', ``minor edits'', ``major edits'', ``rewrite''), blind to whether they are reading a draft or the approved memo's section. The share of ``usable'' or ``minor'' is the main quality measure.
+  \item \emph{Time}: in the pilot, analyst hours per memo, measured from the case system.
+\end{itemize}
+\begin{quickcheck}
+Why are the credit officers not told whether they are reading a generated draft or the approved memo?
+\answer{Because knowing the source changes the rating. People are harsher on a machine's draft, or kinder to it, depending on what they expect; a blind rating measures the text.}
+\end{quickcheck}
+
+The evaluation set is kept for regression: every change to a model, instruction, template or checklist reruns the 50 deals before release, and model risk management receives the results as part of its ongoing validation.
+
+% ----------------------------------------------------------------------
+\section{Business Case: Is It Worth It?}
+\label{sec:loan-business}
+
+Two days saved on each of 1{,}400 new-loan memos, and about a day on each of 3{,}000 annual reviews, frees roughly 5{,}800 analyst days a year---more than half of the analyst team's capacity. Summit plans to use it to grow lending without growing the team and to shorten decision times from twelve days to five, which relationship managers expect to win deals they currently lose to faster lenders. Against a three-year TCO of about \$1.3 million, the case is strong even if only a fraction of the freed time is redeployed.
+
+The rollout follows the build in phases: spreading and calculation first (useful on their own, and the gate for the build-or-buy condition); drafting for annual reviews next, where formats are stable and risk is lower; new-loan memos last.
+
+\begin{tcolorbox}[colback=white, colframe=black!60, boxrule=0.6pt, arc=1pt, left=10pt, right=10pt, top=8pt, bottom=8pt, fontupper=\small]
+\textbf{To:} Chief Credit Officer \hfill \textbf{From:} Credit Memo Design Team\\
+\textbf{Re:} Credit decisions in five days, not twelve --- build in phases, with a vendor checkpoint
+
+\smallskip\hrule\smallskip
+
+\textbf{Recommendation.} Build the memo workflow in three phases; three-year cost about \$1.3 million.
+
+\textbf{The problem.} A new-loan memo takes three and a half analyst days, most of it re-keying statements and computing ratios. Decisions take twelve days; we lose deals to faster lenders.
+
+\textbf{What changes.} Statements are spread automatically and confirmed by the analyst. Ratios and covenant tests are computed by our own systems. A complete first draft of every section, with a source for every statement, is ready when the analyst begins. Analysts and credit officers make every rating and decision.
+
+\textbf{Why build.} At our volume, building costs less over three years than the vendor platforms we reviewed, keeps borrower data and our credit logic in our control, and avoids per-memo fees that grow with volume. If the first phase overruns by more than 30\%, we will reopen the vendor option before continuing.
+
+\textbf{What we need.} Credit administration's ownership of templates and the policy checklist; model risk management's validation plan; three credit officers' time for the blind evaluation.
+\end{tcolorbox}
+
+% ----------------------------------------------------------------------
+\section{Changed Requirement: What If the World Changes?}
+\label{sec:loan-changed}
+
+\begin{enumerate}[itemsep=3pt]
+  \item \textbf{A vendor price cut.} The leading vendor halves its per-memo fee and offers on-premises model hosting. Rerun Listing~\ref{lst:tco}. Does the decision change, and what non-cost criteria still matter?
+  \item \textbf{Small-business loans.} Summit extends the system to loans under \$1 million, raising volume to 15{,}000 memos a year with shorter memos. What changes in the design, the deployment and the evaluation?
+  \item \textbf{A merger.} Summit merges with a bank that runs everything on GKE with a strong platform team. Does the deployment decision change?
+\end{enumerate}
+
+% ----------------------------------------------------------------------
+\section*{Chapter Summary}
+\addcontentsline{toc}{section}{Chapter Summary}
+
+\begin{itemize}[itemsep=2pt]
+  \item Build versus buy is decided on total cost of ownership over the system's life, including operations staff and exit costs, and on control, data and flexibility.
+  \item People who operate a system usually dominate its cost; per-unit fees scale against growth; the build's estimate is its main risk.
+  \item In document generation, numbers come from tools, claims carry citations, and a guardrail checks both.
+  \item Reflection works best with an explicit checklist that is both the critic's instruction and its rubric, and a hard round limit.
+  \item Choose deployment targets per component by shape; keep business logic in portable components.
+  \item Evaluate professional documents blind, with the professionals who rely on them, and keep the set for regression.
+\end{itemize}
+
+\section*{Review Questions}
+\addcontentsline{toc}{section}{Review Questions}
+
+\begin{enumerate}[itemsep=2pt]
+  \item Why is GKE the most expensive build option in Listing~\ref{lst:tco}, and when would it not be?
+  \item At what volume does the vendor become the most expensive option, and why?
+  \item How does the numbers-trace guardrail work, and what does it block?
+  \item Why is the critic's checklist both its instruction and its rubric?
+  \item Why does the decision split components across Agent Runtime and Cloud Run?
+  \item Why is the usefulness rating done blind?
+\end{enumerate}
+
+\section*{Exercises}
+\addcontentsline{toc}{section}{Exercises}
+
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{(Design)} Write the component cards for the planner and the critic.
+  \item \textbf{(Design)} Write the vendor design as a design table, including the bank's integrations with the vendor, and mark where each of the four risks sits.
+  \item \textbf{(Build)} Add uncertainty to \texttt{tco.py}: draw the build cost from a distribution skewed toward overruns and report the probability that the vendor is cheaper.
+  \item \textbf{(Build)} Implement the numbers-trace guardrail for a rendered memo and the calculation server's output, with tests for rounding and units.
+\end{enumerate}
+
+\section*{Lab 12: Decide Where It Runs}
+\addcontentsline{toc}{section}{Lab 12: Decide Where It Runs}
+
+\paragraph{Goal.} Deploy the drafting workflow's agents to Agent Runtime and its calculation server to Cloud Run, measure what each costs to run, and replace the planning figures in the TCO model.
+
+\paragraph{Steps.}
+\begin{enumerate}[itemsep=2pt]
+  \item In \texttt{ch12/}, load the synthetic deal files and spreads for 10 deals.
+  \item Deploy the calculation server to Cloud Run and the agents with \code{adk deploy agent_engine}.
+  \item Generate drafts for the 10 deals. Record run time, model calls, tokens and cost per memo.
+  \item Run the numbers-trace guardrail and the checklist critic; report gaps.
+  \item Update \texttt{tco.py} with your measured per-memo cost and rerun.
+\end{enumerate}
+
+\paragraph{Deliverable.} A one-page deployment decision record with your measurements and the updated TCO table.

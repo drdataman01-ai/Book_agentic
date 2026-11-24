@@ -116,7 +116,7 @@ If every incident opens with a correlated alert group, a brief that states the l
 
 \subsection{The sample as it stands}
 
-The \texttt{software-bug-assistant} sample is a conversational assistant for IT support staff and developers. It searches an internal ticket database, finds similar tickets using vector search in Cloud SQL, reads GitHub issues and pull requests through GitHub's remote MCP server, and searches the web and Stack Overflow. Its ticket tools are defined declaratively in MCP Toolbox for Databases: each tool is a named, parameterized SQL statement---\texttt{search-tickets}, \texttt{get-ticket-by-id}, \texttt{update-ticket-status}, \texttt{create-new-ticket} and five others.
+The \texttt{software-bug-assistant} sample is a conversational assistant for IT support staff and developers. It searches an internal ticket database, finds similar tickets using vector search\index{vector index} in Cloud SQL, reads GitHub issues and pull requests through GitHub's remote MCP server\index{Model Context Protocol (MCP)!server}, and searches the web and Stack Overflow. Its ticket tools are defined declaratively in MCP\index{Model Context Protocol (MCP)} Toolbox for Databases: each tool is a named, parameterized SQL statement---\texttt{search-tickets}, \texttt{get-ticket-by-id}, \texttt{update-ticket-status}, \texttt{create-new-ticket} and five others.
 
 Its strengths: declarative database tools are close to the task-shaped tools of Chapter~\ref{ch:case-support}---each does one thing with typed parameters, and the SQL is reviewable by a database owner. Similar-ticket search uses retrieval for what retrieval is good at. The GitHub toolset uses a tool filter. And the README documents local and Cloud Run deployment clearly.
 
@@ -137,12 +137,12 @@ The chat design keeps the sample's conversational shape and adds read-only tools
 
 \subsection{The triage design: event-triggered triage with safe actions}
 
-The triage design starts from the alert. Table~\ref{tab:inc-d2} writes it down as a design table.
+The triage design starts from the alert. Table~\ref{tab:inc-d2} writes it down as a design table\index{design table}.
 \begin{itemize}[itemsep=1pt]
-  \item Cloud Monitoring publishes alerts to Pub/Sub. \emph{Code} groups related alerts into one incident (same service, overlapping window, shared dependency), suppresses flapping alerts and pages the on-call engineer once.
-  \item A \emph{triage agent} (Level~4, bounded to three minutes and twenty tool calls) investigates with read-only, task-shaped tools: error rate and latency for a service and window, recent deployments and configuration changes, log search limited to one service and window, and a runbook and past-incident index. It posts an \emph{incident brief} to the incident channel: what is affected, up to three hypotheses ranked by evidence, with links to the graphs and log lines behind each, and the runbook steps that apply.
-  \item The brief lists \emph{proposed actions} from a \emph{safe-action catalog} (Section~\ref{sec:inc-build}). Tier~1 actions---reversible, with a small blast radius---run automatically when their preconditions hold. Tier~2 actions need the on-call engineer's click. Tier~3 actions are never available to the agent.
-  \item After resolution, a \emph{postmortem agent} drafts the timeline from the incident channel, alerts and actions for the team to complete.
+  \item Cloud Monitoring publishes alerts to Pub/Sub. \textbf{Code} groups related alerts into one incident (same service, overlapping window, shared dependency), suppresses flapping alerts and pages the on-call engineer once.
+  \item A \textbf{triage agent} (Level~4, bounded to three minutes and twenty tool calls\index{tool call}) investigates with read-only, task-shaped tools: error rate and latency for a service and window, recent deployments and configuration changes, log search limited to one service and window, and a runbook and past-incident index. It posts an \textbf{incident brief} to the incident channel: what is affected, up to three hypotheses ranked by evidence, with links to the graphs and log lines behind each, and the runbook steps that apply.
+  \item The brief lists \textbf{proposed actions} from a \textbf{safe-action catalog} (Section~\ref{sec:inc-build}). Tier~1 actions---reversible, with a small blast radius---run automatically when their preconditions hold. Tier~2 actions need the on-call engineer's click. Tier~3 actions are never available to the agent.
+  \item After resolution, a \textbf{postmortem agent} drafts the timeline from the incident channel, alerts and actions for the team to complete.
 \end{itemize}
 
 \begin{table}[htbp]
@@ -216,7 +216,7 @@ The chat design helps little: it shortens diagnosis somewhat but leaves acknowle
 
 \subsection{Decision}
 
-Expected value alone favors the auto-fix design. Three considerations reverse that for now. First, the auto-fix design's advantage rests on an unmeasured parameter, while the triage design's rests mostly on measured ones. Second, the auto-fix design's losses are concentrated: a wrong failover can turn a P2 into a P1, the kind of event that ends retailer contracts, which an average does not capture. Third, the triage design is a step toward the auto-fix design, not a fork: actions move from Tier~2 to Tier~1 one at a time as their record justifies it. The decision record therefore chooses the triage design with an explicit promotion rule.
+Expected value alone favors the auto-fix design. Three considerations reverse that for now. First, the auto-fix design's advantage rests on an unmeasured parameter, while the triage design's rests mostly on measured ones. Second, the auto-fix design's losses are concentrated: a wrong failover can turn a P2 into a P1, the kind of event that ends retailer contracts, which an average does not capture. Third, the triage design is a step toward the auto-fix design, not a fork: actions move from Tier~2 to Tier~1 one at a time as their record justifies it. The decision record\index{decision record} therefore chooses the triage design with an explicit promotion rule.
 
 \begin{keyidea}
 When one design's advantage rests on an error rate nobody has measured, choose the design that measures it, and give the system more autonomy as the evidence comes in.
@@ -226,5 +226,5 @@ When one design's advantage rests on an error rate nobody has measured, choose t
 \textbf{Decision.} The triage design. Tier~1 actions at launch: scale a service within its configured limits; restart a single unhealthy instance. Rollback of the last deployment is Tier~2.\\
 \textbf{Reasons.} \$212{,}000 a month saving on measured inputs; meets \kpi{P1 time to mitigate}; the auto-fix design's advantage depends on an unmeasured error rate and carries concentrated risk.\\
 \textbf{Promotion rule.} An action moves from Tier~2 to Tier~1 after 30 approved uses with no reversal and on-call agreement in at least 95\% of proposals. Any Tier~1 action that makes an incident worse returns to Tier~2 immediately.\\
-\textbf{Reversal triggers.} Reconsider the auto-fix design for a given service when all its common actions have reached Tier~1 under the promotion rule.
+\textbf{Reversal triggers\index{reversal trigger}.} Reconsider the auto-fix design for a given service when all its common actions have reached Tier~1 under the promotion rule.
 \end{tcolorbox}
