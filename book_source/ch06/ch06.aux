@@ -1,75 +1,75 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Case: Invoice to Payment}{117}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Case: Invoice to Payment}{116}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:case-invoice}{{6}{117}{Case: Invoice to Payment}{chapter.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Business Brief: What Is Going Wrong Today?}{117}{section.6.1}\protected@file@percent }
-\newlabel{sec:inv-brief}{{6.1}{117}{Business Brief: What Is Going Wrong Today?}{section.6.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions.}}{118}{table.6.1}\protected@file@percent }
-\newlabel{tab:inv-process}{{6.1}{118}{Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions}{table.6.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{118}{section.6.2}\protected@file@percent }
-\newlabel{sec:inv-kpis}{{6.2}{118}{Stakeholders and KPIs: Who Cares, and How Will We Know?}{section.6.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Stakeholders of invoice to payment.}}{118}{table.6.2}\protected@file@percent }
-\newlabel{tab:inv-stakeholders}{{6.2}{118}{Stakeholders of invoice to payment}{table.6.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces KPIs (blue) and risks (red) for invoice to payment.}}{119}{table.6.3}\protected@file@percent }
-\newlabel{tab:inv-kpis}{{6.3}{119}{KPIs (blue) and risks (red) for invoice to payment}{table.6.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{KPIs and risks.}{119}{section*.122}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Alternative Designs: What Could We Build?}{119}{section.6.3}\protected@file@percent }
-\newlabel{sec:inv-designs}{{6.3}{119}{Alternative Designs: What Could We Build?}{section.6.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}The sample as it stands}{119}{subsection.6.3.1}\protected@file@percent }
-\newlabel{lst:expense-graph}{{6.1}{119}{The sample's workflow graph (from \texttt {expense\_agent/agent.py} at commit \texttt {1b20a7a})}{lstlisting.6.1}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.1}The sample's workflow graph (from \texttt  {expense\_agent/agent.py} at commit \texttt  {1b20a7a}).}{119}{lstlisting.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}The amount-routed design: the sample, adapted to invoices}{120}{subsection.6.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}The risk-routed design: controls first, review by risk}{120}{subsection.6.3.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury.}}{121}{table.6.4}\protected@file@percent }
-\newlabel{tab:inv-d2}{{6.4}{121}{The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury}{table.6.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}The perfect-match design: touchless only on a perfect match}{121}{subsection.6.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.4}Trade-offs: Which Design Should We Pilot?}{122}{section.6.4}\protected@file@percent }
-\newlabel{sec:inv-tradeoffs}{{6.4}{122}{Trade-offs: Which Design Should We Pilot?}{section.6.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Reviewer cost versus error cost}{122}{subsection.6.4.1}\protected@file@percent }
-\newlabel{lst:review-policy}{{6.2}{122}{Comparing review policies on a simulated month (\texttt {ch06/review\_policy.py})}{lstlisting.6.2}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.2}Comparing review policies on a simulated month (\texttt  {ch06/review\_policy.py}).}{122}{lstlisting.6.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure.}}{123}{table.6.5}\protected@file@percent }
-\newlabel{tab:review-policies}{{6.5}{123}{Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure}{table.6.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Scores and decision}{123}{subsection.6.4.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Trade-off table for invoice to payment.}}{123}{table.6.6}\protected@file@percent }
-\newlabel{tab:inv-tradeoff}{{6.6}{123}{Trade-off table for invoice to payment}{table.6.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.5}Build: How Do We Make It?}{124}{section.6.5}\protected@file@percent }
-\newlabel{sec:inv-build}{{6.5}{124}{Build: How Do We Make It?}{section.6.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.1}The workflow}{124}{subsection.6.5.1}\protected@file@percent }
-\newlabel{lst:inv-workflow}{{6.3}{124}{The risk-routed design's workflow (abridged from \texttt {ch06/invoice\_agent/agent.py})}{lstlisting.6.3}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.3}The risk-routed design's workflow (abridged from \texttt  {ch06/invoice\_agent/agent.py}).}{124}{lstlisting.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.2}Designing the checkpoint}{125}{subsection.6.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{What does the reviewer see?}{125}{section*.123}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{What may the reviewer decide?}{125}{section*.124}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Who may decide?}{125}{section*.125}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{What if nobody decides?}{125}{section*.126}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Is the reviewer really reviewing?}{125}{section*.127}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.3}Failing closed}{126}{subsection.6.5.3}\protected@file@percent }
-\newlabel{lst:strict-parse}{{6.4}{126}{Fail-closed decision parsing (\texttt {ch06/decision.py})}{lstlisting.6.4}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.4}Fail-closed decision parsing (\texttt  {ch06/decision.py}).}{126}{lstlisting.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.6}Deploy: How Do We Run It Safely?}{126}{section.6.6}\protected@file@percent }
-\newlabel{sec:inv-deploy}{{6.6}{126}{Deploy: How Do We Run It Safely?}{section.6.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.7}Evaluate: How Do We Know It Works?}{127}{section.6.7}\protected@file@percent }
-\newlabel{sec:inv-evaluate}{{6.7}{127}{Evaluate: How Do We Know It Works?}{section.6.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces Evaluation thresholds for the risk-routed design.}}{127}{table.6.7}\protected@file@percent }
-\newlabel{tab:inv-thresholds}{{6.7}{127}{Evaluation thresholds for the risk-routed design}{table.6.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.8}Business Case: Is It Worth It?}{127}{section.6.8}\protected@file@percent }
-\newlabel{sec:inv-business}{{6.8}{127}{Business Case: Is It Worth It?}{section.6.8}{}}
-\@writefile{toc}{\contentsline {paragraph}{Value.}{127}{section*.128}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Pilot: shadow, then partial, then full.}{128}{section*.129}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.9}Changed Requirement: What If the World Changes?}{128}{section.6.9}\protected@file@percent }
-\newlabel{sec:inv-changed}{{6.9}{128}{Changed Requirement: What If the World Changes?}{section.6.9}{}}
-\@writefile{toc}{\contentsline {section}{Chapter Summary}{129}{section*.130}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Review Questions}{129}{section*.131}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Exercises}{130}{section*.132}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Lab 6: A Checkpoint That Holds}{130}{section*.133}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Goal.}{130}{section*.134}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Steps.}{130}{section*.135}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{130}{section*.136}\protected@file@percent }
+\newlabel{ch:case-invoice}{{6}{116}{Case: Invoice to Payment}{chapter.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Business Brief: What Is Going Wrong Today?}{116}{section.6.1}\protected@file@percent }
+\newlabel{sec:inv-brief}{{6.1}{116}{Business Brief: What Is Going Wrong Today?}{section.6.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions.}}{117}{table.6.1}\protected@file@percent }
+\newlabel{tab:inv-process}{{6.1}{117}{Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions}{table.6.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{117}{section.6.2}\protected@file@percent }
+\newlabel{sec:inv-kpis}{{6.2}{117}{Stakeholders and KPIs: Who Cares, and How Will We Know?}{section.6.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Stakeholders of invoice to payment.}}{117}{table.6.2}\protected@file@percent }
+\newlabel{tab:inv-stakeholders}{{6.2}{117}{Stakeholders of invoice to payment}{table.6.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces KPIs (blue) and risks (red) for invoice to payment.}}{118}{table.6.3}\protected@file@percent }
+\newlabel{tab:inv-kpis}{{6.3}{118}{KPIs (blue) and risks (red) for invoice to payment}{table.6.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{KPIs and risks.}{118}{section*.120}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Alternative Designs: What Could We Build?}{118}{section.6.3}\protected@file@percent }
+\newlabel{sec:inv-designs}{{6.3}{118}{Alternative Designs: What Could We Build?}{section.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}The sample as it stands}{118}{subsection.6.3.1}\protected@file@percent }
+\newlabel{lst:expense-graph}{{6.1}{118}{The sample's workflow graph (from \texttt {expense\_agent/agent.py} at commit \texttt {1b20a7a})}{lstlisting.6.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.1}The sample's workflow graph (from \texttt  {expense\_agent/agent.py} at commit \texttt  {1b20a7a}).}{118}{lstlisting.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}The amount-routed design: the sample, adapted to invoices}{119}{subsection.6.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}The risk-routed design: controls first, review by risk}{119}{subsection.6.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury.}}{120}{table.6.4}\protected@file@percent }
+\newlabel{tab:inv-d2}{{6.4}{120}{The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury}{table.6.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}The perfect-match design: touchless only on a perfect match}{120}{subsection.6.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Trade-offs: Which Design Should We Pilot?}{121}{section.6.4}\protected@file@percent }
+\newlabel{sec:inv-tradeoffs}{{6.4}{121}{Trade-offs: Which Design Should We Pilot?}{section.6.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Reviewer cost versus error cost}{121}{subsection.6.4.1}\protected@file@percent }
+\newlabel{lst:review-policy}{{6.2}{121}{Comparing review policies on a simulated month (\texttt {ch06/review\_policy.py})}{lstlisting.6.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.2}Comparing review policies on a simulated month (\texttt  {ch06/review\_policy.py}).}{121}{lstlisting.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure.}}{122}{table.6.5}\protected@file@percent }
+\newlabel{tab:review-policies}{{6.5}{122}{Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure}{table.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Scores and decision}{122}{subsection.6.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Trade-off table for invoice to payment.}}{122}{table.6.6}\protected@file@percent }
+\newlabel{tab:inv-tradeoff}{{6.6}{122}{Trade-off table for invoice to payment}{table.6.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.5}Build: How Do We Make It?}{123}{section.6.5}\protected@file@percent }
+\newlabel{sec:inv-build}{{6.5}{123}{Build: How Do We Make It?}{section.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.1}The workflow}{123}{subsection.6.5.1}\protected@file@percent }
+\newlabel{lst:inv-workflow}{{6.3}{123}{The risk-routed design's workflow (abridged from \texttt {ch06/invoice\_agent/agent.py})}{lstlisting.6.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.3}The risk-routed design's workflow (abridged from \texttt  {ch06/invoice\_agent/agent.py}).}{123}{lstlisting.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.2}Designing the checkpoint}{124}{subsection.6.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What does the reviewer see?}{124}{section*.121}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What may the reviewer decide?}{124}{section*.122}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Who may decide?}{124}{section*.123}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What if nobody decides?}{124}{section*.124}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Is the reviewer really reviewing?}{124}{section*.125}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.3}Failing closed}{125}{subsection.6.5.3}\protected@file@percent }
+\newlabel{lst:strict-parse}{{6.4}{125}{Fail-closed decision parsing (\texttt {ch06/decision.py})}{lstlisting.6.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.4}Fail-closed decision parsing (\texttt  {ch06/decision.py}).}{125}{lstlisting.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.6}Deploy: How Do We Run It Safely?}{125}{section.6.6}\protected@file@percent }
+\newlabel{sec:inv-deploy}{{6.6}{125}{Deploy: How Do We Run It Safely?}{section.6.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.7}Evaluate: How Do We Know It Works?}{126}{section.6.7}\protected@file@percent }
+\newlabel{sec:inv-evaluate}{{6.7}{126}{Evaluate: How Do We Know It Works?}{section.6.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces Evaluation thresholds for the risk-routed design.}}{126}{table.6.7}\protected@file@percent }
+\newlabel{tab:inv-thresholds}{{6.7}{126}{Evaluation thresholds for the risk-routed design}{table.6.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.8}Business Case: Is It Worth It?}{126}{section.6.8}\protected@file@percent }
+\newlabel{sec:inv-business}{{6.8}{126}{Business Case: Is It Worth It?}{section.6.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Value.}{126}{section*.126}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pilot: shadow, then partial, then full.}{127}{section*.127}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.9}Changed Requirement: What If the World Changes?}{127}{section.6.9}\protected@file@percent }
+\newlabel{sec:inv-changed}{{6.9}{127}{Changed Requirement: What If the World Changes?}{section.6.9}{}}
+\@writefile{toc}{\contentsline {section}{Chapter Summary}{128}{section*.128}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Review Questions}{128}{section*.129}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Exercises}{129}{section*.130}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Lab 6: A Checkpoint That Holds}{129}{section*.131}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Goal.}{129}{section*.132}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Steps.}{129}{section*.133}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Deliverable.}{129}{section*.134}\protected@file@percent }
 \@setckpt{ch06/ch06}{
-\setcounter{page}{131}
+\setcounter{page}{130}
 \setcounter{equation}{0}
 \setcounter{enumi}{6}
 \setcounter{enumii}{0}
@@ -91,7 +91,7 @@
 \setcounter{lstnumber}{8}
 \setcounter{tcbbreakpart}{1}
 \setcounter{tcblayer}{0}
-\setcounter{tcolorbox@number}{389}
+\setcounter{tcolorbox@number}{388}
 \setcounter{tcbrastercolumn}{1}
 \setcounter{tcbrasterrow}{1}
 \setcounter{tcbrasternum}{1}
@@ -99,7 +99,7 @@
 \setcounter{tcblisting}{0}
 \setcounter{NAT@ctr}{0}
 \setcounter{section@level}{4}
-\setcounter{Item}{259}
+\setcounter{Item}{264}
 \setcounter{Hfootnote}{3}
 \setcounter{bookmark@seq@number}{188}
 \setcounter{lstlisting}{4}

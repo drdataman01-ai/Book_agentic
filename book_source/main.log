@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  25 NOV 2026 12:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  25 NOV 2026 13:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1320,7 +1320,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.136 ...ine {section}{Exercises}{71}{section*.80}
+l.134 ...ine {section}{Exercises}{70}{section*.78}
                                                   % [2] [3] [4] [5] [6]
 [7] [8])
 \tf@toc=\write6
@@ -1469,21 +1469,25 @@ Underfull \vbox (badness 2680) has occurred while \output is active []
 
 
 ]
-[37] [38] [39] [40] [41]) (./ch02/ch02b.tex
-Underfull \vbox (badness 1448) has occurred while \output is active []
+[37] [38] [39] [40]) (./ch02/ch02b.tex [41]
+Underfull \vbox (badness 1708) has occurred while \output is active []
 
  [42]
-[43] [44] [45]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[43] [44]
+Underfull \vbox (badness 2626) has occurred while \output is active []
 
- [46])
-(./ch02/ch02c.tex [47] [48] [49] [50] [51] [52] [53])) [54]
+ [45])
+(./ch02/ch02c.tex [46] [47] [48] [49] [50] [51]
+
+LaTeX Warning: Reference `tab:two-paths' on page 52 undefined on input line 234
+.
+
+[52])) [53]
 \openout2 = `ch03/ch03.aux'.
 
- (./ch03/ch03.tex
-(./ch03/ch03a.tex
+ (./ch03/ch03.tex (./ch03/ch03a.tex
 Chapter 3.
-[55
+[54
 
 
 
@@ -1493,12 +1497,12 @@ Underfull \hbox (badness 1939) in paragraph at lines 94--94
  []\T1/lmr/m/n/8 (+20) median, all steps
  []
 
-[56] [57] [58]) (./ch03/ch03b.tex [59] (./ch03/code/value_case.py [60]
+[55] [56] [57]) (./ch03/ch03b.tex [58] (./ch03/code/value_case.py [59]
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/10'.
 (microtype)             Ignoring protrusion settings for this character.
 )
-[61]
+[60]
 Underfull \hbox (badness 10000) in paragraph at lines 95--95
  [][]\T1/lmr/bx/n/9 (+20) Rise in win rate
  []
@@ -1528,7 +1532,7 @@ Underfull \hbox (badness 3250) in paragraph at lines 95--95
  [][]\T1/lmr/bx/n/9 (+20) Model cost per quote
  []
 
-[62] [63] [64]
+[61] [62] [63]
 Underfull \hbox (badness 6204) in paragraph at lines 183--183
  [][]\T1/lmr/bx/n/9 (+20) False pos-i-tive
  []
@@ -1538,7 +1542,7 @@ Underfull \hbox (badness 5548) in paragraph at lines 186--186
  [][]\T1/lmr/bx/n/9 (+20) False neg-a-tive
  []
 
-[65]
+[64]
 Overfull \hbox (2.24179pt too wide) in paragraph at lines 236--236
 []|[]|  
  []
@@ -1553,7 +1557,7 @@ Overfull \hbox (9.07924pt too wide) in paragraph at lines 236--236
 []|[]|  
  []
 
-) (./ch03/ch03c.tex [66] [67] [68] [69] [70] [71])) [72] [73
+) (./ch03/ch03c.tex [65] [66] [67] [68] [69] [70])) [71] [72
 
 
 
@@ -1566,20 +1570,20 @@ Chapter 4.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [74
+ [73
 
 
 ]
-[75] [76]) (./ch04/ch04b.tex [77] [78] [79]
+[74] [75]) (./ch04/ch04b.tex [76] [77] [78]
 Overfull \hbox (5.97305pt too wide) in paragraph at lines 81--81
 []|[] 
  []
 
-[80] [81] [82]) (./ch04/ch04c.tex
+[79] [80] [81]) (./ch04/ch04c.tex
 Underfull \vbox (badness 1024) has occurred while \output is active []
 
- [83]
-[84] [85] [86]
+ [82]
+[83] [84] [85]
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
@@ -1588,47 +1592,47 @@ File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 Underfull \vbox (badness 1496) has occurred while \output is active []
 
- [87]
-(./ch04/code/rag_metrics.py [88]) [89]) (./ch04/ch04d.tex [90] [91] [92]
-[93] [94])) [95]
+ [86]
+(./ch04/code/rag_metrics.py [87]) [88]) (./ch04/ch04d.tex [89] [90] [91]
+[92] [93])) [94]
 \openout2 = `ch05/ch05.aux'.
 
  (./ch05/ch05.tex (./ch05/ch05a.tex
 Chapter 5.
-[96
+[95
 
 
 
 
-] [97]
+] [96]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [98])
-(./ch05/ch05b.tex [99] [100] [101] (./ch05/code/unit_economics.py [102])
+ [97])
+(./ch05/ch05b.tex [98] [99] [100] (./ch05/code/unit_economics.py [101])
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [103]
-[104]) (./ch05/ch05c.tex [105] (./ch05/code/returns_server.py [106]
+ [102]
+[103]) (./ch05/ch05c.tex [104] (./ch05/code/returns_server.py [105]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [107])
-[108] [109] [110]) (./ch05/ch05d.tex [111]
+ [106])
+[107] [108] [109]) (./ch05/ch05d.tex [110]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [112]
-[113] [114] [115])) [116]
+ [111]
+[112] [113] [114])) [115]
 \openout2 = `ch06/ch06.aux'.
 
  (./ch06/ch06.tex (./ch06/ch06a.tex
 Chapter 6.
-[117
+[116
 
 
 
 
-] [118] [119] [120] [121] (./ch06/code/review_policy.py) [122])
-(./ch06/ch06b.tex [123] [124] [125] (./ch06/code/decision.py) [126] [127]
-[128] [129])) [130]
+] [117] [118] [119] [120] (./ch06/code/review_policy.py) [121])
+(./ch06/ch06b.tex [122] [123] [124] (./ch06/code/decision.py) [125] [126]
+[127] [128])) [129]
 \openout2 = `ch07/ch07.aux'.
 
  (./ch07/ch07.tex (./ch07/ch07a.tex
@@ -1636,13 +1640,13 @@ Chapter 7.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [131
+ [130
 
 
 
 
 ]
-[132] [133]
+[131] [132]
 Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
 []|[]|  
  []
@@ -1657,8 +1661,8 @@ Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
 []|[] 
  []
 
-[134] [135] (./ch07/code/downtime.py) [136]) (./ch07/ch07b.tex [137]
-(./ch07/code/catalog.py) [138] [139] [140] [141] [142])) [143] [144
+[133] [134] (./ch07/code/downtime.py) [135]) (./ch07/ch07b.tex [136]
+(./ch07/code/catalog.py) [137] [138] [139] [140] [141])) [142] [143
 
 
 
@@ -1668,34 +1672,34 @@ Overfull \hbox (6.80186pt too wide) in paragraph at lines 165--165
 
 (./ch08/ch08.tex (./ch08/ch08a.tex
 Chapter 8.
-[145
+[144
 
 
-] [146] [147] (./ch08/code/fraud_policy.py [148]) [149]) (./ch08/ch08b.tex
-[150] (./ch08/code/faithfulness.py [151]) [152] [153] [154] [155])) [156]
+] [145] [146] (./ch08/code/fraud_policy.py [147]) [148]) (./ch08/ch08b.tex
+[149] (./ch08/code/faithfulness.py [150]) [151] [152] [153] [154])) [155]
 \openout2 = `ch09/ch09.aux'.
 
 
 (./ch09/ch09.tex (./ch09/ch09a.tex
 Chapter 9.
-[157
+[156
 
 
 
 
-] [158] [159] (./ch09/code/surge.py [160]) [161]) (./ch09/ch09b.tex
-[162] (./ch09/code/case.py [163]) [164] (./ch09/code/eu261.py) [165] [166]
-[167] [168])) [169]
+] [157] [158] (./ch09/code/surge.py [159]) [160]) (./ch09/ch09b.tex
+[161] (./ch09/code/case.py [162]) [163] (./ch09/code/eu261.py) [164] [165]
+[166] [167])) [168]
 \openout2 = `ch10/ch10.aux'.
 
  (./ch10/ch10.tex (./ch10/ch10a.tex
 Chapter 10.
-[170
+[169
 
 
 
 
-] [171]
+] [170]
 Overfull \hbox (6.6652pt too wide) in paragraph at lines 132--132
 []|[]|  
  []
@@ -1705,33 +1709,33 @@ Overfull \hbox (6.6652pt too wide) in paragraph at lines 132--132
 []|[]|  
  []
 
-[172] [173]) (./ch10/ch10b.tex [174] [175] (./ch10/code/audit_log.py) [176]
-[177] [178] [179])) [180]
+[171] [172]) (./ch10/ch10b.tex [173] [174] (./ch10/code/audit_log.py) [175]
+[176] [177] [178])) [179]
 \openout2 = `ch11/ch11.aux'.
 
  (./ch11/ch11.tex (./ch11/ch11a.tex
 Chapter 11.
-[181
+[180
 
 
 
 
-] [182] [183] [184] (./ch11/code/replenish.py) [185]) (./ch11/ch11b.tex
-[186] [187] [188] [189] [190])) [191]
+] [181] [182] [183] (./ch11/code/replenish.py) [184]) (./ch11/ch11b.tex
+[185] [186] [187] [188] [189])) [190]
 \openout2 = `ch12/ch12.aux'.
 
  (./ch12/ch12.tex (./ch12/ch12a.tex
 Chapter 12.
-[192
+[191
 
 
 
 
-] [193] [194] [195] (./ch12/code/tco.py) [196]) (./ch12/ch12b.tex
+] [192] [193] [194] (./ch12/code/tco.py) [195]) (./ch12/ch12b.tex
 Underfull \vbox (badness 2951) has occurred while \output is active []
 
- [197]
-[198] [199] [200] [201])) [202] [203
+ [196]
+[197] [198] [199] [200])) [201] [202
 
 
 
@@ -1740,36 +1744,40 @@ Underfull \vbox (badness 2951) has occurred while \output is active []
 
  (./ch13/ch13.tex (./ch13/ch13a.tex
 Chapter 13.
-[204
+[203
 
 
-] [205] [206] [207]) (./ch13/ch13b.tex (./ch13/code/release_gate.py
-[208])
+] [204] [205] [206]) (./ch13/ch13b.tex (./ch13/code/release_gate.py
+[207])
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/8'.
 (microtype)             Ignoring protrusion settings for this character.
- [209] [210] [211] [212] [213] [214] [215] [216] [217] [218] [219]))
-[220]
+ [208] [209] [210] [211] [212]
+
+LaTeX Warning: Reference `tab:two-paths' on page 213 undefined on input line 22
+0.
+
+[213] [214] [215] [216] [217] [218])) [219]
 \openout2 = `appendix/appA.aux'.
 
  (./appendix/appA.tex
 Appendix A.
-[221
+[220
 
 
 
 
-] [222] [223] [224]) [225]
+] [221] [222] [223]) [224]
 \openout2 = `appendix/appB.aux'.
 
  (./appendix/appB.tex
 Appendix B.
-) [226
+) [225
 
 
 
 
-] [227]
+] [226]
 \openout2 = `appendix/appC.aux'.
 
  (./appendix/appC.tex
@@ -1779,33 +1787,33 @@ Underfull \hbox (badness 2005) in paragraph at lines 41--41
 []|\T1/lmr/bx/n/10 (+20) Cost and la-tency
  []
 
-[228
+[227
 
 
 
 
-] [229]) [230]
+] [228]) [229]
 \openout2 = `appendix/appD.aux'.
 
  (./appendix/appD.tex
 Appendix D.
-[231
+[230
 
 
 
 
-] [232]) [233] [234] (./main.bbl [235
+] [231]) [232] [233] (./main.bbl [234
 
 
 
 
-]) [236]
+]) [235]
 runsystem(makeindex main.idx)...executed safely (allowed).
 
- (./main.ind [237
+ (./main.ind [236
 
 
-]) [238]
+]) [237]
 (./main.aux (./preface.aux) (./ch01/ch01.aux) (./ch02/ch02.aux)
 (./ch03/ch03.aux) (./ch04/ch04.aux) (./ch05/ch05.aux) (./ch06/ch06.aux)
 (./ch07/ch07.aux) (./ch08/ch08.aux) (./ch09/ch09.aux) (./ch10/ch10.aux)
@@ -1820,13 +1828,13 @@ L3 programming layer <2024-02-20>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4BA00C0373C32B3E1A83DEFE35B9E9BD;84424.
+(rerunfilecheck)             Checksum: A22CD02CA506FEC7F746E4B6C863A24D;84424.
  ) 
 Here is how much of TeX's memory you used:
  42147 strings out of 474116
- 807034 string characters out of 5743682
+ 807016 string characters out of 5743682
  2213187 words of memory out of 5000000
- 60542 multiletter control sequences out of 15000+600000
+ 60541 multiletter control sequences out of 15000+600000
  717735 words of font info for 415 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  91i,25n,114p,1297b,2280s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1854,10 +1862,10 @@ sr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt8.pfb></usr/local/te
 xlive/2024/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/local/texlive/2024/
 texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/local/texlive/2024/texmf-dis
 t/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (256 pages, 2401213 bytes).
+Output written on main.pdf (255 pages, 2398122 bytes).
 PDF statistics:
- 6373 PDF objects out of 7423 (max. 8388607)
- 5885 compressed objects within 59 object streams
- 2407 named destinations out of 2487 (max. 500000)
+ 6367 PDF objects out of 7423 (max. 8388607)
+ 5880 compressed objects within 59 object streams
+ 2408 named destinations out of 2487 (max. 500000)
  90878 words of extra memory for PDF output out of 106986 (max. 10000000)
 

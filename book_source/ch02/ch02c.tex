@@ -7,10 +7,10 @@
 \label{sec:criteria}
 
 \begin{thinkabout}
-Before any scoring, look at the three returns designs in Table~\ref{tab:returns-designs} later in this section and pick the one you would fund. Write down your choice and one reason. At the end of the section, check whether the scores agree with your instinct, and if they do not, ask which of you is wrong.
+Before any scoring, look at the three returns designs in Table~\ref{tab:returns-designs} and pick the one you would fund, with one reason. At the end of the section, check whether the scores agree with you, and if they do not, ask which of you is wrong.
 \end{thinkabout}
 
-Step 5 of the method compares the drafted designs. To compare designs fairly we need fixed yardsticks. Every case in the book uses the same eight criteria\index{evaluation criteria|textbf}, so that designs can be compared across cases and so that nobody quietly drops the criterion on which a favorite design looks worst. Table~\ref{tab:criteria} defines each criterion by saying what a score of 1 and a score of 5 look like, and how the score will eventually be measured rather than estimated.
+Step 5 compares the drafted designs, and a fair comparison needs fixed yardsticks. Every case uses the same eight criteria\index{evaluation criteria|textbf}, so that nobody quietly drops the one on which a favorite design looks worst. Table~\ref{tab:criteria} defines each criterion by what a score of 1 and a score of 5 look like, and by how it will eventually be measured.
 
 \begin{table}[htbp]
 \centering
@@ -33,14 +33,17 @@ Human workload & Adds work or moves it to a scarcer role & People handle only re
 \end{tabularx}
 \end{table}
 
-Three remarks help in using the criteria. First, at design time most scores are estimates, made from experience and quick prototypes, and each case later replaces them with measurements. Second, the criteria pull against one another. Adding a checkpoint raises quality and control but lowers speed, and that tension is the reason trade-offs exist at all. Third, some requirements are not trade-offs\index{constraint (versus criterion)|textbf} but \textbf{constraints}. A legal or policy requirement, such as ``finance approves credits above \$2{,}000,'' rules a design out however well it scores, so constraints are checked first and only the surviving designs are scored.
+Three remarks help in using the criteria. First, most scores at design time are estimates, which each case later replaces with measurements. Second, the criteria pull against one another: a checkpoint raises quality and control but lowers speed. Third, some requirements are not criteria but \textbf{constraints}\index{constraint (versus criterion)|textbf}. A legal or policy rule, such as ``finance approves credits above \$2{,}000,'' rules a design out however well it scores, so constraints are checked first and only the surviving designs are scored.
 
 \subsection{Three designs for returns}
 \label{sec:tradeoff}
 
-In step 4, Harbor's team drafted three designs for the returns process. All three respect the two constraints, namely that the inspector judges misuse and that finance approves large credits. They differ in one thing only, which is the open question left by step 3: how much the system may decide without a representative. Table~\ref{tab:returns-designs} sets the three side by side. Each column is a design, each row is a step of the work, and each cell says who or what does that step in that design, so you can compare the designs by reading across a row.
-
-The \textbf{single-agent design} gives one tool-using agent access to all three servers. The agent reads the request, applies the warranty rules described in its instructions, and creates the authorization and label itself. This is the do-everything agent, and it is worth drafting because most teams build it first and every sponsor will ask, ``why not just one agent?'' The \textbf{reviewed-workflow design} uses a router to classify the request, code to check warranty eligibility against the table, and a single model call to draft the authorization and a reply to the customer, after which a representative approves every authorization before it is created. The \textbf{straight-through design} is the same as the reviewed workflow except that the representative sees only the exceptions. Code issues the authorization automatically when the item is in warranty, its value is under \$500, the router is confident, and the customer has not been flagged as a repeat returner. These conditions together define the \textbf{safe zone}\index{safe zone|textbf}, and everything outside it goes to a representative.
+Harbor's team drafted three designs. All three respect the two constraints, that the inspector judges misuse and that finance approves large credits, and they differ only in the open question from step 3: how much the system may decide without a representative. Table~\ref{tab:returns-designs} compares them step by step.
+\begin{itemize}[itemsep=2pt]
+  \item The \textbf{single-agent design} is the do-everything agent. It is worth drafting because most teams build it first and every sponsor will ask, ``why not just one agent?''
+  \item The \textbf{reviewed-workflow design} uses a router, code for warranty eligibility, and one model call to draft the authorization and reply. A representative approves every authorization.
+  \item The \textbf{straight-through design} is the same, except that code issues the authorization automatically when the item is in warranty, its value is under \$500, the router is confident, and the customer is not a flagged repeat returner. These conditions define the \textbf{safe zone}\index{safe zone|textbf}, and everything outside it goes to a representative.
+\end{itemize}
 
 \begin{table}[htbp]
 \centering
@@ -62,9 +65,9 @@ Create the RMA and label & The same agent, through the ERP, warehouse and shippi
 
 \subsection{Scoring, weighting and checking the result}
 
-Table~\ref{tab:tradeoff} scores the three designs.\index{trade-off table|textbf} Each score has a reason, and the reasons matter more than the numbers. The single agent scores 1 on control because nobody can show afterwards which warranty rule it applied, and 5 on speed and workload because it never waits for anyone. The reviewed workflow is its mirror image. The straight-through design gives up a point of quality and a point of control compared with the reviewed workflow in exchange for two points each on speed and workload.
+Table~\ref{tab:tradeoff}\index{trade-off table|textbf} scores the three designs, and the reasons matter more than the numbers. The single agent scores 1 on control, because nobody can show which warranty rule it applied, and 5 on speed and workload, because it never waits for anyone. The reviewed workflow is its mirror image. The straight-through design gives up a point each of quality and control for two points each of speed and workload.
 
-The weights come from the business, not from the designer's taste. Harbor's sponsor cares most about speed and correct credits, the controller adds weight to auditability, and maintainability matters least because the process rarely changes. Writing the weights down before scoring keeps them honest, and showing them to the sponsor turns a technical argument into a business conversation. The weighted score of design $d$ is
+The weights come from the business, not from the designer's taste. Harbor's sponsor cares most about speed and correct credits, the controller adds weight to auditability, and maintainability matters least because the process rarely changes. Writing the weights down before scoring keeps them honest. The weighted score of design $d$ is
 \begin{equation}
   S_d = \sum_{c=1}^{8} w_c \, s_{d,c}, \qquad \sum_{c=1}^{8} w_c = 1,
   \label{eq:weighted}
@@ -94,7 +97,7 @@ Human workload & 0.10 & 5 & 2 & 4 \\
 \end{tabular}
 \end{table}
 
-The straight-through design leads, but only by 0.20 points on a five-point scale, and every score is an estimate. Before recording a decision, ask how wrong the weights would have to be for the answer to change. The script \texttt{ch02/tradeoff.py} in the companion repository does this by drawing ten thousand sets of weights scattered around the chosen ones and counting how often each design wins. The straight-through design wins about 85\% of the time, the reviewed workflow about 15\%, and the single agent never. The script also finds the single change that would reverse the decision: the reviewed workflow overtakes the straight-through design if the weight on control doubles from 0.15 to 0.30, or if the weight on quality rises from 0.20 to 0.34. The answer to ``why not one agent?'' is therefore not a matter of taste, and the conditions that would reverse the choice are now known and can be written into the decision record. Figure~\ref{fig:scores} puts both results side by side.
+The straight-through design leads by only 0.20 points, and every score is an estimate, so ask how wrong the weights would have to be to change the answer. The script \texttt{ch02/tradeoff.py} draws ten thousand sets of weights around the chosen ones and counts the winners: the straight-through design wins about 85\% of the time, the reviewed workflow about 15\%, and the single agent never. The reviewed workflow would take the lead if the weight on control doubled from 0.15 to 0.30, or if the weight on quality rose from 0.20 to 0.34, and these conditions go into the decision record. Figure~\ref{fig:scores} shows both results.
 
 \begin{figure}[htbp]
 \centering
@@ -123,14 +126,14 @@ The straight-through design leads, but only by 0.20 points on a five-point scale
 \end{figure}
 
 \begin{designnote}
-Resist false precision. A score of 3.95 against 3.75 is not a measurement but a structured way of making your assumptions visible. The check on the weights matters more than the totals. If small changes in the weights flip the decision, say so, and make the choice on the factor that flips it.
+Resist false precision. A score of 3.95 against 3.75 is not a measurement but a way of making your assumptions visible. If small changes in the weights flip the decision, say so, and decide on the factor that flips it.
 \end{designnote}
 
 % ----------------------------------------------------------------------
 \section{Steps 6 and 7: What Could Go Wrong, and What Did We Decide?}
 \label{sec:failure-walk}
 
-The trade-off table compares designs as wholes. Step 6, the \keyterm{failure walk-through}\index{failure walk-through|textbf}, then examines the chosen design one step at a time, going down its design table row by row and asking four questions of each row: how can this step fail, what would that do to the business, how would we notice, and what would prevent or limit the damage? Table~\ref{tab:failwalk} shows the walk-through for the straight-through design. Two of its rows changed the design, which is the point of the exercise.
+Step 6, the \keyterm{failure walk-through}\index{failure walk-through|textbf}, goes down the chosen design's table row by row and asks four questions of each row: how can this step fail, what would that do to the business, how would we notice, and what would limit the damage? Table~\ref{tab:failwalk} shows the walk-through for the straight-through design. Two of its rows changed the design, which is the point of the exercise.
 
 \begin{table}[htbp]
 \centering
@@ -155,7 +158,7 @@ Only one of the five rows concerns a model, and both design changes came from ru
 \end{keyidea}
 
 \label{sec:decision-record}
-Step 7, the last step, is to write the decision down where the next person will find it. Software architects have long kept short \textbf{architecture decision records}\index{decision record|textbf} for this purpose: a page stating the context, the decision and its consequences \citep{nygard2011adr}. We add one item that matters for AI systems, whose components change faster than most: \textbf{reversal triggers}\index{reversal trigger|textbf}, the observable conditions under which the decision should be reopened. Table~\ref{tab:dr} shows the record for returns. Almost all of it comes straight from the earlier steps, which is by design. If a decision record is hard to write, an earlier step was skipped.
+Step 7 writes the decision down where the next person will find it. Software architects keep short \textbf{architecture decision records}\index{decision record|textbf} that state the context, the decision and its consequences \citep{nygard2011adr}. Because the components of AI systems change quickly, we add \textbf{reversal triggers}\index{reversal trigger|textbf}: observable conditions under which the decision should be reopened. Table~\ref{tab:dr} shows the record for returns. Almost all of it comes from the earlier steps, so if a record is hard to write, an earlier step was skipped.
 
 \begin{table}[htbp]
 \centering

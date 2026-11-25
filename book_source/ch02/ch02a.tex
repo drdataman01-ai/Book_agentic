@@ -62,31 +62,6 @@ From the contractor's side, nothing changed. The conversation was as smooth as b
 \label{fig:promotions}
 \end{figure}
 
-\paragraph{Same outcome, different process.} When the assistant only answered, evaluating it was straightforward: we asked whether its answer was accurate, relevant, helpful and clear. Those questions still matter once the assistant can act, but a second question becomes just as important, namely how the system arrived at its result. Table~\ref{tab:two-paths} compares two ways in which the agent could approve the same credit for the leaking valve.
-
-\begin{table}[htbp]
-\centering
-\small
-\caption{Two paths to the same credit. The contractor sees an identical outcome, but only the first path follows Harbor's policy.}
-\label{tab:two-paths}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
-\toprule
-Step & \cellcolor{coGreenBg}Path A: trustworthy & \cellcolor{coRedBg}Path B: untrustworthy \\
-\midrule
-Identify the customer and order & Matches the contractor's account to the order number & Assumes the customer from the e-mail address and picks the most recent order \\
-Verify the item & Checks the valve's lot number against the order & Skips the check \\
-Check eligibility & Applies the warranty table in code & Decides from the warranty text in its instructions \\
-Systems used & Only the ERP server, with two tools: read the order and create the credit & The ERP, warehouse and CRM, through an account that can call every ERP function \\
-Approval & Sends any credit above \$2{,}000 to the finance manager & Approves the credit itself \\
-\midrule
-\textbf{Result} & \cellcolor{coGreenBg}Credit issued & \cellcolor{coRedBg}Credit issued \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-The contractor receives the same credit either way. Yet one process is trustworthy and the other is not, and nobody who looks only at outcomes can tell them apart.
-
-\paragraph{Outcome and process are different things.}\index{outcome versus process|textbf} Different people look at the same result in different ways. The contractor sees that the claim was approved. A designer asks which systems were touched, a controller asks under what authority the credit was granted, and a security analyst asks what path led there. These questions exist because organizations rarely fail only at the point of outcome. Failures usually build up along the way, and a system that reaches the right result through the wrong process is creating the conditions for a larger failure later. Under Path B, for example, the next contractor who writes from a shared office e-mail address may receive a colleague's credit.
 
 \paragraph{Capability creates obligations.} Every promotion in the story improved the service. Contractors waited less, managers welcomed the efficiency, and engineers enjoyed watching the system become more capable. But each new capability brought an obligation with it. A tool that reads data must be governed, a tool that creates records must be auditable, a tool that spends money must be controlled, and a tool that approves credits must be accountable. The engineering question therefore changes on the day the assistant receives its first tool. Before that day, the team asks whether the model understands the question and whether its answer is accurate. After it, the team must also ask when the system should act, and whether it can show that what it did was right. The first pair of questions measures intelligence, while the second measures responsibility.
 
@@ -130,9 +105,9 @@ Good designs start from the business and work inward. The most tempting question
 \fill[coBlueBg, rounded corners=6pt] (-0.9,-2.05) rectangle (5.0,0.95);
 \fill[coAmberBg, rounded corners=6pt] (5.2,-2.05) rectangle (7.4,0.95);
 \fill[coGreenBg, rounded corners=6pt] (7.6,-2.05) rectangle (14.1,0.95);
-\node[font=\sffamily\bfseries\small, text=coBlue] at (2.05,0.6) {Understand the work};
-\node[font=\sffamily\bfseries\small, text=coAmber] at (6.3,0.6) {Draft};
-\node[font=\sffamily\bfseries\small, text=coGreen] at (10.85,0.6) {Choose and record};
+\node[font=\sffamily\bfseries\small, text=coBlue] at (2.05,1.2) {Understand the work};
+\node[font=\sffamily\bfseries\small, text=coAmber] at (6.3,1.2) {Draft};
+\node[font=\sffamily\bfseries\small, text=coGreen] at (10.85,1.2) {Choose and record};
 \draw[line width=2pt, black!25] (0,0) -- (13.2,0);
 \foreach \i/\x/\c/\t in {1/0/coBlue/{Goal and measures}, 2/2/coBlue/{People and systems}, 3/4/coBlue/{Four questions per step},
   4/6.3/coAmber/{Draft and write down designs},
@@ -147,30 +122,36 @@ Good designs start from the business and work inward. The most tempting question
 
 The steps fall into three natural groups, as Figure~\ref{fig:roadmap} shows. Steps 1 to 3 are about understanding, and they are covered in Section~\ref{sec:understand}. Step 4 is about drafting, and Section~\ref{sec:design-table} introduces the design table while Section~\ref{sec:patterns} offers proven arrangements to draft from. Steps 5 to 7 are about choosing, and they are covered in Sections~\ref{sec:criteria} and~\ref{sec:failure-walk}. Chapter~\ref{ch:business} then adds the business numbers that steps 1 and 5 depend on.
 
-\paragraph{The running example.} We run the method on a new process at Harbor, product returns. Contractors sometimes receive a defective valve, the wrong part, or more than they need, and they report it by web form or e-mail. A customer-service representative reads the request, finds the order, checks the warranty terms, and decides whether to issue a \textbf{return authorization} (often called an RMA) together with a shipping label. When the item reaches the warehouse, an inspector checks whether the defect is covered or the item was misused, and finance then issues a credit. Credits above \$2{,}000 need a finance manager's approval. Harbor handles about 1{,}100 returns a month. A representative spends a median of 22 minutes on each, customers wait a median of three business days for an authorization, and an internal audit found that about 6\% of credits went to items outside their warranty, mostly because representatives misread the warranty table.
-
+\paragraph{The running example.} We run the method on a new process at Harbor, product returns. 
+\begin{enumerate}
+\item Contractors sometimes receive a defective valve, the wrong part, or more than they need, and they report it by web form or e-mail. 
+\item A customer-service representative reads the request, finds the order, checks the warranty terms, and decides whether to issue a \textbf{return authorization} (often called an RMA) together with a shipping label. 
+\item When the item reaches the warehouse, an inspector checks whether the defect is covered or the item was misused, and finance then issues a credit. 
+\item Credits above \$2{,}000 need a finance manager's approval. Harbor handles about 1{,}100 returns a month. 
+\item A representative spends a median of 22 minutes on each, customers wait a median of three business days for an authorization, and an internal audit found that about 6\% of credits went to items outside their warranty, mostly because representatives misread the warranty table.
+\end{enumerate}
 % ----------------------------------------------------------------------
 \section{Steps 1 to 3: What Is the Work, Really?}
 \label{sec:understand}
 
-The first three steps take less time than the later ones, but they decide most of the design. By the end of them you should know what the solution is for, who it touches, and which parts of the work actually need a model.
+The first three steps are quick, but they decide most of the design. By the end of them you know what the solution is for, whom it touches, and which parts of the work actually need a model.
 
-\paragraph{Step 1: Set the goal and measures.} The returns manager wants speed, and the controller wants to stop paying for items that are out of warranty. The measures are therefore \emph{time to authorization}, which should fall below one business day, \emph{representative minutes per return}, which should fall below 8, and \emph{out-of-warranty credits}, which should fall below 1\%. The two main risks are a \emph{credit that the policy does not allow} and \emph{abuse by repeat returners}. Notice that ``use AI'' appears nowhere in this list. If a clearer warranty table alone would meet the targets, that is a legitimate design, and the method should be allowed to find it.
+\paragraph{Step 1: Set the goal and measures.} The returns manager wants speed, and the controller wants to stop paying for items that are out of warranty. The measures are therefore \emph{time to authorization}, which should fall below one business day, \emph{representative minutes per return}, which should fall below 8, and \emph{out-of-warranty credits}, which should fall below 1\%. The two main risks are a \emph{credit that the policy does not allow} and \emph{abuse by repeat returners}. Notice that ``use AI'' appears nowhere in this list. If a clearer warranty table alone met the targets, that would be a legitimate design.
 
-\paragraph{Step 2: List the people and systems.} The people involved are the customer, the representative, the warehouse inspector, the finance clerk who issues credits, and the finance manager who approves large ones. The systems are the ERP, which holds orders and credits, the warehouse system, which records what arrived and what the inspector found, and the shipping system, which creates labels. Two pieces of reference material also matter: the warranty table and the product bulletins that describe known defects. Making this list surfaced someone the sponsor had forgotten, the warehouse inspector, whose finding decides whether a credit is paid.
+\paragraph{Step 2: List the people and systems.} The people are the customer, the representative, the warehouse inspector, the finance clerk who issues credits, and the finance manager who approves large ones. The systems are the ERP for orders and credits, the warehouse system for what arrived and what the inspector found, and the shipping system for labels. The warranty table and the product bulletins are the reference material. Making the list surfaced someone the sponsor had forgotten: the inspector, whose finding decides whether a credit is paid.
 
-\paragraph{Step 3: Ask four questions of each step.} Now walk through the work one step at a time and ask the same four questions of every step.
+\paragraph{Step 3: Ask four questions of each step.} Walk through the work one step at a time and ask the same four questions of every step.
 \begin{enumerate}[itemsep=2pt]
-  \item \emph{Is it judgment or a rule?}\index{judgment versus rule|textbf} A step needs judgment when the right answer cannot be written down in advance, as when a request arrives as free text. A step is a rule when the answer can be written down, even if people find it tedious to apply. Judgment is a candidate for a model, and rules belong in code.
-  \item \emph{What must be known?} Some steps need text that a person would read, such as a policy or a bulletin, and that text belongs in a knowledge store that the solution can search. Other steps need an exact fact, such as an order date, which should be looked up in a system rather than searched for.
-  \item \emph{Which systems are read or changed?} Each read or change becomes a tool on an MCP server\index{Model Context Protocol (MCP)!server}. List only the few tasks the solution needs, not every function the system offers.
-  \item \emph{Who must decide?} Some decisions belong to a person, either because policy says so or because a wrong decision would be costly. These become human checkpoints\index{human checkpoint}.
+  \item \emph{Is it judgment or a rule?}\index{judgment versus rule|textbf} If the right answer can be written down in advance, the step is a rule and belongs in code. If it cannot, as when a request arrives as free text, the step needs judgment and is a candidate for a model.
+  \item \emph{What must be known?} Text that a person would read, such as a policy or a bulletin, belongs in a searchable knowledge store. An exact fact, such as an order date, is looked up in a system.
+  \item \emph{Which systems are read or changed?} Each read or change becomes a tool on an MCP server\index{Model Context Protocol (MCP)!server}. List only the tasks the solution needs, not every function the system offers.
+  \item \emph{Who must decide?} A decision that policy assigns to a person, or that would be costly to get wrong, becomes a human checkpoint\index{human checkpoint}.
 \end{enumerate}
 \begin{tryit}
-Before reading Table~\ref{tab:returns-steps}, take the six returns steps (understand the request, find the order, check the warranty, issue the authorization and label, inspect the item, issue the credit) and ask the four questions of each one yourself. Which steps would you give to a model?
+Before reading Table~\ref{tab:returns-steps}, ask the four questions of the six returns steps yourself: understand the request, find the order, check the warranty, issue the authorization and label, inspect the item, and issue the credit. Which steps would you give to a model?
 \end{tryit}
 
-Table~\ref{tab:returns-steps} shows the answers for the returns process. Reading across a row tells you what that step needs, and reading down a column tells you how much of each kind of component the design will contain.
+Table~\ref{tab:returns-steps} shows the answers. Read across a row to see what a step needs, and down a column to see how much of each kind of component the design will contain.
 
 \begin{table}[htbp]
 \centering
@@ -191,7 +172,7 @@ Issue the credit & \tagRule\ The amount follows from the order and the finding &
 \end{tabularx}
 \end{table}
 
-The table makes the shape of the design visible before any design has been drafted. Only one step, understanding the request, is a candidate for a model. Warranty eligibility looks like judgment, because representatives got it wrong 6\% of the time, but the audit traced the errors to people misreading the table rather than to any ambiguity in it, so it is a rule and belongs in code. Because the warranty terms are a table, they are configuration rather than knowledge, and the only text worth searching is the product bulletins. The systems group into three MCP servers by owner, one each for the ERP, the warehouse and shipping. Two decisions belong to people by policy, the inspector's and the finance manager's, and one decision is still open: should a representative review every authorization before it is issued? That open question is where the real design choice lies, and the rest of the chapter settles it. This is typical. The first three steps narrow the space so that the important choices stand out.
+The table shows the shape of the design before any design is drafted. Only one step, understanding the request, needs a model. Warranty eligibility looks like judgment because representatives got it wrong 6\% of the time, but the audit traced the errors to misreading the table rather than to any ambiguity in it. It is therefore a rule for code, and the warranty table is configuration rather than knowledge. The systems group into three MCP servers by owner. Two decisions belong to people by policy, and one is still open: should a representative review every authorization before it is issued? That open question is the real design choice, and the rest of the chapter settles it.
 
 \begin{watchout}[Watch out: tedious is not the same as judgment]
 People often say a step ``needs judgment'' because it is slow or boring, or because staff make mistakes at it. The real test is whether the right answer could be written down in advance. If it could, the step is a rule, and code will do it faster and more reliably than any model.
