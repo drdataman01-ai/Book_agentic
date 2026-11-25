@@ -148,6 +148,13 @@ How will we know retrieval works? & By checking whether the right passages were 
 \end{tabularx}
 \end{table}
 
+\begin{inpractice}[In practice: Do we need RAG when the answer is in a table?]
+Suppose the reference data is a structured table. If the question can be turned into a key or a filter, the system can simply query for the right row and pass that row to the model. A query is better than semantic search in four ways. (1) It returns the exact row or nothing, while similarity search returns the \emph{nearest} row, which may be wrong in a way that looks plausible. (2) It reads the live table, while a vector index is a copy that must be refreshed. (3) It lets the server enforce who may see which rows. (4) And it can be unit-tested and costs almost nothing to run.
+
+\medskip
+The rule of thumb is short. Use a tool for any fact with one exact answer, use retrieval for passages of text, and use search only to find the key when the user's words do not contain it. Harbor's design follows this rule in step~4 of Table~\ref{tab:quote-decomp}, where the structured contract fields come from an MCP tool and the special clauses come from RAG over the contract text.
+\end{inpractice}
+
 \subsection{The agent: a model that can ask for actions}
 \label{sec:block-agent}
 
@@ -165,7 +172,9 @@ When a program built on an agent framework sends a prompt to the model, it inclu
   fw/.style={box, fill=codefill},
   tool/.style={box, fill=mcpfill},
   arr/.style={-{Stealth[length=2mm]}, thick},
-  lab/.style={font=\scriptsize, fill=white, inner sep=1pt, align=center}
+  lab/.style={font=\scriptsize, fill=white, inner sep=1pt, align=center},
+  stepnum/.style={circle, fill=black!75, text=white, font=\scriptsize\bfseries, inner sep=0pt, minimum size=4.2mm},
+  term/.style={rounded corners=5pt, fill=black!75, text=white, font=\scriptsize\bfseries, inner sep=3pt}
 ]
 \node[box, fill=white] (goal) at (0,2.4) {Goal\\{\scriptsize the rep's request and the agent's instructions}};
 \node[model, minimum height=14mm] (think) at (0,0) {\textbf{Model decides}\\{\scriptsize ``Given everything so far, what is the next step?''}};
@@ -175,6 +184,10 @@ When a program built on an agent framework sends a prompt to the model, it inclu
 \node[box, fill=white] (ans) at (-4.3,0) {Final answer\\{\scriptsize to the rep}};
 \node[box, fill=orange!20, text width=2.6cm, font=\scriptsize] (lim) at (-4.3,-2.6) {Step and cost limits end the loop if the model does not};
 
+\node[term] (start) at (-3.2,2.4) {Start};
+\node[term] (end) at (-4.3,1.45) {End};
+
+\draw[arr] (start) -- (goal);
 \draw[arr] (goal) -- (think);
 \draw[arr] (think) -- node[lab, above] {tool call\\{\ttfamily\tiny name + inputs}} (run);
 \draw[arr, <->] (run) -- (tool);
@@ -182,27 +195,41 @@ When a program built on an agent framework sends a prompt to the model, it inclu
 \draw[arr] (add.west) -| node[lab, pos=0.75, left] {loop again} (think.south);
 \draw[arr] (think) -- node[lab, above] {done} (ans);
 \draw[thick, dotted] (lim) -- (ans);
+\draw[arr] (ans) -- (end);
+
+% step numbers give the reading order
+\node[stepnum] at (goal.north west) {1};
+\node[stepnum] at (think.north west) {2};
+\node[stepnum] at (run.north west) {3};
+\node[stepnum] at (add.north west) {4};
+\node[stepnum] at (ans.north west) {5};
 \end{tikzpicture}
-\caption{The agent loop. The model either requests a tool or gives a final answer. The framework runs each requested tool and returns the result to the model, which decides again. The loop ends when the model decides it is done or when a limit is reached.}
+\caption{The agent loop. The numbers give the reading order. The loop starts with the goal (1), and the model decides the next step (2). If the model requests a tool, the framework runs it (3) and adds the result to the conversation (4), and the model decides again. When the model decides it is done, it gives the final answer (5). Step and cost limits end the loop if the model does not.}
 \label{fig:agent-loop}
 \end{figure}
 
-\paragraph{An agent at work.} Table~\ref{tab:agent-trace} follows an agent through a request like the one in Team A's demo: a representative writes that Delta Water wants 18\% off the 3-inch valve and asks what can be offered. Nobody wrote the four steps in advance. At each turn the model chose the next tool on the basis of what it had learned so far, and at the fifth turn it decided it had enough to answer. Notice two things about the trace. Every number in the final answer came from a tool result, not from the model's memory. And the decision about the manager was made by the \texttt{check\_discount} tool, which is plain code, not by the model.
+\paragraph{An agent at work.} Table~\ref{tab:agent-trace} follows an agent through a request like the one in Team A's demo: a representative writes that Delta Water wants 18\% off the 3-inch valve and asks what can be offered. Each row of the table is one pass around the loop in Figure~\ref{fig:agent-loop}, and the numbered columns match the numbered steps in the figure. Nobody wrote the four tool calls in advance. On each pass the model chose the next tool on the basis of what it had learned so far, and on the fifth pass it decided it had enough to give the final answer. Notice two things about the trace. Every number in the final answer came from a tool result, not from the model's memory. And the decision about the manager was made by the \texttt{check\_discount} tool, which is plain code, not by the model.
+
+\providecommand{\stepbadge}[1]{\tikz[baseline=(b.base)]\node[circle, fill=black!75, text=white, font=\scriptsize\bfseries, inner sep=0pt, minimum size=4.2mm] (b) {#1};}
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{A trace of Harbor's agent at work. The model chooses each step; the framework runs each tool and returns the result.}
+\caption{A trace of Harbor's agent at work. Each row is one pass around the agent loop, and the numbered columns match the steps in Figure~\ref{fig:agent-loop}: the model decides (2), the framework runs the tool (3), and the result is added to the conversation (4).}
 \label{tab:agent-trace}
 \begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-Turn & What the model decides & Tool call it requests & Result returned \\
+\multicolumn{4}{@{}>{\raggedright\arraybackslash}p{\textwidth}@{}}{\stepbadge{1}\ \textbf{Goal.} The rep asks what can be offered to Delta Water, which wants 18\% off part BV-316-3.} \\
+\midrule
+Pass & \stepbadge{2}\ The model decides & \stepbadge{3}\ Tool call the framework runs & \stepbadge{4}\ Result added to the conversation \\
 \midrule
 1 & I need to know which customer ``Delta Water'' is. & \texttt{find\_customer( "Delta Water")} & One match: customer C-1042, Central region. \\
 2 & The question is about a contract price, so I need the contract. & \texttt{get\_contract\_terms( "C-1042", "BV-316-3")} & Contract price \$44.20, valid until March 2027. \\
 3 & I need the list price to compare. & \texttt{get\_item\_pricing( "BV-316-3")} & List price \$52.00; 260 in stock. \\
-4 & The rep wants 18\% off list; I must check that against policy. & \texttt{check\_discount(0.18)} & Allowed only with a manager's approval. \\
-5 & I have what I need. & None: final answer. & ``Delta Water's contract price is \$44.20, already 15\% below list. An 18\% discount needs your manager's approval.'' \\
+4 & The rep wants 18\% off list; I must check that against policy. & \texttt{check\_discount( 0.18)} & Allowed only with a manager's approval. \\
+5 & I have what I need. & None: the loop ends. & None. \\
+\midrule
+\multicolumn{4}{@{}>{\raggedright\arraybackslash}p{\textwidth}@{}}{\stepbadge{5}\ \textbf{Final answer to the rep.} ``Delta Water's contract price is \$44.20, already 15\% below list. An 18\% discount needs your manager's approval.''} \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -315,39 +342,17 @@ Harbor adds a fourth AI application and a fourth company system. How many custom
 \label{fig:mcp-arch}
 \end{figure}
 
-\paragraph{A conversation over MCP.} Figure~\ref{fig:mcp-sequence} shows what happens, in order, when Harbor's quote agent uses the pricing server. When the agent starts, its client connects to the server and asks which tools it offers. The server answers with each tool's name, description and the inputs it expects, and the client passes these descriptions to the model. Later, when a representative asks about a price, the model requests a tool call exactly as in Section~\ref{sec:block-agent}. The client forwards the request to the server, the server queries the ERP, and the result travels back the same way until the model can read it. The model never learns the ERP's address, its password or its query language. It only knows that a tool called \texttt{get\_item\_pricing} exists and what it promises to do.
+\paragraph{Why MCP is better than hand-built connections.} Figure~\ref{fig:mcp-nm} shows the most visible advantage, which is that MCP needs fewer integrations. The count matters less than what each integration costs to keep alive, and here MCP improves on hand-built connections in four ways. 
+\begin{itemize}
+\item The first advantage is that \textbf{each system is wrapped once and reused everywhere}. Because the protocol is an open standard, the same pricing server works with an ADK agent, with a desktop assistant and with a programmer's code editor, so Harbor is not locked into one agent framework. If Harbor later moves its agents to a different framework, the servers stay as they are. 
+\item The second advantage is that \textbf{a change is made in one place}. When Harbor upgrades its ERP, the pricing team updates one server, and every agent that uses it keeps working. With hand-built connections, the same upgrade would break every application that talked to the ERP directly, and each would have to be fixed separately. 
+\item The third advantage is \textbf{security}. The ERP's password lives only inside the server, and the server checks who is asking before it answers and writes every request to a log. A single point of control of this kind is much easier to audit than nine connections, each with its own copy of the password and its own idea of who may see what. 
+\item The fourth advantage is \textbf{clear ownership}. The team that knows the ERP best owns the pricing server, decides which tools it offers, and can test those tools without any model involved. Because clients discover the tools at start-up, as Figure~\ref{fig:mcp-sequence} shows, the team can add a tool without anyone redeploying the agents.
+\end{itemize}
 
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[
-  actor/.style={draw, rounded corners=2pt, align=center, font=\footnotesize, minimum height=8mm, text width=2.3cm},
-  msg/.style={-{Stealth[length=2mm]}, thick},
-  ret/.style={-{Stealth[length=2mm]}, thick, dashed},
-  lab/.style={font=\scriptsize, fill=white, inner sep=1pt, align=center}
-]
-\node[actor, fill=agentfill] (m) at (0,0) {Model};
-\node[actor, fill=mcpfill!50] (c) at (4.6,0) {MCP client\\{\scriptsize inside the agent}};
-\node[actor, fill=mcpfill] (s) at (9.2,0) {Pricing\\MCP server};
-\node[actor, fill=white, dashed] (e) at (13.4,0) {ERP};
-\foreach \n in {m,c,s,e} \draw[black!40] (\n.south) -- ++(0,-8.6);
-% discovery
-\node[font=\scriptsize\bfseries, anchor=west, text=black!60, fill=white, inner sep=1pt] at (0.15,-0.9) {At start-up: discovery};
-\draw[msg] (4.6,-1.4) -- node[lab, above] {``Which tools do you offer?''} (9.2,-1.4);
-\draw[ret] (9.2,-2.1) -- node[lab, above] {names, descriptions, inputs} (4.6,-2.1);
-\draw[msg] (4.6,-2.8) -- node[lab, above] {tool descriptions} (0,-2.8);
-% call
-\node[font=\scriptsize\bfseries, anchor=west, text=black!60, fill=white, inner sep=1pt] at (0.15,-3.6) {When a rep asks a question: a tool call};
-\draw[msg] (0,-4.2) -- node[lab, above] {{\ttfamily get\_item\_pricing("BV-316-3")}} (4.6,-4.2);
-\draw[msg] (4.6,-4.9) -- node[lab, above] {same request, in MCP form} (9.2,-4.9);
-\draw[msg] (9.2,-5.6) -- node[lab, above] {query, server's own login} (13.4,-5.6);
-\draw[ret] (13.4,-6.3) -- node[lab, above] {price, cost, stock} (9.2,-6.3);
-\draw[ret] (9.2,-7.0) -- node[lab, above] {list price \$52.00; 260 in stock} (4.6,-7.0);
-\draw[ret] (4.6,-7.7) -- node[lab, above] {result, added to conversation} (0,-7.7);
-\node[font=\scriptsize\itshape, text=black!60, anchor=west, fill=white, inner sep=1pt] at (0.15,-8.35) {solid arrows: requests;\enspace dashed arrows: replies};
-\end{tikzpicture}
-\caption{The messages behind one tool call over MCP. At start-up the client learns which tools the server offers and tells the model. When the model requests a tool, the request passes through the client and the server, and only the server touches the ERP.}
-\label{fig:mcp-sequence}
-\end{figure}
+MCP is not free, and a designer should know its limits as well as its strengths. A server is one more service to run, monitor and keep up to date, and each request takes one extra step on its way to the system. A server written by someone else deserves the same care as any other outside code, because the tool descriptions and results it sends become part of the model's prompt and can carry hidden instructions \citep{greshake2023injection}. For a small prototype in which one agent reads one system, a tool written directly in the agent's code may be the simpler choice. 
+
+\paragraph{Is an MCP server an agent?} No, and in most designs it contains no language model at all. An MCP server is an ordinary program that offers a system's capabilities in the standard form, and what sits behind each capability can be as simple as a database query, a table, an API call or a few lines of plain code. 
 
 \paragraph{Tools, resources and prompts.}\index{Model Context Protocol (MCP)!tool, resource, prompt|textbf} An MCP server can offer three kinds of capability, and choosing among them is itself a design decision. Table~\ref{tab:mcp-kinds} compares them. The most important difference is \emph{who decides when to use it}: the model decides when to call a tool, while the application or the user decides when to attach a resource or use a prompt.
 

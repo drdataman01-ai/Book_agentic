@@ -9,7 +9,8 @@
 %   ch01/ ... ch13/   each with chNN.tex, its parts, main-chNN.tex, code/
 %   appendix/  appA.tex ... appD.tex
 % ======================================================================
-\documentclass[11pt]{book}
+%\documentclass[11pt]{book}
+\documentclass[11pt,openany]{book}
 \newcommand{\chtwocode}{ch02/code/}
 
 \title{Designing Agentic AI Solutions\\[6pt]
@@ -41,35 +42,53 @@
 %\pagenumbering{arabic}
 
 % ----- Copyright -----
+% ----------------------------------------------------------------------
+% Copyright page (verso of the title page)
+% ----------------------------------------------------------------------
 \clearpage
-\thispagestyle{empty}
-\vspace*{\fill}
+%\thispagestyle{empty}
+\begingroup
 \footnotesize
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6\baselineskip}
 
-\noindent
-© 2027 Chris Kuo
+% ---- Complimentary digital edition (top of page) ----------------------
+\begin{tcolorbox}[colback=white, colframe=black!40, boxrule=0.4pt, arc=1pt,
+                  left=8pt, right=8pt, top=6pt, bottom=6pt]
+\setlength{\parskip}{0.5\baselineskip}
+\textbf{Complimentary Digital Edition}
 
-\vspace{0.5cm}
+Thank you for purchasing the print edition of this book. As a print purchaser, you are entitled to a complimentary digital edition, so that you can read the book on any of your devices. To request it:
+\begin{enumerate}[itemsep=0pt, topsep=2pt, leftmargin=1.5em]
+  \item Take a photograph of your proof of purchase, such as a receipt or order confirmation, or of the book itself.
+  \item Send the photograph by email to the author at \href{mailto:ck2869@columbia.edu}{ck2869@columbia.edu}.
+  \item The digital edition will be sent to you by return email.
+\end{enumerate}
+\textbf{Terms of use.} The digital edition is licensed solely for the personal use of the purchaser of the print edition. It may not be copied, distributed, shared or posted publicly in any form. Each copy contains a unique embedded digital identifier that is linked to the purchaser.
+\end{tcolorbox}
 
-\noindent 
-ISBN: 979-8-9825592-0-3\\
-First edition: January, 2027
+\vspace*{3cm}
 
-\vspace{0.5cm}
-\noindent All rights reserved. No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, scanning, or otherwise, except as permitted under Section 107 or 108 of the 1976 United States Copyright Act, without the prior written permission of the publisher, or in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law. 
+% ---- Copyright notice (bottom of page) ---------------------------------
+\textbf{Designing Agentic AI Solutions}\\
+Ten Business Cases with RAG, Agents, and MCP
 
-While every effort has been made to ensure the reliability of the information presented in this publication, Innovation Press assumes no responsibility for errors or omissions. However, neither the author nor Innovation Press assumes any liability for damages resulting from the use of the information contained herein. 
+Copyright \textcopyright\ 2027 by Chris Kuo. All rights reserved. \\
+Contact: \href{mailto:ck2869@columbia.edu}{ck2869@columbia.edu} \\
+\\
+No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, scanning or otherwise, without the prior written permission of the publisher, except as permitted under Section 107 or 108 of the 1976 United States Copyright Act, in the case of brief quotations embodied in critical reviews, and in certain other noncommercial uses permitted by copyright law.
 
-Email address: ck2869@columbia.edu
+While every effort has been made to ensure that the information in this book is accurate, neither the author nor the publisher assumes any responsibility for errors or omissions, or any liability for damages resulting from the use of the information contained herein.
+
+ISBN 979-8-9825592-0-3\\
+First edition, January 2027
+
+Published by The Innovation Press, Ann Arbor, Michigan\\
 
 
-\vfill
+\includegraphics[width=0.20\textwidth]{cover/innovation_press.png}
+\endgroup
 
-\noindent The Innovation Press, \\
-\noindent Ann Arbor, MI 
-\begin{figure}[!htbp]
-  \includegraphics[width=0.20\textwidth]{cover/innovation_press.png}% Replace example-image with the filename of your image
-\end{figure}
 \vfill
 
 % End of copyright page: restore the body size so \footnotesize above
@@ -78,7 +97,7 @@ Email address: ck2869@columbia.edu
 \normalsize
 
 \frontmatter
-\maketitle
+%\maketitle
 \tableofcontents
 \include{preface}
 
