@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  25 NOV 2026 14:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.29)  25 NOV 2026 16:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1337,7 +1337,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.70 ... {2}The Designer's Toolkit}{36}{chapter.2}
+l.70 ... {2}The Designer's Toolkit}{37}{chapter.2}
                                                   % [1
 
 ]
@@ -1345,7 +1345,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.133 ...ine {section}{Exercises}{69}{section*.77}
+l.133 ...ine {section}{Exercises}{71}{section*.77}
                                                   % [2] [3] [4] [5] [6]
 [7] [8])
 \tf@toc=\write6
@@ -1552,45 +1552,84 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.264 \end{watchout}
                     ] [31] [32] [33] [34])) [35]
-\openout2 = `ch02/ch02.aux'.
+<infographic/infographic01.pdf, id=2726, 614.295pt x 794.97pt>
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf>
+Package pdftex.def Info: infographic/infographic01.pdf  used on input line 107.
 
- (./ch02/ch02.tex
-(./ch02/ch02a.tex
-Chapter 2.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf>
+Package pdftex.def Info: infographic/infographic01.pdf  used on input line 107.
 
-Underfull \vbox (badness 2680) has occurred while \output is active []
-
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic01.pdf, id=2729, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf, page 1>
+Package pdftex.def Info: infographic/infographic01.pdf , page1 used on input li
+ne 107.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf, page 1>
+Package pdftex.def Info: infographic/infographic01.pdf , page1 used on input li
+ne 107.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf, page 1>
+Package pdftex.def Info: infographic/infographic01.pdf , page1 used on input li
+ne 107.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf, page 1>
+Package pdftex.def Info: infographic/infographic01.pdf , page1 used on input li
+ne 107.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic01.pdf Graphic file (type pdf)
+<use infographic/infographic01.pdf, page 1>
+Package pdftex.def Info: infographic/infographic01.pdf , page1 used on input li
+ne 107.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
  [36
 
 
 
+ <./infographic/infographic01.pdf>]
+\openout2 = `ch02/ch02.aux'.
+
+ (./ch02/ch02.tex (./ch02/ch02a.tex
+Chapter 2.
+
+Underfull \vbox (badness 2680) has occurred while \output is active []
+
+ [37
+
 
 ]
-[37] [38
+[38] [39
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.100 \end{xltabular}
-                     ] [39] [40]) (./ch02/ch02b.tex [41
+                     ] [40] [41]) (./ch02/ch02b.tex [42
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.15 
-     ] [42
+     ] [43
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.52 \end{xltabular}
-                    ] [43] [44]) (./ch02/ch02c.tex [45] [46
+                    ] [44] [45]) (./ch02/ch02c.tex [46] [47
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.69 \end{xltabular}
-                    ] [47
+                    ] [48
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1602,31 +1641,72 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.110 
-      ] [48
+      ] [49
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.165 \end{xltabular}
-                     ] [49
+                     ] [50
 pdfTeX warning (ext4): destination with the same identifier (name{table.2.8}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.206 \end{tryit}
-                 ] [50]
+                 ] [51]
 
-LaTeX Warning: Reference `tab:two-paths' on page 51 undefined on input line 252
+LaTeX Warning: Reference `tab:two-paths' on page 52 undefined on input line 252
 .
 
-[51])) [52]
+[52])) [53]
+<infographic/infographic02.pdf, id=2940, 614.295pt x 794.97pt>
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf>
+Package pdftex.def Info: infographic/infographic02.pdf  used on input line 109.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf>
+Package pdftex.def Info: infographic/infographic02.pdf  used on input line 109.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic02.pdf, id=2943, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf, page 1>
+Package pdftex.def Info: infographic/infographic02.pdf , page1 used on input li
+ne 109.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf, page 1>
+Package pdftex.def Info: infographic/infographic02.pdf , page1 used on input li
+ne 109.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf, page 1>
+Package pdftex.def Info: infographic/infographic02.pdf , page1 used on input li
+ne 109.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf, page 1>
+Package pdftex.def Info: infographic/infographic02.pdf , page1 used on input li
+ne 109.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic02.pdf Graphic file (type pdf)
+<use infographic/infographic02.pdf, page 1>
+Package pdftex.def Info: infographic/infographic02.pdf , page1 used on input li
+ne 109.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [54
+
+
+
+ <./infographic/infographic02.pdf>]
 \openout2 = `ch03/ch03.aux'.
 
- (./ch03/ch03.tex (./ch03/ch03a.tex
+ (./ch03/ch03.tex
+(./ch03/ch03a.tex
 Chapter 3.
-[53
-
-
+[55
 
 
 
@@ -1635,7 +1715,7 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.49 
-     ] [54
+     ] [56
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1646,20 +1726,20 @@ Underfull \hbox (badness 1939) in paragraph at lines 100--100
  []\T1/lmr/m/n/8 (+20) median, all steps
  []
 
-[55] [56
+[57] [58
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.172   \item \emph
                    {Movable by the solution:} the design plausibly changes i...
-]) (./ch03/ch03b.tex [57
+]) (./ch03/ch03b.tex [59
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.6 \section
-            {What Is It Worth?}] (./ch03/code/value_case.py [58
+            {What Is It Worth?}] (./ch03/code/value_case.py [60
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1669,7 +1749,7 @@ l.3 BASE
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/10'.
 (microtype)             Ignoring protrusion settings for this character.
-) [59]
+) [61]
 Underfull \hbox (badness 10000) in paragraph at lines 101--101
  [][]\T1/lmr/bx/n/9 (+20) Rise in win rate
  []
@@ -1699,14 +1779,14 @@ Underfull \hbox (badness 3250) in paragraph at lines 101--101
  [][]\T1/lmr/bx/n/9 (+20) Model cost per quote
  []
 
-[60
+[62
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.114   \item \emph
                    {Design the pilot to measure the uncertain input.} Win ra...
-] [61] [62]
+] [63] [64]
 Underfull \hbox (badness 6204) in paragraph at lines 189--189
  [][]\T1/lmr/bx/n/9 (+20) False pos-i-tive
  []
@@ -1716,7 +1796,7 @@ Underfull \hbox (badness 5548) in paragraph at lines 192--192
  [][]\T1/lmr/bx/n/9 (+20) False neg-a-tive
  []
 
-[63]
+[65]
 Overfull \hbox (2.24179pt too wide) in paragraph at lines 245--245
 []|[]|  
  []
@@ -1731,78 +1811,119 @@ Overfull \hbox (9.07924pt too wide) in paragraph at lines 245--245
 []|[]|  
  []
 
-) (./ch03/ch03c.tex [64
+) (./ch03/ch03c.tex [66
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.36 \end{longtable}
-                    ] [65
+                    ] [67
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.8}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.58 \end{enumerate}
-                    ] [66
+                    ] [68
 pdfTeX warning (ext4): destination with the same identifier (name{table.3.9}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.139   \item S
                ection 1, \emph{business brief and current process}: the proc...
-] [67] [68] [69])) [70] [71
+] [69] [70] [71])) [72]
+<infographic/infographic03.pdf, id=3207, 614.295pt x 794.97pt>
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf>
+Package pdftex.def Info: infographic/infographic03.pdf  used on input line 111.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf>
+Package pdftex.def Info: infographic/infographic03.pdf  used on input line 111.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic03.pdf, id=3210, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf, page 1>
+Package pdftex.def Info: infographic/infographic03.pdf , page1 used on input li
+ne 111.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf, page 1>
+Package pdftex.def Info: infographic/infographic03.pdf , page1 used on input li
+ne 111.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf, page 1>
+Package pdftex.def Info: infographic/infographic03.pdf , page1 used on input li
+ne 111.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf, page 1>
+Package pdftex.def Info: infographic/infographic03.pdf , page1 used on input li
+ne 111.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic03.pdf Graphic file (type pdf)
+<use infographic/infographic03.pdf, page 1>
+Package pdftex.def Info: infographic/infographic03.pdf , page1 used on input li
+ne 111.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [73
 
 
+
+ <./infographic/infographic03.pdf>] [74
 
 ]
 \openout2 = `ch04/ch04.aux'.
 
- (./ch04/ch04.tex (./ch04/ch04a.tex
+
+(./ch04/ch04.tex (./ch04/ch04a.tex
 Chapter 4.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [72
+ [75
 
 
 ]
-[73
+[76
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.81 \end{xltabular}
-                    ] [74
+                    ] [77
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.125   \item \textbf
                      {Answer accuracy}: the share of answers judged correct ...
-]) (./ch04/ch04b.tex [75
+]) (./ch04/ch04b.tex [78
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.11 
-     ] [76] [77]
+     ] [79] [80]
 Overfull \hbox (5.97305pt too wide) in paragraph at lines 84--84
 []|[] 
  []
 
-[78
+[81
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.92 
-     ] [79
+     ] [82
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.151 \end{longtable}
-                     ] [80
+                     ] [83
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1811,26 +1932,26 @@ l.177
       ]) (./ch04/ch04c.tex
 Underfull \vbox (badness 1360) has occurred while \output is active []
 
- [81
+ [84
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.9 
-    ] [82] [83]
+    ] [85] [86]
 Underfull \vbox (badness 2359) has occurred while \output is active []
 
- [84]
+ [87]
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 (/usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
-) [85]
-(./ch04/code/rag_metrics.py [86]) [87]) (./ch04/ch04d.tex
+) [88]
+(./ch04/code/rag_metrics.py [89]) [90]) (./ch04/ch04d.tex
 Underfull \vbox (badness 1895) has occurred while \output is active []
 
- [88
+ [91
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.8}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1842,36 +1963,77 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.15 \end{thinkabout}
-                     ] [89
+                     ] [92
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.10}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.75 \end{xltabular}
-                    ] [90
+                    ] [93
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.11}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.110   \item \textbf
                      {Half the budget.} The sponsor approves the pilot but o...
-] [91] [92])) [93]
+] [94] [95])) [96]
+<infographic/infographic04.pdf, id=3583, 614.295pt x 794.97pt>
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf>
+Package pdftex.def Info: infographic/infographic04.pdf  used on input line 115.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf>
+Package pdftex.def Info: infographic/infographic04.pdf  used on input line 115.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic04.pdf, id=3586, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf, page 1>
+Package pdftex.def Info: infographic/infographic04.pdf , page1 used on input li
+ne 115.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf, page 1>
+Package pdftex.def Info: infographic/infographic04.pdf , page1 used on input li
+ne 115.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf, page 1>
+Package pdftex.def Info: infographic/infographic04.pdf , page1 used on input li
+ne 115.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf, page 1>
+Package pdftex.def Info: infographic/infographic04.pdf , page1 used on input li
+ne 115.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic04.pdf Graphic file (type pdf)
+<use infographic/infographic04.pdf, page 1>
+Package pdftex.def Info: infographic/infographic04.pdf , page1 used on input li
+ne 115.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [97
+
+
+
+ <./infographic/infographic04.pdf>]
 \openout2 = `ch05/ch05.aux'.
 
- (./ch05/ch05.tex (./ch05/ch05a.tex
+ (./ch05/ch05.tex
+(./ch05/ch05a.tex
 Chapter 5.
-[94
+[98
 
 
-
-
-] [95
+] [99
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.101 \end{xltabular}
-                     ] [96
+                     ] [100
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1883,29 +2045,29 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.144 \end{keyidea}
-                   ]) (./ch05/ch05b.tex [97] [98] [99
+                   ]) (./ch05/ch05b.tex [101] [102] [103
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.100 \end{xltabular}
-                     ] (./ch05/code/unit_economics.py [100
+                     ] (./ch05/code/unit_economics.py [104
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.24  
          "Agent assist": dict(model=0.006, err=0.000, err_cost=22, fixed=17_...
-]) [101]) (./ch05/ch05c.tex
+]) [105]) (./ch05/ch05c.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [102
+ [106
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.4 
-    ] [103] (./ch05/code/returns_server.py [104
+    ] [107] (./ch05/code/returns_server.py [108
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1914,31 +2076,72 @@ l.11 from
           mcp.server.mcpserver import MCPServer]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [105])
-[106] [107]) (./ch05/ch05d.tex [108
+ [109])
+[110] [111]) (./ch05/ch05d.tex [112
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.8}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.5 
-    ] [109] [110
+    ] [113] [114
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.9}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.95   \item \textbf
                     {Holiday peak.} From mid-November to early January, cont...
-] [111] [112])) [113]
+] [115] [116])) [117]
+<infographic/infographic05.pdf, id=3931, 614.295pt x 794.97pt>
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf>
+Package pdftex.def Info: infographic/infographic05.pdf  used on input line 117.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf>
+Package pdftex.def Info: infographic/infographic05.pdf  used on input line 117.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic05.pdf, id=3934, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf, page 1>
+Package pdftex.def Info: infographic/infographic05.pdf , page1 used on input li
+ne 117.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf, page 1>
+Package pdftex.def Info: infographic/infographic05.pdf , page1 used on input li
+ne 117.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf, page 1>
+Package pdftex.def Info: infographic/infographic05.pdf , page1 used on input li
+ne 117.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf, page 1>
+Package pdftex.def Info: infographic/infographic05.pdf , page1 used on input li
+ne 117.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic05.pdf Graphic file (type pdf)
+<use infographic/infographic05.pdf, page 1>
+Package pdftex.def Info: infographic/infographic05.pdf , page1 used on input li
+ne 117.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [118
+
+
+
+ <./infographic/infographic05.pdf>]
 \openout2 = `ch06/ch06.aux'.
 
- (./ch06/ch06.tex (./ch06/ch06a.tex
+ (./ch06/ch06.tex
+(./ch06/ch06a.tex
 Chapter 6.
-[114
+[119
 
 
-
-
-] [115
+] [120
 pdfTeX warning (ext4): destination with the same identifier (name{table.6.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1950,41 +2153,83 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.120 \end{xltabular}
-                     ] [116
+                     ] [121
 pdfTeX warning (ext4): destination with the same identifier (name{table.6.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.153   \item \emph
                    {Input is assumed to be structured.} The parser reads JSO...
-] [117]
+] [122]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [118
+ [123
 pdfTeX warning (ext4): destination with the same identifier (name{table.6.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.217 
-      ] (./ch06/code/review_policy.py) [119
+      ] (./ch06/code/review_policy.py) [124
 pdfTeX warning (ext4): destination with the same identifier (name{table.6.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.244 \end{longtable}
-                     ]) (./ch06/ch06b.tex [120
+                     ]) (./ch06/ch06b.tex [125
 pdfTeX warning (ext4): destination with the same identifier (name{table.6.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.11 
-     ] [121] [122] (./ch06/code/decision.py) [123] [124
+     ] [126] [127] (./ch06/code/decision.py) [128] [129
 pdfTeX warning (ext4): destination with the same identifier (name{table.6.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.156 \end{quickcheck}
-                      ] [125] [126])) [127]
+                      ] [130] [131])) [132]
+<infographic/infographic06.pdf, id=4195, 614.295pt x 794.97pt>
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf>
+Package pdftex.def Info: infographic/infographic06.pdf  used on input line 119.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf>
+Package pdftex.def Info: infographic/infographic06.pdf  used on input line 119.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic06.pdf, id=4198, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf, page 1>
+Package pdftex.def Info: infographic/infographic06.pdf , page1 used on input li
+ne 119.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf, page 1>
+Package pdftex.def Info: infographic/infographic06.pdf , page1 used on input li
+ne 119.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf, page 1>
+Package pdftex.def Info: infographic/infographic06.pdf , page1 used on input li
+ne 119.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf, page 1>
+Package pdftex.def Info: infographic/infographic06.pdf , page1 used on input li
+ne 119.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic06.pdf Graphic file (type pdf)
+<use infographic/infographic06.pdf, page 1>
+Package pdftex.def Info: infographic/infographic06.pdf , page1 used on input li
+ne 119.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [133
+
+
+
+ <./infographic/infographic06.pdf>]
 \openout2 = `ch07/ch07.aux'.
 
  (./ch07/ch07.tex (./ch07/ch07a.tex
@@ -1992,13 +2237,11 @@ Chapter 7.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [128
-
-
+ [134
 
 
 ]
-[129
+[135
 pdfTeX warning (ext4): destination with the same identifier (name{table.7.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2010,7 +2253,7 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.111 \end{xltabular}
-                     ] [130
+                     ] [136
 pdfTeX warning (ext4): destination with the same identifier (name{table.7.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2032,20 +2275,20 @@ Overfull \hbox (6.80186pt too wide) in paragraph at lines 177--177
 []|[] 
  []
 
-[131
+[137
 pdfTeX warning (ext4): destination with the same identifier (name{table.7.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.177 \end{xltabular}
-                     ] (./ch07/code/downtime.py [132
+                     ] (./ch07/code/downtime.py [138
 pdfTeX warning (ext4): destination with the same identifier (name{table.7.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.6 PHASES 
            = ["detect", "acknowledge", "diagnose", "mitigate", "verify"]])
-[133]) (./ch07/ch07b.tex (./ch07/code/catalog.py [134]) [135] [136
+[139]) (./ch07/ch07b.tex (./ch07/code/catalog.py [140]) [141] [142
 pdfTeX warning (ext4): destination with the same identifier (name{table.7.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2054,20 +2297,61 @@ l.92
      ]
 Underfull \vbox (badness 3503) has occurred while \output is active []
 
- [137]
-[138] [139])) [140] [141
+ [143]
+[144] [145])) [146]
+<infographic/infographic07.pdf, id=4405, 614.295pt x 794.97pt>
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf>
+Package pdftex.def Info: infographic/infographic07.pdf  used on input line 121.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf>
+Package pdftex.def Info: infographic/infographic07.pdf  used on input line 121.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic07.pdf, id=4408, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf, page 1>
+Package pdftex.def Info: infographic/infographic07.pdf , page1 used on input li
+ne 121.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf, page 1>
+Package pdftex.def Info: infographic/infographic07.pdf , page1 used on input li
+ne 121.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf, page 1>
+Package pdftex.def Info: infographic/infographic07.pdf , page1 used on input li
+ne 121.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf, page 1>
+Package pdftex.def Info: infographic/infographic07.pdf , page1 used on input li
+ne 121.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic07.pdf Graphic file (type pdf)
+<use infographic/infographic07.pdf, page 1>
+Package pdftex.def Info: infographic/infographic07.pdf , page1 used on input li
+ne 121.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [147
 
 
+
+ <./infographic/infographic07.pdf>] [148
 
 ]
 \openout2 = `ch08/ch08.aux'.
 
- (./ch08/ch08.tex (./ch08/ch08a.tex
+
+(./ch08/ch08.tex (./ch08/ch08a.tex
 Chapter 8.
-[142
+[149
 
 
-] [143
+] [150
 pdfTeX warning (ext4): destination with the same identifier (name{table.8.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2079,7 +2363,7 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.100 \end{xltabular}
-                     ] [144] [145
+                     ] [151] [152
 pdfTeX warning (ext4): destination with the same identifier (name{table.8.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2091,24 +2375,65 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.170 \end{xltabular}
-                     ] (./ch08/code/fraud_policy.py) [146] [147
+                     ] (./ch08/code/fraud_policy.py) [153] [154
 pdfTeX warning (ext4): destination with the same identifier (name{table.8.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.231 \end{longtable}
-                     ]) (./ch08/ch08b.tex (./ch08/code/faithfulness.py [148])
-[149] [150] [151] [152])) [153]
+                     ]) (./ch08/ch08b.tex (./ch08/code/faithfulness.py [155])
+[156] [157] [158] [159])) [160]
+<infographic/infographic08.pdf, id=4605, 614.295pt x 794.97pt>
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf>
+Package pdftex.def Info: infographic/infographic08.pdf  used on input line 125.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf>
+Package pdftex.def Info: infographic/infographic08.pdf  used on input line 125.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic08.pdf, id=4608, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf, page 1>
+Package pdftex.def Info: infographic/infographic08.pdf , page1 used on input li
+ne 125.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf, page 1>
+Package pdftex.def Info: infographic/infographic08.pdf , page1 used on input li
+ne 125.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf, page 1>
+Package pdftex.def Info: infographic/infographic08.pdf , page1 used on input li
+ne 125.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf, page 1>
+Package pdftex.def Info: infographic/infographic08.pdf , page1 used on input li
+ne 125.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic08.pdf Graphic file (type pdf)
+<use infographic/infographic08.pdf, page 1>
+Package pdftex.def Info: infographic/infographic08.pdf , page1 used on input li
+ne 125.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [161
+
+
+
+ <./infographic/infographic08.pdf>]
 \openout2 = `ch09/ch09.aux'.
 
- (./ch09/ch09.tex (./ch09/ch09a.tex
+
+(./ch09/ch09.tex (./ch09/ch09a.tex
 Chapter 9.
-[154
+[162
 
 
-
-
-] [155
+] [163
 pdfTeX warning (ext4): destination with the same identifier (name{table.9.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2120,14 +2445,14 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.116 \end{xltabular}
-                     ] [156
+                     ] [164
 pdfTeX warning (ext4): destination with the same identifier (name{table.9.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.139   \item E
                ach handoff moves a typed \textbf{case object} to the next ow...
-] [157
+] [165
 pdfTeX warning (ext4): destination with the same identifier (name{table.9.4}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2139,35 +2464,76 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.187 \end{xltabular}
-                     ] (./ch09/code/surge.py) [158]) (./ch09/ch09b.tex [159
+                     ] (./ch09/code/surge.py) [166]) (./ch09/ch09b.tex [167
 pdfTeX warning (ext4): destination with the same identifier (name{table.9.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.10 
-     ] (./ch09/code/case.py [160
+     ] (./ch09/code/case.py [168
 pdfTeX warning (ext4): destination with the same identifier (name{table.9.7}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.8 class 
-          SeatHold(BaseModel):]) [161] (./ch09/code/eu261.py) [162] [163
+          SeatHold(BaseModel):]) [169] (./ch09/code/eu261.py) [170] [171
 pdfTeX warning (ext4): destination with the same identifier (name{table.9.8}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.131 
-      ] [164] [165])) [166]
+      ] [172] [173])) [174]
+<infographic/infographic09.pdf, id=4835, 614.295pt x 794.97pt>
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf>
+Package pdftex.def Info: infographic/infographic09.pdf  used on input line 127.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf>
+Package pdftex.def Info: infographic/infographic09.pdf  used on input line 127.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic09.pdf, id=4838, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf, page 1>
+Package pdftex.def Info: infographic/infographic09.pdf , page1 used on input li
+ne 127.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf, page 1>
+Package pdftex.def Info: infographic/infographic09.pdf , page1 used on input li
+ne 127.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf, page 1>
+Package pdftex.def Info: infographic/infographic09.pdf , page1 used on input li
+ne 127.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf, page 1>
+Package pdftex.def Info: infographic/infographic09.pdf , page1 used on input li
+ne 127.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic09.pdf Graphic file (type pdf)
+<use infographic/infographic09.pdf, page 1>
+Package pdftex.def Info: infographic/infographic09.pdf , page1 used on input li
+ne 127.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [175
+
+
+
+ <./infographic/infographic09.pdf>]
 \openout2 = `ch10/ch10.aux'.
 
- (./ch10/ch10.tex (./ch10/ch10a.tex
+
+(./ch10/ch10.tex (./ch10/ch10a.tex
 Chapter 10.
-[167
+[176
 
 
-
-
-] [168
+] [177
 pdfTeX warning (ext4): destination with the same identifier (name{table.10.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2189,19 +2555,19 @@ Overfull \hbox (6.6652pt too wide) in paragraph at lines 141--141
 []|[]|  
  []
 
-[169
+[178
 pdfTeX warning (ext4): destination with the same identifier (name{table.10.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.141 \end{xltabular}
-                     ] [170]) (./ch10/ch10b.tex [171
+                     ] [179]) (./ch10/ch10b.tex [180
 pdfTeX warning (ext4): destination with the same identifier (name{table.10.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.33 \end{xltabular}
-                    ] [172
+                    ] [181
 pdfTeX warning (ext4): destination with the same identifier (name{table.10.5}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2213,23 +2579,64 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.77 
-     ] (./ch10/code/audit_log.py) [173] [174
+     ] (./ch10/code/audit_log.py) [182] [183
 pdfTeX warning (ext4): destination with the same identifier (name{table.10.7}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.140 
-      ] [175] [176])) [177]
+      ] [184] [185])) [186]
+<infographic/infographic10.pdf, id=4988, 614.295pt x 794.97pt>
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf>
+Package pdftex.def Info: infographic/infographic10.pdf  used on input line 129.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf>
+Package pdftex.def Info: infographic/infographic10.pdf  used on input line 129.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic10.pdf, id=4991, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf, page 1>
+Package pdftex.def Info: infographic/infographic10.pdf , page1 used on input li
+ne 129.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf, page 1>
+Package pdftex.def Info: infographic/infographic10.pdf , page1 used on input li
+ne 129.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf, page 1>
+Package pdftex.def Info: infographic/infographic10.pdf , page1 used on input li
+ne 129.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf, page 1>
+Package pdftex.def Info: infographic/infographic10.pdf , page1 used on input li
+ne 129.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic10.pdf Graphic file (type pdf)
+<use infographic/infographic10.pdf, page 1>
+Package pdftex.def Info: infographic/infographic10.pdf , page1 used on input li
+ne 129.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [187
+
+
+
+ <./infographic/infographic10.pdf>]
 \openout2 = `ch11/ch11.aux'.
 
- (./ch11/ch11.tex (./ch11/ch11a.tex
+
+(./ch11/ch11.tex (./ch11/ch11a.tex
 Chapter 11.
-[178
+[188
 
 
-
-
-] [179
+] [189
 pdfTeX warning (ext4): destination with the same identifier (name{table.11.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2241,36 +2648,76 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.106 
-      ] [180
+      ] [190
 pdfTeX warning (ext4): destination with the same identifier (name{table.11.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.138 \end{xltabular}
-                     ] [181
+                     ] [191
 pdfTeX warning (ext4): destination with the same identifier (name{table.11.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.179 
-      ] (./ch11/code/replenish.py) [182] [183
+      ] (./ch11/code/replenish.py) [192] [193
 pdfTeX warning (ext4): destination with the same identifier (name{table.11.5}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.239 \end{longtable}
-                     ]) (./ch11/ch11b.tex [184] [185] [186] [187])) [188]
+                     ]) (./ch11/ch11b.tex [194] [195] [196] [197])) [198]
+<infographic/infographic11.pdf, id=5162, 614.295pt x 794.97pt>
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf>
+Package pdftex.def Info: infographic/infographic11.pdf  used on input line 131.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf>
+Package pdftex.def Info: infographic/infographic11.pdf  used on input line 131.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic11.pdf, id=5165, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf, page 1>
+Package pdftex.def Info: infographic/infographic11.pdf , page1 used on input li
+ne 131.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf, page 1>
+Package pdftex.def Info: infographic/infographic11.pdf , page1 used on input li
+ne 131.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf, page 1>
+Package pdftex.def Info: infographic/infographic11.pdf , page1 used on input li
+ne 131.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf, page 1>
+Package pdftex.def Info: infographic/infographic11.pdf , page1 used on input li
+ne 131.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic11.pdf Graphic file (type pdf)
+<use infographic/infographic11.pdf, page 1>
+Package pdftex.def Info: infographic/infographic11.pdf , page1 used on input li
+ne 131.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+
+[199
+
+
+
+ <./infographic/infographic11.pdf>]
 \openout2 = `ch12/ch12.aux'.
 
-
-(./ch12/ch12.tex (./ch12/ch12a.tex
+ (./ch12/ch12.tex (./ch12/ch12a.tex
 Chapter 12.
-[189
+[200
 
 
-
-
-] [190
+] [201
 pdfTeX warning (ext4): destination with the same identifier (name{table.12.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2282,7 +2729,7 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.97 \end{keyidea}
-                  ] [191
+                  ] [202
 pdfTeX warning (ext4): destination with the same identifier (name{table.12.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2291,38 +2738,79 @@ l.142 \end{xltabular}
                      ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [192
+ [203
 pdfTeX warning (ext4): destination with the same identifier (name{table.12.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.177 
-      ] (./ch12/code/tco.py) [193]) (./ch12/ch12b.tex [194
+      ] (./ch12/code/tco.py) [204]) (./ch12/ch12b.tex [205
 pdfTeX warning (ext4): destination with the same identifier (name{table.12.5}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.12 
-     ] [195
+     ] [206
 pdfTeX warning (ext4): destination with the same identifier (name{table.12.6}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.56   \item T
               he \textbf{MCP servers}---calculation, document retrieval---ru...
-] [196] [197] [198])) [199] [200
+] [207] [208] [209])) [210]
+<infographic/infographic12.pdf, id=5299, 614.295pt x 794.97pt>
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf>
+Package pdftex.def Info: infographic/infographic12.pdf  used on input line 133.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf>
+Package pdftex.def Info: infographic/infographic12.pdf  used on input line 133.
+
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+<infographic/infographic12.pdf, id=5302, page=1, 614.295pt x 794.97pt>
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf, page 1>
+Package pdftex.def Info: infographic/infographic12.pdf , page1 used on input li
+ne 133.
+(pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf, page 1>
+Package pdftex.def Info: infographic/infographic12.pdf , page1 used on input li
+ne 133.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf, page 1>
+Package pdftex.def Info: infographic/infographic12.pdf , page1 used on input li
+ne 133.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf, page 1>
+Package pdftex.def Info: infographic/infographic12.pdf , page1 used on input li
+ne 133.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+File: infographic/infographic12.pdf Graphic file (type pdf)
+<use infographic/infographic12.pdf, page 1>
+Package pdftex.def Info: infographic/infographic12.pdf , page1 used on input li
+ne 133.
+(pdftex.def)             Requested size: 614.58406pt x 795.3441pt.
+ [211
 
 
+
+ <./infographic/infographic12.pdf>] [212
 
 ]
 \openout2 = `ch13/ch13.aux'.
 
- (./ch13/ch13.tex (./ch13/ch13a.tex
+
+(./ch13/ch13.tex (./ch13/ch13a.tex
 Chapter 13.
-[201
+[213
 
 
-] [202] [203
+] [214] [215
 pdfTeX warning (ext4): destination with the same identifier (name{table.13.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2336,11 +2824,11 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.115  
         "description": "Finds and reserves stock for large or urgent orders ...
-] [204]) (./ch13/ch13b.tex (./ch13/code/release_gate.py [205])
+] [216]) (./ch13/ch13b.tex (./ch13/code/release_gate.py [217])
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/n/8'.
 (microtype)             Ignoring protrusion settings for this character.
- [206] [207
+ [218] [219
 pdfTeX warning (ext4): destination with the same identifier (name{table.13.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2352,27 +2840,27 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.103 \end{longtable}
-                     ] [208
+                     ] [220
 pdfTeX warning (ext4): destination with the same identifier (name{table.13.5}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.146 
-      ] [209] [210]
+      ] [221] [222]
 
-LaTeX Warning: Reference `tab:two-paths' on page 211 undefined on input line 23
+LaTeX Warning: Reference `tab:two-paths' on page 223 undefined on input line 23
 2.
 
 
 Underfull \vbox (badness 1990) has occurred while \output is active []
 
- [211
+ [223
 pdfTeX warning (ext4): destination with the same identifier (name{table.13.6}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.236 \end{keyidea}
-                   ] [212] [213] [214
+                   ] [224] [225] [226
 pdfTeX warning (ext4): destination with the same identifier (name{table.13.7}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2384,28 +2872,28 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.308 
-      ] [215] [216])) [217]
+      ] [227] [228])) [229]
 \openout2 = `appendix/appA.aux'.
 
  (./appendix/appA.tex
 Appendix A.
-[218
+[230
 
 
 
 
-] [219] [220
+] [231] [232
 pdfTeX warning (ext4): destination with the same identifier (name{table.A.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.124 \end{xltabular}
-                     ] [221]) [222]
+                     ] [233]) [234]
 \openout2 = `appendix/appB.aux'.
 
  (./appendix/appB.tex
 Appendix B.
-[223
+[235
 
 
 
@@ -2416,7 +2904,7 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.45   \item \textbf
-                    {MCP servers} move unchanged.]) [224]
+                    {MCP servers} move unchanged.]) [236]
 \openout2 = `appendix/appC.aux'.
 
  (./appendix/appC.tex
@@ -2426,17 +2914,17 @@ Underfull \hbox (badness 2005) in paragraph at lines 41--41
 []|\T1/lmr/bx/n/10 (+20) Cost and la-tency
  []
 
-[225
+[237
 
 
 
 
-] [226]) [227]
+] [238]) [239]
 \openout2 = `appendix/appD.aux'.
 
  (./appendix/appD.tex
 Appendix D.
-[228
+[240
 
 
 
@@ -2447,31 +2935,31 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.46 \section
-             {An 8-week plan}] [229
+             {An 8-week plan}] [241
 pdfTeX warning (ext4): destination with the same identifier (name{table.D.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.84 \section
-             {Assessment}]) [230
+             {Assessment}]) [242
 pdfTeX warning (ext4): destination with the same identifier (name{table.D.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.130 \include{appendix/appD}
-                             ] [231] (./main.bbl [232
+l.142 \include{appendix/appD}
+                             ] [243] (./main.bbl [244
 
 
 
 
-]) [233]
+]) [245]
 runsystem(makeindex main.idx)...executed safely (allowed).
 
  (./main.ind
-[234
+[246
 
 
-]) [235] (./main.aux (./preface.aux) (./ch01/ch01.aux) (./ch02/ch02.aux)
+]) [247] (./main.aux (./preface.aux) (./ch01/ch01.aux) (./ch02/ch02.aux)
 (./ch03/ch03.aux) (./ch04/ch04.aux) (./ch05/ch05.aux) (./ch06/ch06.aux)
 (./ch07/ch07.aux) (./ch08/ch08.aux) (./ch09/ch09.aux) (./ch10/ch10.aux)
 (./ch11/ch11.aux) (./ch12/ch12.aux) (./ch13/ch13.aux) (./appendix/appA.aux)
@@ -2488,10 +2976,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 011802437EFBC7D1FB8C905546D9AA2F;84424.
  ) 
 Here is how much of TeX's memory you used:
- 42424 strings out of 474116
- 810946 string characters out of 5743682
+ 42580 strings out of 474116
+ 816946 string characters out of 5743682
  2214187 words of memory out of 5000000
- 60811 multiletter control sequences out of 15000+600000
+ 60955 multiletter control sequences out of 15000+600000
  717735 words of font info for 415 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  91i,25n,114p,1297b,2315s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2519,10 +3007,10 @@ sr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt8.pfb></usr/local/te
 xlive/2024/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/local/texlive/2024/
 texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/local/texlive/2024/texmf-dis
 t/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (253 pages, 2399482 bytes).
+Output written on main.pdf (265 pages, 15092229 bytes).
 PDF statistics:
- 6356 PDF objects out of 7423 (max. 8388607)
- 5872 compressed objects within 59 object streams
- 2405 named destinations out of 2487 (max. 500000)
- 90878 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 6578 PDF objects out of 7423 (max. 8388607)
+ 5985 compressed objects within 60 object streams
+ 2417 named destinations out of 2487 (max. 500000)
+ 91118 words of extra memory for PDF output out of 106986 (max. 10000000)
 

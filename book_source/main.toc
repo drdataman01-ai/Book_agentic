@@ -67,478 +67,478 @@
 \contentsline {paragraph}{Steps.}{35}{section*.48}%
 \contentsline {paragraph}{Deliverable.}{35}{section*.49}%
 \contentsline {section}{Further Reading}{35}{section*.50}%
-\contentsline {chapter}{\numberline {2}The Designer's Toolkit}{36}{chapter.2}%
-\contentsline {section}{\numberline {2.1}What Changes When an AI Can Act?}{36}{section.2.1}%
-\contentsline {paragraph}{An assistant that only answers.}{37}{section*.51}%
-\contentsline {paragraph}{The first tool.}{37}{section*.52}%
-\contentsline {paragraph}{One promotion after another.}{37}{section*.53}%
-\contentsline {paragraph}{Capability creates obligations.}{37}{section*.54}%
-\contentsline {section}{\numberline {2.2}What Are the Seven Steps?}{38}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Steps 1 to 3: What Is the Work, Really?}{40}{section.2.3}%
-\contentsline {paragraph}{Step 1: Set the goal and measures.}{40}{section*.55}%
-\contentsline {paragraph}{Step 2: List the people and systems.}{40}{section*.56}%
-\contentsline {paragraph}{Step 3: Ask four questions of each step.}{40}{section*.57}%
-\contentsline {section}{\numberline {2.4}Step 4: How Do We Write a Design Down?}{41}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Eight checks before a review}{43}{subsection.2.4.1}%
-\contentsline {paragraph}{Component cards.}{44}{section*.58}%
-\contentsline {section}{\numberline {2.5}Patterns and Traps: Do We Have to Start from Scratch?}{44}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Step 5: Which Design Is Best?}{45}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Three designs for returns}{46}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Scoring, weighting and checking the result}{47}{subsection.2.6.2}%
-\contentsline {section}{\numberline {2.7}Steps 6 and 7: What Could Go Wrong, and What Did We Decide?}{48}{section.2.7}%
-\contentsline {section}{\numberline {2.8}The Method in Every Case}{49}{section.2.8}%
-\contentsline {section}{Chapter Summary}{50}{section*.59}%
-\contentsline {section}{Key Terms}{50}{section*.60}%
-\contentsline {section}{Review Questions}{51}{section*.61}%
-\contentsline {section}{Exercises}{51}{section*.62}%
-\contentsline {paragraph}{Design track}{51}{section*.63}%
-\contentsline {paragraph}{Build track}{51}{section*.64}%
-\contentsline {section}{Lab 2: Measuring Two Designs}{51}{section*.65}%
-\contentsline {paragraph}{Goal.}{51}{section*.66}%
-\contentsline {paragraph}{Time.}{52}{section*.67}%
-\contentsline {paragraph}{Steps.}{52}{section*.68}%
-\contentsline {paragraph}{Deliverable.}{52}{section*.69}%
-\contentsline {section}{Further Reading}{52}{section*.70}%
-\contentsline {chapter}{\numberline {3}The Business of AI Solutions}{53}{chapter.3}%
-\contentsline {section}{\numberline {3.1}What Did the Vice President Actually Read?}{53}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Where Does the Time Go Today?}{54}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Steps, times and error points}{54}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Getting honest numbers}{55}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Who Cares About This Solution?}{56}{section.3.3}%
-\contentsline {section}{\numberline {3.4}How Will We Know It Worked?}{56}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}What makes a good KPI}{56}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}The KPI tree}{57}{subsection.3.4.2}%
-\contentsline {section}{\numberline {3.5}What Is It Worth?}{58}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}State the hypothesis first}{58}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Four kinds of benefit}{58}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Harbor's value case}{58}{subsection.3.5.3}%
-\contentsline {subsection}{\numberline {3.5.4}Which assumption is the case built on?}{60}{subsection.3.5.4}%
-\contentsline {section}{\numberline {3.6}What Does One Transaction Cost?}{61}{section.3.6}%
-\contentsline {paragraph}{Comparing designs.}{61}{section*.71}%
-\contentsline {paragraph}{Comparing paths.}{62}{section*.72}%
-\contentsline {paragraph}{Scaling.}{62}{section*.73}%
-\contentsline {subsection}{\numberline {3.6.1}Where model cost does and does not matter}{62}{subsection.3.6.1}%
-\contentsline {section}{\numberline {3.7}Which Mistakes Hurt Most?}{62}{section.3.7}%
-\contentsline {subsection}{\numberline {3.7.1}Pricing an error}{62}{subsection.3.7.1}%
-\contentsline {subsection}{\numberline {3.7.2}Asymmetric errors}{63}{subsection.3.7.2}%
-\contentsline {subsection}{\numberline {3.7.3}Error budgets}{63}{subsection.3.7.3}%
-\contentsline {section}{\numberline {3.8}What Else Could Go Wrong?}{64}{section.3.8}%
-\contentsline {section}{\numberline {3.9}Can We Put Dollars on the Trade-off?}{64}{section.3.9}%
-\contentsline {section}{\numberline {3.10}How Do We Try It Safely?}{65}{section.3.10}%
-\contentsline {section}{\numberline {3.11}How Do We Ask for a Yes?}{66}{section.3.11}%
-\contentsline {section}{\numberline {3.12}The Business Layer in Every Case}{67}{section.3.12}%
-\contentsline {section}{Chapter Summary}{67}{section*.74}%
-\contentsline {section}{Key Terms}{68}{section*.75}%
-\contentsline {section}{Review Questions}{68}{section*.76}%
-\contentsline {section}{Exercises}{69}{section*.77}%
-\contentsline {paragraph}{Design track}{69}{section*.78}%
-\contentsline {paragraph}{Build track}{69}{section*.79}%
-\contentsline {section}{Lab 3: A Value Case You Can Defend}{69}{section*.80}%
-\contentsline {paragraph}{Goal.}{69}{section*.81}%
-\contentsline {paragraph}{Time.}{69}{section*.82}%
-\contentsline {paragraph}{Steps.}{69}{section*.83}%
-\contentsline {paragraph}{Deliverable.}{70}{section*.84}%
-\contentsline {section}{Further Reading}{70}{section*.85}%
-\contentsline {part}{II\hspace {1em}Critique and Redesign}{71}{part.2}%
-\contentsline {chapter}{\numberline {4}Case: A Company Policy Assistant}{72}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Business Brief: What Is Going Wrong Today?}{73}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}The company}{73}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}The pain}{73}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}The current process}{73}{subsection.4.1.3}%
-\contentsline {section}{\numberline {4.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{74}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Stakeholders}{74}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}The deflection trap}{74}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}KPIs and risks}{75}{subsection.4.2.3}%
-\contentsline {subsection}{\numberline {4.2.4}KPI tree and value hypothesis}{75}{subsection.4.2.4}%
-\contentsline {section}{\numberline {4.3}Alternative Designs: What Could We Build?}{76}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}The sample design: Google's sample as it stands}{76}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}The grounded design: permission-aware, cited and current}{77}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}The curated design: approved answers first}{79}{subsection.4.3.3}%
-\contentsline {section}{\numberline {4.4}Trade-offs: Which Design Should We Pilot?}{79}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Constraint first, then scores}{79}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}A near tie}{80}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Failure walk-through}{81}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}Decision record}{81}{subsection.4.4.4}%
-\contentsline {section}{\numberline {4.5}Build: How Do We Make It?}{82}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Documents with metadata}{82}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}The instruction}{82}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}The permission-aware search tool}{83}{subsection.4.5.3}%
-\contentsline {subsection}{\numberline {4.5.4}The citation guardrail}{84}{subsection.4.5.4}%
-\contentsline {section}{\numberline {4.6}Deploy: How Do We Run It Safely?}{85}{section.4.6}%
-\contentsline {subsection}{\numberline {4.6.1}Choosing where it runs}{85}{subsection.4.6.1}%
-\contentsline {subsection}{\numberline {4.6.2}Steps}{85}{subsection.4.6.2}%
-\contentsline {section}{\numberline {4.7}Evaluate: How Do We Know It Works?}{86}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}Measure retrieval separately from answers}{86}{subsection.4.7.1}%
-\contentsline {subsection}{\numberline {4.7.2}The evaluation set}{87}{subsection.4.7.2}%
-\contentsline {subsection}{\numberline {4.7.3}Thresholds and judging}{88}{subsection.4.7.3}%
-\contentsline {subsection}{\numberline {4.7.4}Evaluating without watching employees}{88}{subsection.4.7.4}%
-\contentsline {section}{\numberline {4.8}Business Case: Is It Worth It?}{89}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}The value case}{89}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Pilot plan}{89}{subsection.4.8.2}%
-\contentsline {subsection}{\numberline {4.8.3}The memo}{90}{subsection.4.8.3}%
-\contentsline {section}{\numberline {4.9}Changed Requirement: What If the World Changes?}{90}{section.4.9}%
-\contentsline {section}{Chapter Summary}{91}{section*.86}%
-\contentsline {section}{Review Questions}{91}{section*.87}%
-\contentsline {section}{Exercises}{92}{section*.88}%
-\contentsline {paragraph}{Design track}{92}{section*.89}%
-\contentsline {paragraph}{Build track}{92}{section*.90}%
-\contentsline {section}{Lab 4: Deploy and Measure the Policy Assistant}{92}{section*.91}%
-\contentsline {paragraph}{Goal.}{92}{section*.92}%
-\contentsline {paragraph}{Time.}{92}{section*.93}%
-\contentsline {paragraph}{Steps.}{92}{section*.94}%
-\contentsline {paragraph}{Deliverable.}{93}{section*.95}%
-\contentsline {section}{Further Reading}{93}{section*.96}%
-\contentsline {chapter}{\numberline {5}Case: Customer Support Triage}{94}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Business Brief: What Is Going Wrong Today?}{94}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}The company}{94}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}What customers contact Cymbal about}{95}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Errors}{95}{subsection.5.1.3}%
-\contentsline {section}{\numberline {5.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{95}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Stakeholders}{95}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Containment and its partners}{96}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Value hypothesis}{97}{subsection.5.2.3}%
-\contentsline {section}{\numberline {5.3}Alternative Designs: What Could We Build?}{97}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}The sample as it stands}{97}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}The single-agent design: the sample extended to support}{98}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}The triage design: routing with task-shaped tools}{98}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}The assist design: a copilot for every agent}{99}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}The hybrid design: automate by intent}{99}{subsection.5.3.5}%
-\contentsline {section}{\numberline {5.4}Trade-offs: Which Design Should We Pilot?}{100}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Cost per contact, by design and by intent}{100}{subsection.5.4.1}%
-\contentsline {paragraph}{Containment is not savings.}{101}{section*.97}%
-\contentsline {paragraph}{One intent carries the case.}{101}{section*.98}%
-\contentsline {paragraph}{Assist is a serious alternative.}{101}{section*.99}%
-\contentsline {paragraph}{Automating returns buys almost nothing.}{101}{section*.100}%
-\contentsline {subsection}{\numberline {5.4.2}Scores for what money does not capture}{102}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Failure walk-through and decision}{102}{subsection.5.4.3}%
-\contentsline {section}{\numberline {5.5}Build: How Do We Design Tools We Can Trust?}{103}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Nine principles of tool design}{103}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}The sample's tools, redesigned}{104}{subsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.5.3}The returns server}{104}{subsection.5.5.3}%
-\contentsline {subsection}{\numberline {5.5.4}Assembling the agents}{107}{subsection.5.5.4}%
-\contentsline {section}{\numberline {5.6}Deploy: How Do We Run It Safely?}{107}{section.5.6}%
-\contentsline {paragraph}{Agents on Agent Runtime.}{107}{section*.101}%
-\contentsline {paragraph}{MCP servers on Cloud Run, one service per owner.}{107}{section*.102}%
-\contentsline {paragraph}{Two identities on every call.}{107}{section*.103}%
-\contentsline {paragraph}{Cost and capacity.}{107}{section*.104}%
-\contentsline {section}{\numberline {5.7}Evaluate: How Do We Know It Works?}{108}{section.5.7}%
-\contentsline {subsection}{\numberline {5.7.1}Evaluating tool use}{108}{subsection.5.7.1}%
-\contentsline {paragraph}{Claims without calls.}{108}{section*.105}%
-\contentsline {paragraph}{Adversarial scripts.}{108}{section*.106}%
-\contentsline {paragraph}{Draft acceptance.}{108}{section*.107}%
-\contentsline {subsection}{\numberline {5.7.2}From evaluation to production metrics}{109}{subsection.5.7.2}%
-\contentsline {section}{\numberline {5.8}Business Case: Is It Worth It?}{109}{section.5.8}%
-\contentsline {subsection}{\numberline {5.8.1}The value case}{109}{subsection.5.8.1}%
-\contentsline {subsection}{\numberline {5.8.2}Pilot: a randomized comparison}{109}{subsection.5.8.2}%
-\contentsline {subsection}{\numberline {5.8.3}The memo}{110}{subsection.5.8.3}%
-\contentsline {section}{\numberline {5.9}Changed Requirement: What If the World Changes?}{111}{section.5.9}%
-\contentsline {section}{Chapter Summary}{111}{section*.108}%
-\contentsline {section}{Review Questions}{111}{section*.109}%
-\contentsline {section}{Exercises}{112}{section*.110}%
-\contentsline {paragraph}{Design track}{112}{section*.111}%
-\contentsline {paragraph}{Build track}{112}{section*.112}%
-\contentsline {section}{Lab 5: Tools You Can Trust}{112}{section*.113}%
-\contentsline {paragraph}{Goal.}{112}{section*.114}%
-\contentsline {paragraph}{Time.}{112}{section*.115}%
-\contentsline {paragraph}{Steps.}{113}{section*.116}%
-\contentsline {paragraph}{Deliverable.}{113}{section*.117}%
-\contentsline {section}{Further Reading}{113}{section*.118}%
-\contentsline {chapter}{\numberline {6}Case: Invoice to Payment}{114}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Business Brief: What Is Going Wrong Today?}{114}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{115}{section.6.2}%
-\contentsline {paragraph}{KPIs and risks.}{116}{section*.119}%
-\contentsline {section}{\numberline {6.3}Alternative Designs: What Could We Build?}{116}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}The sample as it stands}{116}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}The amount-routed design: the sample, adapted to invoices}{117}{subsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.3.3}The risk-routed design: controls first, review by risk}{117}{subsection.6.3.3}%
-\contentsline {subsection}{\numberline {6.3.4}The perfect-match design: touchless only on a perfect match}{118}{subsection.6.3.4}%
-\contentsline {section}{\numberline {6.4}Trade-offs: Which Design Should We Pilot?}{119}{section.6.4}%
-\contentsline {subsection}{\numberline {6.4.1}Reviewer cost versus error cost}{119}{subsection.6.4.1}%
-\contentsline {subsection}{\numberline {6.4.2}Scores and decision}{120}{subsection.6.4.2}%
-\contentsline {section}{\numberline {6.5}Build: How Do We Make It?}{121}{section.6.5}%
-\contentsline {subsection}{\numberline {6.5.1}The workflow}{121}{subsection.6.5.1}%
-\contentsline {subsection}{\numberline {6.5.2}Designing the checkpoint}{122}{subsection.6.5.2}%
-\contentsline {paragraph}{What does the reviewer see?}{122}{section*.120}%
-\contentsline {paragraph}{What may the reviewer decide?}{122}{section*.121}%
-\contentsline {paragraph}{Who may decide?}{122}{section*.122}%
-\contentsline {paragraph}{What if nobody decides?}{122}{section*.123}%
-\contentsline {paragraph}{Is the reviewer really reviewing?}{122}{section*.124}%
-\contentsline {subsection}{\numberline {6.5.3}Failing closed}{122}{subsection.6.5.3}%
-\contentsline {section}{\numberline {6.6}Deploy: How Do We Run It Safely?}{123}{section.6.6}%
-\contentsline {section}{\numberline {6.7}Evaluate: How Do We Know It Works?}{124}{section.6.7}%
-\contentsline {section}{\numberline {6.8}Business Case: Is It Worth It?}{124}{section.6.8}%
-\contentsline {paragraph}{Value.}{124}{section*.125}%
-\contentsline {paragraph}{Pilot: shadow, then partial, then full.}{125}{section*.126}%
-\contentsline {section}{\numberline {6.9}Changed Requirement: What If the World Changes?}{125}{section.6.9}%
-\contentsline {section}{Chapter Summary}{126}{section*.127}%
-\contentsline {section}{Review Questions}{126}{section*.128}%
-\contentsline {section}{Exercises}{126}{section*.129}%
-\contentsline {section}{Lab 6: A Checkpoint That Holds}{127}{section*.130}%
-\contentsline {paragraph}{Goal.}{127}{section*.131}%
-\contentsline {paragraph}{Steps.}{127}{section*.132}%
-\contentsline {paragraph}{Deliverable.}{127}{section*.133}%
-\contentsline {chapter}{\numberline {7}Case: IT Incident Response}{128}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Business Brief: What Is Going Wrong Today?}{129}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{129}{section.7.2}%
-\contentsline {paragraph}{KPIs and risks.}{129}{section*.134}%
-\contentsline {section}{\numberline {7.3}Alternative Designs: What Could We Build?}{130}{section.7.3}%
-\contentsline {subsection}{\numberline {7.3.1}The sample as it stands}{130}{subsection.7.3.1}%
-\contentsline {subsection}{\numberline {7.3.2}The chat design: an on-call chat assistant}{131}{subsection.7.3.2}%
-\contentsline {subsection}{\numberline {7.3.3}The triage design: event-triggered triage with safe actions}{131}{subsection.7.3.3}%
-\contentsline {subsection}{\numberline {7.3.4}The auto-fix design: automatic remediation}{132}{subsection.7.3.4}%
-\contentsline {section}{\numberline {7.4}Trade-offs: Which Design Should We Pilot?}{132}{section.7.4}%
-\contentsline {subsection}{\numberline {7.4.1}Cost of downtime, phase by phase}{132}{subsection.7.4.1}%
-\contentsline {subsection}{\numberline {7.4.2}Decision}{133}{subsection.7.4.2}%
-\contentsline {section}{\numberline {7.5}Build: How Do We Make It?}{134}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Telemetry as task-shaped tools}{134}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}The safe-action catalog}{134}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}The brief}{135}{subsection.7.5.3}%
-\contentsline {section}{\numberline {7.6}Deploy: How Do We Watch the System and the Agent?}{136}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Independence from what it observes}{136}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Observing the agent}{136}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Service-level objectives for the agent}{136}{subsection.7.6.3}%
-\contentsline {section}{\numberline {7.7}Evaluate: How Do We Know It Works?}{137}{section.7.7}%
-\contentsline {section}{\numberline {7.8}Business Case: Is It Worth It?}{137}{section.7.8}%
-\contentsline {paragraph}{Value and SLAs.}{137}{section*.135}%
-\contentsline {paragraph}{Rollout.}{137}{section*.136}%
-\contentsline {section}{\numberline {7.9}Changed Requirement: What If the World Changes?}{138}{section.7.9}%
-\contentsline {section}{Chapter Summary}{138}{section*.137}%
-\contentsline {section}{Review Questions}{139}{section*.138}%
-\contentsline {section}{Exercises}{139}{section*.139}%
-\contentsline {section}{Lab 7: An Agent You Can Watch}{139}{section*.140}%
-\contentsline {paragraph}{Goal.}{139}{section*.141}%
-\contentsline {paragraph}{Steps.}{139}{section*.142}%
-\contentsline {paragraph}{Deliverable.}{140}{section*.143}%
-\contentsline {section}{Further Reading}{140}{section*.144}%
-\contentsline {part}{III\hspace {1em}Original Designs}{141}{part.3}%
-\contentsline {chapter}{\numberline {8}Case: Credit Card Fraud Review}{142}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Business Brief: What Is Going Wrong Today?}{142}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{143}{section.8.2}%
-\contentsline {paragraph}{KPIs and risks.}{143}{section*.145}%
-\contentsline {section}{\numberline {8.3}Alternative Designs: What Could We Build?}{144}{section.8.3}%
-\contentsline {subsection}{\numberline {8.3.1}The agent-judge design: an agent that judges each transaction}{144}{subsection.8.3.1}%
-\contentsline {subsection}{\numberline {8.3.2}The assistant design: the model scores, the agent assists the analyst}{144}{subsection.8.3.2}%
-\contentsline {subsection}{\numberline {8.3.3}The verification design: ask the cardholder}{145}{subsection.8.3.3}%
-\contentsline {section}{\numberline {8.4}Trade-offs: Which Design Should We Pilot?}{146}{section.8.4}%
-\contentsline {subsection}{\numberline {8.4.1}Thresholds under asymmetric costs and limited capacity}{146}{subsection.8.4.1}%
-\contentsline {subsection}{\numberline {8.4.2}Scores and decision}{147}{subsection.8.4.2}%
-\contentsline {section}{\numberline {8.5}Build: How Do We Make It?}{148}{section.8.5}%
-\contentsline {subsection}{\numberline {8.5.1}The scoring server}{148}{subsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.5.2}The case agent and its summary}{148}{subsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.5.3}Faithfulness}{148}{subsection.8.5.3}%
-\contentsline {section}{\numberline {8.6}Deploy: How Do We Run It Safely?}{149}{section.8.6}%
-\contentsline {paragraph}{Out of the hot path.}{149}{section*.146}%
-\contentsline {paragraph}{Data minimization.}{149}{section*.147}%
-\contentsline {paragraph}{Model risk management.}{149}{section*.148}%
-\contentsline {section}{\numberline {8.7}Evaluate: How Do We Know It Works?}{150}{section.8.7}%
-\contentsline {subsection}{\numberline {8.7.1}Why accuracy is useless here}{150}{subsection.8.7.1}%
-\contentsline {subsection}{\numberline {8.7.2}Delayed labels and time-based splits}{150}{subsection.8.7.2}%
-\contentsline {subsection}{\numberline {8.7.3}Evaluating the agent}{150}{subsection.8.7.3}%
-\contentsline {subsection}{\numberline {8.7.4}Monitoring}{151}{subsection.8.7.4}%
-\contentsline {section}{\numberline {8.8}Business Case: Is It Worth It?}{151}{section.8.8}%
-\contentsline {section}{\numberline {8.9}Changed Requirement: What If the World Changes?}{151}{section.8.9}%
-\contentsline {section}{Chapter Summary}{152}{section*.149}%
-\contentsline {section}{Review Questions}{152}{section*.150}%
-\contentsline {section}{Exercises}{152}{section*.151}%
-\contentsline {section}{Lab 8: Evaluating What Matters}{153}{section*.152}%
-\contentsline {paragraph}{Goal.}{153}{section*.153}%
-\contentsline {paragraph}{Steps.}{153}{section*.154}%
-\contentsline {paragraph}{Deliverable.}{153}{section*.155}%
-\contentsline {section}{Further Reading}{153}{section*.156}%
-\contentsline {chapter}{\numberline {9}Case: Airline Disruption Rebooking}{154}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Business Brief: What Is Going Wrong Today?}{154}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{155}{section.9.2}%
-\contentsline {paragraph}{KPIs and risks.}{155}{section*.157}%
-\contentsline {section}{\numberline {9.3}Alternative Designs: What Could We Build?}{156}{section.9.3}%
-\contentsline {subsection}{\numberline {9.3.1}The single-agent design: one disruption agent}{156}{subsection.9.3.1}%
-\contentsline {subsection}{\numberline {9.3.2}The handoff design: specialized agents, one case}{156}{subsection.9.3.2}%
-\contentsline {subsection}{\numberline {9.3.3}The self-service design: notification and a web page, no agents}{157}{subsection.9.3.3}%
-\contentsline {section}{\numberline {9.4}Trade-offs: Which Design Should We Pilot?}{158}{section.9.4}%
-\contentsline {subsection}{\numberline {9.4.1}Why the value is non-linear}{158}{subsection.9.4.1}%
-\contentsline {subsection}{\numberline {9.4.2}Scores and decision}{159}{subsection.9.4.2}%
-\contentsline {section}{\numberline {9.5}Build: Where Does Each Piece of State Live?}{159}{section.9.5}%
-\contentsline {subsection}{\numberline {9.5.1}Where each piece of state lives}{160}{subsection.9.5.1}%
-\contentsline {subsection}{\numberline {9.5.2}The handoff contract}{160}{subsection.9.5.2}%
-\contentsline {subsection}{\numberline {9.5.3}Holding scarce seats}{161}{subsection.9.5.3}%
-\contentsline {subsection}{\numberline {9.5.4}Compensation in code}{162}{subsection.9.5.4}%
-\contentsline {section}{\numberline {9.6}Deploy: How Do We Run It Safely?}{162}{section.9.6}%
-\contentsline {section}{\numberline {9.7}Evaluate: How Do We Know It Works?}{163}{section.9.7}%
-\contentsline {section}{\numberline {9.8}Business Case: Is It Worth It?}{163}{section.9.8}%
-\contentsline {section}{\numberline {9.9}Changed Requirement: What If the World Changes?}{164}{section.9.9}%
-\contentsline {section}{Chapter Summary}{164}{section*.158}%
-\contentsline {section}{Review Questions}{165}{section*.159}%
-\contentsline {section}{Exercises}{165}{section*.160}%
-\contentsline {section}{Lab 9: Surviving the Storm}{165}{section*.161}%
-\contentsline {paragraph}{Goal.}{165}{section*.162}%
-\contentsline {paragraph}{Steps.}{165}{section*.163}%
-\contentsline {paragraph}{Deliverable.}{165}{section*.164}%
-\contentsline {section}{Further Reading}{166}{section*.165}%
-\contentsline {chapter}{\numberline {10}Case: KYC and AML Onboarding}{167}{chapter.10}%
-\contentsline {section}{\numberline {10.1}Business Brief: What Is Going Wrong Today?}{167}{section.10.1}%
-\contentsline {section}{\numberline {10.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{168}{section.10.2}%
-\contentsline {paragraph}{KPIs and risks.}{168}{section*.166}%
-\contentsline {section}{\numberline {10.3}Alternative Designs: What Could We Build?}{169}{section.10.3}%
-\contentsline {subsection}{\numberline {10.3.1}The single-agent design: one onboarding agent}{169}{subsection.10.3.1}%
-\contentsline {subsection}{\numberline {10.3.2}The controls-as-code design: agents as clerks}{169}{subsection.10.3.2}%
-\contentsline {subsection}{\numberline {10.3.3}The assist-only design}{170}{subsection.10.3.3}%
-\contentsline {section}{\numberline {10.4}Trade-offs: Which Design Should We Pilot?}{170}{section.10.4}%
-\contentsline {subsection}{\numberline {10.4.1}Constraints first}{170}{subsection.10.4.1}%
-\contentsline {subsection}{\numberline {10.4.2}Scores and decision}{171}{subsection.10.4.2}%
-\contentsline {section}{\numberline {10.5}Build: How Do We Keep It Secure and Governed?}{171}{section.10.5}%
-\contentsline {subsection}{\numberline {10.5.1}Threat model}{171}{subsection.10.5.1}%
-\contentsline {subsection}{\numberline {10.5.2}Least privilege, written down}{172}{subsection.10.5.2}%
-\contentsline {subsection}{\numberline {10.5.3}The audit trail}{173}{subsection.10.5.3}%
-\contentsline {subsection}{\numberline {10.5.4}Guardrails}{173}{subsection.10.5.4}%
-\contentsline {section}{\numberline {10.6}Deploy: How Do We Run It Safely?}{174}{section.10.6}%
-\contentsline {section}{\numberline {10.7}Evaluate: How Do We Know It Works?}{174}{section.10.7}%
-\contentsline {subsection}{\numberline {10.7.1}Controls, each with a test}{174}{subsection.10.7.1}%
-\contentsline {subsection}{\numberline {10.7.2}Extraction and screening quality}{175}{subsection.10.7.2}%
-\contentsline {section}{\numberline {10.8}Business Case: Is It Worth It?}{175}{section.10.8}%
-\contentsline {section}{\numberline {10.9}Changed Requirement: What If the World Changes?}{175}{section.10.9}%
-\contentsline {section}{Chapter Summary}{176}{section*.167}%
-\contentsline {section}{Review Questions}{176}{section*.168}%
-\contentsline {section}{Exercises}{176}{section*.169}%
-\contentsline {section}{Lab 10: Controls You Can Show an Examiner}{176}{section*.170}%
-\contentsline {paragraph}{Goal.}{176}{section*.171}%
-\contentsline {paragraph}{Steps.}{177}{section*.172}%
-\contentsline {paragraph}{Deliverable.}{177}{section*.173}%
-\contentsline {section}{Further Reading}{177}{section*.174}%
-\contentsline {chapter}{\numberline {11}Case: Demand Forecasting and Replenishment}{178}{chapter.11}%
-\contentsline {section}{\numberline {11.1}Business Brief: What Is Going Wrong Today?}{178}{section.11.1}%
-\contentsline {section}{\numberline {11.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{179}{section.11.2}%
-\contentsline {paragraph}{KPIs and risks.}{179}{section*.175}%
-\contentsline {section}{\numberline {11.3}Alternative Designs: What Could We Build?}{180}{section.11.3}%
-\contentsline {subsection}{\numberline {11.3.1}The agent-forecaster design: an agent that forecasts and orders}{180}{subsection.11.3.1}%
-\contentsline {subsection}{\numberline {11.3.2}The foundation-model design: batch forecasts, rules for orders, an agent for exceptions}{180}{subsection.11.3.2}%
-\contentsline {subsection}{\numberline {11.3.3}The statistical design: statistical forecasts and rules}{181}{subsection.11.3.3}%
-\contentsline {section}{\numberline {11.4}Trade-offs: Which Design Should We Pilot?}{181}{section.11.4}%
-\contentsline {subsection}{\numberline {11.4.1}Inventory economics: order a quantile, not the mean}{181}{subsection.11.4.1}%
-\contentsline {subsection}{\numberline {11.4.2}Cost and latency: where the compute goes}{183}{subsection.11.4.2}%
-\contentsline {subsection}{\numberline {11.4.3}Scores and decision}{183}{subsection.11.4.3}%
-\contentsline {section}{\numberline {11.5}Build: How Do We Make It?}{184}{section.11.5}%
-\contentsline {subsection}{\numberline {11.5.1}The forecast server}{184}{subsection.11.5.1}%
-\contentsline {subsection}{\numberline {11.5.2}The exception agent}{184}{subsection.11.5.2}%
-\contentsline {subsection}{\numberline {11.5.3}The order calculation}{184}{subsection.11.5.3}%
-\contentsline {section}{\numberline {11.6}Deploy: How Do We Run It Safely?}{185}{section.11.6}%
-\contentsline {paragraph}{Batch on accelerators, serving on Cloud Run.}{185}{section*.176}%
-\contentsline {paragraph}{The nightly timeline as an SLO.}{185}{section*.177}%
-\contentsline {paragraph}{Cost controls.}{185}{section*.178}%
-\contentsline {section}{\numberline {11.7}Evaluate: How Do We Know It Works?}{185}{section.11.7}%
-\contentsline {subsection}{\numberline {11.7.1}A baseline must be beaten}{185}{subsection.11.7.1}%
-\contentsline {subsection}{\numberline {11.7.2}Exceptions and the agent}{185}{subsection.11.7.2}%
-\contentsline {subsection}{\numberline {11.7.3}Monitoring for drift}{186}{subsection.11.7.3}%
-\contentsline {section}{\numberline {11.8}Business Case: Is It Worth It?}{186}{section.11.8}%
-\contentsline {section}{\numberline {11.9}Changed Requirement: What If the World Changes?}{186}{section.11.9}%
-\contentsline {section}{Chapter Summary}{187}{section*.179}%
-\contentsline {section}{Review Questions}{187}{section*.180}%
-\contentsline {section}{Exercises}{187}{section*.181}%
-\contentsline {section}{Lab 11: Beat the Baseline}{187}{section*.182}%
-\contentsline {paragraph}{Goal.}{187}{section*.183}%
-\contentsline {paragraph}{Steps.}{188}{section*.184}%
-\contentsline {paragraph}{Deliverable.}{188}{section*.185}%
-\contentsline {section}{Further Reading}{188}{section*.186}%
-\contentsline {chapter}{\numberline {12}Case: Commercial Loan Underwriting Memo}{189}{chapter.12}%
-\contentsline {section}{\numberline {12.1}Business Brief: What Is Going Wrong Today?}{189}{section.12.1}%
-\contentsline {section}{\numberline {12.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{190}{section.12.2}%
-\contentsline {paragraph}{KPIs and risks.}{190}{section*.187}%
-\contentsline {section}{\numberline {12.3}Alternative Designs: What Could We Build, or Buy?}{191}{section.12.3}%
-\contentsline {subsection}{\numberline {12.3.1}The vendor design: buy a platform}{191}{subsection.12.3.1}%
-\contentsline {subsection}{\numberline {12.3.2}The workflow design: build a memo workflow}{191}{subsection.12.3.2}%
-\contentsline {subsection}{\numberline {12.3.3}The assistant design: build a drafting assistant only}{192}{subsection.12.3.3}%
-\contentsline {section}{\numberline {12.4}Trade-offs: Should We Build or Buy?}{193}{section.12.4}%
-\contentsline {subsection}{\numberline {12.4.1}Total cost of ownership}{193}{subsection.12.4.1}%
-\contentsline {subsection}{\numberline {12.4.2}Beyond cost}{194}{subsection.12.4.2}%
-\contentsline {section}{\numberline {12.5}Build: How Do We Make It?}{194}{section.12.5}%
-\contentsline {subsection}{\numberline {12.5.1}Numbers from tools, words from models}{194}{subsection.12.5.1}%
-\contentsline {subsection}{\numberline {12.5.2}Long-running work}{195}{subsection.12.5.2}%
-\contentsline {subsection}{\numberline {12.5.3}Bounded reflection}{195}{subsection.12.5.3}%
-\contentsline {section}{\numberline {12.6}Deploy: Where Should Each Part Run?}{195}{section.12.6}%
-\contentsline {section}{\numberline {12.7}Evaluate: How Do We Know It Works?}{196}{section.12.7}%
-\contentsline {section}{\numberline {12.8}Business Case: Is It Worth It?}{197}{section.12.8}%
-\contentsline {section}{\numberline {12.9}Changed Requirement: What If the World Changes?}{197}{section.12.9}%
-\contentsline {section}{Chapter Summary}{197}{section*.188}%
-\contentsline {section}{Review Questions}{198}{section*.189}%
-\contentsline {section}{Exercises}{198}{section*.190}%
-\contentsline {section}{Lab 12: Decide Where It Runs}{198}{section*.191}%
-\contentsline {paragraph}{Goal.}{198}{section*.192}%
-\contentsline {paragraph}{Steps.}{198}{section*.193}%
-\contentsline {paragraph}{Deliverable.}{199}{section*.194}%
-\contentsline {part}{IV\hspace {1em}Capstone}{200}{part.4}%
-\contentsline {chapter}{\numberline {13}Capstone: Cross-Department Operations}{201}{chapter.13}%
-\contentsline {section}{\numberline {13.1}One Company, Many Agents: How Should They Work Together?}{201}{section.13.1}%
-\contentsline {subsection}{\numberline {13.1.1}Three ways to connect}{202}{subsection.13.1.1}%
-\contentsline {subsection}{\numberline {13.1.2}Harbor's order desk}{203}{subsection.13.1.2}%
-\contentsline {subsection}{\numberline {13.1.3}Contracts between agents}{204}{subsection.13.1.3}%
-\contentsline {subsection}{\numberline {13.1.4}The agent registry}{204}{subsection.13.1.4}%
-\contentsline {section}{\numberline {13.2}Releasing Agent Systems: How Do We Change Them Safely?}{205}{section.13.2}%
-\contentsline {subsection}{\numberline {13.2.1}What changes, and what must be versioned}{205}{subsection.13.2.1}%
-\contentsline {subsection}{\numberline {13.2.2}Gates}{205}{subsection.13.2.2}%
-\contentsline {subsection}{\numberline {13.2.3}Rollout and rollback}{206}{subsection.13.2.3}%
-\contentsline {subsection}{\numberline {13.2.4}Model changes are events}{207}{subsection.13.2.4}%
-\contentsline {section}{\numberline {13.3}The Operating Model: Who Owns What?}{207}{section.13.3}%
-\contentsline {subsection}{\numberline {13.3.1}Who owns what}{207}{subsection.13.3.1}%
-\contentsline {subsection}{\numberline {13.3.2}Risk tiers}{208}{subsection.13.3.2}%
-\contentsline {subsection}{\numberline {13.3.3}Managing the portfolio}{208}{subsection.13.3.3}%
-\contentsline {section}{\numberline {13.4}Change Management and Adoption: Will People Use It?}{209}{section.13.4}%
-\contentsline {paragraph}{Design with the people whose work changes.}{209}{section*.195}%
-\contentsline {paragraph}{Say what happens to the freed time.}{209}{section*.196}%
-\contentsline {paragraph}{Calibrate trust, in both directions.}{209}{section*.197}%
-\contentsline {paragraph}{Measure adoption as a KPI.}{209}{section*.198}%
-\contentsline {section}{\numberline {13.5}The Designer's Habits: What Should You Take Away?}{209}{section.13.5}%
-\contentsline {section}{\numberline {13.6}Capstone Project: Can You Do It Yourself?}{210}{section.13.6}%
-\contentsline {paragraph}{Brief.}{210}{section*.199}%
-\contentsline {paragraph}{Deliverables.}{210}{section*.200}%
-\contentsline {paragraph}{Assessment.}{210}{section*.201}%
-\contentsline {section}{\numberline {13.7}The Whole Journey: What Did Each New Power Cost?}{210}{section.13.7}%
-\contentsline {paragraph}{Learning to act.}{211}{section*.202}%
-\contentsline {paragraph}{Reaching protected data.}{212}{section*.203}%
-\contentsline {paragraph}{Exposing capabilities, not systems.}{212}{section*.204}%
-\contentsline {paragraph}{Learning to remember.}{212}{section*.205}%
-\contentsline {paragraph}{Learning to forget.}{213}{section*.206}%
-\contentsline {paragraph}{One agent becomes two.}{213}{section*.207}%
-\contentsline {paragraph}{Proving that a skill changed something.}{214}{section*.208}%
-\contentsline {paragraph}{A person walks in.}{214}{section*.209}%
-\contentsline {paragraph}{The front door is not another brain.}{214}{section*.210}%
-\contentsline {paragraph}{Releasing it.}{215}{section*.211}%
-\contentsline {paragraph}{Seeing and pricing what happened.}{215}{section*.212}%
-\contentsline {paragraph}{Honest claims from small tests.}{215}{section*.213}%
-\contentsline {paragraph}{What the journey teaches.}{216}{section*.214}%
-\contentsline {section}{Chapter Summary}{216}{section*.215}%
-\contentsline {section}{Review Questions}{217}{section*.216}%
-\contentsline {chapter}{\numberline {A}Setting Up ADK and Google Cloud}{218}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Local tools}{218}{section.A.1}%
-\contentsline {section}{\numberline {A.2}A Google Cloud account and project for the course}{218}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Recommended: each student uses the Google Cloud free trial}{218}{subsection.A.2.1}%
-\contentsline {paragraph}{Signing up.}{219}{section*.217}%
-\contentsline {paragraph}{When to sign up.}{219}{section*.218}%
-\contentsline {paragraph}{Creating the course project.}{219}{section*.219}%
-\contentsline {subsection}{\numberline {A.2.2}What the trial covers, and the adjustments the labs need}{220}{subsection.A.2.2}%
-\contentsline {subsection}{\numberline {A.2.3}Keeping the credit}{221}{subsection.A.2.3}%
-\contentsline {subsection}{\numberline {A.2.4}If a student cannot use the free trial}{221}{subsection.A.2.4}%
-\contentsline {section}{\numberline {A.3}Cost controls}{222}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Cleanup}{222}{section.A.4}%
-\contentsline {section}{\numberline {A.5}When things go wrong}{222}{section.A.5}%
-\contentsline {chapter}{\numberline {B}Concept-to-Framework Mapping}{223}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Translating a design}{224}{section.B.1}%
-\contentsline {chapter}{\numberline {C}Templates}{225}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Solution graph checklist}{225}{section.C.1}%
-\contentsline {section}{\numberline {C.2}Node card}{225}{section.C.2}%
-\contentsline {section}{\numberline {C.3}Trade-off table}{226}{section.C.3}%
-\contentsline {section}{\numberline {C.4}Failure walk-through}{226}{section.C.4}%
-\contentsline {section}{\numberline {C.5}Decision record}{226}{section.C.5}%
-\contentsline {section}{\numberline {C.6}One-page memo}{226}{section.C.6}%
-\contentsline {section}{\numberline {C.7}Go/no-go criteria}{227}{section.C.7}%
-\contentsline {chapter}{\numberline {D}Course Plans and Rubrics}{228}{appendix.D}%
-\contentsline {section}{\numberline {D.1}A 14-week plan}{228}{section.D.1}%
-\contentsline {section}{\numberline {D.2}A 10-week plan}{228}{section.D.2}%
-\contentsline {section}{\numberline {D.3}An 8-week plan}{229}{section.D.3}%
-\contentsline {paragraph}{Choosing the elective in week 7.}{229}{section*.220}%
-\contentsline {paragraph}{The final project.}{229}{section*.221}%
-\contentsline {paragraph}{A 7-week variant.}{229}{section*.222}%
-\contentsline {paragraph}{Cloud credit.}{229}{section*.223}%
-\contentsline {paragraph}{Assessment.}{230}{section*.224}%
-\contentsline {section}{\numberline {D.4}Assessment}{230}{section.D.4}%
-\contentsline {section}{\numberline {D.5}Rubrics}{230}{section.D.5}%
-\contentsline {section}{\numberline {D.6}Running design reviews in class}{230}{section.D.6}%
-\contentsline {section}{\numberline {D.7}The free design coach}{231}{section.D.7}%
-\contentsline {chapter}{Index}{234}{section*.226}%
+\contentsline {chapter}{\numberline {2}The Designer's Toolkit}{37}{chapter.2}%
+\contentsline {section}{\numberline {2.1}What Changes When an AI Can Act?}{37}{section.2.1}%
+\contentsline {paragraph}{An assistant that only answers.}{38}{section*.51}%
+\contentsline {paragraph}{The first tool.}{38}{section*.52}%
+\contentsline {paragraph}{One promotion after another.}{38}{section*.53}%
+\contentsline {paragraph}{Capability creates obligations.}{38}{section*.54}%
+\contentsline {section}{\numberline {2.2}What Are the Seven Steps?}{39}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Steps 1 to 3: What Is the Work, Really?}{41}{section.2.3}%
+\contentsline {paragraph}{Step 1: Set the goal and measures.}{41}{section*.55}%
+\contentsline {paragraph}{Step 2: List the people and systems.}{41}{section*.56}%
+\contentsline {paragraph}{Step 3: Ask four questions of each step.}{41}{section*.57}%
+\contentsline {section}{\numberline {2.4}Step 4: How Do We Write a Design Down?}{42}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Eight checks before a review}{44}{subsection.2.4.1}%
+\contentsline {paragraph}{Component cards.}{45}{section*.58}%
+\contentsline {section}{\numberline {2.5}Patterns and Traps: Do We Have to Start from Scratch?}{45}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Step 5: Which Design Is Best?}{46}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Three designs for returns}{47}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Scoring, weighting and checking the result}{48}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Steps 6 and 7: What Could Go Wrong, and What Did We Decide?}{49}{section.2.7}%
+\contentsline {section}{\numberline {2.8}The Method in Every Case}{50}{section.2.8}%
+\contentsline {section}{Chapter Summary}{51}{section*.59}%
+\contentsline {section}{Key Terms}{51}{section*.60}%
+\contentsline {section}{Review Questions}{52}{section*.61}%
+\contentsline {section}{Exercises}{52}{section*.62}%
+\contentsline {paragraph}{Design track}{52}{section*.63}%
+\contentsline {paragraph}{Build track}{52}{section*.64}%
+\contentsline {section}{Lab 2: Measuring Two Designs}{52}{section*.65}%
+\contentsline {paragraph}{Goal.}{52}{section*.66}%
+\contentsline {paragraph}{Time.}{53}{section*.67}%
+\contentsline {paragraph}{Steps.}{53}{section*.68}%
+\contentsline {paragraph}{Deliverable.}{53}{section*.69}%
+\contentsline {section}{Further Reading}{53}{section*.70}%
+\contentsline {chapter}{\numberline {3}The Business of AI Solutions}{55}{chapter.3}%
+\contentsline {section}{\numberline {3.1}What Did the Vice President Actually Read?}{55}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Where Does the Time Go Today?}{56}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Steps, times and error points}{56}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Getting honest numbers}{57}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Who Cares About This Solution?}{58}{section.3.3}%
+\contentsline {section}{\numberline {3.4}How Will We Know It Worked?}{58}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}What makes a good KPI}{58}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}The KPI tree}{59}{subsection.3.4.2}%
+\contentsline {section}{\numberline {3.5}What Is It Worth?}{60}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}State the hypothesis first}{60}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Four kinds of benefit}{60}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Harbor's value case}{60}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}Which assumption is the case built on?}{62}{subsection.3.5.4}%
+\contentsline {section}{\numberline {3.6}What Does One Transaction Cost?}{63}{section.3.6}%
+\contentsline {paragraph}{Comparing designs.}{63}{section*.71}%
+\contentsline {paragraph}{Comparing paths.}{64}{section*.72}%
+\contentsline {paragraph}{Scaling.}{64}{section*.73}%
+\contentsline {subsection}{\numberline {3.6.1}Where model cost does and does not matter}{64}{subsection.3.6.1}%
+\contentsline {section}{\numberline {3.7}Which Mistakes Hurt Most?}{64}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Pricing an error}{64}{subsection.3.7.1}%
+\contentsline {subsection}{\numberline {3.7.2}Asymmetric errors}{65}{subsection.3.7.2}%
+\contentsline {subsection}{\numberline {3.7.3}Error budgets}{65}{subsection.3.7.3}%
+\contentsline {section}{\numberline {3.8}What Else Could Go Wrong?}{66}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Can We Put Dollars on the Trade-off?}{66}{section.3.9}%
+\contentsline {section}{\numberline {3.10}How Do We Try It Safely?}{67}{section.3.10}%
+\contentsline {section}{\numberline {3.11}How Do We Ask for a Yes?}{68}{section.3.11}%
+\contentsline {section}{\numberline {3.12}The Business Layer in Every Case}{69}{section.3.12}%
+\contentsline {section}{Chapter Summary}{69}{section*.74}%
+\contentsline {section}{Key Terms}{70}{section*.75}%
+\contentsline {section}{Review Questions}{70}{section*.76}%
+\contentsline {section}{Exercises}{71}{section*.77}%
+\contentsline {paragraph}{Design track}{71}{section*.78}%
+\contentsline {paragraph}{Build track}{71}{section*.79}%
+\contentsline {section}{Lab 3: A Value Case You Can Defend}{71}{section*.80}%
+\contentsline {paragraph}{Goal.}{71}{section*.81}%
+\contentsline {paragraph}{Time.}{71}{section*.82}%
+\contentsline {paragraph}{Steps.}{71}{section*.83}%
+\contentsline {paragraph}{Deliverable.}{72}{section*.84}%
+\contentsline {section}{Further Reading}{72}{section*.85}%
+\contentsline {part}{II\hspace {1em}Critique and Redesign}{74}{part.2}%
+\contentsline {chapter}{\numberline {4}Case: A Company Policy Assistant}{75}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Business Brief: What Is Going Wrong Today?}{76}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}The company}{76}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}The pain}{76}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}The current process}{76}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{77}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Stakeholders}{77}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}The deflection trap}{77}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}KPIs and risks}{78}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}KPI tree and value hypothesis}{78}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Alternative Designs: What Could We Build?}{79}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}The sample design: Google's sample as it stands}{79}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}The grounded design: permission-aware, cited and current}{80}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}The curated design: approved answers first}{82}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Trade-offs: Which Design Should We Pilot?}{82}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Constraint first, then scores}{82}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}A near tie}{83}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Failure walk-through}{84}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Decision record}{84}{subsection.4.4.4}%
+\contentsline {section}{\numberline {4.5}Build: How Do We Make It?}{85}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Documents with metadata}{85}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}The instruction}{85}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}The permission-aware search tool}{86}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}The citation guardrail}{87}{subsection.4.5.4}%
+\contentsline {section}{\numberline {4.6}Deploy: How Do We Run It Safely?}{88}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Choosing where it runs}{88}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Steps}{88}{subsection.4.6.2}%
+\contentsline {section}{\numberline {4.7}Evaluate: How Do We Know It Works?}{89}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Measure retrieval separately from answers}{89}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}The evaluation set}{90}{subsection.4.7.2}%
+\contentsline {subsection}{\numberline {4.7.3}Thresholds and judging}{91}{subsection.4.7.3}%
+\contentsline {subsection}{\numberline {4.7.4}Evaluating without watching employees}{91}{subsection.4.7.4}%
+\contentsline {section}{\numberline {4.8}Business Case: Is It Worth It?}{92}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}The value case}{92}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Pilot plan}{92}{subsection.4.8.2}%
+\contentsline {subsection}{\numberline {4.8.3}The memo}{93}{subsection.4.8.3}%
+\contentsline {section}{\numberline {4.9}Changed Requirement: What If the World Changes?}{93}{section.4.9}%
+\contentsline {section}{Chapter Summary}{94}{section*.86}%
+\contentsline {section}{Review Questions}{94}{section*.87}%
+\contentsline {section}{Exercises}{95}{section*.88}%
+\contentsline {paragraph}{Design track}{95}{section*.89}%
+\contentsline {paragraph}{Build track}{95}{section*.90}%
+\contentsline {section}{Lab 4: Deploy and Measure the Policy Assistant}{95}{section*.91}%
+\contentsline {paragraph}{Goal.}{95}{section*.92}%
+\contentsline {paragraph}{Time.}{95}{section*.93}%
+\contentsline {paragraph}{Steps.}{95}{section*.94}%
+\contentsline {paragraph}{Deliverable.}{96}{section*.95}%
+\contentsline {section}{Further Reading}{96}{section*.96}%
+\contentsline {chapter}{\numberline {5}Case: Customer Support Triage}{98}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Business Brief: What Is Going Wrong Today?}{98}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}The company}{98}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}What customers contact Cymbal about}{99}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Errors}{99}{subsection.5.1.3}%
+\contentsline {section}{\numberline {5.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{99}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Stakeholders}{99}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Containment and its partners}{100}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Value hypothesis}{101}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Alternative Designs: What Could We Build?}{101}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}The sample as it stands}{101}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}The single-agent design: the sample extended to support}{102}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}The triage design: routing with task-shaped tools}{102}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}The assist design: a copilot for every agent}{103}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}The hybrid design: automate by intent}{103}{subsection.5.3.5}%
+\contentsline {section}{\numberline {5.4}Trade-offs: Which Design Should We Pilot?}{104}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Cost per contact, by design and by intent}{104}{subsection.5.4.1}%
+\contentsline {paragraph}{Containment is not savings.}{105}{section*.97}%
+\contentsline {paragraph}{One intent carries the case.}{105}{section*.98}%
+\contentsline {paragraph}{Assist is a serious alternative.}{105}{section*.99}%
+\contentsline {paragraph}{Automating returns buys almost nothing.}{105}{section*.100}%
+\contentsline {subsection}{\numberline {5.4.2}Scores for what money does not capture}{106}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Failure walk-through and decision}{106}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}Build: How Do We Design Tools We Can Trust?}{107}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Nine principles of tool design}{107}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}The sample's tools, redesigned}{108}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}The returns server}{108}{subsection.5.5.3}%
+\contentsline {subsection}{\numberline {5.5.4}Assembling the agents}{111}{subsection.5.5.4}%
+\contentsline {section}{\numberline {5.6}Deploy: How Do We Run It Safely?}{111}{section.5.6}%
+\contentsline {paragraph}{Agents on Agent Runtime.}{111}{section*.101}%
+\contentsline {paragraph}{MCP servers on Cloud Run, one service per owner.}{111}{section*.102}%
+\contentsline {paragraph}{Two identities on every call.}{111}{section*.103}%
+\contentsline {paragraph}{Cost and capacity.}{111}{section*.104}%
+\contentsline {section}{\numberline {5.7}Evaluate: How Do We Know It Works?}{112}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Evaluating tool use}{112}{subsection.5.7.1}%
+\contentsline {paragraph}{Claims without calls.}{112}{section*.105}%
+\contentsline {paragraph}{Adversarial scripts.}{112}{section*.106}%
+\contentsline {paragraph}{Draft acceptance.}{112}{section*.107}%
+\contentsline {subsection}{\numberline {5.7.2}From evaluation to production metrics}{113}{subsection.5.7.2}%
+\contentsline {section}{\numberline {5.8}Business Case: Is It Worth It?}{113}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}The value case}{113}{subsection.5.8.1}%
+\contentsline {subsection}{\numberline {5.8.2}Pilot: a randomized comparison}{113}{subsection.5.8.2}%
+\contentsline {subsection}{\numberline {5.8.3}The memo}{114}{subsection.5.8.3}%
+\contentsline {section}{\numberline {5.9}Changed Requirement: What If the World Changes?}{115}{section.5.9}%
+\contentsline {section}{Chapter Summary}{115}{section*.108}%
+\contentsline {section}{Review Questions}{115}{section*.109}%
+\contentsline {section}{Exercises}{116}{section*.110}%
+\contentsline {paragraph}{Design track}{116}{section*.111}%
+\contentsline {paragraph}{Build track}{116}{section*.112}%
+\contentsline {section}{Lab 5: Tools You Can Trust}{116}{section*.113}%
+\contentsline {paragraph}{Goal.}{116}{section*.114}%
+\contentsline {paragraph}{Time.}{116}{section*.115}%
+\contentsline {paragraph}{Steps.}{117}{section*.116}%
+\contentsline {paragraph}{Deliverable.}{117}{section*.117}%
+\contentsline {section}{Further Reading}{117}{section*.118}%
+\contentsline {chapter}{\numberline {6}Case: Invoice to Payment}{119}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Business Brief: What Is Going Wrong Today?}{119}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{120}{section.6.2}%
+\contentsline {paragraph}{KPIs and risks.}{121}{section*.119}%
+\contentsline {section}{\numberline {6.3}Alternative Designs: What Could We Build?}{121}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}The sample as it stands}{121}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}The amount-routed design: the sample, adapted to invoices}{122}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}The risk-routed design: controls first, review by risk}{122}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}The perfect-match design: touchless only on a perfect match}{123}{subsection.6.3.4}%
+\contentsline {section}{\numberline {6.4}Trade-offs: Which Design Should We Pilot?}{124}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Reviewer cost versus error cost}{124}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Scores and decision}{125}{subsection.6.4.2}%
+\contentsline {section}{\numberline {6.5}Build: How Do We Make It?}{126}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}The workflow}{126}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Designing the checkpoint}{127}{subsection.6.5.2}%
+\contentsline {paragraph}{What does the reviewer see?}{127}{section*.120}%
+\contentsline {paragraph}{What may the reviewer decide?}{127}{section*.121}%
+\contentsline {paragraph}{Who may decide?}{127}{section*.122}%
+\contentsline {paragraph}{What if nobody decides?}{127}{section*.123}%
+\contentsline {paragraph}{Is the reviewer really reviewing?}{127}{section*.124}%
+\contentsline {subsection}{\numberline {6.5.3}Failing closed}{127}{subsection.6.5.3}%
+\contentsline {section}{\numberline {6.6}Deploy: How Do We Run It Safely?}{128}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Evaluate: How Do We Know It Works?}{129}{section.6.7}%
+\contentsline {section}{\numberline {6.8}Business Case: Is It Worth It?}{129}{section.6.8}%
+\contentsline {paragraph}{Value.}{129}{section*.125}%
+\contentsline {paragraph}{Pilot: shadow, then partial, then full.}{130}{section*.126}%
+\contentsline {section}{\numberline {6.9}Changed Requirement: What If the World Changes?}{130}{section.6.9}%
+\contentsline {section}{Chapter Summary}{131}{section*.127}%
+\contentsline {section}{Review Questions}{131}{section*.128}%
+\contentsline {section}{Exercises}{131}{section*.129}%
+\contentsline {section}{Lab 6: A Checkpoint That Holds}{132}{section*.130}%
+\contentsline {paragraph}{Goal.}{132}{section*.131}%
+\contentsline {paragraph}{Steps.}{132}{section*.132}%
+\contentsline {paragraph}{Deliverable.}{132}{section*.133}%
+\contentsline {chapter}{\numberline {7}Case: IT Incident Response}{134}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Business Brief: What Is Going Wrong Today?}{135}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{135}{section.7.2}%
+\contentsline {paragraph}{KPIs and risks.}{135}{section*.134}%
+\contentsline {section}{\numberline {7.3}Alternative Designs: What Could We Build?}{136}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}The sample as it stands}{136}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}The chat design: an on-call chat assistant}{137}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}The triage design: event-triggered triage with safe actions}{137}{subsection.7.3.3}%
+\contentsline {subsection}{\numberline {7.3.4}The auto-fix design: automatic remediation}{138}{subsection.7.3.4}%
+\contentsline {section}{\numberline {7.4}Trade-offs: Which Design Should We Pilot?}{138}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Cost of downtime, phase by phase}{138}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Decision}{139}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Build: How Do We Make It?}{140}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Telemetry as task-shaped tools}{140}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}The safe-action catalog}{140}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}The brief}{141}{subsection.7.5.3}%
+\contentsline {section}{\numberline {7.6}Deploy: How Do We Watch the System and the Agent?}{142}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Independence from what it observes}{142}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Observing the agent}{142}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Service-level objectives for the agent}{142}{subsection.7.6.3}%
+\contentsline {section}{\numberline {7.7}Evaluate: How Do We Know It Works?}{143}{section.7.7}%
+\contentsline {section}{\numberline {7.8}Business Case: Is It Worth It?}{143}{section.7.8}%
+\contentsline {paragraph}{Value and SLAs.}{143}{section*.135}%
+\contentsline {paragraph}{Rollout.}{143}{section*.136}%
+\contentsline {section}{\numberline {7.9}Changed Requirement: What If the World Changes?}{144}{section.7.9}%
+\contentsline {section}{Chapter Summary}{144}{section*.137}%
+\contentsline {section}{Review Questions}{145}{section*.138}%
+\contentsline {section}{Exercises}{145}{section*.139}%
+\contentsline {section}{Lab 7: An Agent You Can Watch}{145}{section*.140}%
+\contentsline {paragraph}{Goal.}{145}{section*.141}%
+\contentsline {paragraph}{Steps.}{145}{section*.142}%
+\contentsline {paragraph}{Deliverable.}{146}{section*.143}%
+\contentsline {section}{Further Reading}{146}{section*.144}%
+\contentsline {part}{III\hspace {1em}Original Designs}{148}{part.3}%
+\contentsline {chapter}{\numberline {8}Case: Credit Card Fraud Review}{149}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Business Brief: What Is Going Wrong Today?}{149}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{150}{section.8.2}%
+\contentsline {paragraph}{KPIs and risks.}{150}{section*.145}%
+\contentsline {section}{\numberline {8.3}Alternative Designs: What Could We Build?}{151}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}The agent-judge design: an agent that judges each transaction}{151}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}The assistant design: the model scores, the agent assists the analyst}{151}{subsection.8.3.2}%
+\contentsline {subsection}{\numberline {8.3.3}The verification design: ask the cardholder}{152}{subsection.8.3.3}%
+\contentsline {section}{\numberline {8.4}Trade-offs: Which Design Should We Pilot?}{153}{section.8.4}%
+\contentsline {subsection}{\numberline {8.4.1}Thresholds under asymmetric costs and limited capacity}{153}{subsection.8.4.1}%
+\contentsline {subsection}{\numberline {8.4.2}Scores and decision}{154}{subsection.8.4.2}%
+\contentsline {section}{\numberline {8.5}Build: How Do We Make It?}{155}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}The scoring server}{155}{subsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.5.2}The case agent and its summary}{155}{subsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.5.3}Faithfulness}{155}{subsection.8.5.3}%
+\contentsline {section}{\numberline {8.6}Deploy: How Do We Run It Safely?}{156}{section.8.6}%
+\contentsline {paragraph}{Out of the hot path.}{156}{section*.146}%
+\contentsline {paragraph}{Data minimization.}{156}{section*.147}%
+\contentsline {paragraph}{Model risk management.}{156}{section*.148}%
+\contentsline {section}{\numberline {8.7}Evaluate: How Do We Know It Works?}{157}{section.8.7}%
+\contentsline {subsection}{\numberline {8.7.1}Why accuracy is useless here}{157}{subsection.8.7.1}%
+\contentsline {subsection}{\numberline {8.7.2}Delayed labels and time-based splits}{157}{subsection.8.7.2}%
+\contentsline {subsection}{\numberline {8.7.3}Evaluating the agent}{157}{subsection.8.7.3}%
+\contentsline {subsection}{\numberline {8.7.4}Monitoring}{158}{subsection.8.7.4}%
+\contentsline {section}{\numberline {8.8}Business Case: Is It Worth It?}{158}{section.8.8}%
+\contentsline {section}{\numberline {8.9}Changed Requirement: What If the World Changes?}{158}{section.8.9}%
+\contentsline {section}{Chapter Summary}{159}{section*.149}%
+\contentsline {section}{Review Questions}{159}{section*.150}%
+\contentsline {section}{Exercises}{159}{section*.151}%
+\contentsline {section}{Lab 8: Evaluating What Matters}{160}{section*.152}%
+\contentsline {paragraph}{Goal.}{160}{section*.153}%
+\contentsline {paragraph}{Steps.}{160}{section*.154}%
+\contentsline {paragraph}{Deliverable.}{160}{section*.155}%
+\contentsline {section}{Further Reading}{160}{section*.156}%
+\contentsline {chapter}{\numberline {9}Case: Airline Disruption Rebooking}{162}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Business Brief: What Is Going Wrong Today?}{162}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{163}{section.9.2}%
+\contentsline {paragraph}{KPIs and risks.}{163}{section*.157}%
+\contentsline {section}{\numberline {9.3}Alternative Designs: What Could We Build?}{164}{section.9.3}%
+\contentsline {subsection}{\numberline {9.3.1}The single-agent design: one disruption agent}{164}{subsection.9.3.1}%
+\contentsline {subsection}{\numberline {9.3.2}The handoff design: specialized agents, one case}{164}{subsection.9.3.2}%
+\contentsline {subsection}{\numberline {9.3.3}The self-service design: notification and a web page, no agents}{165}{subsection.9.3.3}%
+\contentsline {section}{\numberline {9.4}Trade-offs: Which Design Should We Pilot?}{166}{section.9.4}%
+\contentsline {subsection}{\numberline {9.4.1}Why the value is non-linear}{166}{subsection.9.4.1}%
+\contentsline {subsection}{\numberline {9.4.2}Scores and decision}{167}{subsection.9.4.2}%
+\contentsline {section}{\numberline {9.5}Build: Where Does Each Piece of State Live?}{167}{section.9.5}%
+\contentsline {subsection}{\numberline {9.5.1}Where each piece of state lives}{168}{subsection.9.5.1}%
+\contentsline {subsection}{\numberline {9.5.2}The handoff contract}{168}{subsection.9.5.2}%
+\contentsline {subsection}{\numberline {9.5.3}Holding scarce seats}{169}{subsection.9.5.3}%
+\contentsline {subsection}{\numberline {9.5.4}Compensation in code}{170}{subsection.9.5.4}%
+\contentsline {section}{\numberline {9.6}Deploy: How Do We Run It Safely?}{170}{section.9.6}%
+\contentsline {section}{\numberline {9.7}Evaluate: How Do We Know It Works?}{171}{section.9.7}%
+\contentsline {section}{\numberline {9.8}Business Case: Is It Worth It?}{171}{section.9.8}%
+\contentsline {section}{\numberline {9.9}Changed Requirement: What If the World Changes?}{172}{section.9.9}%
+\contentsline {section}{Chapter Summary}{172}{section*.158}%
+\contentsline {section}{Review Questions}{173}{section*.159}%
+\contentsline {section}{Exercises}{173}{section*.160}%
+\contentsline {section}{Lab 9: Surviving the Storm}{173}{section*.161}%
+\contentsline {paragraph}{Goal.}{173}{section*.162}%
+\contentsline {paragraph}{Steps.}{173}{section*.163}%
+\contentsline {paragraph}{Deliverable.}{173}{section*.164}%
+\contentsline {section}{Further Reading}{174}{section*.165}%
+\contentsline {chapter}{\numberline {10}Case: KYC and AML Onboarding}{176}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Business Brief: What Is Going Wrong Today?}{176}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{177}{section.10.2}%
+\contentsline {paragraph}{KPIs and risks.}{177}{section*.166}%
+\contentsline {section}{\numberline {10.3}Alternative Designs: What Could We Build?}{178}{section.10.3}%
+\contentsline {subsection}{\numberline {10.3.1}The single-agent design: one onboarding agent}{178}{subsection.10.3.1}%
+\contentsline {subsection}{\numberline {10.3.2}The controls-as-code design: agents as clerks}{178}{subsection.10.3.2}%
+\contentsline {subsection}{\numberline {10.3.3}The assist-only design}{179}{subsection.10.3.3}%
+\contentsline {section}{\numberline {10.4}Trade-offs: Which Design Should We Pilot?}{179}{section.10.4}%
+\contentsline {subsection}{\numberline {10.4.1}Constraints first}{179}{subsection.10.4.1}%
+\contentsline {subsection}{\numberline {10.4.2}Scores and decision}{180}{subsection.10.4.2}%
+\contentsline {section}{\numberline {10.5}Build: How Do We Keep It Secure and Governed?}{180}{section.10.5}%
+\contentsline {subsection}{\numberline {10.5.1}Threat model}{180}{subsection.10.5.1}%
+\contentsline {subsection}{\numberline {10.5.2}Least privilege, written down}{181}{subsection.10.5.2}%
+\contentsline {subsection}{\numberline {10.5.3}The audit trail}{182}{subsection.10.5.3}%
+\contentsline {subsection}{\numberline {10.5.4}Guardrails}{182}{subsection.10.5.4}%
+\contentsline {section}{\numberline {10.6}Deploy: How Do We Run It Safely?}{183}{section.10.6}%
+\contentsline {section}{\numberline {10.7}Evaluate: How Do We Know It Works?}{183}{section.10.7}%
+\contentsline {subsection}{\numberline {10.7.1}Controls, each with a test}{183}{subsection.10.7.1}%
+\contentsline {subsection}{\numberline {10.7.2}Extraction and screening quality}{184}{subsection.10.7.2}%
+\contentsline {section}{\numberline {10.8}Business Case: Is It Worth It?}{184}{section.10.8}%
+\contentsline {section}{\numberline {10.9}Changed Requirement: What If the World Changes?}{184}{section.10.9}%
+\contentsline {section}{Chapter Summary}{185}{section*.167}%
+\contentsline {section}{Review Questions}{185}{section*.168}%
+\contentsline {section}{Exercises}{185}{section*.169}%
+\contentsline {section}{Lab 10: Controls You Can Show an Examiner}{185}{section*.170}%
+\contentsline {paragraph}{Goal.}{185}{section*.171}%
+\contentsline {paragraph}{Steps.}{186}{section*.172}%
+\contentsline {paragraph}{Deliverable.}{186}{section*.173}%
+\contentsline {section}{Further Reading}{186}{section*.174}%
+\contentsline {chapter}{\numberline {11}Case: Demand Forecasting and Replenishment}{188}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Business Brief: What Is Going Wrong Today?}{188}{section.11.1}%
+\contentsline {section}{\numberline {11.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{189}{section.11.2}%
+\contentsline {paragraph}{KPIs and risks.}{189}{section*.175}%
+\contentsline {section}{\numberline {11.3}Alternative Designs: What Could We Build?}{190}{section.11.3}%
+\contentsline {subsection}{\numberline {11.3.1}The agent-forecaster design: an agent that forecasts and orders}{190}{subsection.11.3.1}%
+\contentsline {subsection}{\numberline {11.3.2}The foundation-model design: batch forecasts, rules for orders, an agent for exceptions}{190}{subsection.11.3.2}%
+\contentsline {subsection}{\numberline {11.3.3}The statistical design: statistical forecasts and rules}{191}{subsection.11.3.3}%
+\contentsline {section}{\numberline {11.4}Trade-offs: Which Design Should We Pilot?}{191}{section.11.4}%
+\contentsline {subsection}{\numberline {11.4.1}Inventory economics: order a quantile, not the mean}{191}{subsection.11.4.1}%
+\contentsline {subsection}{\numberline {11.4.2}Cost and latency: where the compute goes}{193}{subsection.11.4.2}%
+\contentsline {subsection}{\numberline {11.4.3}Scores and decision}{193}{subsection.11.4.3}%
+\contentsline {section}{\numberline {11.5}Build: How Do We Make It?}{194}{section.11.5}%
+\contentsline {subsection}{\numberline {11.5.1}The forecast server}{194}{subsection.11.5.1}%
+\contentsline {subsection}{\numberline {11.5.2}The exception agent}{194}{subsection.11.5.2}%
+\contentsline {subsection}{\numberline {11.5.3}The order calculation}{194}{subsection.11.5.3}%
+\contentsline {section}{\numberline {11.6}Deploy: How Do We Run It Safely?}{195}{section.11.6}%
+\contentsline {paragraph}{Batch on accelerators, serving on Cloud Run.}{195}{section*.176}%
+\contentsline {paragraph}{The nightly timeline as an SLO.}{195}{section*.177}%
+\contentsline {paragraph}{Cost controls.}{195}{section*.178}%
+\contentsline {section}{\numberline {11.7}Evaluate: How Do We Know It Works?}{195}{section.11.7}%
+\contentsline {subsection}{\numberline {11.7.1}A baseline must be beaten}{195}{subsection.11.7.1}%
+\contentsline {subsection}{\numberline {11.7.2}Exceptions and the agent}{195}{subsection.11.7.2}%
+\contentsline {subsection}{\numberline {11.7.3}Monitoring for drift}{196}{subsection.11.7.3}%
+\contentsline {section}{\numberline {11.8}Business Case: Is It Worth It?}{196}{section.11.8}%
+\contentsline {section}{\numberline {11.9}Changed Requirement: What If the World Changes?}{196}{section.11.9}%
+\contentsline {section}{Chapter Summary}{197}{section*.179}%
+\contentsline {section}{Review Questions}{197}{section*.180}%
+\contentsline {section}{Exercises}{197}{section*.181}%
+\contentsline {section}{Lab 11: Beat the Baseline}{197}{section*.182}%
+\contentsline {paragraph}{Goal.}{197}{section*.183}%
+\contentsline {paragraph}{Steps.}{198}{section*.184}%
+\contentsline {paragraph}{Deliverable.}{198}{section*.185}%
+\contentsline {section}{Further Reading}{198}{section*.186}%
+\contentsline {chapter}{\numberline {12}Case: Commercial Loan Underwriting Memo}{200}{chapter.12}%
+\contentsline {section}{\numberline {12.1}Business Brief: What Is Going Wrong Today?}{200}{section.12.1}%
+\contentsline {section}{\numberline {12.2}Stakeholders and KPIs: Who Cares, and How Will We Know?}{201}{section.12.2}%
+\contentsline {paragraph}{KPIs and risks.}{201}{section*.187}%
+\contentsline {section}{\numberline {12.3}Alternative Designs: What Could We Build, or Buy?}{202}{section.12.3}%
+\contentsline {subsection}{\numberline {12.3.1}The vendor design: buy a platform}{202}{subsection.12.3.1}%
+\contentsline {subsection}{\numberline {12.3.2}The workflow design: build a memo workflow}{202}{subsection.12.3.2}%
+\contentsline {subsection}{\numberline {12.3.3}The assistant design: build a drafting assistant only}{203}{subsection.12.3.3}%
+\contentsline {section}{\numberline {12.4}Trade-offs: Should We Build or Buy?}{204}{section.12.4}%
+\contentsline {subsection}{\numberline {12.4.1}Total cost of ownership}{204}{subsection.12.4.1}%
+\contentsline {subsection}{\numberline {12.4.2}Beyond cost}{205}{subsection.12.4.2}%
+\contentsline {section}{\numberline {12.5}Build: How Do We Make It?}{205}{section.12.5}%
+\contentsline {subsection}{\numberline {12.5.1}Numbers from tools, words from models}{205}{subsection.12.5.1}%
+\contentsline {subsection}{\numberline {12.5.2}Long-running work}{206}{subsection.12.5.2}%
+\contentsline {subsection}{\numberline {12.5.3}Bounded reflection}{206}{subsection.12.5.3}%
+\contentsline {section}{\numberline {12.6}Deploy: Where Should Each Part Run?}{206}{section.12.6}%
+\contentsline {section}{\numberline {12.7}Evaluate: How Do We Know It Works?}{207}{section.12.7}%
+\contentsline {section}{\numberline {12.8}Business Case: Is It Worth It?}{208}{section.12.8}%
+\contentsline {section}{\numberline {12.9}Changed Requirement: What If the World Changes?}{208}{section.12.9}%
+\contentsline {section}{Chapter Summary}{208}{section*.188}%
+\contentsline {section}{Review Questions}{209}{section*.189}%
+\contentsline {section}{Exercises}{209}{section*.190}%
+\contentsline {section}{Lab 12: Decide Where It Runs}{209}{section*.191}%
+\contentsline {paragraph}{Goal.}{209}{section*.192}%
+\contentsline {paragraph}{Steps.}{209}{section*.193}%
+\contentsline {paragraph}{Deliverable.}{210}{section*.194}%
+\contentsline {part}{IV\hspace {1em}Capstone}{212}{part.4}%
+\contentsline {chapter}{\numberline {13}Capstone: Cross-Department Operations}{213}{chapter.13}%
+\contentsline {section}{\numberline {13.1}One Company, Many Agents: How Should They Work Together?}{213}{section.13.1}%
+\contentsline {subsection}{\numberline {13.1.1}Three ways to connect}{214}{subsection.13.1.1}%
+\contentsline {subsection}{\numberline {13.1.2}Harbor's order desk}{215}{subsection.13.1.2}%
+\contentsline {subsection}{\numberline {13.1.3}Contracts between agents}{216}{subsection.13.1.3}%
+\contentsline {subsection}{\numberline {13.1.4}The agent registry}{216}{subsection.13.1.4}%
+\contentsline {section}{\numberline {13.2}Releasing Agent Systems: How Do We Change Them Safely?}{217}{section.13.2}%
+\contentsline {subsection}{\numberline {13.2.1}What changes, and what must be versioned}{217}{subsection.13.2.1}%
+\contentsline {subsection}{\numberline {13.2.2}Gates}{217}{subsection.13.2.2}%
+\contentsline {subsection}{\numberline {13.2.3}Rollout and rollback}{218}{subsection.13.2.3}%
+\contentsline {subsection}{\numberline {13.2.4}Model changes are events}{219}{subsection.13.2.4}%
+\contentsline {section}{\numberline {13.3}The Operating Model: Who Owns What?}{219}{section.13.3}%
+\contentsline {subsection}{\numberline {13.3.1}Who owns what}{219}{subsection.13.3.1}%
+\contentsline {subsection}{\numberline {13.3.2}Risk tiers}{220}{subsection.13.3.2}%
+\contentsline {subsection}{\numberline {13.3.3}Managing the portfolio}{220}{subsection.13.3.3}%
+\contentsline {section}{\numberline {13.4}Change Management and Adoption: Will People Use It?}{221}{section.13.4}%
+\contentsline {paragraph}{Design with the people whose work changes.}{221}{section*.195}%
+\contentsline {paragraph}{Say what happens to the freed time.}{221}{section*.196}%
+\contentsline {paragraph}{Calibrate trust, in both directions.}{221}{section*.197}%
+\contentsline {paragraph}{Measure adoption as a KPI.}{221}{section*.198}%
+\contentsline {section}{\numberline {13.5}The Designer's Habits: What Should You Take Away?}{221}{section.13.5}%
+\contentsline {section}{\numberline {13.6}Capstone Project: Can You Do It Yourself?}{222}{section.13.6}%
+\contentsline {paragraph}{Brief.}{222}{section*.199}%
+\contentsline {paragraph}{Deliverables.}{222}{section*.200}%
+\contentsline {paragraph}{Assessment.}{222}{section*.201}%
+\contentsline {section}{\numberline {13.7}The Whole Journey: What Did Each New Power Cost?}{222}{section.13.7}%
+\contentsline {paragraph}{Learning to act.}{223}{section*.202}%
+\contentsline {paragraph}{Reaching protected data.}{224}{section*.203}%
+\contentsline {paragraph}{Exposing capabilities, not systems.}{224}{section*.204}%
+\contentsline {paragraph}{Learning to remember.}{224}{section*.205}%
+\contentsline {paragraph}{Learning to forget.}{225}{section*.206}%
+\contentsline {paragraph}{One agent becomes two.}{225}{section*.207}%
+\contentsline {paragraph}{Proving that a skill changed something.}{226}{section*.208}%
+\contentsline {paragraph}{A person walks in.}{226}{section*.209}%
+\contentsline {paragraph}{The front door is not another brain.}{226}{section*.210}%
+\contentsline {paragraph}{Releasing it.}{227}{section*.211}%
+\contentsline {paragraph}{Seeing and pricing what happened.}{227}{section*.212}%
+\contentsline {paragraph}{Honest claims from small tests.}{227}{section*.213}%
+\contentsline {paragraph}{What the journey teaches.}{228}{section*.214}%
+\contentsline {section}{Chapter Summary}{228}{section*.215}%
+\contentsline {section}{Review Questions}{229}{section*.216}%
+\contentsline {chapter}{\numberline {A}Setting Up ADK and Google Cloud}{230}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Local tools}{230}{section.A.1}%
+\contentsline {section}{\numberline {A.2}A Google Cloud account and project for the course}{230}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Recommended: each student uses the Google Cloud free trial}{230}{subsection.A.2.1}%
+\contentsline {paragraph}{Signing up.}{231}{section*.217}%
+\contentsline {paragraph}{When to sign up.}{231}{section*.218}%
+\contentsline {paragraph}{Creating the course project.}{231}{section*.219}%
+\contentsline {subsection}{\numberline {A.2.2}What the trial covers, and the adjustments the labs need}{232}{subsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.2.3}Keeping the credit}{233}{subsection.A.2.3}%
+\contentsline {subsection}{\numberline {A.2.4}If a student cannot use the free trial}{233}{subsection.A.2.4}%
+\contentsline {section}{\numberline {A.3}Cost controls}{234}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Cleanup}{234}{section.A.4}%
+\contentsline {section}{\numberline {A.5}When things go wrong}{234}{section.A.5}%
+\contentsline {chapter}{\numberline {B}Concept-to-Framework Mapping}{235}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Translating a design}{236}{section.B.1}%
+\contentsline {chapter}{\numberline {C}Templates}{237}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Solution graph checklist}{237}{section.C.1}%
+\contentsline {section}{\numberline {C.2}Node card}{237}{section.C.2}%
+\contentsline {section}{\numberline {C.3}Trade-off table}{238}{section.C.3}%
+\contentsline {section}{\numberline {C.4}Failure walk-through}{238}{section.C.4}%
+\contentsline {section}{\numberline {C.5}Decision record}{238}{section.C.5}%
+\contentsline {section}{\numberline {C.6}One-page memo}{238}{section.C.6}%
+\contentsline {section}{\numberline {C.7}Go/no-go criteria}{239}{section.C.7}%
+\contentsline {chapter}{\numberline {D}Course Plans and Rubrics}{240}{appendix.D}%
+\contentsline {section}{\numberline {D.1}A 14-week plan}{240}{section.D.1}%
+\contentsline {section}{\numberline {D.2}A 10-week plan}{240}{section.D.2}%
+\contentsline {section}{\numberline {D.3}An 8-week plan}{241}{section.D.3}%
+\contentsline {paragraph}{Choosing the elective in week 7.}{241}{section*.220}%
+\contentsline {paragraph}{The final project.}{241}{section*.221}%
+\contentsline {paragraph}{A 7-week variant.}{241}{section*.222}%
+\contentsline {paragraph}{Cloud credit.}{241}{section*.223}%
+\contentsline {paragraph}{Assessment.}{242}{section*.224}%
+\contentsline {section}{\numberline {D.4}Assessment}{242}{section.D.4}%
+\contentsline {section}{\numberline {D.5}Rubrics}{242}{section.D.5}%
+\contentsline {section}{\numberline {D.6}Running design reviews in class}{242}{section.D.6}%
+\contentsline {section}{\numberline {D.7}The free design coach}{243}{section.D.7}%
+\contentsline {chapter}{Index}{246}{section*.226}%
