@@ -61,15 +61,18 @@ An agent in production needs the same three signals as any other service, plus o
 
 The agent gets its own SLOs, reviewed monthly with the SRE team (Table~\ref{tab:inc-slo}). Treating the agent as a service with objectives, owners and error budgets\index{error budget} is what moves it from an experiment to part of operations.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Service-level objectives for the incident agent.}
-\label{tab:inc-slo}
-\begin{tabular}{@{}lr@{}}
+\begin{longtable}{@{}lr@{}}
+\caption{Service-level objectives for the incident agent.}\label{tab:inc-slo}\\
 \toprule
 \rowcolor{coHead} Objective & Target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Objective & Target \\
+\midrule
+\endhead
 Brief posted within 3 minutes of incident creation (p90) & 95\% of incidents \\
 Top hypothesis matches postmortem cause & $\ge$ 60\% \\
 Actual cause among the three hypotheses & $\ge$ 80\% \\
@@ -78,8 +81,8 @@ Tier~2 proposals approved by on-call & $\ge$ 70\% \\
 Agent runs failing or timing out & $\le$ 2\% \\
 Cost per incident (model and tools) & $\le$ \$5 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Evaluate: How Do We Know It Works?}

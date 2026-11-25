@@ -206,15 +206,18 @@ Measure leakage at retrieval, not in the answer. A restricted passage that reach
 
 Table~\ref{tab:policy-evalset} describes the 240-question set built for the pilot. Most questions were drawn from real tickets, rewritten to remove personal details, and labeled by HR generalists with the correct documents and answer. The trap categories were written deliberately to probe the risks.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Composition of the policy evaluation set.}
-\label{tab:policy-evalset}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}r>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}r>{\raggedright\arraybackslash}X@{}}
+\caption{Composition of the policy evaluation set.}\label{tab:policy-evalset}\\
 \toprule
 \rowcolor{coHead} Category & Questions & What it tests \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Category & Questions & What it tests \\
+\midrule
+\endhead
 Answerable, by country & 120 & Recall, correctness; 40 per country, asked as employees of that country \\
 Grade-dependent & 30 & Filtering by grade band; same question asked at two grades \\
 Policy silent & 30 & Abstention (\risk{Silent policy}) \\
@@ -224,22 +227,25 @@ Multi-hop & 10 & Rule plus exception, needing two searches \\
 \midrule
 Total & 240 & \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{Thresholds and judging}
 
 The thresholds in Table~\ref{tab:policy-thresholds} are part of the go/no-go\index{go/no-go criteria} criteria for the pilot and are rerun before every change of model, instruction or index configuration. Correctness of the final answer is judged two ways: by a model-based judge using a rubric that compares the answer with HR's reference answer, and by HR reviewers on a random 60 questions. The model judge is used for routine regression runs only after its verdicts agree with the human reviewers' on at least 90\% of the 60.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Evaluation thresholds for the policy assistant.}
-\label{tab:policy-thresholds}
-\begin{tabular}{@{}llr@{}}
+\begin{longtable}{@{}llr@{}}
+\caption{Evaluation thresholds for the policy assistant.}\label{tab:policy-thresholds}\\
 \toprule
 \rowcolor{coHead} Metric & Step & Threshold \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Metric & Step & Threshold \\
+\midrule
+\endhead
 Recall@5 (answerable) & Index, filter & $\ge$ 0.95 \\
 Answer correctness (answerable) & Agent & $\ge$ 0.97 \\
 Citation precision & Citation check & $=$ 1.00 \\
@@ -248,8 +254,8 @@ False abstention (answerable) & Agent, check & $\le$ 0.08 \\
 Leakage (permission traps) & Filter & $=$ 0 \\
 Freshness (publish to answerable) & Import on publish & $\le$ 1 hour \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 Running the same set against the sample design is part of the lab. Without metadata, the sample design cannot pass the leakage threshold by construction, and the freshness traps fail whenever a change lands between daily syncs. The informative comparison is on the 120 country questions, where the sample design's errors show how often unfiltered retrieval picks another country's policy---the same error the HR audit found in human answers.
 

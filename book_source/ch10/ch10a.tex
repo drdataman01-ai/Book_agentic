@@ -46,33 +46,39 @@ Today an applicant uploads formation documents, an owner's identity document and
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:kyc-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of onboarding. Approvers carry unusual weight in this case.}
-\label{tab:kyc-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of onboarding. Approvers carry unusual weight in this case.}\label{tab:kyc-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The chief operating officer. \\
 \cotag{coGreen}{Users} & Applicants and onboarding analysts. \\
 \cotag{coAmber}{Approvers} & The BSA/AML officer, who is personally accountable for the bank's program; compliance; model risk management; information security; and, indirectly, the bank's examiners. \\
 \cotag{coPurple}{Owners} & The onboarding operations team, the financial-crimes compliance team (screening rules and risk model) and the platform team. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:kyc-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for onboarding.}
-\label{tab:kyc-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.9cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.9cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for onboarding.}\label{tab:kyc-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Time to open} & Median time to open for low-risk applicants: under one business day, from 4.5. \\
 \kpi{Abandonment} & Applicants who abandon: under 22\%, from 38\%. \\
 \kpi{Analyst minutes} & Analyst minutes per application: down 40\%. \\
@@ -82,8 +88,8 @@ Today an applicant uploads formation documents, an owner's identity document and
 \risk{Data exposure} & Personal or confidential data exposed or retained beyond need. \\
 \risk{Reserved decision} & A decision reserved to a person made, or effectively made, by a system---including any communication that discloses a suspicious-activity report, which US law prohibits. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{keyidea}[The value hypothesis, in one sentence]
 If documents are read and reconciled automatically, low-risk applicants who pass every deterministic check are approved by rule within hours, and analysts receive every other file fully assembled with a written rationale, Kestrel will open accounts faster, lose fewer applicants, and pass examination sampling on documentation---without weakening any control.
@@ -109,15 +115,18 @@ The controls-as-code design treats the bank's AML program as a set of controls a
   \item \emph{People decide} every decline, every enhanced-due-diligence case, every match clearance and every escalation to the financial-intelligence unit. The system never contacts the applicant about screening or suspicion.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The controls-as-code design as a design table. The document agent has no tools; approval is a rule over deterministic checks; every adverse decision is a person's.}
-\label{tab:kyc-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\caption{The controls-as-code design as a design table. The document agent has no tools; approval is a rule over deterministic checks; every adverse decision is a person's.}\label{tab:kyc-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & The applicant uploads documents and fills in the form. Both are untrusted & \tagPerson\ Applicant & Upload portal & --- \\
 2 & Extract fields into strict schemas & \tagAgent\ Document agent, Level 1, no tools at all & The document contents only & \kpi{Analyst minutes} \risk{Document injection} \\
 3 & Check the extraction against the schema & \tagGuardrail & The schemas & \risk{Document injection} \\
@@ -129,8 +138,8 @@ The controls-as-code design treats the bank's AML program as a set of controls a
 9 & Decide: approve, decline, clear a match or order enhanced due diligence & \tagPerson\ Onboarding analyst & The memo and the match analysis & \risk{Sanctioned party} \risk{Reserved decision} \\
 10 & Refer suspicion to the financial-intelligence unit & \tagPerson\ Analyst & --- & \risk{Reserved decision} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The assist-only design}
 
@@ -157,15 +166,18 @@ Constraints remove designs before any scoring. A design that breaks a law or a v
 
 \subsection{Scores and decision}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for onboarding (the single-agent design removed by constraints).}
-\label{tab:kyc-tradeoff}
-\begin{tabular}{@{}lccc@{}}
+\begin{longtable}{@{}lccc@{}}
+\caption{Trade-off table for onboarding (the single-agent design removed by constraints).}\label{tab:kyc-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Controls as code & Assist only \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Controls as code & Assist only \\
+\midrule
+\endhead
 Speed and abandonment & 0.25 & 5 & 3 \\
 Analyst workload & 0.15 & 5 & 3 \\
 Control and auditability & 0.25 & 4 & 5 \\
@@ -174,8 +186,8 @@ Regulatory acceptability & 0.15 & 4 & 5 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 4.60 & 4.20 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The controls-as-code design approves only what a fully deterministic rule allows, over checks examiners already accept; its automated decision is the kind of straight-through processing that banks have used for years, now with better document handling. That narrows the regulatory difference with the assist-only design. The decision is the controls-as-code design, but the BSA/AML officer's sign-off on the approval rule is a precondition, and the rollout begins with the assist-only design's behavior for the first two months so that the bank can show examiners a body of analyst-reviewed files that the rule would have approved.
 

@@ -112,15 +112,18 @@ The sample's Terraform provides most of what the risk-routed design needs: a Clo
 \section{Evaluate: How Do We Know It Works?}
 \label{sec:inv-evaluate}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Evaluation thresholds for the risk-routed design.}
-\label{tab:inv-thresholds}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}r@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}r@{}}
+\caption{Evaluation thresholds for the risk-routed design.}\label{tab:inv-thresholds}\\
 \toprule
 \rowcolor{coHead} Metric & Step & Threshold \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Metric & Step & Threshold \\
+\midrule
+\endhead
 Invoice total and supplier extracted correctly (PDFs) & Extraction, validation & $\ge$ 99.5\% \\
 Invalid extraction reaching the controls & Validation & 0 \\
 Seeded duplicates detected & Controls & 100\% \\
@@ -130,8 +133,8 @@ Evidence-pack claims supported by the cited lines & Explanation agent & $\ge$ 98
 Approvals outside authority or by the requester & Decision node & 0 \\
 Canary catch rate, per reviewer & Clerks & $\ge$ 95\% \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Two features of the evaluation are specific to human-in-the-loop systems. First, \emph{the people are part of what is evaluated}: canary catch rates and re-review agreement measure the checkpoint, not just the software. Second, \emph{controls are tested the way auditors test them}: for \risk{Wrong approver}, the test is an attempt by an unauthorized user, and by a requester, to approve through every path, including by editing the payload sent from the review interface.
 

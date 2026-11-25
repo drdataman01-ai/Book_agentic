@@ -209,15 +209,18 @@ In April 2026 Google consolidated Vertex AI into the \keyterm{Gemini Enterprise 
 
 Table~\ref{tab:gcp} lists the services the cases use, grouped by the need they meet. You do not need to learn them now; return to the table when a case introduces one.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Google Cloud services used in this book, by need.}
-\label{tab:gcp}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}@{}}
+\caption{Google Cloud services used in this book, by need.}\label{tab:gcp}\\
 \toprule
 Need & Services & First used \\
 \midrule
+\endfirsthead
+\toprule
+Need & Services & First used \\
+\midrule
+\endhead
 Models & Gemini models on Agent Platform; partner and open models through Model Garden & Ch.~\ref{ch:case-policy} \\
 Running agents & Agent Runtime (formerly Agent Engine), Cloud Run, Google Kubernetes Engine (GKE) & Ch.~\ref{ch:case-policy}, \ref{ch:case-loan} \\
 Sessions and memory & Agent Platform Sessions, Memory Bank & Ch.~\ref{ch:case-airline} \\
@@ -228,28 +231,31 @@ Security & IAM and service accounts, Secret Manager, VPC Service Controls & Ch.~
 Observability & Cloud Logging, Cloud Trace, Cloud Monitoring & Ch.~\ref{ch:case-incident} \\
 Delivery & Cloud Build, Artifact Registry & Ch.~\ref{ch:capstone} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{Three places to run an agent}
 
 The first deployment decision in every case is where the agent runs. ADK supports three main targets, and the choice is a trade-off like any other (Table~\ref{tab:targets}). ADK's command line deploys to the first two directly: \texttt{adk deploy agent\_engine} for Agent Runtime (the command keeps the old name) and \texttt{adk deploy cloud\_run} for Cloud Run.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Choosing a deployment target. Chapter~\ref{ch:case-loan} returns to this choice with full cost figures.}
-\label{tab:targets}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Choosing a deployment target. Chapter~\ref{ch:case-loan} returns to this choice with full cost figures.}\label{tab:targets}\\
 \toprule
 Target & Strengths & Costs and limits \\
 \midrule
+\endfirsthead
+\toprule
+Target & Strengths & Costs and limits \\
+\midrule
+\endhead
 Agent Runtime & Managed runtime built for agents; sessions and memory included; least operations work & Less control over the serving stack; pricing tied to the platform \\
 Cloud Run & Any container; scales to zero; familiar to most engineering teams; good for MCP servers too & You manage sessions storage, networking and some security yourself \\
 GKE & Full control; fits companies that already run Kubernetes; custom networking and hardware & Most operations work; rarely the right first choice for a pilot \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{Cost control from day one}
 

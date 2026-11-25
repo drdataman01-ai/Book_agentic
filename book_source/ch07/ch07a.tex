@@ -38,20 +38,23 @@ Parcelpoint's lockers sit in stations, shops and apartment buildings. Retailers 
 
 The platform's monitoring raises about 140 alerts a day. Most are noise or duplicates; a small number become incidents. Eight site-reliability engineers (SREs) share an on-call rotation. Table~\ref{tab:inc-phases} shows where the time goes in a median incident, from the incident tracker's timestamps over the last year.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Median minutes per incident phase. P1: platform-wide impact; P2: one service or region degraded.}
-\label{tab:inc-phases}
-\begin{tabular}{@{}lrrrrrrr@{}}
+\begin{longtable}{@{}lrrrrrrr@{}}
+\caption{Median minutes per incident phase. P1: platform-wide impact; P2: one service or region degraded.}\label{tab:inc-phases}\\
 \toprule
 \rowcolor{coHead} & Per month & Detect & Acknowledge & Diagnose & Mitigate & Verify & Total \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Per month & Detect & Acknowledge & Diagnose & Mitigate & Verify & Total \\
+\midrule
+\endhead
 P1 & 3 & 6 & 9 & 38 & 15 & 6 & 74 \\
 P2 & 14 & 10 & 18 & 70 & 40 & 22 & 160 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 \begin{thinkabout}
 An alert fires at 3 a.m. and wakes the on-call engineer. What do they do in the first ten minutes? Which of those minutes could software save, and which could it make worse?
@@ -65,33 +68,39 @@ Parcelpoint's finance team estimates the cost of a P1 minute at about \$1{,}200 
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:inc-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of incident response.}
-\label{tab:inc-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of incident response.}\label{tab:inc-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The vice president of engineering. \\
 \cotag{coGreen}{Users} & The on-call SREs, and the service teams who own each service. \\
 \cotag{coAmber}{Approvers} & The head of security, for production access, and the change advisory board, which governs changes to production. \\
 \cotag{coPurple}{Owners} & The SRE team, which owns the agent and the action catalog, and each service team, which owns its runbooks and its permitted actions. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:inc-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for incident response.}
-\label{tab:inc-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for incident response.}\label{tab:inc-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{P1 time to mitigate} & Median P1 time to mitigate (MTTR): at most 50 minutes, from 74. \\
 \kpi{Availability} & Monthly availability: at least 99.9\% in at least 11 months of 12. \\
 \kpi{Pages per shift} & Halved, without missing a P1. \\
@@ -99,8 +108,8 @@ Parcelpoint's finance team estimates the cost of a P1 minute at about \$1{,}200 
 \risk{Data leaves} & Production data, credentials or customer information leaving the company through a tool. \\
 \risk{Agent down} & The agent being unavailable, or slow, during the incident it should help with. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{watchout}[Watch out: the agent that fails with the system]
 \risk{Agent down} is particular to this case. An incident agent runs during incidents, which are exactly the times when shared infrastructure is failing. If the agent depends on the systems it diagnoses, it fails when it is needed most.
@@ -145,15 +154,18 @@ The triage design starts from the alert. Table~\ref{tab:inc-d2} writes it down a
   \item After resolution, a \textbf{postmortem agent} drafts the timeline from the incident channel, alerts and actions for the team to complete.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The triage design as a design table. Every telemetry tool is read-only and limited to one service and time window; actions come only from the catalog. The agent runs in a separate project and region from the platform it observes.}
-\label{tab:inc-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.7cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.7cm}@{}}
+\caption{The triage design as a design table. Every telemetry tool is read-only and limited to one service and time window; actions come only from the catalog. The agent runs in a separate project and region from the platform it observes.}\label{tab:inc-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & Group related alerts into one incident, suppress flapping alerts and page once & \tagCode & Cloud Monitoring alerts, through Pub/Sub & \kpi{Pages per shift} \\
 2 & Investigate and post the incident brief & \tagAgent\ Level 4; at most 3 minutes and 20 calls; stops at the brief & Telemetry server (SRE team, read-only): \texttt{error\_rate}, \texttt{latency}, \texttt{search\_logs}, \texttt{recent\_changes}; runbooks and past incidents & \kpi{P1 time to mitigate} \\
 3 & Remove any hypothesis that has no evidence links & \tagGuardrail & The brief & \kpi{P1 time to mitigate} \\
@@ -162,29 +174,32 @@ The triage design starts from the alert. Table~\ref{tab:inc-d2} writes it down a
 6 & Run a Tier~1 action, or an approved Tier~2 action & \tagCode & Actions server (SRE team): \texttt{scale\_within\_limits}, \texttt{restart\_one}, \texttt{rollback\_last} & \kpi{P1 time to mitigate} \risk{Worse incident} \\
 7 & After resolution, draft the postmortem timeline & \tagAgent\ Postmortem agent & Incident channel, alerts and actions & \kpi{Availability} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The auto-fix design: automatic remediation}
 
 The auto-fix design lets the triage agent choose and execute any action in the catalog, including rollbacks and regional failover, and notify the on-call engineer afterwards. It promises the shortest MTTR and carries the largest risk of making an incident worse. Table~\ref{tab:inc-designs} compares the three designs.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The three incident designs side by side.}
-\label{tab:inc-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The three incident designs side by side.}\label{tab:inc-designs}\\
 \toprule
 \rowcolor{coHead} & Chat & Triage & Auto-fix \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Chat & Triage & Auto-fix \\
+\midrule
+\endhead
 Starts when & An engineer asks a question & An alert fires & An alert fires \\
 Sees the system through & Read-only telemetry tools & Read-only tools limited to one service and window & The same \\
 May act & Never & Tier~1 actions alone; Tier~2 with approval & Any action in the catalog \\
 The on-call engineer & Asks and acts & Reads the brief and approves Tier~2 & Is told afterwards \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Which Design Should We Pilot?}

@@ -33,14 +33,14 @@
 \indexentry{Model Context Protocol (MCP)|hyperindexformat{\textbf}}{18}
 \indexentry{Model Context Protocol (MCP)!server|hyperindexformat{\textbf}}{18}
 \indexentry{Model Context Protocol (MCP)!client|hyperindexformat{\textbf}}{18}
-\indexentry{Model Context Protocol (MCP)!host|hyperindexformat{\textbf}}{18}
+\indexentry{Model Context Protocol (MCP)!host|hyperindexformat{\textbf}}{19}
 \indexentry{Model Context Protocol (MCP)!tool, resource, prompt|hyperindexformat{\textbf}}{20}
 \indexentry{Agent2Agent (A2A)|hyperindexformat{\textbf}}{21}
 \indexentry{human checkpoint|hyperindexformat{\textbf}}{21}
 \indexentry{guardrail|hyperindexformat{\textbf}}{21}
-\indexentry{design method|hyperpage}{22}
-\indexentry{Agent Development Kit (ADK)|hyperindexformat{\textbf}}{24}
-\indexentry{Gemini Enterprise Agent Platform|hyperindexformat{\textbf}}{29}
+\indexentry{design method|hyperpage}{23}
+\indexentry{Agent Development Kit (ADK)|hyperindexformat{\textbf}}{25}
+\indexentry{Gemini Enterprise Agent Platform|hyperindexformat{\textbf}}{30}
 \indexentry{value hypothesis|hyperpage}{32}
 \indexentry{design method|hyperindexformat{\textbf}}{38}
 \indexentry{judgment versus rule|hyperindexformat{\textbf}}{40}
@@ -51,171 +51,171 @@
 \indexentry{Agent Development Kit (ADK)|hyperpage}{42}
 \indexentry{component card|hyperindexformat{\textbf}}{44}
 \indexentry{design pattern|hyperindexformat{\textbf}}{44}
-\indexentry{approval gate|hyperindexformat{\textbf}}{45}
-\indexentry{retrieve-then-answer|hyperindexformat{\textbf}}{45}
-\indexentry{retrieval-augmented generation (RAG)|hyperpage}{45}
+\indexentry{approval gate|hyperindexformat{\textbf}}{44}
+\indexentry{retrieve-then-answer|hyperindexformat{\textbf}}{44}
+\indexentry{retrieval-augmented generation (RAG)|hyperpage}{44}
 \indexentry{rubber-stamping|hyperpage}{45}
 \indexentry{anti-pattern|hyperindexformat{\textbf}}{45}
-\indexentry{workflow|hyperpage}{46}
-\indexentry{evaluation criteria|hyperindexformat{\textbf}}{46}
+\indexentry{workflow|hyperpage}{45}
+\indexentry{evaluation criteria|hyperindexformat{\textbf}}{45}
 \indexentry{constraint (versus criterion)|hyperindexformat{\textbf}}{46}
-\indexentry{safe zone|hyperindexformat{\textbf}}{47}
+\indexentry{safe zone|hyperindexformat{\textbf}}{46}
 \indexentry{trade-off table|hyperindexformat{\textbf}}{47}
-\indexentry{failure walk-through|hyperindexformat{\textbf}}{49}
+\indexentry{failure walk-through|hyperindexformat{\textbf}}{48}
 \indexentry{decision record|hyperindexformat{\textbf}}{49}
 \indexentry{reversal trigger|hyperindexformat{\textbf}}{49}
-\indexentry{design method|hyperpage}{55}
-\indexentry{current-process map|hyperindexformat{\textbf}}{55}
-\indexentry{touch time and wait time|hyperindexformat{\textbf}}{55}
-\indexentry{stakeholder roles (sponsor, users, approvers, owners)|hyperindexformat{\textbf}}{57}
-\indexentry{design table|hyperpage}{57}
-\indexentry{trade-off table|hyperpage}{57}
-\indexentry{key performance indicator (KPI)|hyperindexformat{\textbf}}{57}
-\indexentry{key performance indicator (KPI)!KPI tree|hyperindexformat{\textbf}}{58}
-\indexentry{value hypothesis|hyperindexformat{\textbf}}{59}
-\indexentry{guardrail|hyperpage}{59}
-\indexentry{value case|hyperindexformat{\textbf}}{59}
-\indexentry{tornado analysis|hyperindexformat{\textbf}}{61}
-\indexentry{floor case|hyperindexformat{\textbf}}{62}
-\indexentry{unit economics|hyperindexformat{\textbf}}{62}
-\indexentry{failure walk-through|hyperpage}{63}
-\indexentry{asymmetric error cost|hyperindexformat{\textbf}}{64}
-\indexentry{error budget|hyperindexformat{\textbf}}{64}
-\indexentry{risk register|hyperindexformat{\textbf}}{65}
-\indexentry{hallucination|hyperpage}{65}
-\indexentry{evaluation criteria|hyperpage}{65}
-\indexentry{pilot|hyperindexformat{\textbf}}{66}
-\indexentry{go/no-go criteria|hyperindexformat{\textbf}}{66}
-\indexentry{stop rule|hyperindexformat{\textbf}}{66}
-\indexentry{one-page memo|hyperindexformat{\textbf}}{67}
-\indexentry{retrieval-augmented generation (RAG)|hyperpage}{67}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{67}
-\indexentry{retrieval-augmented generation (RAG)|hyperpage}{73}
-\indexentry{design method|hyperpage}{73}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{73}
-\indexentry{touch time and wait time|hyperpage}{74}
-\indexentry{deflection|hyperindexformat{\textbf}}{75}
-\indexentry{current-process map|hyperpage}{76}
-\indexentry{key performance indicator (KPI)!KPI tree|hyperpage}{76}
-\indexentry{design table|hyperpage}{78}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{78}
-\indexentry{memory!session state|hyperpage}{78}
-\indexentry{guardrail|hyperpage}{78}
-\indexentry{trade-off table|hyperpage}{81}
-\indexentry{failure walk-through|hyperpage}{82}
-\indexentry{reversal trigger|hyperpage}{82}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{86}
+\indexentry{design method|hyperpage}{54}
+\indexentry{current-process map|hyperindexformat{\textbf}}{54}
+\indexentry{touch time and wait time|hyperindexformat{\textbf}}{54}
+\indexentry{stakeholder roles (sponsor, users, approvers, owners)|hyperindexformat{\textbf}}{56}
+\indexentry{design table|hyperpage}{56}
+\indexentry{trade-off table|hyperpage}{56}
+\indexentry{key performance indicator (KPI)|hyperindexformat{\textbf}}{56}
+\indexentry{key performance indicator (KPI)!KPI tree|hyperindexformat{\textbf}}{57}
+\indexentry{value hypothesis|hyperindexformat{\textbf}}{58}
+\indexentry{guardrail|hyperpage}{58}
+\indexentry{value case|hyperindexformat{\textbf}}{58}
+\indexentry{tornado analysis|hyperindexformat{\textbf}}{60}
+\indexentry{floor case|hyperindexformat{\textbf}}{61}
+\indexentry{unit economics|hyperindexformat{\textbf}}{61}
+\indexentry{failure walk-through|hyperpage}{62}
+\indexentry{asymmetric error cost|hyperindexformat{\textbf}}{63}
+\indexentry{error budget|hyperindexformat{\textbf}}{63}
+\indexentry{risk register|hyperindexformat{\textbf}}{64}
+\indexentry{hallucination|hyperpage}{64}
+\indexentry{evaluation criteria|hyperpage}{64}
+\indexentry{pilot|hyperindexformat{\textbf}}{65}
+\indexentry{go/no-go criteria|hyperindexformat{\textbf}}{65}
+\indexentry{stop rule|hyperindexformat{\textbf}}{65}
+\indexentry{one-page memo|hyperindexformat{\textbf}}{66}
+\indexentry{retrieval-augmented generation (RAG)|hyperpage}{66}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{66}
+\indexentry{retrieval-augmented generation (RAG)|hyperpage}{72}
+\indexentry{design method|hyperpage}{72}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{72}
+\indexentry{touch time and wait time|hyperpage}{73}
+\indexentry{deflection|hyperindexformat{\textbf}}{74}
+\indexentry{current-process map|hyperpage}{75}
+\indexentry{key performance indicator (KPI)!KPI tree|hyperpage}{75}
+\indexentry{design table|hyperpage}{77}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{77}
+\indexentry{memory!session state|hyperpage}{77}
+\indexentry{guardrail|hyperpage}{77}
+\indexentry{trade-off table|hyperpage}{80}
+\indexentry{failure walk-through|hyperpage}{81}
+\indexentry{reversal trigger|hyperpage}{81}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{85}
 \indexentry{go/no-go criteria|hyperpage}{88}
 \indexentry{value case|hyperpage}{89}
 \indexentry{floor case|hyperpage}{89}
-\indexentry{stop rule|hyperpage}{90}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{95}
+\indexentry{stop rule|hyperpage}{89}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{94}
 \indexentry{Model Context Protocol (MCP)!server|hyperpage}{96}
-\indexentry{containment|hyperindexformat{\textbf}}{97}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{98}
-\indexentry{guardrail|hyperpage}{98}
-\indexentry{memory!session state|hyperpage}{98}
-\indexentry{design table|hyperpage}{99}
-\indexentry{retrieve-then-answer|hyperpage}{99}
-\indexentry{unit economics|hyperpage}{101}
-\indexentry{failure walk-through|hyperpage}{104}
-\indexentry{reversal trigger|hyperpage}{104}
-\indexentry{anti-pattern|hyperpage}{104}
-\indexentry{tool call|hyperpage}{109}
-\indexentry{decision record|hyperpage}{110}
-\indexentry{stop rule|hyperpage}{111}
-\indexentry{trade-off table|hyperpage}{112}
-\indexentry{human checkpoint|hyperpage}{116}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{116}
-\indexentry{design table|hyperpage}{119}
-\indexentry{rubber-stamping|hyperindexformat{\textbf}}{124}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{128}
-\indexentry{vector index|hyperpage}{132}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{132}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{132}
-\indexentry{design table|hyperpage}{133}
-\indexentry{tool call|hyperpage}{133}
-\indexentry{decision record|hyperpage}{136}
-\indexentry{reversal trigger|hyperpage}{136}
-\indexentry{anti-pattern|hyperpage}{136}
-\indexentry{guardrail|hyperpage}{138}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{138}
-\indexentry{error budget|hyperpage}{138}
-\indexentry{incident replay|hyperindexformat{\textbf}}{138}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{144}
-\indexentry{design method|hyperpage}{146}
-\indexentry{agent loop|hyperpage}{146}
-\indexentry{design table|hyperpage}{146}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{146}
-\indexentry{tool call|hyperpage}{146}
-\indexentry{guardrail|hyperpage}{146}
-\indexentry{faithfulness|hyperindexformat{\textbf}}{150}
-\indexentry{value case|hyperpage}{152}
-\indexentry{design table|hyperpage}{158}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{162}
-\indexentry{memory!session state|hyperpage}{162}
-\indexentry{Gemini Enterprise Agent Platform|hyperpage}{162}
-\indexentry{design table|hyperpage}{171}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{171}
-\indexentry{guardrail|hyperpage}{176}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{180}
-\indexentry{design table|hyperpage}{182}
-\indexentry{tool call|hyperpage}{182}
-\indexentry{newsvendor rule|hyperindexformat{\textbf}}{184}
-\indexentry{decision record|hyperpage}{185}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{186}
-\indexentry{guardrail|hyperpage}{186}
-\indexentry{backtest|hyperindexformat{\textbf}}{187}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{193}
-\indexentry{design table|hyperpage}{193}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{193}
-\indexentry{guardrail|hyperpage}{197}
-\indexentry{Agent2Agent (A2A)|hyperpage}{203}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{203}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{204}
-\indexentry{agent card|hyperindexformat{\textbf}}{204}
-\indexentry{agent registry|hyperindexformat{\textbf}}{206}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{206}
-\indexentry{Gemini Enterprise Agent Platform|hyperpage}{207}
-\indexentry{guardrail|hyperpage}{207}
-\indexentry{tool call|hyperpage}{208}
-\indexentry{approval gate|hyperpage}{209}
-\indexentry{design table|hyperpage}{210}
-\indexentry{current-process map|hyperpage}{211}
-\indexentry{value case|hyperpage}{211}
-\indexentry{trade-off table|hyperpage}{212}
-\indexentry{failure walk-through|hyperpage}{212}
-\indexentry{decision record|hyperpage}{212}
-\indexentry{one-page memo|hyperpage}{212}
-\indexentry{outcome (evaluation)|hyperindexformat{\textbf}}{213}
-\indexentry{trajectory|hyperindexformat{\textbf}}{213}
-\indexentry{confused deputy|hyperindexformat{\textbf}}{214}
-\indexentry{memory!session state|hyperindexformat{\textbf}}{214}
-\indexentry{memory!long-term memory|hyperindexformat{\textbf}}{214}
-\indexentry{memory!ingestion gate|hyperindexformat{\textbf}}{214}
-\indexentry{skill (agent)|hyperindexformat{\textbf}}{215}
-\indexentry{anti-pattern|hyperpage}{215}
-\indexentry{release gate|hyperindexformat{\textbf}}{217}
-\indexentry{error budget|hyperpage}{217}
-\indexentry{go/no-go criteria|hyperpage}{217}
-\indexentry{Agent Development Kit (ADK)|hyperpage}{220}
-\indexentry{Model Context Protocol (MCP)|hyperpage}{220}
-\indexentry{Gemini Enterprise Agent Platform|hyperpage}{222}
-\indexentry{Model Context Protocol (MCP)!server|hyperpage}{225}
-\indexentry{guardrail|hyperpage}{225}
-\indexentry{agent loop|hyperpage}{225}
-\indexentry{workflow|hyperpage}{225}
-\indexentry{tool call|hyperpage}{225}
-\indexentry{autonomy spectrum|hyperpage}{227}
-\indexentry{reversal trigger|hyperpage}{228}
-\indexentry{current-process map|hyperpage}{228}
-\indexentry{floor case|hyperpage}{228}
-\indexentry{go/no-go criteria|hyperpage}{228}
-\indexentry{stop rule|hyperpage}{229}
-\indexentry{design method|hyperpage}{231}
-\indexentry{approval gate|hyperpage}{231}
-\indexentry{asymmetric error cost|hyperpage}{231}
-\indexentry{trade-off table|hyperpage}{231}
-\indexentry{decision record|hyperpage}{231}
-\indexentry{one-page memo|hyperpage}{231}
-\indexentry{failure walk-through|hyperpage}{232}
+\indexentry{containment|hyperindexformat{\textbf}}{96}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{97}
+\indexentry{guardrail|hyperpage}{97}
+\indexentry{memory!session state|hyperpage}{97}
+\indexentry{design table|hyperpage}{98}
+\indexentry{retrieve-then-answer|hyperpage}{98}
+\indexentry{unit economics|hyperpage}{100}
+\indexentry{failure walk-through|hyperpage}{102}
+\indexentry{reversal trigger|hyperpage}{103}
+\indexentry{anti-pattern|hyperpage}{103}
+\indexentry{tool call|hyperpage}{107}
+\indexentry{decision record|hyperpage}{108}
+\indexentry{stop rule|hyperpage}{110}
+\indexentry{trade-off table|hyperpage}{111}
+\indexentry{human checkpoint|hyperpage}{114}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{114}
+\indexentry{design table|hyperpage}{117}
+\indexentry{rubber-stamping|hyperindexformat{\textbf}}{122}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{125}
+\indexentry{vector index|hyperpage}{130}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{130}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{130}
+\indexentry{design table|hyperpage}{131}
+\indexentry{tool call|hyperpage}{131}
+\indexentry{decision record|hyperpage}{134}
+\indexentry{reversal trigger|hyperpage}{134}
+\indexentry{anti-pattern|hyperpage}{134}
+\indexentry{guardrail|hyperpage}{135}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{136}
+\indexentry{error budget|hyperpage}{136}
+\indexentry{incident replay|hyperindexformat{\textbf}}{137}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{142}
+\indexentry{design method|hyperpage}{144}
+\indexentry{agent loop|hyperpage}{144}
+\indexentry{design table|hyperpage}{144}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{144}
+\indexentry{tool call|hyperpage}{144}
+\indexentry{guardrail|hyperpage}{145}
+\indexentry{faithfulness|hyperindexformat{\textbf}}{148}
+\indexentry{value case|hyperpage}{151}
+\indexentry{design table|hyperpage}{156}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{160}
+\indexentry{memory!session state|hyperpage}{160}
+\indexentry{Gemini Enterprise Agent Platform|hyperpage}{160}
+\indexentry{design table|hyperpage}{169}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{169}
+\indexentry{guardrail|hyperpage}{173}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{178}
+\indexentry{design table|hyperpage}{180}
+\indexentry{tool call|hyperpage}{180}
+\indexentry{newsvendor rule|hyperindexformat{\textbf}}{181}
+\indexentry{decision record|hyperpage}{184}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{184}
+\indexentry{guardrail|hyperpage}{184}
+\indexentry{backtest|hyperindexformat{\textbf}}{185}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{191}
+\indexentry{design table|hyperpage}{191}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{191}
+\indexentry{guardrail|hyperpage}{195}
+\indexentry{Agent2Agent (A2A)|hyperpage}{201}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{201}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{202}
+\indexentry{agent card|hyperindexformat{\textbf}}{202}
+\indexentry{agent registry|hyperindexformat{\textbf}}{204}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{204}
+\indexentry{Gemini Enterprise Agent Platform|hyperpage}{205}
+\indexentry{guardrail|hyperpage}{205}
+\indexentry{tool call|hyperpage}{206}
+\indexentry{approval gate|hyperpage}{207}
+\indexentry{design table|hyperpage}{208}
+\indexentry{current-process map|hyperpage}{209}
+\indexentry{value case|hyperpage}{209}
+\indexentry{trade-off table|hyperpage}{210}
+\indexentry{failure walk-through|hyperpage}{210}
+\indexentry{decision record|hyperpage}{210}
+\indexentry{one-page memo|hyperpage}{210}
+\indexentry{outcome (evaluation)|hyperindexformat{\textbf}}{211}
+\indexentry{trajectory|hyperindexformat{\textbf}}{211}
+\indexentry{confused deputy|hyperindexformat{\textbf}}{212}
+\indexentry{memory!session state|hyperindexformat{\textbf}}{212}
+\indexentry{memory!long-term memory|hyperindexformat{\textbf}}{212}
+\indexentry{memory!ingestion gate|hyperindexformat{\textbf}}{212}
+\indexentry{skill (agent)|hyperindexformat{\textbf}}{213}
+\indexentry{anti-pattern|hyperpage}{213}
+\indexentry{release gate|hyperindexformat{\textbf}}{215}
+\indexentry{error budget|hyperpage}{215}
+\indexentry{go/no-go criteria|hyperpage}{215}
+\indexentry{Agent Development Kit (ADK)|hyperpage}{218}
+\indexentry{Model Context Protocol (MCP)|hyperpage}{218}
+\indexentry{Gemini Enterprise Agent Platform|hyperpage}{220}
+\indexentry{Model Context Protocol (MCP)!server|hyperpage}{223}
+\indexentry{guardrail|hyperpage}{224}
+\indexentry{agent loop|hyperpage}{224}
+\indexentry{workflow|hyperpage}{224}
+\indexentry{tool call|hyperpage}{224}
+\indexentry{autonomy spectrum|hyperpage}{225}
+\indexentry{reversal trigger|hyperpage}{226}
+\indexentry{current-process map|hyperpage}{226}
+\indexentry{floor case|hyperpage}{226}
+\indexentry{go/no-go criteria|hyperpage}{226}
+\indexentry{stop rule|hyperpage}{227}
+\indexentry{design method|hyperpage}{229}
+\indexentry{approval gate|hyperpage}{229}
+\indexentry{asymmetric error cost|hyperpage}{229}
+\indexentry{trade-off table|hyperpage}{229}
+\indexentry{decision record|hyperpage}{229}
+\indexentry{one-page memo|hyperpage}{229}
+\indexentry{failure walk-through|hyperpage}{230}

@@ -87,6 +87,12 @@ INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/booktabs/booktabs.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/booktabs/booktabs.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/tabularx.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/longtable.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/longtable.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/xltabular/xltabular.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/xltabular/xltabular.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/ltablex/ltablex.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/ltablex/ltablex.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/multicol.sty
@@ -602,12 +608,12 @@ INPUT ./ch01/fig-integrated.tex
 INPUT ./ch01/fig-integrated.tex
 INPUT ch01/fig-integrated.tex
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT ./ch01/ch01c.tex
 INPUT ./ch01/ch01c.tex
 INPUT ./ch01/ch01c.tex
 INPUT ./ch01/ch01c.tex
 INPUT ch01/ch01c.tex
-INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty

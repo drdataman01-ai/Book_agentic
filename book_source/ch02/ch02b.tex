@@ -27,15 +27,18 @@ Each of the four columns has a simple rule.
 
 Table~\ref{tab:quote-design} writes Harbor's quote design from Chapter~\ref{ch:foundations} in this format. Its last column refers to three measures and three risks. The measures are \textbf{turnaround}, the median time to quote, which should fall below 4 hours from 26; \textbf{margin}, which should stay at least at today's level; and \textbf{analyst time}, the minutes per quote, which should fall below 8 from about 35. The risks are a \emph{below-floor} quote under the minimum margin, the \emph{wrong customer} or contract, and a \textbf{mismatch} between a number in the cover note and the quote itself.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Harbor's quote design as a design table. It is the same design as the sketch in Chapter~\ref{ch:foundations}, but the kind, owner, rule source and reason for every step are now on the page.}
-\label{tab:quote-design}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.0cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.0cm}@{}}
+\caption{Harbor's quote design as a design table. It is the same design as the sketch in Chapter~\ref{ch:foundations}, but the kind, owner, rule source and reason for every step are now on the page.}\label{tab:quote-design}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & Screen the representative's request, which arrives by e-mail or chat and is untrusted text & \tagGuardrail\ Blocks instructions aimed at the system & The request & Wrong customer \\
 2 & Read the request and fill in the quote form & \tagAgent\ One model call; stops when the form is filled & The request & Turnaround; analyst time \\
 3 & Validate the fields and fetch prices. If a field is missing, ask the representative; otherwise continue & \tagCode & ERP server (owner: Pricing), tools \texttt{get\_item\_pricing} and \texttt{get\_contract\_terms} & Wrong customer \\
@@ -46,8 +49,8 @@ Table~\ref{tab:quote-design} writes Harbor's quote design from Chapter~\ref{ch:f
 8 & Save the quote as a draft in the CRM & \tagCode & CRM server (owner: Sales Ops), tool \texttt{create\_quote\_draft} & Turnaround \\
 9 & Review the draft and send it to the customer & \tagPerson\ The sales representative, who now owns the quote & The CRM draft & Turnaround \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 The table makes three things explicit that the informal sketch left vague. Code, not the model, decides whether a manager is needed. Both agents make a single call and have a defined stopping point. And the only write to a company system, in step 8, comes after a guardrail that checks every number and before a person reviews the quote.
 

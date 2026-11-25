@@ -10,15 +10,18 @@ Chapter~\ref{ch:toolkit} scored designs on a 1--5 scale for all eight criteria\i
 
 A mixed table, with a dollar row and score rows, is more honest than an all-score table. It shows the sponsor exactly what money is at stake, and keeps the judgment calls visible as judgment calls. Table~\ref{tab:money} applies the idea to Team~A's and Team~B's quote designs from Chapter~\ref{ch:foundations}.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Team A's and Team B's quote designs with money per quote. Error rates for Team A are the pilot estimates from a 200-quote test; human-time figures from the analysts' time log. Fixed platform and support costs, about \$4.20 per quote for either design, are left out because they do not differ.}
-\label{tab:money}
-\begin{tabular}{@{}lrr@{}}
+\begin{longtable}{@{}lrr@{}}
+\caption{Team A's and Team B's quote designs with money per quote. Error rates for Team A are the pilot estimates from a 200-quote test; human-time figures from the analysts' time log. Fixed platform and support costs, about \$4.20 per quote for either design, are left out because they do not differ.}\label{tab:money}\\
 \toprule
 \rowcolor{coHead} Per quote & \cellcolor{coRedBg}Team A (single agent) & \cellcolor{coGreenBg}Team B (workflow) \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Per quote & \cellcolor{coRedBg}Team A (single agent) & \cellcolor{coGreenBg}Team B (workflow) \\
+\midrule
+\endhead
 Model and tool calls & \$0.21 & \$0.04 \\
 Analyst and manager time & \$12.10 & \$10.50 \\
 Expected error cost, below-floor quotes & \$4.28 & \$0.71 \\
@@ -30,8 +33,8 @@ Speed (score) & 5 & 4 \\
 Control and auditability (score) & 1 & 5 \\
 Security and privacy (score) & 2 & 4 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 Team A's design is more than five times as expensive to run, but that is not why it loses: run cost is still a few cents next to the human time and error cost. It loses because its error cost is several times higher---a policy in a prompt is broken more often than a policy in code---and because no one can audit why it priced a quote as it did. The dollar rows make the first point; the score rows make the second.
 
@@ -54,15 +57,18 @@ No sponsor should be asked to approve a full launch on the strength of a design 
   \item \emph{Owner.} One named person who makes the go/no-go call and owns the solution afterward. Committees review; owners decide.
 \end{enumerate}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Go/no-go criteria for Harbor's eight-week pilot.}
-\label{tab:gonogo}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\caption{Go/no-go criteria for Harbor's eight-week pilot.}\label{tab:gonogo}\\
 \toprule
 \rowcolor{coHead} Criterion & Baseline & Go if \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Baseline & Go if \\
+\midrule
+\endhead
 Median quote turnaround & 26 h & $\le$ 6 h (target 4 h) \\
 Analyst minutes per quote & 35 min & $\le$ 12 min \\
 Realized margin, pilot vs.\ comparison regions & --- & No worse than $-0.3$ points \\
@@ -71,8 +77,8 @@ Wrong customer or contract & 0.9\% & $\le$ 0.3\% \\
 Share of eligible quotes sent through the system & --- & $\ge$ 70\% by week 6 \\
 Representative satisfaction (weekly 1--5 pulse) & --- & $\ge$ 3.8 \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{watchout}[Watch out: the easy-quotes pilot]
 Note the adoption criterion in Table~\ref{tab:gonogo}. A pilot in which representatives route only the easy quotes through the system will show excellent numbers that will not survive a full launch.

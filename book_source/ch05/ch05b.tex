@@ -45,15 +45,18 @@ The triage design separates \emph{understanding} a contact from \emph{acting} on
 
 Five MCP servers sit behind the agents, one per owning team plus the support platform's case server. The customer's identity comes from the authenticated chat or e-mail session and travels to each server as a verified token; no tool has a \texttt{customer\_id} parameter.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The triage design as a design table. One server per owning team; identity travels as a verified token, never as a tool argument. Every agent can also hand a case to a person through \texttt{create\_case}.}
-\label{tab:support-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\caption{The triage design as a design table. One server per owning team; identity travels as a verified token, never as a tool argument. Every agent can also hand a case to a person through \texttt{create\_case}.}\label{tab:support-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & The customer writes in signed-in chat or by e-mail & \tagPerson\ Customer & Verified session token & --- \\
 2 & Screen the message for attempts to instruct the assistant & \tagGuardrail & The message & \risk{Manipulation} \\
 3 & Identify the intent and key entities, then route & \tagAgent\ Level 3; stops at intent and entities & --- & \kpi{Cost per contact} \kpi{E-mail response} \\
@@ -64,8 +67,8 @@ Five MCP servers sit behind the agents, one per owning team plus the support pla
 5 & Handle the case & \tagPerson\ Support agent & Case with summary and recent orders & --- \\
 6 & Approve refunds over \$150 & \tagPerson\ Returns specialist & Returns server queue & \risk{Against policy} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The assist design: a copilot for every agent}
 
@@ -75,15 +78,18 @@ The assist design keeps a person on every contact and gives that person an AI co
 
 The hybrid design emerged from the cost model in the next section rather than from a pattern. It uses the triage design's automated paths for order status, delivery issues, product questions and scheduling, and the assist design's assisted path for returns and refunds, complaints and anything else. Its design table is the triage design's with the returns agent replaced by a copilot whose drafts go to a person. Table~\ref{tab:support-alts} sets all four designs side by side.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Who handles each kind of contact in the four support designs.}
-\label{tab:support-alts}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Who handles each kind of contact in the four support designs.}\label{tab:support-alts}\\
 \toprule
 \rowcolor{coHead} & Single agent & Triage & Assist & Hybrid \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Single agent & Triage & Assist & Hybrid \\
+\midrule
+\endhead
 Understanding the contact & One agent with 17 tools & Triage agent routes by intent & A person reads it; the copilot classifies it & Triage agent routes by intent \\
 Order status & The agent & Automated workflow & A person, with a draft & Automated workflow \\
 Delivery, product, scheduling & The agent & Automated paths & A person, with a draft & Automated paths \\
@@ -91,8 +97,8 @@ Returns and refunds & The agent, with limits in its prompt & Returns agent; the 
 Complaints and other & The agent & A person, with a summary & A person, with a draft & A person, with a draft \\
 Customer identity & A tool argument & Verified token & Verified token & Verified token \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Which Design Should We Pilot?}
@@ -142,15 +148,18 @@ Containment is not savings. The hybrid design resolves fewer contacts on its own
 
 \subsection{Scores for what money does not capture}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for support triage. Cost and human workload are in the money row; the remaining criteria are scored 1--5.}
-\label{tab:support-tradeoff}
-\begin{tabular}{@{}lcccccc@{}}
+\begin{longtable}{@{}lcccccc@{}}
+\caption{Trade-off table for support triage. Cost and human workload are in the money row; the remaining criteria are scored 1--5.}\label{tab:support-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Single agent & Triage & Assist & Hybrid \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Single agent & Triage & Assist & Hybrid \\
+\midrule
+\endhead
 Cost per contact (all-in) & --- & \$4.16 & \$3.51 & \$3.91 & \$3.53 \\
 \midrule
 Quality (re-contact, errors) & 0.25 & 2 & 4 & 5 & 4 \\
@@ -162,8 +171,8 @@ Maintainability & 0.10 & 2 & 3 & 4 & 3 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 2.60 & 4.10 & 4.15 & 4.20 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 Table~\ref{tab:support-tradeoff} combines the money row with scores for the criteria that money does not capture. The hybrid design scores 4 rather than 5 on speed because returns, complaints and other contacts still wait for a person, though a person with a draft; the assist design scores 2 because every e-mail still waits in a queue, which fails \kpi{E-mail response}. The hybrid design matches the triage design's cost within two cents while scoring higher on security and control, because no refund is granted without a person.
 

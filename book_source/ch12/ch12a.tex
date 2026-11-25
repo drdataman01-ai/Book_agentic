@@ -48,33 +48,39 @@ The bank's chief credit officer is clear about one thing: the memo is the bank's
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:loan-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of the credit memo.}
-\label{tab:loan-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of the credit memo.}\label{tab:loan-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The chief credit officer. \\
 \cotag{coGreen}{Users} & Credit analysts and credit officers; relationship managers benefit. \\
 \cotag{coAmber}{Approvers} & Model risk management, information security, and procurement for any vendor. \\
 \cotag{coPurple}{Owners} & Credit administration (templates and policy), the data team (financial spreads) and the platform team. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:loan-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for the credit memo.}
-\label{tab:loan-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for the credit memo.}\label{tab:loan-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Analyst days} & Analyst days per new-loan memo: at most 1.5, from 3.5. \\
 \kpi{Days to decision} & Days from a complete application to a credit decision: at most 5, from 12. \\
 \kpi{Memos returned} & Memos returned by credit officers for missing or incorrect content: halved. \\
@@ -83,8 +89,8 @@ The bank's chief credit officer is clear about one thing: the memo is the bank's
 \risk{Data leaves} & Borrower confidential information leaving the bank's control. \\
 \risk{Lock-in} & Dependence on a vendor or platform that the bank cannot exit at reasonable cost. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{keyidea}[The value hypothesis, in one sentence]
 If spreading and calculation are automated and a complete, cited first draft of each memo section is ready when the analyst starts, analysts will spend their time on judgment, decisions will reach borrowers in days rather than weeks, and memos will be more complete---without any change in who decides.
@@ -111,15 +117,18 @@ The workflow design is built on ADK\index{Agent Development Kit (ADK)} and Googl
   \item \emph{People}: the analyst edits, assigns the risk rating and writes the recommendation; the credit officer decides.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The workflow design as a design table. Numbers come only from the calculation server; claims carry citations; a bounded critic checks completeness; people rate and decide.}
-\label{tab:loan-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\caption{The workflow design as a design table. Numbers come only from the calculation server; claims carry citations; a bounded critic checks completeness; people rate and decide.}\label{tab:loan-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & Read the financial statements into the spreading template & \tagAgent\ Spreading agent, Level 1 & Borrower documents & \kpi{Analyst days} \\
 2 & Check that statements balance and totals reconcile, then confirm the spread & \tagCode\ then \tagPerson\ Analyst & The existing spreading tool & \risk{Wrong number} \\
 3 & Compute ratios, covenant tests and peer comparisons & \tagCode & Calculation server (Credit administration): \texttt{ratios}, \texttt{covenants}, \texttt{peers} & \risk{Wrong number} \\
@@ -130,30 +139,33 @@ The workflow design is built on ADK\index{Agent Development Kit (ADK)} and Googl
 8 & Edit, assign the risk rating and write the recommendation & \tagPerson\ Analyst & The draft & \kpi{Memos returned} \\
 9 & Approve or decline the loan & \tagPerson\ Credit officer & The memo & \risk{Unsupported claim} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The assistant design: build a drafting assistant only}
 
 The assistant design is a single retrieval agent over the borrower's documents that analysts use to draft sections on request. It leaves spreading and calculation as they are. It is the cheapest build and the smallest change; it also leaves the day of spreading untouched. Table~\ref{tab:loan-designs} compares the three options.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Buy, build big or build small: the three options side by side.}
-\label{tab:loan-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Buy, build big or build small: the three options side by side.}\label{tab:loan-designs}\\
 \toprule
 \rowcolor{coHead} & Vendor & Workflow build & Assistant build \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Vendor & Workflow build & Assistant build \\
+\midrule
+\endhead
 Who builds and runs it & The vendor, configured by Summit & Summit, on ADK and Google Cloud & Summit \\
 Spreading and calculation & In the vendor's platform & Automated; numbers from Summit's calculation server & Unchanged, by hand \\
 Drafting & The vendor's models & A planner, section agents and a critic & One retrieval agent, on request \\
 Borrower data & Hosted by the vendor & Stays in the bank & Stays in the bank \\
 Three-year cost (est.) & \$1.7 million & \$1.3 million & \$0.6 million \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Should We Build or Buy?}
@@ -198,15 +210,18 @@ Count the people who run a system, not just the servers it runs on. Over three y
 
 Cost is not the whole decision. Table~\ref{tab:loan-tradeoff} adds the criteria that matter to a bank.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table, build versus buy.}
-\label{tab:loan-tradeoff}
-\begin{tabular}{@{}lcccc@{}}
+\begin{longtable}{@{}lcccc@{}}
+\caption{Trade-off table, build versus buy.}\label{tab:loan-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Vendor & Workflow build & Assistant build \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Vendor & Workflow build & Assistant build \\
+\midrule
+\endhead
 Three-year TCO (est.) & --- & \$1.7M & \$1.3M & \$0.6M \\
 \midrule
 Quality & 0.25 & 4 & 5 & 2 \\
@@ -218,7 +233,7 @@ Maintainability & 0.15 & 5 & 3 & 4 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 3.75 & 4.40 & 3.75 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The vendor wins on time to value and maintainability: it is ready sooner, and someone else maintains it. The workflow design wins on control, data, exit and quality, and on cost at Summit's volume. The assistant design is cheap but leaves most of the analysts' time where it is. The decision is to build the workflow design, with a stated condition: if the build's first phase (spreading and calculation) overruns its budget by more than 30\%, the bank reopens the vendor option before building the drafting stages.

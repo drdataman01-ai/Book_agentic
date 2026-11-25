@@ -57,33 +57,39 @@ Fraud losses run at about 9 basis points (0.09\%) of card-not-present volume; th
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:fr-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of fraud review.}
-\label{tab:fr-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of fraud review.}\label{tab:fr-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The head of fraud strategy. \\
 \cotag{coGreen}{Users} & The fraud analysts. \\
 \cotag{coAmber}{Approvers} & Model risk management, which validates every model used in decisions; compliance, for customer-contact rules; and information security. \\
 \cotag{coPurple}{Owners} & The fraud analytics team (the scoring model), the authorization platform team, and fraud operations (the queue and the analysts). \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:fr-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for fraud review.}
-\label{tab:fr-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for fraud review.}\label{tab:fr-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Fraud losses} & Fraud losses in basis points of card-not-present volume: down 20\%. \\
 \kpi{Wrongly blocked} & Good customers wrongly declined or blocked per 10{,}000 transactions: no higher than today. \\
 \kpi{Reviews per hour} & Transactions reviewed per analyst hour: up 50\%. \\
@@ -91,8 +97,8 @@ Fraud losses run at about 9 basis points (0.09\%) of card-not-present volume; th
 \risk{Unfaithful reason} & An explanation that misstates why a transaction was flagged, leading an analyst to a wrong decision. \\
 \risk{Data exposure} & Cardholder personal data exposed beyond the analysts who need it. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \kpi{Fraud losses} and \kpi{Wrongly blocked} are a pair in the sense of Chapter~\ref{ch:business}: any design can cut fraud by declining more, and any design can please customers by declining less.
 
@@ -119,44 +125,50 @@ The assistant design assigns each block to what it does best. Table~\ref{tab:fr-
   \item The \emph{analyst} decides, through the existing case tool. The agent has no write tools.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The assistant design as a design table. Step 1 is the latency-critical path, and it contains no language model. The agent works on the review queue, after authorization, and has no write tools.}
-\label{tab:fr-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\caption{The assistant design as a design table. Step 1 is the latency-critical path, and it contains no language model. The agent works on the review queue, after authorization, and has no write tools.}\label{tab:fr-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & Within 100 ms, score the transaction and apply the thresholds. Above the block threshold, block; in the review band, approve and queue; below it, approve & \tagCode\ No language model & Scoring model on the authorization platform; thresholds (owner: Fraud strategy) & \kpi{Fraud losses} \kpi{Wrongly blocked} \risk{Model in hot path} \\
 2 & Order the review queue by expected loss & \tagCode & Review queue & \kpi{Fraud losses} \\
 3 & Gather the context an analyst would and write a case summary & \tagAgent\ Level 4; at most eight calls; stops at the summary; no write tools & Scoring server (Fraud analytics): \texttt{explain\_score}, \texttt{similar\_cases}; card-history server (Cards team, read-only): \texttt{recent\_txns}, \texttt{devices}, \texttt{merchant\_profile} & \kpi{Reviews per hour} \risk{Data exposure} \\
 4 & Check that every cited reason is one of the model's top factors. Regenerate once; then show with a warning & \tagGuardrail & Attributions from \texttt{explain\_score} & \risk{Unfaithful reason} \\
 5 & Decide, through the existing case tool & \tagPerson\ Fraud analyst & The summary and the model's raw factors & \kpi{Fraud losses} \kpi{Wrongly blocked} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The verification design: ask the cardholder}
 
 The verification design adds a step to the assistant design: for transactions in a middle band, the system asks the cardholder through the bank's own app, with a push notification, ``Did you make this purchase?'' A ``yes'' clears the transaction without an analyst; a ``no'' blocks the card at once. The verification message is a fixed template sent through the authenticated app channel---never free text written by a model, and never by SMS or e-mail, which fraudsters imitate. The verification design needs compliance approval for customer contact and engineering work by the mobile team. Table~\ref{tab:fr-designs} compares the three designs.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The three fraud designs side by side.}
-\label{tab:fr-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The three fraud designs side by side.}\label{tab:fr-designs}\\
 \toprule
 \rowcolor{coHead} & \cellcolor{coRedBg}Agent judge & Assistant & Verification \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & \cellcolor{coRedBg}Agent judge & Assistant & Verification \\
+\midrule
+\endhead
 Who judges fraud & A language model & The statistical model, then an analyst & The same, plus the cardholder in a middle band \\
 The 100-ms path & May contain the agent, which fails & Scoring model only & Scoring model only \\
 The analyst & Checks the agent's verdict & Decides, helped by a summary & Decides what the cardholder does not resolve \\
 Customer contact & None & None & A fixed push message in the bank's own app \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Which Design Should We Pilot?}
@@ -195,15 +207,18 @@ At Northgate's volumes, the difference between the first two rows is about \$4{,
 
 \subsection{Scores and decision}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for fraud review. The agent-judge design is shown outside the authorization path; inside it, the agent-judge design fails \risk{Model in hot path}.}
-\label{tab:fr-tradeoff}
-\begin{tabular}{@{}lcccc@{}}
+\begin{longtable}{@{}lcccc@{}}
+\caption{Trade-off table for fraud review. The agent-judge design is shown outside the authorization path; inside it, the agent-judge design fails \risk{Model in hot path}.}\label{tab:fr-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Agent judge & Assistant & Verification \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Agent judge & Assistant & Verification \\
+\midrule
+\endhead
 Quality (fraud caught) & 0.30 & 2 & 4 & 5 \\
 Customer impact & 0.20 & 2 & 4 & 4 \\
 Speed and latency & 0.10 & 2 & 5 & 4 \\
@@ -213,7 +228,7 @@ Maintainability & 0.10 & 3 & 4 & 3 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 1.95 & 4.25 & 4.05 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The verification design catches more fraud, because many mid-band transactions are resolved by the cardholder in seconds. It scores lower on privacy and control because it introduces a new customer-facing channel with its own failure modes, and it depends on another team and on compliance approval. The decision is the assistant design now, with the verification design as a separate project once the assistant design's evaluation establishes the baseline it would improve on.

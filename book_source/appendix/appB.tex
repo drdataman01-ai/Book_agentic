@@ -9,16 +9,18 @@ The designs in this book are framework-independent; the builds use Google's ADK.
 
 Treat the table as a map, not an API reference. These frameworks release frequently, and names, signatures and capabilities change. Each framework's documentation is the authority; the companion repository keeps a version of this table with links, checked at each repository release.
 
-\begin{table}[htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3.5pt}
-\caption{Where the book's concepts live in four agent frameworks.}
-\label{tab:mapping}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begingroup
+\scriptsize \setlength{\tabcolsep}{3.5pt}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Where the book's concepts live in four agent frameworks.}\label{tab:mapping}\\
 \toprule
 Concept & Google ADK & LangGraph & OpenAI Agents SDK & Claude Agent SDK \\
 \midrule
+\endfirsthead
+\toprule
+Concept & Google ADK & LangGraph & OpenAI Agents SDK & Claude Agent SDK \\
+\midrule
+\endhead
 Agent (model + instruction + tools in a loop) & \texttt{Agent} & A graph node running a model with tools (prebuilt ReAct-style agent available) & \texttt{Agent}, run by \texttt{Runner} & The agent loop run by \texttt{query} or a client object, configured with options \\
 Function tool & Python function with docstring; \texttt{FunctionTool} & Tool functions bound to the model & \texttt{@function\_tool} & \texttt{@tool}, bundled into an in-process MCP server \\
 MCP client & \texttt{McpToolset} (stdio, Streamable HTTP) & MCP adapters that load server tools as LangChain tools & MCP server classes for stdio and HTTP & Native: MCP servers listed in options \\
@@ -33,8 +35,8 @@ Tracing & OpenTelemetry; Cloud Trace & LangSmith; OpenTelemetry integrations & B
 Deployment & \texttt{adk deploy} to Agent Runtime, Cloud Run, GKE & LangGraph Platform, or any container & Any Python host & Any host that can run the SDK \\
 Agent-to-agent & A2A built in (expose and call) & Via A2A libraries & Via A2A libraries & Via A2A libraries \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \section{Translating a design}
 

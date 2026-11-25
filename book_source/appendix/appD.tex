@@ -9,15 +9,18 @@ The book supports one-semester courses, and shorter courses of seven or eight we
 
 \section{A 14-week plan}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{A 14-week course.}
-\label{tab:course14}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\caption{A 14-week course.}\label{tab:course14}\\
 \toprule
 Week & Chapters & Work due \\
 \midrule
+\endfirsthead
+\toprule
+Week & Chapters & Work due \\
+\midrule
+\endhead
 1 & 1 From building to designing & Lab 1; Appendix A setup \\
 2 & 2 The designer's toolkit & Lab 2; decomposition exercise \\
 3 & 3 The business of AI solutions & Lab 3: value case \\
@@ -33,8 +36,8 @@ Week & Chapters & Work due \\
 13 & 13 Capstone & Capstone build and evaluation \\
 14 & Presentations & Memo, deployment, evaluation report \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \section{A 10-week plan}
 
@@ -44,15 +47,18 @@ Cover Chapters 1--3 in weeks 1--2; choose four cases (we suggest 4, 5, 6 and 8, 
 
 A short course, such as a half-semester module or an executive-education program, should keep the whole design method\index{design method} and use fewer cases. Chapters~1--3 are essential, because every case depends on them. Chapters~4--6 come next: together they exercise each building block once---retrieval in the policy assistant, MCP tool design in support triage, and approval gates\index{approval gate} in invoice-to-payment---and all three start from a published sample, which is easier in a short course than designing from a blank page. The capstone becomes a smaller final project (Table~\ref{tab:course8}).
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{An 8-week course.}
-\label{tab:course8}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\caption{An 8-week course.}\label{tab:course8}\\
 \toprule
 Week & Chapters & Work due \\
 \midrule
+\endfirsthead
+\toprule
+Week & Chapters & Work due \\
+\midrule
+\endhead
 1 & 1 From building to designing & Lab 1; Appendix A setup; free-trial sign-up \\
 2 & 2 The designer's toolkit & Lab 2: solution graph and trade-off table for returns \\
 3 & 3 The business of AI solutions & Lab 3: value case and one-page memo \\
@@ -62,8 +68,8 @@ Week & Chapters & Work due \\
 7 & One elective case (8, 9 or 7), or project work & Project solution graph and trade-off table \\
 8 & Presentations; Chapter~13 rollout sections as reading & Memo, deployment (build track), evaluation summary \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{Choosing the elective in week 7.} Pick the case that fits the audience. Chapter~8 (fraud review) suits analytics and MBA students: asymmetric errors\index{asymmetric error cost} and evaluation. Chapter~9 (disruption rebooking) suits computer science students: handoffs between agents and surge planning. Chapter~7 (incident response) suits an IT or operations audience: event triggers and safe actions. Assign the other two as reading with their review questions.
 
@@ -81,16 +87,18 @@ A suggested weighting: labs 30\%, case assignments 25\%, capstone 35\%, particip
 
 \section{Rubrics}
 
-\begin{table}[htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\caption{Rubric for a case assignment or the capstone. Each criterion is scored 1--4.}
-\label{tab:rubric}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begingroup
+\scriptsize \setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Rubric for a case assignment or the capstone. Each criterion is scored 1--4.}\label{tab:rubric}\\
 \toprule
 Criterion (weight) & 4: exemplary & 2: developing & 1: missing \\
 \midrule
+\endfirsthead
+\toprule
+Criterion (weight) & 4: exemplary & 2: developing & 1: missing \\
+\midrule
+\endhead
 Problem and baseline (10\%) & Process map with measured or well-sourced times, costs and error points; SUAO complete & Process described; numbers asserted without sources & No baseline \\
 Solution graphs (20\%) & Two or more alternatives, well formed (W1--W8); every block choice justified & One design, or alternatives that differ trivially; some rule violations & Diagram without the notation or without alternatives \\
 Trade-offs and decision (15\%) & Constraints first; money rows; sensitivity; failure walk-through changes the design; decision record with reversal triggers & Scores without reasons or sensitivity & Choice asserted \\
@@ -99,8 +107,8 @@ Build and deployment (15\%) & Deployed; tools follow T1--T9; identity and secret
 Evaluation (15\%) & Metrics tied to KPIs and risks; thresholds set in advance; adversarial and failure tests; results honestly reported & Some metrics, mostly answer quality & No evaluation \\
 Communication (5\%) & Clear, concise, plain language; graphs readable & Understandable with effort & Unclear \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 For the design track, replace ``Build and deployment'' with ``Build plan'' (node cards for every agent, server and guardrail; deployment target decision with reasons) and keep the other criteria.
 

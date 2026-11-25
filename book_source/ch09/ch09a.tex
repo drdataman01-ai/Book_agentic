@@ -44,15 +44,18 @@ The contact centre can bring about 120 agents online at short notice; a disrupti
 About 5{,}800 passengers contact the airline, 120 agents are available, and each call takes 11 minutes. Before doing any arithmetic, guess: how long does the last caller of the afternoon wait?
 \end{thinkabout}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Last February's storm, from contact-centre and reservation logs.}
-\label{tab:air-today}
-\begin{tabular}{@{}lr@{}}
+\begin{longtable}{@{}lr@{}}
+\caption{Last February's storm, from contact-centre and reservation logs.}\label{tab:air-today}\\
 \toprule
 \rowcolor{coHead} Measure & Value \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Measure & Value \\
+\midrule
+\endhead
 Passengers on cancelled flights & 9{,}600 \\
 Contacted the airline & 5{,}760 (60\%) \\
 Median wait for an agent, first four hours & 2 h 40 min \\
@@ -62,40 +65,46 @@ Hotel vouchers issued by agents & 1{,}900 \\
 Compensation claims filed later by passengers & 2{,}300 \\
 Compensation claims paid in error (weather was extraordinary) & 4\% of claims audited \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:air-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of disruption rebooking.}
-\label{tab:air-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of disruption rebooking.}\label{tab:air-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The chief customer officer. \\
 \cotag{coGreen}{Users} & Passengers and contact-centre agents. \\
 \cotag{coAmber}{Approvers} & The legal team (EU261 and consumer law), the data protection officer, and revenue management, which controls seat inventory. \\
 \cotag{coPurple}{Owners} & The operations control centre, which declares disruptions; the reservation-systems team; the contact centre; and the customer-relations team, which handles compensation. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:air-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for disruption rebooking.}
-\label{tab:air-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for disruption rebooking.}\label{tab:air-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Time to itinerary} & Median time from cancellation to a confirmed new itinerary: under one hour, from 7.5. \\
 \kpi{Reach a person} & Disrupted passengers who reach a person, when they need one, within 20 minutes: at least 90\%. \\
 \kpi{Satisfaction} & Post-disruption satisfaction score: up 15 points. \\
@@ -104,8 +113,8 @@ Compensation claims paid in error (weather was extraordinary) & 4\% of claims au
 \risk{Special needs} & A passenger with special needs---reduced mobility, an unaccompanied minor, a medical condition---handled only by automation. \\
 \risk{Wrong passenger} & One passenger's booking or personal data shown to another. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{keyidea}[The value hypothesis, in one sentence]
 If most disrupted passengers can accept or change their new itinerary, and get care and compensation answers, in a conversation that starts the moment their flight is cancelled, the contact centre can keep up with the rest, and passengers will have confirmed plans within an hour instead of most of a day.
@@ -130,15 +139,18 @@ The handoff design divides the work into the stages a good human agent goes thro
   \item Each handoff moves a typed \textbf{case object} to the next owner. Any agent can hand the case to a person; a person can hand it back.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The handoff design as a design table. Accepting the engine's proposal involves no agent at all. Each handoff moves ownership of the case object, and any agent can hand the case to a person.}
-\label{tab:air-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\caption{The handoff design as a design table. Accepting the engine's proposal involves no agent at all. Each handoff moves ownership of the case object, and any agent can hand the case to a person.}\label{tab:air-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & When a flight is cancelled, create a case for each booking and push the proposal with three buttons: accept, change, talk to us & \tagCode\ Triggered by the cancellation & Re-accommodation engine; case store & \kpi{Time to itinerary} \\
 2 & Accept: confirm the engine's proposal & \tagPerson\ Passenger; no agent involved & Reservation server & \kpi{Time to itinerary} \\
 3 & Change or talk to us: confirm identity, record needs and route. Any special need goes to a person at once & \tagAgent\ Intake, Level 1; stops at needs and route & Signed-in app; case store & \risk{Special needs} \risk{Wrong passenger} \\
@@ -147,30 +159,33 @@ The handoff design divides the work into the stages a good human agent goes thro
 6 & Issue vouchers within the rules and explain the compensation & \tagAgent\ Care, Level 1 & Voucher rules; the computed amount & \kpi{Satisfaction} \\
 7 & Take over any case handed to a person, at any stage & \tagPerson\ Contact-centre agent & The case and its history & \kpi{Reach a person} \risk{Special needs} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The self-service design: notification and a web page, no agents}
 
 The self-service design keeps only the first step of the handoff design and a self-service web page: passengers receive the proposal and can accept it or pick from a list of alternatives; everything else goes to the contact centre. It is cheap, predictable and fast to build. Its limit is that the passengers who need to explain a constraint---``I can fly from either airport, but I need to be there by Friday''---still call. Table~\ref{tab:air-designs} compares the three designs.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The three rebooking designs side by side.}
-\label{tab:air-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The three rebooking designs side by side.}\label{tab:air-designs}\\
 \toprule
 \rowcolor{coHead} & Single agent & Handoff & Self-service \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Single agent & Handoff & Self-service \\
+\midrule
+\endhead
 Who handles a change & One agent with every tool & Intake, rebooking and care agents in turn & A web page of alternatives \\
 Permissions & All in one agent & Each agent holds only its own & None \\
 What is recorded & The conversation & A case object with one owner at a time & The booking \\
 Special needs & Depends on the prompt & Handed to a person at once & The passenger must call \\
 Self-service share (est.) & 70\% & 70\% & 50\% \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Which Design Should We Pilot?}
@@ -204,15 +219,18 @@ That is why the self-service design alone is not enough. The re-accommodation en
 
 \subsection{Scores and decision}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for disruption rebooking.}
-\label{tab:air-tradeoff}
-\begin{tabular}{@{}lcccc@{}}
+\begin{longtable}{@{}lcccc@{}}
+\caption{Trade-off table for disruption rebooking.}\label{tab:air-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Single agent & Handoff & Self-service \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Single agent & Handoff & Self-service \\
+\midrule
+\endhead
 Self-service share (est.) & --- & 70\% & 70\% & 50\% \\
 \midrule
 Quality & 0.25 & 4 & 5 & 3 \\
@@ -224,7 +242,7 @@ Maintainability & 0.10 & 2 & 3 & 5 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 3.10 & 4.55 & 3.60 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The single-agent design and the handoff design reach similar self-service, but the single-agent design does it with one agent holding every permission and no clear record of what has been decided, which shows in reliability and compliance. The self-service design is the most reliable and the easiest to maintain, but it falls short of the break-even. The decision is the handoff design, with the self-service design's notification as its first step: passengers who accept the engine's proposal never meet an agent at all.

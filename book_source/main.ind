@@ -3,99 +3,99 @@
   \item A2A, \hyperindexformat{\see{Agent2Agent (A2A)}}{2}
   \item ADK, \hyperindexformat{\see{Agent Development Kit (ADK)}}{2}
   \item agent, \hyperindexformat{\textbf}{10}
-  \item agent card, \hyperindexformat{\textbf}{204}
-  \item Agent Development Kit (ADK), \hyperindexformat{\textbf}{24}, 
-		\hyperpage{42}, \hyperpage{73}, \hyperpage{98}, 
-		\hyperpage{116}, \hyperpage{138}, \hyperpage{162}, 
-		\hyperpage{193}, \hyperpage{204}, \hyperpage{220}
-  \item agent loop, \hyperindexformat{\textbf}{16}, \hyperpage{146}, 
-		\hyperpage{225}
-  \item agent registry, \hyperindexformat{\textbf}{206}
+  \item agent card, \hyperindexformat{\textbf}{202}
+  \item Agent Development Kit (ADK), \hyperindexformat{\textbf}{25}, 
+		\hyperpage{42}, \hyperpage{72}, \hyperpage{97}, 
+		\hyperpage{114}, \hyperpage{136}, \hyperpage{160}, 
+		\hyperpage{191}, \hyperpage{202}, \hyperpage{218}
+  \item agent loop, \hyperindexformat{\textbf}{16}, \hyperpage{144}, 
+		\hyperpage{224}
+  \item agent registry, \hyperindexformat{\textbf}{204}
   \item Agent2Agent (A2A), \hyperindexformat{\textbf}{21}, 
-		\hyperpage{203}
-  \item anti-pattern, \hyperindexformat{\textbf}{45}, \hyperpage{104}, 
-		\hyperpage{136}, \hyperpage{215}
-  \item approval gate, \hyperpage{7}, \hyperindexformat{\textbf}{45}, 
-		\hyperpage{209}, \hyperpage{231}
-  \item asymmetric error cost, \hyperindexformat{\textbf}{64}, 
-		\hyperpage{231}
+		\hyperpage{201}
+  \item anti-pattern, \hyperindexformat{\textbf}{45}, \hyperpage{103}, 
+		\hyperpage{134}, \hyperpage{213}
+  \item approval gate, \hyperpage{7}, \hyperindexformat{\textbf}{44}, 
+		\hyperpage{207}, \hyperpage{229}
+  \item asymmetric error cost, \hyperindexformat{\textbf}{63}, 
+		\hyperpage{229}
   \item autonomy spectrum, \hyperindexformat{\textbf}{10}, 
-		\hyperpage{227}
+		\hyperpage{225}
 
   \indexspace
 
-  \item backtest, \hyperindexformat{\textbf}{187}
+  \item backtest, \hyperindexformat{\textbf}{185}
 
   \indexspace
 
   \item checkpoint, human, \hyperindexformat{\see{human checkpoint}}{2}
   \item chunk, \hyperindexformat{\textbf}{13}
   \item component card, \hyperindexformat{\textbf}{44}
-  \item confused deputy, \hyperindexformat{\textbf}{214}
+  \item confused deputy, \hyperindexformat{\textbf}{212}
   \item constraint (versus criterion), \hyperindexformat{\textbf}{46}
-  \item containment, \hyperindexformat{\textbf}{97}
+  \item containment, \hyperindexformat{\textbf}{96}
   \item context window, \hyperindexformat{\textbf}{8}
   \item current-process map, \hyperpage{6}, 
-		\hyperindexformat{\textbf}{55}, \hyperpage{76}, 
-		\hyperpage{211}, \hyperpage{228}
+		\hyperindexformat{\textbf}{54}, \hyperpage{75}, 
+		\hyperpage{209}, \hyperpage{226}
 
   \indexspace
 
   \item decision record, \hyperindexformat{\textbf}{49}, 
-		\hyperpage{110}, \hyperpage{136}, \hyperpage{185}, 
-		\hyperpage{212}, \hyperpage{231}
-  \item deflection, \hyperindexformat{\textbf}{75}
+		\hyperpage{108}, \hyperpage{134}, \hyperpage{184}, 
+		\hyperpage{210}, \hyperpage{229}
+  \item deflection, \hyperindexformat{\textbf}{74}
   \item design gap, \hyperindexformat{\textbf}{6}
-  \item design method, \hyperpage{22}, \hyperindexformat{\textbf}{38}, 
-		\hyperpage{55}, \hyperpage{73}, \hyperpage{146}, 
-		\hyperpage{231}
+  \item design method, \hyperpage{23}, \hyperindexformat{\textbf}{38}, 
+		\hyperpage{54}, \hyperpage{72}, \hyperpage{144}, 
+		\hyperpage{229}
   \item design pattern, \hyperindexformat{\textbf}{44}
   \item design table, \hyperpage{6}, \hyperindexformat{\textbf}{42}, 
-		\hyperpage{57}, \hyperpage{78}, \hyperpage{99}, 
-		\hyperpage{119}, \hyperpage{133}, \hyperpage{146}, 
-		\hyperpage{158}, \hyperpage{171}, \hyperpage{182}, 
-		\hyperpage{193}, \hyperpage{210}
+		\hyperpage{56}, \hyperpage{77}, \hyperpage{98}, 
+		\hyperpage{117}, \hyperpage{131}, \hyperpage{144}, 
+		\hyperpage{156}, \hyperpage{169}, \hyperpage{180}, 
+		\hyperpage{191}, \hyperpage{208}
 
   \indexspace
 
   \item embedding, \hyperindexformat{\textbf}{13}
-  \item error budget, \hyperindexformat{\textbf}{64}, \hyperpage{138}, 
-		\hyperpage{217}
-  \item evaluation criteria, \hyperindexformat{\textbf}{46}, 
-		\hyperpage{65}
+  \item error budget, \hyperindexformat{\textbf}{63}, \hyperpage{136}, 
+		\hyperpage{215}
+  \item evaluation criteria, \hyperindexformat{\textbf}{45}, 
+		\hyperpage{64}
 
   \indexspace
 
-  \item failure walk-through, \hyperindexformat{\textbf}{49}, 
-		\hyperpage{63}, \hyperpage{82}, \hyperpage{104}, 
-		\hyperpage{212}, \hyperpage{232}
-  \item faithfulness, \hyperindexformat{\textbf}{150}
-  \item floor case, \hyperindexformat{\textbf}{62}, \hyperpage{89}, 
-		\hyperpage{228}
+  \item failure walk-through, \hyperindexformat{\textbf}{48}, 
+		\hyperpage{62}, \hyperpage{81}, \hyperpage{102}, 
+		\hyperpage{210}, \hyperpage{230}
+  \item faithfulness, \hyperindexformat{\textbf}{148}
+  \item floor case, \hyperindexformat{\textbf}{61}, \hyperpage{89}, 
+		\hyperpage{226}
 
   \indexspace
 
   \item Gemini Enterprise Agent Platform, 
-		\hyperindexformat{\textbf}{29}, \hyperpage{162}, 
-		\hyperpage{207}, \hyperpage{222}
+		\hyperindexformat{\textbf}{30}, \hyperpage{160}, 
+		\hyperpage{205}, \hyperpage{220}
   \item go/no-go criteria, \hyperpage{7}, 
-		\hyperindexformat{\textbf}{66}, \hyperpage{88}, 
-		\hyperpage{217}, \hyperpage{228}
+		\hyperindexformat{\textbf}{65}, \hyperpage{88}, 
+		\hyperpage{215}, \hyperpage{226}
   \item guardrail, \hyperindexformat{\textbf}{21}, \hyperpage{42}, 
-		\hyperpage{59}, \hyperpage{78}, \hyperpage{98}, 
-		\hyperpage{138}, \hyperpage{146}, \hyperpage{176}, 
-		\hyperpage{186}, \hyperpage{197}, \hyperpage{207}, 
-		\hyperpage{225}
+		\hyperpage{58}, \hyperpage{77}, \hyperpage{97}, 
+		\hyperpage{135}, \hyperpage{145}, \hyperpage{173}, 
+		\hyperpage{184}, \hyperpage{195}, \hyperpage{205}, 
+		\hyperpage{224}
 
   \indexspace
 
-  \item hallucination, \hyperindexformat{\textbf}{9}, \hyperpage{65}
+  \item hallucination, \hyperindexformat{\textbf}{9}, \hyperpage{64}
   \item human checkpoint, \hyperindexformat{\textbf}{21}, 
-		\hyperpage{40}, \hyperpage{116}
+		\hyperpage{40}, \hyperpage{114}
 
   \indexspace
 
-  \item incident replay, \hyperindexformat{\textbf}{138}
+  \item incident replay, \hyperindexformat{\textbf}{137}
 
   \indexspace
 
@@ -103,8 +103,8 @@
 
   \indexspace
 
-  \item key performance indicator (KPI), \hyperindexformat{\textbf}{57}
-    \subitem KPI tree, \hyperindexformat{\textbf}{58}, \hyperpage{76}
+  \item key performance indicator (KPI), \hyperindexformat{\textbf}{56}
+    \subitem KPI tree, \hyperindexformat{\textbf}{57}, \hyperpage{75}
   \item KPI, 
 		\hyperindexformat{\see{key performance indicator (KPI)}}{2}
 
@@ -118,96 +118,96 @@
 
   \item MCP, \hyperindexformat{\see{Model Context Protocol (MCP)}}{2}
   \item memory
-    \subitem ingestion gate, \hyperindexformat{\textbf}{214}
-    \subitem long-term memory, \hyperindexformat{\textbf}{214}
-    \subitem session state, \hyperpage{78}, \hyperpage{98}, 
-		\hyperpage{162}, \hyperindexformat{\textbf}{214}
+    \subitem ingestion gate, \hyperindexformat{\textbf}{212}
+    \subitem long-term memory, \hyperindexformat{\textbf}{212}
+    \subitem session state, \hyperpage{77}, \hyperpage{97}, 
+		\hyperpage{160}, \hyperindexformat{\textbf}{212}
   \item Model Context Protocol (MCP), \hyperindexformat{\textbf}{18}, 
-		\hyperpage{67}, \hyperpage{78}, \hyperpage{95}, 
-		\hyperpage{132}, \hyperpage{144}, \hyperpage{186}, 
-		\hyperpage{203}, \hyperpage{220}
+		\hyperpage{66}, \hyperpage{77}, \hyperpage{94}, 
+		\hyperpage{130}, \hyperpage{142}, \hyperpage{184}, 
+		\hyperpage{201}, \hyperpage{218}
     \subitem client, \hyperindexformat{\textbf}{18}
-    \subitem host, \hyperindexformat{\textbf}{18}
+    \subitem host, \hyperindexformat{\textbf}{19}
     \subitem server, \hyperindexformat{\textbf}{18}, \hyperpage{40}, 
-		\hyperpage{86}, \hyperpage{96}, \hyperpage{128}, 
-		\hyperpage{132}, \hyperpage{146}, \hyperpage{171}, 
-		\hyperpage{180}, \hyperpage{193}, \hyperpage{206}, 
-		\hyperpage{225}
+		\hyperpage{85}, \hyperpage{96}, \hyperpage{125}, 
+		\hyperpage{130}, \hyperpage{144}, \hyperpage{169}, 
+		\hyperpage{178}, \hyperpage{191}, \hyperpage{204}, 
+		\hyperpage{223}
     \subitem tool, resource, prompt, \hyperindexformat{\textbf}{20}
 
   \indexspace
 
-  \item newsvendor rule, \hyperindexformat{\textbf}{184}
+  \item newsvendor rule, \hyperindexformat{\textbf}{181}
 
   \indexspace
 
-  \item one-page memo, \hyperpage{7}, \hyperindexformat{\textbf}{67}, 
-		\hyperpage{212}, \hyperpage{231}
-  \item outcome (evaluation), \hyperindexformat{\textbf}{213}
+  \item one-page memo, \hyperpage{7}, \hyperindexformat{\textbf}{66}, 
+		\hyperpage{210}, \hyperpage{229}
+  \item outcome (evaluation), \hyperindexformat{\textbf}{211}
 
   \indexspace
 
-  \item pilot, \hyperindexformat{\textbf}{66}
+  \item pilot, \hyperindexformat{\textbf}{65}
   \item prompt, \hyperindexformat{\textbf}{8}
 
   \indexspace
 
   \item RAG, 
 		\hyperindexformat{\see{retrieval-augmented generation (RAG)}}{2}
-  \item release gate, \hyperindexformat{\textbf}{217}
+  \item release gate, \hyperindexformat{\textbf}{215}
   \item retrieval-augmented generation (RAG), 
-		\hyperindexformat{\textbf}{12}, \hyperpage{45}, 
-		\hyperpage{67}, \hyperpage{73}
-  \item retrieve-then-answer, \hyperindexformat{\textbf}{45}, 
-		\hyperpage{99}
+		\hyperindexformat{\textbf}{12}, \hyperpage{44}, 
+		\hyperpage{66}, \hyperpage{72}
+  \item retrieve-then-answer, \hyperindexformat{\textbf}{44}, 
+		\hyperpage{98}
   \item reversal trigger, \hyperindexformat{\textbf}{49}, 
-		\hyperpage{82}, \hyperpage{104}, \hyperpage{136}, 
-		\hyperpage{228}
-  \item risk register, \hyperindexformat{\textbf}{65}
+		\hyperpage{81}, \hyperpage{103}, \hyperpage{134}, 
+		\hyperpage{226}
+  \item risk register, \hyperindexformat{\textbf}{64}
   \item rubber-stamping, \hyperpage{45}, 
-		\hyperindexformat{\textbf}{124}
+		\hyperindexformat{\textbf}{122}
 
   \indexspace
 
-  \item safe zone, \hyperindexformat{\textbf}{47}
+  \item safe zone, \hyperindexformat{\textbf}{46}
   \item semantic search, \hyperindexformat{\textbf}{14}
-  \item skill (agent), \hyperindexformat{\textbf}{215}
+  \item skill (agent), \hyperindexformat{\textbf}{213}
   \item solution design, \hyperindexformat{\textbf}{7}
   \item stakeholder roles (sponsor, users, approvers, owners), 
-		\hyperindexformat{\textbf}{57}
-  \item stop rule, \hyperindexformat{\textbf}{66}, \hyperpage{90}, 
-		\hyperpage{111}, \hyperpage{229}
+		\hyperindexformat{\textbf}{56}
+  \item stop rule, \hyperindexformat{\textbf}{65}, \hyperpage{89}, 
+		\hyperpage{110}, \hyperpage{227}
 
   \indexspace
 
   \item tool, \hyperindexformat{\textbf}{16}
-  \item tool call, \hyperindexformat{\textbf}{16}, \hyperpage{109}, 
-		\hyperpage{133}, \hyperpage{146}, \hyperpage{182}, 
-		\hyperpage{208}, \hyperpage{225}
-  \item tornado analysis, \hyperindexformat{\textbf}{61}
-  \item touch time and wait time, \hyperindexformat{\textbf}{55}, 
-		\hyperpage{74}
+  \item tool call, \hyperindexformat{\textbf}{16}, \hyperpage{107}, 
+		\hyperpage{131}, \hyperpage{144}, \hyperpage{180}, 
+		\hyperpage{206}, \hyperpage{224}
+  \item tornado analysis, \hyperindexformat{\textbf}{60}
+  \item touch time and wait time, \hyperindexformat{\textbf}{54}, 
+		\hyperpage{73}
   \item trade-off table, \hyperpage{7}, \hyperindexformat{\textbf}{47}, 
-		\hyperpage{57}, \hyperpage{81}, \hyperpage{112}, 
-		\hyperpage{212}, \hyperpage{231}
-  \item trajectory, \hyperindexformat{\textbf}{213}
+		\hyperpage{56}, \hyperpage{80}, \hyperpage{111}, 
+		\hyperpage{210}, \hyperpage{229}
+  \item trajectory, \hyperindexformat{\textbf}{211}
 
   \indexspace
 
-  \item unit economics, \hyperpage{7}, \hyperindexformat{\textbf}{62}, 
-		\hyperpage{101}
+  \item unit economics, \hyperpage{7}, \hyperindexformat{\textbf}{61}, 
+		\hyperpage{100}
 
   \indexspace
 
-  \item value case, \hyperindexformat{\textbf}{59}, \hyperpage{89}, 
-		\hyperpage{152}, \hyperpage{211}
+  \item value case, \hyperindexformat{\textbf}{58}, \hyperpage{89}, 
+		\hyperpage{151}, \hyperpage{209}
   \item value hypothesis, \hyperpage{32}, 
-		\hyperindexformat{\textbf}{59}
-  \item vector index, \hyperindexformat{\textbf}{13}, \hyperpage{132}
+		\hyperindexformat{\textbf}{58}
+  \item vector index, \hyperindexformat{\textbf}{13}, \hyperpage{130}
 
   \indexspace
 
-  \item workflow, \hyperindexformat{\textbf}{10}, \hyperpage{46}, 
-		\hyperpage{225}
+  \item workflow, \hyperindexformat{\textbf}{10}, \hyperpage{45}, 
+		\hyperpage{224}
 
 \end{theindex}

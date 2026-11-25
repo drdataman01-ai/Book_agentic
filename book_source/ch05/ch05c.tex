@@ -29,16 +29,18 @@ A tool is the only way an agent can change a company system. If you could make o
 
 Table~\ref{tab:tool-redesign} applies the principles to four of the sample's tools and to the support tools the hybrid design needs.
 
-\begin{table}[htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\caption{From the sample's tools to the hybrid design's, with the principle behind each change.}
-\label{tab:tool-redesign}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}X@{}}
+\begingroup
+\scriptsize \setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}X@{}}
+\caption{From the sample's tools to the hybrid design's, with the principle behind each change.}\label{tab:tool-redesign}\\
 \toprule
 \rowcolor{coHead} Sample & Redesigned & Change \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Sample & Redesigned & Change \\
+\midrule
+\endhead
 \code{access_cart_information(customer_id)} & \code{get_cart()} & Identity from token (\textbf{identity from context}); read-only annotation (\textbf{read and write labeled}) \\
 \code{approve_discount(type, value, reason)} and \code{sync_ask_for_approval(...)} & \code{request_discount(kind: percent | amount, value, reason_code)} & One tool; server applies the limit and routes to a manager (\textbf{task-shaped}; \textbf{policy in the owner's server}); enumerated kind and reason (\textbf{validated inputs}) \\
 \code{update_salesforce_crm(customer_id, details: dict)} & \code{add_case_note(case_id, note_type, text)} & Task-shaped, bounded write instead of a free-form record update (\textbf{task-shaped}; \textbf{validated inputs}) \\
@@ -48,8 +50,8 @@ Table~\ref{tab:tool-redesign} applies the principles to four of the sample's too
 --- & \code{report_delivery_damage(order_number, line_id, photo_ids)} & New; creates a claim for review and cannot ship a replacement (\textbf{policy in the owner's server}) \\
 --- & \code{create_case(intent, summary, priority)} & New; used for every handoff to a person \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The returns server}
 
@@ -100,15 +102,18 @@ adk deploy agent_engine --project=$PROJECT --region=$REGION \
 
 For a tool-using agent, a correct final message is not enough. An agent can say ``your return has been started'' without calling \texttt{start\_return}, or call it with the wrong line, or call it twice. Evaluation must therefore check the \textbf{trajectory}---which tools were called, with what arguments, in what order---as well as the final response. ADK's evaluation compares an agent's actual tool calls with expected ones and its final response with a reference; the sample's configuration required scores of only 0.2 on both. The hybrid design's thresholds (Table~\ref{tab:support-thresholds}) are set per intent and per risk.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Evaluation thresholds for the hybrid design. Measured on 600 replayed historical contacts and 150 adversarial scripts.}
-\label{tab:support-thresholds}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}r@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}r@{}}
+\caption{Evaluation thresholds for the hybrid design. Measured on 600 replayed historical contacts and 150 adversarial scripts.}\label{tab:support-thresholds}\\
 \toprule
 \rowcolor{coHead} Metric & Step & Threshold \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Metric & Step & Threshold \\
+\midrule
+\endhead
 Intent accuracy (seven intents plus ``person'') & Triage & $\ge$ 0.95 \\
 Recall of ``wants a person'' & Triage & $\ge$ 0.99 \\
 Tool trajectory match, automated intents & Paths & $\ge$ 0.90 \\
@@ -118,8 +123,8 @@ Cross-customer data in any response (\risk{Wrong customer}) & Servers & 0 \\
 Policy-violating outcome on adversarial scripts (\risk{Against policy}, \risk{Manipulation}) & Servers & 0 \\
 Copilot draft accepted with no or minor edits & Copilot & $\ge$ 0.70 \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Three of the metrics deserve explanation.
 

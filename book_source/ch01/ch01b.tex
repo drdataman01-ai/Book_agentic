@@ -129,15 +129,18 @@ The current list price of part \texttt{BV-316-3} is a database lookup, not a sea
 
 Designing a RAG component means answering a short list of questions. Table~\ref{tab:rag-checklist} lists them with Harbor's answers, and Chapter~\ref{ch:case-policy}, the first case, goes deep on each one.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{A checklist for designing a RAG component, with Harbor's answers.}
-\label{tab:rag-checklist}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}X@{}}
+\caption{A checklist for designing a RAG component, with Harbor's answers.}\label{tab:rag-checklist}\\
 \toprule
 \rowcolor{coAmberBg} Question to answer & Harbor's answer \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coAmberBg} Question to answer & Harbor's answer \\
+\midrule
+\endhead
 Which documents are the sources, and who owns each one? & The discount policy (Finance), catalog notes (Product), and contracts (Sales Operations). \\
 How quickly must a change reach the answers? & A policy change must reach answers by the next business day. \\
 May every user see every document? & No. A representative may read the policy but not another region's contracts. \\
@@ -145,8 +148,8 @@ How are documents split into chunks? & Never in the middle of a numbered policy 
 Must answers cite their source? & Yes, with section and version. When nothing relevant is found, the system says so rather than guessing. \\
 How will we know retrieval works? & By checking whether the right passages were found, separately from whether the final answer was good. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{inpractice}[In practice: Do we need RAG when the answer is in a table?]
 Suppose the reference data is a structured table. If the question can be turned into a key or a filter, the system can simply query for the right row and pass that row to the model. A query is better than semantic search in four ways. (1) It returns the exact row or nothing, while similarity search returns the \emph{nearest} row, which may be wrong in a way that looks plausible. (2) It reads the live table, while a vector index is a copy that must be refreshed. (3) It lets the server enforce who may see which rows. (4) And it can be unit-tested and costs almost nothing to run.
@@ -212,15 +215,18 @@ When a program built on an agent framework sends a prompt to the model, it inclu
 
 \providecommand{\stepbadge}[1]{\tikz[baseline=(b.base)]\node[circle, fill=black!75, text=white, font=\scriptsize\bfseries, inner sep=0pt, minimum size=4.2mm] (b) {#1};}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{A trace of Harbor's agent at work. Each row is one pass around the agent loop, and the numbered columns match the steps in Figure~\ref{fig:agent-loop}: the model decides (2), the framework runs the tool (3), and the result is added to the conversation (4).}
-\label{tab:agent-trace}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\caption{A trace of Harbor's agent at work. Each row is one pass around the agent loop, and the numbered columns match the steps in Figure~\ref{fig:agent-loop}: the model decides (2), the framework runs the tool (3), and the result is added to the conversation (4).}\label{tab:agent-trace}\\
 \toprule
 \multicolumn{4}{@{}>{\raggedright\arraybackslash}p{\textwidth}@{}}{\stepbadge{1}\ \textbf{Goal.} The rep asks what can be offered to Delta Water, which wants 18\% off part BV-316-3.} \\
 \midrule
+\endfirsthead
+\toprule
+\multicolumn{4}{@{}>{\raggedright\arraybackslash}p{\textwidth}@{}}{\stepbadge{1}\ \textbf{Goal.} The rep asks what can be offered to Delta Water, which wants 18\% off part BV-316-3.} \\
+\midrule
+\endhead
 Pass & \stepbadge{2}\ The model decides & \stepbadge{3}\ Tool call the framework runs & \stepbadge{4}\ Result added to the conversation \\
 \midrule
 1 & I need to know which customer ``Delta Water'' is. & \texttt{find\_customer( "Delta Water")} & One match: customer C-1042, Central region. \\
@@ -231,30 +237,33 @@ Pass & \stepbadge{2}\ The model decides & \stepbadge{3}\ Tool call the framework
 \midrule
 \multicolumn{4}{@{}>{\raggedright\arraybackslash}p{\textwidth}@{}}{\stepbadge{5}\ \textbf{Final answer to the rep.} ``Delta Water's contract price is \$44.20, already 15\% below list. An 18\% discount needs your manager's approval.''} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{When an agent is the right block.} An agent is the right block when a step needs \emph{judgment over a path that cannot be fixed in advance}. Understanding an unstructured request, deciding which of several lookups is needed, reconciling conflicting information, and writing text for a person to read all need judgment of this kind. At Harbor, turning a rambling e-mail from a sales representative into a structured quote request needs judgment, and so does writing the two-sentence explanation a manager reads before approving a 17\% discount. When the steps are always the same, however, a fixed workflow does the job more cheaply and more predictably.
 
 \paragraph{How agents fail.} Agents fail in five characteristic ways, and a designer should expect every one of them. Table~\ref{tab:agent-failures} lists them with a Harbor example and the usual design response. The cases teach these responses one at a time.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Five ways an agent fails, and what a designer does about each.}
-\label{tab:agent-failures}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Five ways an agent fails, and what a designer does about each.}\label{tab:agent-failures}\\
 \toprule
 \rowcolor{coRedBg} Failure & What it looks like at Harbor & Design response \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coRedBg} Failure & What it looks like at Harbor & Design response \\
+\midrule
+\endhead
 Wrong tool or input & Looks up Delta Waterworks instead of Delta Water & Fewer, better-shaped tools; confirm the customer number before quoting \\
 Unsupported claim & States a contract term that no tool returned & Every number must come from a tool result; answers cite their sources \\
 Looping & Calls the same lookups again and again, running up cost & Limits on steps and cost per request \\
 Drift & Forgets an instruction in a long chat, or follows one hidden in a customer e-mail & Short, focused instructions; automatic checks on inputs \\
 Overreach & Sends an e-mail that should have waited for a person & A person approves any action that leaves the company \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The Model Context Protocol (MCP): one plug for every system}
 \label{sec:block-mcp}
@@ -356,21 +365,24 @@ MCP is not free, and a designer should know its limits as well as its strengths.
 
 \paragraph{Tools, resources and prompts.}\index{Model Context Protocol (MCP)!tool, resource, prompt|textbf} An MCP server can offer three kinds of capability, and choosing among them is itself a design decision. Table~\ref{tab:mcp-kinds} compares them. The most important difference is \emph{who decides when to use it}: the model decides when to call a tool, while the application or the user decides when to attach a resource or use a prompt.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The three kinds of capability an MCP server can offer.}
-\label{tab:mcp-kinds}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{The three kinds of capability an MCP server can offer.}\label{tab:mcp-kinds}\\
 \toprule
 \rowcolor{coGreenBg} Kind & What it is & Who decides to use it & Harbor example \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coGreenBg} Kind & What it is & Who decides to use it & Harbor example \\
+\midrule
+\endhead
 Tool & An action with defined inputs and outputs; it may only read, or it may change a system & The model & \texttt{get\_contract\_terms} reads; \texttt{create\_quote\_draft} changes the CRM \\
 Resource & Read-only information with an address, like a web page's URL & The application or the user & The current discount policy; a product data sheet \\
 Prompt & A reusable message template with blanks to fill in & The user or the application & ``Draft a quote justification for manager review'' \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{Local and remote servers.} An MCP server can run in two ways. It can run as a local program beside the client, in which case the two talk through the program's standard input and output (a transport called \textbf{stdio}), or it can run as a remote web service that the client reaches over the network (a transport called \textbf{Streamable HTTP}). The protocol is versioned by date. The revision current as of this writing, dated 2026-07-28, made the core protocol stateless, which means that each request carries everything the server needs to answer it \citep{mcp2026spec}. As a result, a remote MCP server can run behind an ordinary load balancer like any other web service. For a designer, this means that an MCP server can be deployed, scaled and secured with the same tools as the rest of the company's services.
 
@@ -386,22 +398,25 @@ A related protocol, \keyterm{Agent2Agent (A2A)}\index{Agent2Agent (A2A)|textbf},
 
 Table~\ref{tab:blocks} summarizes the four blocks. Keep it beside you when you break a process into steps. The right-hand column is often the fastest way to catch a poor choice.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The four building blocks of an agentic solution.}
-\label{tab:blocks}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The four building blocks of an agentic solution.}\label{tab:blocks}\\
 \toprule
 Block & What it supplies & Use it when & Warning sign that you chose wrong \\
 \midrule
+\endfirsthead
+\toprule
+Block & What it supplies & Use it when & Warning sign that you chose wrong \\
+\midrule
+\endhead
 \cellcolor{codefill}Plain code & Certainty: rules, calculations, routing, validation & The rule can be written down and the inputs are structured & You are writing ``never'' or a threshold into a prompt \\
 \cellcolor{ragfill}RAG & Knowledge from private, changing or large collections of text & Answers depend on documents the model was not trained on & You are using semantic search to find one exact record \\
 \cellcolor{agentfill}Agent & Judgment: interpreting, choosing, writing & The path cannot be fixed in advance, or the inputs are unstructured & The agent follows the same three steps every time \\
 \cellcolor{mcpfill}MCP server & Action and information: access to company systems & The solution must read from or write to company systems & A tool mirrors a raw system function, or one tool can do anything \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Two further components appear in every design, although they are not building blocks in the same sense. A \keyterm{human checkpoint}\index{human checkpoint|textbf} is a point where the system stops and a person approves, edits or rejects its work. A \keyterm{guardrail}\index{guardrail|textbf} is an automatic check, usually written in code, that inspects inputs or outputs and blocks or repairs anything that breaks a policy. Both appear as steps of their own in the design tables of Chapter~\ref{ch:toolkit}.
 
@@ -426,15 +441,18 @@ Before you look at Table~\ref{tab:quote-decomp}, try it yourself. Here are the p
 
 Table~\ref{tab:quote-decomp} shows the result. The first two columns describe the current process, as the pricing analysts described it in interviews. The last two columns record design decisions.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Decomposing Harbor's quote process. The ``needs'' column drives the choice of block.}
-\label{tab:quote-decomp}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Decomposing Harbor's quote process. The ``needs'' column drives the choice of block.}\label{tab:quote-decomp}\\
 \toprule
 \rowcolor{coHead} \# & Step today & Needs & Block in the design \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step today & Needs & Block in the design \\
+\midrule
+\endhead
 1 & Read the rep's e-mail or chat message; identify the customer, items, quantities and requested discount & \tagJudgment & A single model call that fills in a fixed form \\
 2 & Check that the request is complete; ask the rep for anything missing & \tagRule & Code checks the form; the model writes the follow-up question \\
 3 & Look up list price, unit cost and stock for each item & \tagAction & MCP server over the ERP: \texttt{get\_item\_pricing} \\
@@ -444,8 +462,8 @@ Table~\ref{tab:quote-decomp} shows the result. The first two columns describe th
 7 & Write the quote and the cover note & \tagJudgment & The model drafts the words; code fills in every number from steps 3 to 5 \\
 8 & Record the quote in the CRM and send it & \tagAction & MCP server over the CRM; sending waits for the rep's click \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Three decisions in the table are worth pausing on, because they are the decisions Team A did not make.
 

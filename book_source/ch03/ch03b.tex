@@ -20,22 +20,25 @@ The hypothesis names the mechanism (faster quotes, freed analyst time), the resu
 
 The benefits of AI solutions fall into four kinds, and they differ sharply in how certain they are and how they show up in the accounts. Table~\ref{tab:benefits} compares them.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The four kinds of benefit, from the least certain to the best measured.}
-\label{tab:benefits}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
+\caption{The four kinds of benefit, from the least certain to the best measured.}\label{tab:benefits}\\
 \toprule
 \rowcolor{coHead} Kind & What it means & How certain & Watch for \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Kind & What it means & How certain & Watch for \\
+\midrule
+\endhead
 Growth & More revenue or margin: more deals won, more customers served & \cotag{coRed}{Least certain} & Often the largest benefit, so it is tempting to promise it \\
 Labor capacity & Hours freed from routine work & \cotag{coAmber}{Real, but} & It becomes cash only if the freed time is put to valuable use or the team grows more slowly \\
 Error reduction & Fewer costly mistakes, such as margin leakage, refunds and rework & \cotag{coGreen}{Well measured} & Usually solid, because errors leave a trail \\
 Risk reduction & A lower chance of a rare, expensive event, such as a fine or a breach & \cotag{coAmber}{Hard to value} & Sometimes the real reason the project exists \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{watchout}
 A business case that counts every freed minute as saved salary is the most common overstatement in the field. Unless someone decides what the freed people will do, or the team stops hiring, the minutes never reach the bank.
@@ -49,15 +52,18 @@ Listing~\ref{lst:value} computes Harbor's annual value with every assumption in 
 
 Its output, rounded, is in Table~\ref{tab:value}. Even before looking at sensitivity, two features are worth noticing. The growth line is roughly eight times the labor line. And the model cost---the line many teams spend most of their time debating---is the smallest number in the table: about \$600 a year at three cents per quote.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Harbor's annual value case (base assumptions). One-time build cost: \$180{,}000.}
-\label{tab:value}
-\begin{tabular}{@{}lrl@{}}
+\begin{longtable}{@{}lrl@{}}
+\caption{Harbor's annual value case (base assumptions). One-time build cost: \$180{,}000.}\label{tab:value}\\
 \toprule
 \rowcolor{coHead} Line & \$ per year & Source of the main input \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Line & \$ per year & Source of the main input \\
+\midrule
+\endhead
 Growth (win rate +1 point) & 2{,}304{,}000 & \emph{Assumed}; to be tested in pilot \\
 Labor capacity (50\% redeployed) & 297{,}000 & Time log; redeploy share \emph{assumed} \\
 Error reduction (below-floor quotes) & 156{,}900 & Controller's audit (measured) \\
@@ -66,8 +72,8 @@ Run cost (model, platform, 0.4 engineer) & $-84{,}600$ & Vendor pricing; staffin
 \midrule
 \rowcolor{coGreenBg} Net annual value & 2{,}638{,}700 & Payback on build cost: under one month \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 \subsection{Which assumption is the case built on?}
 
@@ -217,15 +223,18 @@ Budgets are set from the error's cost and the baseline: the new design should be
 
 Errors are the risks you can count. A \keyterm{risk register}\index{risk register|textbf} also lists the ones you cannot count easily, each with an owner and a response. Table~\ref{tab:risk} shows the top of Harbor's.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Top of Harbor's risk register for the quote design.}
-\label{tab:risk}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.9cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.9cm}@{}}
+\caption{Top of Harbor's risk register for the quote design.}\label{tab:risk}\\
 \toprule
 \rowcolor{coHead} Risk & Kind & Response in the design or plan & Owner \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Risk & Kind & Response in the design or plan & Owner \\
+\midrule
+\endhead
 Below-floor quote issued & \cotag{coRed}{Financial} & Floor enforced in code; zero error budget; pilot stop rule & Controller \\
 Representatives bypass the system for big deals & \cotag{coPurple}{Adoption} & Pilot with volunteers; analysts available for complex quotes; measure share of eligible quotes handled & VP Sales \\
 Customer data sent to a model provider & \cotag{coBlue}{Privacy} & Models run within Harbor's cloud tenancy; no customer data in prompts beyond the request & IT security \\
@@ -233,8 +242,8 @@ Policy text and configuration drift apart & \cotag{coGray}{Operational} & Policy
 Model or API version retired & \cotag{coTeal}{Technology} & Model name in configuration; regression evaluation before any model change & Platform team \\
 Growth benefit does not appear & \cotag{coAmber}{Business case} & Lead with floor case; pilot measures win rate & VP Sales \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{inpractice}
 Two risks in the table have nothing to do with models: adoption and the business case itself. In practice these sink more AI projects than hallucination\index{hallucination} does. A design that the people it serves will not use has a value of zero, whatever its evaluation scores.

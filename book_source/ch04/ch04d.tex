@@ -14,23 +14,26 @@ The value case\index{value case} uses the method of Chapter~\ref{ch:business}, w
 The floor case\index{floor case} pays back in about 18 months. For an HR tool, is that good or bad? What else would you want to know before answering?
 \end{thinkabout}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Annual value case for the grounded design (base assumptions). One-time build: \$120{,}000.}
-\label{tab:policy-value}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}r>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}r>{\raggedright\arraybackslash}X@{}}
+\caption{Annual value case for the grounded design (base assumptions). One-time build: \$120{,}000.}\label{tab:policy-value}\\
 \toprule
 \rowcolor{coHead} Line & \$ per year & Main input \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Line & \$ per year & Main input \\
+\midrule
+\endhead
 HR capacity (60\% redeployed) & 97{,}800 & 50\% resolution rate (\emph{assumed}); 11 min per ticket (measured) \\
 Fewer wrong answers & 74{,}900 & 7\% $\to$ 3\% on resolved questions; \$120 per error (estimated) \\
 Run cost & $-94{,}000$ & 48{,}000 questions at \$0.02; platform; 0.3 engineer; 0.2 HR curator \\
 \midrule
 \rowcolor{coGreenBg} Net (floor case) & 78{,}700 & Payback about 18 months \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Three features of the case are typical of information products:
 \begin{itemize}[itemsep=2pt]
@@ -50,15 +53,18 @@ A sponsor deciding on an 18-month payback with significant upside and a strong r
   \item \emph{Stop rules\index{stop rule}:} any confirmed leakage of a restricted document; any answer applying another country's pay or leave rules that reaches an employee and is acted on.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Go/no-go criteria for the UK pilot.}
-\label{tab:policy-gonogo}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\caption{Go/no-go criteria for the UK pilot.}\label{tab:policy-gonogo}\\
 \toprule
 \rowcolor{coHead} Criterion & Baseline & Go if \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Baseline & Go if \\
+\midrule
+\endhead
 \kpi{Resolved without HR} UK policy tickets per 100 employees, vs.\ comparison offices & --- & $\ge$ 40\% lower \\
 \kpi{Answer accuracy} Answer accuracy, weekly sampled review & 93\% (HR) & $\ge$ 97\% \\
 \kpi{Time to answer} Median time to answer, questions passed to HR & 1.8 days & $\le$ 1 day \\
@@ -66,8 +72,8 @@ A sponsor deciding on an 18-month payback with significant upside and a strong r
 Abstention recall on evaluation set & --- & $\ge$ 0.90 \\
 Share of UK employees who used it at least twice & --- & $\ge$ 40\% \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The memo}
 

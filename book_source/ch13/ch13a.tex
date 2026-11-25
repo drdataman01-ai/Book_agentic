@@ -56,15 +56,18 @@ The Agent2Agent protocol (A2A) is the open standard for the third option \citep{
 
 Table~\ref{tab:cap-connect} turns this into a decision rule.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Choosing how to connect to a capability owned by another team.}
-\label{tab:cap-connect}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X ccc@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X ccc@{}}
+\caption{Choosing how to connect to a capability owned by another team.}\label{tab:cap-connect}\\
 \toprule
 \rowcolor{coHead} If the capability\ldots & One workflow & MCP tool & A2A agent \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} If the capability\ldots & One workflow & MCP tool & A2A agent \\
+\midrule
+\endhead
 is owned and released by the same team & \checkmark & & \\
 is a function with clear inputs and outputs & & \checkmark & \\
 needs the owner's judgment or policies applied at run time & & & \checkmark \\
@@ -72,8 +75,8 @@ may take minutes or hours, or need a person on the owner's side & & & \checkmark
 must hide its internal tools, data and prompts from callers & & \checkmark & \checkmark \\
 is offered to other companies' agents & & \checkmark & \checkmark \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{keyidea}
 Call a tool when you need a function. Ask an agent when you need the owning team's judgment.
@@ -83,23 +86,26 @@ Call a tool when you need a function. Ask an agent when you need the owning team
 
 Applying the rule to Delta's emergency order gives the design in Table~\ref{tab:cap-order}. The sales \textbf{order-desk agent} coordinates. Credit is a function---a limit check and, above the limit, a request for approval---so finance exposes it as an MCP tool. Allocation needs operations' judgment about other customers and suppliers, and sometimes a planner, so operations exposes an A2A agent. Logistics is a function of the carrier systems, exposed as an MCP tool. The quote itself is built by the existing quote workflow, which the order-desk agent calls as a sub-agent because sales owns both.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Harbor's cross-department order desk. Allocation, which needs operations' judgment, is an A2A agent; credit and logistics are MCP tools; the quote workflow is a sub-agent within sales. Each owning team builds, releases and operates its own part.}
-\label{tab:cap-order}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Harbor's cross-department order desk. Allocation, which needs operations' judgment, is an A2A agent; credit and logistics are MCP tools; the quote workflow is a sub-agent within sales. Each owning team builds, releases and operates its own part.}\label{tab:cap-order}\\
 \toprule
 \rowcolor{coHead} Part & Owned by & Connected as & Who decides, and when a person steps in \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Part & Owned by & Connected as & Who decides, and when a person steps in \\
+\midrule
+\endhead
 Order-desk agent & \cellcolor{coBlueBg}Sales & \tagAgent\ The coordinator, Level 4 & Takes the buyer's request from the sales rep and gathers each department's answer. \\
 Quote workflow & \cellcolor{coBlueBg}Sales & \tagAgent\ Sub-agent, the design of Chapters~\ref{ch:foundations}--\ref{ch:business} & Builds the quote; the \tagPerson\ sales rep sends it. \\
 Allocation agent & \cellcolor{coGreenBg}Operations & \tagAgent\ A2A agent, called with a task & Applies operations' allocation policy; when the task is \textbf{input-required}, an \tagPerson\ operations planner decides. \\
 Credit & \cellcolor{coAmberBg}Finance & \tagCode\ MCP tools \texttt{check\_credit}, \texttt{request\_increase} & Checks the limit; above it, a \tagPerson\ credit manager approves. \\
 Logistics & \cellcolor{coPurpleBg}Logistics & \tagCode\ MCP tool \texttt{delivery\_options} & Returns what the carriers can deliver, and when. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Listing~\ref{lst:agent-card} sketches the allocation agent's card. Field names follow the A2A specification's structure; check the current specification for the exact required fields.
 

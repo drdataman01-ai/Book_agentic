@@ -25,22 +25,25 @@ By the end of this chapter you will be able to answer these questions:
 
 In Chapter~\ref{ch:foundations}, Harbor's vice president of sales chose Team~B's quote design over Team~A's. The technical reasons were real: rules in code, retrieval with citations, a manager approving exceptions. But the vice president did not read the code. What she read was one page that answered the four questions in Table~\ref{tab:four-questions}.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The four questions every sponsor asks, and Team~B's answers.}
-\label{tab:four-questions}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.4cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.4cm}>{\raggedright\arraybackslash}X@{}}
+\caption{The four questions every sponsor asks, and Team~B's answers.}\label{tab:four-questions}\\
 \toprule
 \rowcolor{coHead} The sponsor's question & Team B's answer \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} The sponsor's question & Team B's answer \\
+\midrule
+\endhead
 \cotag{coBlue}{1} What will change? & Quote turnaround falls from 26 hours to under 4. \\
 \cotag{coGreen}{2} What is that worth? & More deals won, analyst time freed, and fewer quotes below the margin floor. \\
 \cotag{coRed}{3} What could go wrong, and what would it cost? & A quote below the floor, or the wrong customer's terms applied. \\
 \cotag{coPurple}{4} How will we know, and how soon? & A four-week pilot with pass and fail conditions stated in advance. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Chapter~\ref{ch:toolkit} used KPIs and risks as given and scored designs on a five-point scale. This chapter supplies what that left out: where the KPIs come from, how to put money on them, how to price errors, and how to propose a rollout someone can say yes to. These are the skills that turn a technically sound design into a funded one. They are also design skills in their own right. A value case regularly changes the design, because it reveals which step carries the money and which risk deserves the most protection.
 
@@ -67,15 +70,18 @@ The simplest map is a table with one row for each step of the work, in the order
 
 Table~\ref{tab:harbor-map} maps Harbor's quote process as it was before any AI was involved. The data came from three sources: the CRM's timestamps, a two-week time log kept by the six pricing analysts, and an audit of 500 issued quotes by Harbor's controller.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Harbor's quote process before redesign. Touch times are medians from the analysts' time log; waits are medians from CRM timestamps. The last column marks the three points where errors enter, with the share of quotes affected.}
-\label{tab:harbor-map}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}r>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.5cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}r>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.5cm}@{}}
+\caption{Harbor's quote process before redesign. Touch times are medians from the analysts' time log; waits are medians from CRM timestamps. The last column marks the three points where errors enter, with the share of quotes affected.}\label{tab:harbor-map}\\
 \toprule
 \rowcolor{coHead} \# & Step & Who & Touch & Wait before the step & Errors entering here \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Who & Touch & Wait before the step & Errors entering here \\
+\midrule
+\endhead
 1 & Write the quote request & Sales rep & 6 min & --- & --- \\
 2 & Read the request and clarify it with the rep & Pricing analyst & 7 min & 9 h; a further 6 h for the 31\% that need clarification & --- \\
 3 & Look up price, cost, stock and contract in the ERP & Pricing analyst & 14 min & --- & Wrong contract or customer, 0.9\% \\
@@ -84,8 +90,8 @@ Table~\ref{tab:harbor-map} maps Harbor's quote process as it was before any AI w
 6 & Write the quote and cover note in the CRM & Pricing analyst & 8 min & --- & Note disagrees with quote, 1.3\% \\
 7 & Review the quote and send it & Sales rep & 4 min & 4 h & --- \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{figure}[htbp]
 \centering
@@ -131,22 +137,25 @@ Who at Harbor might quietly hope that this project fails, and why? It is a sligh
 
 A solution has more than one customer inside the company. It helps to distinguish four roles\index{stakeholder roles (sponsor, users, approvers, owners)|textbf}, because each one needs something different from the design. Table~\ref{tab:stakeholders} lists them for Harbor's quote design.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The four stakeholder roles in Harbor's quote design, and what each one needs.}
-\label{tab:stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The four stakeholder roles in Harbor's quote design, and what each one needs.}\label{tab:stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is at Harbor & What they need from the design \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is at Harbor & What they need from the design \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The vice president of sales, who funds the solution and owns the business result & A credible value case, risks stated openly, and a clear point at which to decide \\
 \cotag{coGreen}{Users} & The sales representatives and pricing analysts, who work with the system every day & A tool that saves them time and does not embarrass them in front of customers \\
 \cotag{coAmber}{Approvers} & The sales managers, who approve discount exceptions; the controller, who owns the margin policy; IT security, who grant access to the ERP and the CRM & Enough context to decide quickly, and assurance that what they approve is what actually happens \\
 \cotag{coPurple}{Owners} & The pricing team (pricing server and policy configuration), sales operations (CRM server) and the platform team (hosting and monitoring) & Clear boundaries, written procedures for running the system, and a say in what they are signing up for \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Two practical consequences follow. Every \textbf{approver} appears in the design table\index{design table} as a person who decides a step, or as a constraint that every design must respect, and every \textbf{owner} is named next to the server, store or rule that they own. If a stakeholder has no place in the design table, either the table or the stakeholder list is wrong. And the roles often pull in different directions. The sponsor wants speed; the controller wants control; the representatives want fewer clicks; IT security wants fewer permissions. A design that satisfies only the sponsor will be blocked by an approver or quietly abandoned by its users. The weights in a trade-off table\index{trade-off table} (Section~\ref{sec:tradeoff}) are, in practice, a negotiated settlement among these roles, which is why they must be written down and shown to them.
 
@@ -175,22 +184,25 @@ Harbor therefore pairs its two speed measures, quote turnaround and analyst minu
 
 KPIs live at the top of an organization's attention, while models and tools live at the bottom. A \keyterm{KPI tree}\index{key performance indicator (KPI)!KPI tree|textbf} connects the two. Its root is the business result, its middle layer holds the operational measures that drive the result, and its leaves are technical metrics, each owned by one step of the design. The tree is easiest to read as a table, with one row for each operational measure. Table~\ref{tab:kpi-tree} shows Harbor's.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{A KPI tree for Harbor's quote design, written as a table. The root is gross profit from quoted orders. Each technical metric belongs to one step of the design in Table~\ref{tab:quote-design}, so a change in a KPI can be traced to the step that caused it.}
-\label{tab:kpi-tree}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\caption{A KPI tree for Harbor's quote design, written as a table. The root is gross profit from quoted orders. Each technical metric belongs to one step of the design in Table~\ref{tab:quote-design}, so a change in a KPI can be traced to the step that caused it.}\label{tab:kpi-tree}\\
 \toprule
 \rowcolor{coHead} KPI or risk measure & Technical metrics that drive it & Step that owns the metric \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} KPI or risk measure & Technical metrics that drive it & Step that owns the metric \\
+\midrule
+\endhead
 Quote turnaround (median and 90th percentile) & Intake field accuracy; clarification rate; manager queue age & Intake agent (step 2); validation (step 3); sales manager (step 5) \\
 Win rate on quoted orders & Driven mainly by quote turnaround, so it has no metric of its own & --- \\
 Realized margin; below-floor rate & Policy-engine test pass rate; numbers-match guard pass rate & Policy engine (step 4); numbers-match guardrail (step 7) \\
 Analyst minutes per quote & Draft edit rate by analysts; clarification rate & Drafting agent (step 6); validation (step 3) \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 The tree does three jobs. It \emph{explains} to the sponsor why a technical metric matters: intake field accuracy matters because every wrong field triggers a clarification round trip, which adds hours to turnaround. It \emph{directs} engineering effort to the leaves that move the root most. And it \emph{diagnoses}: when turnaround slips, the tree tells you to look first at manager queue age and clarification rate, not at the model.
 

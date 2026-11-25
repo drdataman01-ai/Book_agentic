@@ -60,23 +60,26 @@ Employees find the intranet hard to search, so they ask. About 2{,}600 policy qu
 
 Table~\ref{tab:policy-map} maps the process today. The median touch time\index{touch time and wait time} per ticket is 11 minutes, and nearly all of the 1.8 days is queue time. The two error points match the audit. The first is an answer that uses the wrong country's or an outdated version of a policy (5.1\% of tickets), and the second is a confident answer to a question the policies do not actually address (1.9\%).
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Alder \& Finch's policy-question process today. Waits are medians from the ticketing system; touch times come from a two-week HR time log.}
-\label{tab:policy-map}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}r>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{3.3cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}r>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{3.3cm}@{}}
+\caption{Alder \& Finch's policy-question process today. Waits are medians from the ticketing system; touch times come from a two-week HR time log.}\label{tab:policy-map}\\
 \toprule
 \rowcolor{coHead} \# & Step & Who & Touch & Wait before & Errors entering here \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Who & Touch & Wait before & Errors entering here \\
+\midrule
+\endhead
 1 & Search the intranet, then give up & Employee & 9 min & --- & --- \\
 2 & Open a ticket & Employee & 3 min & --- & --- \\
 3 & Find the right policy and version & HR generalist & 6 min & 1.7 days & \risk{Wrong version} 5.1\% \\
 4 & Write the answer & HR generalist & 5 min & --- & \risk{Silent policy} 1.9\% \\
 5 & Read the answer and act on it & Employee & --- & --- & 12\% of tickets reopened \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 One step on the map is easy to overlook: the nine minutes an employee spends searching the intranet before giving up. It never appears in the HR budget, but across 2{,}600 tickets a month it is about 390 hours of engineers' time, and it does not count the employees who give up without asking.
 
@@ -86,22 +89,25 @@ One step on the map is easy to overlook: the nine minutes an employee spends sea
 
 \subsection{Stakeholders}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of the policy assistant.}
-\label{tab:policy-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of the policy assistant.}\label{tab:policy-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is, and what they need \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is, and what they need \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The director of People Operations, who wants faster, more consistent answers and the generalists' time back. \\
 \cotag{coGreen}{Users} & All employees, who ask the questions, and the HR generalists, who receive the questions the assistant cannot answer. \\
 \cotag{coAmber}{Approvers} & The data protection officer, who must approve any system that processes employee data; the German works council, which under German law has a say in systems that could monitor employees; and IT security. \\
 \cotag{coPurple}{Owners} & People Operations' policy team, which owns the documents and their metadata; the internal platform team, which owns hosting and identity; and the HR systems team, which owns ticketing. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 The works council deserves attention early. Its concern is not whether the assistant gives good answers but whether it could be used to track individual employees---who asked about parental leave, who asked about the disciplinary procedure. That concern becomes a constraint on logging and evaluation, and Section~\ref{sec:policy-changed} returns to it.
 
@@ -124,15 +130,18 @@ The seven-day rule catches the employee who asked the assistant, did not believe
 
 Table~\ref{tab:policy-kpis} lists the three KPIs and three risks. Each has a short name that the rest of the chapter uses, shown in blue for a KPI and red for a risk.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs and risks for the policy assistant.}
-\label{tab:policy-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs and risks for the policy assistant.}\label{tab:policy-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Resolved without HR} & Questions resolved without HR, as defined above. Target: 50\% of questions that would previously have become tickets. \\
 \kpi{Answer accuracy} & Accuracy on the weekly sampled review. Target: at least 97\% (HR's own answers: 93\%). \\
 \kpi{Time to answer} & Median time to a correct answer. Target: under one minute for resolved questions and under one business day for questions passed to HR (baseline 1.8 days). \\
@@ -140,8 +149,8 @@ Table~\ref{tab:policy-kpis} lists the three KPIs and three risks. Each has a sho
 \risk{Restricted leak} & An employee shown any part of a document they are not entitled to see. This is a constraint, not a criterion: the budget is zero. \\
 \risk{Silent policy} & A confident answer where the policies are silent or ambiguous. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Notice that \risk{Wrong version} and \risk{Silent policy} are exactly the two error points on the process map\index{current-process map}. The assistant is not being asked to be perfect; it is being asked to beat the current process on the errors the current process actually makes.
 

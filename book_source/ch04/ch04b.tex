@@ -60,15 +60,18 @@ The grounded design keeps the sample's skeleton---one agent, one search service-
   \item \emph{Event-driven freshness.} Publishing a policy writes it to a bucket; the write emits an event that triggers an immediate import. The freshness target is one hour from publication to answerable.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The grounded design as a design table. Identity and filtering are in code; the agent may search up to three times, and its answer must pass a citation check or become an offer to hand the question to HR.}
-\label{tab:policy-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\caption{The grounded design as a design table. Identity and filtering are in code; the agent may search up to three times, and its answer must pass a citation check or become an offer to hand the question to HR.}\label{tab:policy-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & Sign in and ask a question in intranet chat & \tagPerson\ Employee & Company sign-in (SSO) & --- \\
 2 & Look up the employee's country, grade and manager status & \tagCode & HR directory server (owner: HR Systems), tool \texttt{get\_profile} & \risk{Wrong version} \risk{Restricted leak} \\
 3 & Search the policies and draft a cited answer, or reply that nothing was found & \tagAgent\ At most three searches; stops at a cited answer or an abstention & \texttt{search\_policies}, a code wrapper that adds the profile filter; policy index (owner: Policy team; fresh within 1 hour) & \kpi{Resolved without HR} \kpi{Time to answer} \\
@@ -78,8 +81,8 @@ The grounded design keeps the sample's skeleton---one agent, one search service-
 7 & Answer the ticket & \tagPerson\ HR generalist, within one business day & The ticket & \kpi{Time to answer} \\
 8 & Whenever a policy is published, import it into the index & \tagCode\ Triggered by the publication event & Policy library bucket (owner: Policy team) & \risk{Wrong version} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Two choices in the grounded design deserve a comment. The agent is Level~4 rather than Level~1 because good policy answers often need two searches: one for the general rule and one for an exception (``Can I carry over leave?'' needs the leave policy and the year-end memo). The limit of three searches and the explicit stop condition keep that autonomy bounded. And the ticket is created only after the employee confirms, which satisfies the protected-writes check of Chapter~\ref{ch:toolkit} for the one write action in the design and also respects the employee: a question about the disciplinary procedure, for example, is not something every employee wants turned into a ticket automatically.
 
@@ -89,15 +92,18 @@ The curated design adds a layer in front of the grounded design. HR writes and a
 
 The attraction is quality: for the questions that make up most of the volume, the answer is one HR wrote and approved. The cost is maintenance: every policy change must be checked against every curated answer that cites it, and a curated answer that is not updated is a confident wrong answer with HR's name on it.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The three designs for the policy assistant, side by side.}
-\label{tab:policy-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The three designs for the policy assistant, side by side.}\label{tab:policy-designs}\\
 \toprule
 \rowcolor{coHead} & \cellcolor{coRedBg}Sample & Grounded & Curated \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & \cellcolor{coRedBg}Sample & Grounded & Curated \\
+\midrule
+\endhead
 Who is asking & Unknown & Verified at sign-in; profile from the HR directory & Same as grounded \\
 What it searches & Every document, unfiltered & Only documents for the employee's country, grade and role & Approved answers first, then as grounded \\
 Answers come from & Documents, or the model's own knowledge & Retrieved passages only & HR-approved answers, or retrieved passages \\
@@ -106,8 +112,8 @@ When unsure & Answers anyway & Says so and offers an HR ticket & Same as grounde
 Freshness & Daily sync & Within one hour of publication & Within one hour; approved answers must be reviewed on every change \\
 Main extra cost & --- & Tagging and maintaining metadata & Also writing and maintaining 330 answers \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Which Design Should We Pilot?}
@@ -119,15 +125,18 @@ The constraint \risk{Restricted leak} (no restricted content to unentitled emplo
 
 The weights reflect this case. Quality and security carry most of the weight; speed carries little, because every design answers in seconds and the baseline is days. Maintainability and workload matter more than at Harbor, because a policy library changes every week and the people who maintain it are the same HR generalists the project is meant to relieve.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for the policy assistant. The sample design fails constraint \risk{Restricted leak} and is shown for comparison only.}
-\label{tab:policy-tradeoff}
-\begin{tabular}{@{}lccccc@{}}
+\begin{longtable}{@{}lccccc@{}}
+\caption{Trade-off table for the policy assistant. The sample design fails constraint \risk{Restricted leak} and is shown for comparison only.}\label{tab:policy-tradeoff}\\
 \toprule
 \rowcolor{coHead} Criterion & Weight & Sample & Grounded & Curated \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Weight & Sample & Grounded & Curated \\
+\midrule
+\endhead
 Quality & 0.25 & 2 & 4 & 5 \\
 Cost & 0.05 & 5 & 4 & 4 \\
 Speed & 0.05 & 5 & 4 & 5 \\
@@ -139,8 +148,8 @@ Human workload & 0.15 & 3 & 4 & 3 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 2.45 & 4.20 & 4.25 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 \subsection{A near tie}
 
@@ -166,16 +175,18 @@ When two designs score within the noise of the estimates and one extends the oth
 
 Table~\ref{tab:policy-failwalk} walks the grounded design. The most instructive row is the second: the filter can be correct and still fail if the \textbf{metadata} is wrong. A German policy tagged \texttt{country = GLOBAL} is shown to everyone. Metadata is now part of the system's correctness, and it needs an owner and a test.
 
-\begin{table}[htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\caption{Failure walk-through for the grounded design. S = severity, L = likelihood (1--5).}
-\label{tab:policy-failwalk}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X cc@{}}
+\begingroup
+\scriptsize \setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X cc@{}}
+\caption{Failure walk-through for the grounded design. S = severity, L = likelihood (1--5).}\label{tab:policy-failwalk}\\
 \toprule
 \rowcolor{coHead} Step & Failure & Effect & Detection & Mitigation & S & L \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Step & Failure & Effect & Detection & Mitigation & S & L \\
+\midrule
+\endhead
 Resolve profile & Directory has stale grade after promotion & Wrong travel entitlement & Weekly reconciliation with payroll & Directory is system of record; answer states the grade used & 3 & 2 \\
 \rowcolor{coAmberBg} Policy index & Document mis-tagged (country or audience) & Wrong version or restricted doc shown (\risk{Wrong version}, \risk{Restricted leak}) & Metadata lint on publish; leakage tests in evaluation & \textbf{Change:} publishing blocked until metadata validates & 5 & 2 \\
 Search tool & Filter syntax error returns unfiltered results & Restricted docs reach model & Unit test: every query includes a filter & Fail closed: no filter, no search & 5 & 1 \\
@@ -184,8 +195,8 @@ Citation check & Cites a retrieved doc that does not support the claim & Wrong a
 Import on publish & Event lost; index stale & Old policy answered (\risk{Wrong version}) & Freshness probe: hourly test question per new version & Daily full sync as backstop & 3 & 2 \\
 HR ticketing & Ticket created twice & Duplicate work & Duplicate check & Idempotency key per conversation & 1 & 2 \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 The fifth row records a known limit rather than a fix. The citation check verifies that each cited document was retrieved, not that it supports the specific claim. A claim-level check (a second model judging whether each passage supports each sentence) is possible, but it adds cost and latency and its own errors. The decision is to measure the problem in the pilot before paying for a solution.
 

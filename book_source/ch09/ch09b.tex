@@ -12,15 +12,18 @@ The technical focus of this case is state: what the system remembers, where, for
 
 ADK\index{Agent Development Kit (ADK)} distinguishes state by scope, using prefixes on state keys: keys without a prefix belong to the current conversation (session); \texttt{user:} keys persist across a user's sessions; \texttt{app:} keys are shared across the application; and \texttt{temp:} keys last only for the current invocation. Beyond session state\index{memory!session state}, Agent Platform\index{Gemini Enterprise Agent Platform}'s Memory Bank can hold longer-term memories across sessions. These are tools, not a design; Table~\ref{tab:air-state} is the design.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Where the handoff design keeps each kind of state.}
-\label{tab:air-state}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Where the handoff design keeps each kind of state.}\label{tab:air-state}\\
 \toprule
 \rowcolor{coHead} State & Where & Why \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} State & Where & Why \\
+\midrule
+\endhead
 The disruption case (owner, stage, hold, itinerary, compensation) & Case store (a database), system of record & Must survive channel changes, agent changes and restarts; read by people in the contact centre \\
 The conversation & Session (Agent Platform Sessions) & Needed for the current exchange; references the case by ID \\
 Search counters, intermediate options & \texttt{temp:} state & Only meaningful within one turn \\
@@ -28,8 +31,8 @@ Passenger preferences (aisle, home airport) & Memory, with consent & Useful next
 Seat inventory & Reservation system & Never copied; always read live and held by the reservation server \\
 Disruption-wide facts (cancelled flights, hotel allocation) & \texttt{app:} state, refreshed from operations & Shared by all cases; read-only to agents \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{keyidea}
 The case is not in the session. Sessions hold conversations; the case lives in a system of record that every channel and every person can see.
@@ -91,15 +94,18 @@ The agents run on Agent Runtime, whose managed sessions suit long, interrupted c
 
 A disruption cannot be scheduled for testing, so the handoff design is evaluated by simulation. The harness replays last February's storm: 9{,}600 synthetic passengers drawn from the real bookings' profile, each with a persona (constraints, special needs, patience, language), interact with the handoff design through a simulated app while the harness plays the reservation system with real inventory constraints. Persona simulators are themselves language models; their behavior is checked against a sample of real disruption transcripts before the results are trusted.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Evaluation thresholds for the handoff design, from the storm replay.}
-\label{tab:air-thresholds}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X r@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X r@{}}
+\caption{Evaluation thresholds for the handoff design, from the storm replay.}\label{tab:air-thresholds}\\
 \toprule
 \rowcolor{coHead} Metric & Threshold \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Metric & Threshold \\
+\midrule
+\endhead
 Passengers self-served (accept or conversation, no person) & $\ge$ 65\% \\
 Median time to confirmed itinerary, self-served & $\le$ 30 min \\
 Special-assistance cases handed to a person (recall) & 100\% \\
@@ -109,8 +115,8 @@ Statements contradicting the rule (sampled explanations) & $\le$ 1\% \\
 Another passenger's data in any response & 0 \\
 Case reopened by the passenger with the same request & $\le$ 5\% \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 A load test runs the same replay at five times the volume to verify pre-warming and back-pressure, and a chaos test cuts the reservation system's capacity in half mid-replay. \begin{quickcheck}
 What counts as passing the chaos test?

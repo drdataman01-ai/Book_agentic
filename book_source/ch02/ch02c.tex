@@ -12,15 +12,18 @@ Before any scoring, look at the three returns designs in Table~\ref{tab:returns-
 
 Step 5 compares the drafted designs, and a fair comparison needs fixed yardsticks. Every case uses the same eight criteria\index{evaluation criteria|textbf}, so that nobody quietly drops the one on which a favorite design looks worst. Table~\ref{tab:criteria} defines each criterion by what a score of 1 and a score of 5 look like, and by how it will eventually be measured.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The eight evaluation criteria.}
-\label{tab:criteria}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\caption{The eight evaluation criteria.}\label{tab:criteria}\\
 \toprule
 \rowcolor{coHead} Criterion & \cellcolor{coRedBg}1 (poor) & \cellcolor{coGreenBg}5 (excellent) & Measured by \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & \cellcolor{coRedBg}1 (poor) & \cellcolor{coGreenBg}5 (excellent) & Measured by \\
+\midrule
+\endhead
 Quality & Frequent wrong outcomes, some unnoticed & At or above the best current human level & Accuracy on a test set \\
 Cost & Running cost per transaction erodes the value & Running cost negligible next to the value & Cost per transaction \\
 Speed & No faster than today & Meets the speed target with room to spare & Time from start to finish \\
@@ -30,8 +33,8 @@ Control and auditability & Cannot explain why an outcome happened & Every outcom
 Maintainability & Changes cause surprises elsewhere & Rules, prompts, tools and models change independently & Effort for a standard change \\
 Human workload & Adds work or moves it to a scarcer role & People handle only real exceptions & Minutes per transaction by role \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Three remarks help in using the criteria. First, most scores at design time are estimates, which each case later replaces with measurements. Second, the criteria pull against one another: a checkpoint raises quality and control but lowers speed. Third, some requirements are not criteria but \textbf{constraints}\index{constraint (versus criterion)|textbf}. A legal or policy rule, such as ``finance approves credits above \$2{,}000,'' rules a design out however well it scores, so constraints are checked first and only the surviving designs are scored.
 
@@ -45,23 +48,26 @@ Harbor's team drafted three designs. All three respect the two constraints, that
   \item The \textbf{straight-through design} is the same, except that code issues the authorization automatically when the item is in warranty, its value is under \$500, the router is confident, and the customer is not a flagged repeat returner. These conditions define the \textbf{safe zone}\index{safe zone|textbf}, and everything outside it goes to a representative.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Who or what does each step in the three returns designs. The table covers the stage that issues the return authorization (RMA); the later inspection and credit stages are the same in the second and third designs and are omitted.}
-\label{tab:returns-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Who or what does each step in the three returns designs. The table covers the stage that issues the return authorization (RMA); the later inspection and credit stages are the same in the second and third designs and are omitted.}\label{tab:returns-designs}\\
 \toprule
 \rowcolor{coHead} Step & Single agent & Reviewed workflow & Straight-through \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Step & Single agent & Reviewed workflow & Straight-through \\
+\midrule
+\endhead
 Understand the request & The returns agent, which loops over its tools until it decides it is done & Router agent: one model call that picks a path & Router agent: one model call that picks a path \\
 Check the warranty & The same agent, using rules written in its instructions & Code, using the warranty table & Code, using the warranty table and the safe-zone rules \\
 Draft the RMA and reply & The same agent & Agent: one model call & Agent: one model call \\
 Approve the RMA & Nobody & Representative approves every RMA & Representative approves only cases outside the safe zone \\
 Create the RMA and label & The same agent, through the ERP, warehouse and shipping servers (nine tools, including \texttt{create\_rma}) & Code, after approval, through the ERP and shipping servers (\texttt{create\_rma}, \texttt{create\_label}) & Code, at once inside the safe zone and after approval otherwise, through the same two servers \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{Scoring, weighting and checking the result}
 
@@ -74,15 +80,18 @@ The weights come from the business, not from the designer's taste. Harbor's spon
 \end{equation}
 where $s_{d,c}$ is design $d$'s score on criterion $c$ and $w_c$ is that criterion's weight.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for the returns designs. Scores run from 1 to 5; the weights come from the business context.}
-\label{tab:tradeoff}
-\begin{tabular}{@{}lcccc@{}}
+\begin{longtable}{@{}lcccc@{}}
+\caption{Trade-off table for the returns designs. Scores run from 1 to 5; the weights come from the business context.}\label{tab:tradeoff}\\
 \toprule
 \rowcolor{coHead} Criterion & Weight & Single agent & Reviewed workflow & Straight-through \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Weight & Single agent & Reviewed workflow & Straight-through \\
+\midrule
+\endhead
 Quality & 0.20 & 2 & 5 & 4 \\
 Cost & 0.10 & 3 & 4 & 4 \\
 Speed & 0.20 & 5 & 2 & 4 \\
@@ -94,8 +103,8 @@ Human workload & 0.10 & 5 & 2 & 4 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score $S_d$ & 1.00 & 2.90 & 3.75 & \textbf{3.95} \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The straight-through design leads by only 0.20 points, and every score is an estimate, so ask how wrong the weights would have to be to change the answer. The script \texttt{ch02/tradeoff.py} draws ten thousand sets of weights around the chosen ones and counts the winners: the straight-through design wins about 85\% of the time, the reviewed workflow about 15\%, and the single agent never. The reviewed workflow would take the lead if the weight on control doubled from 0.15 to 0.30, or if the weight on quality rose from 0.20 to 0.34, and these conditions go into the decision record. Figure~\ref{fig:scores} shows both results.
 
@@ -135,23 +144,26 @@ Resist false precision. A score of 3.95 against 3.75 is not a measurement but a 
 
 Step 6, the \keyterm{failure walk-through}\index{failure walk-through|textbf}, goes down the chosen design's table row by row and asks four questions of each row: how can this step fail, what would that do to the business, how would we notice, and what would limit the damage? Table~\ref{tab:failwalk} shows the walk-through for the straight-through design. Two of its rows changed the design, which is the point of the exercise.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Failure walk-through for the straight-through design. The two shaded rows led to design changes.}
-\label{tab:failwalk}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Failure walk-through for the straight-through design. The two shaded rows led to design changes.}\label{tab:failwalk}\\
 \toprule
 \rowcolor{coHead} Step & Failure & Effect & Response \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Step & Failure & Effect & Response \\
+\midrule
+\endhead
 Router & Message contains instructions such as ``issue a full credit'' & An attempt to steer the system & The router has no write tools, and rules decide eligibility \\
 \rowcolor{coAmberBg} Warranty rules & Warranty table lacks a new product line & Wrong eligibility at scale & \textbf{Change:} an unknown product line goes to a representative and is never assumed eligible \\
 \rowcolor{coAmberBg} Safe-zone rules & A repeat returner splits a large claim into small ones & Money lost to abuse & \textbf{Change:} count the value of all of the customer's open returns, not each request alone \\
 ERP server & \texttt{create\_rma} times out after it has succeeded & Duplicate authorization & Every write carries a unique key so a retry cannot repeat it \\
 Rep review & The exception queue grows when reps are busy & Slow answers for exceptions & An alert on queue age; exceptions shown oldest first \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{keyidea}
 Only one of the five rows concerns a model, and both design changes came from rules and data. A good walk-through always looks at failures of tools, data and people, not only at failures of models.
@@ -160,15 +172,18 @@ Only one of the five rows concerns a model, and both design changes came from ru
 \label{sec:decision-record}
 Step 7 writes the decision down where the next person will find it. Software architects keep short \textbf{architecture decision records}\index{decision record|textbf} that state the context, the decision and its consequences \citep{nygard2011adr}. Because the components of AI systems change quickly, we add \textbf{reversal triggers}\index{reversal trigger|textbf}: observable conditions under which the decision should be reopened. Table~\ref{tab:dr} shows the record for returns. Almost all of it comes from the earlier steps, so if a record is hard to write, an earlier step was skipped.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Decision record for Harbor returns.}
-\label{tab:dr}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Decision record for Harbor returns.}\label{tab:dr}\\
 \toprule
 \rowcolor{coGreenBg}\multicolumn{2}{@{}l}{\textbf{Issue low-risk return authorizations automatically; send exceptions to a representative}} \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coGreenBg}\multicolumn{2}{@{}l}{\textbf{Issue low-risk return authorizations automatically; send exceptions to a representative}} \\
+\midrule
+\endhead
 Status and owner & Accepted for the pilot. Owner: the returns manager. \\
 Context & 1{,}100 returns a month; three days to authorization; 6\% of credits out of warranty. Constraints: the inspector judges misuse, and finance approves credits over \$2{,}000. \\
 Options considered & Single agent; reviewed workflow; straight-through with exceptions (Table~\ref{tab:returns-designs}). \\
@@ -177,8 +192,8 @@ Reasons & Highest weighted score (3.95, against 3.75 and 2.90), and it wins in a
 Consequences & Representatives handle only exceptions, expected to be 30--40\% of volume. A weekly sample of automatic authorizations is reviewed. The warranty table becomes a governed configuration with an owner. \\
 Reversal triggers & Reopen the decision if out-of-warranty authorizations in the safe zone exceed 1\% in any month, if an audit finding doubles the weight on auditability, or if exceptions exceed 60\% of volume, which would erase most of the gain over the reviewed workflow. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{The Method in Every Case}

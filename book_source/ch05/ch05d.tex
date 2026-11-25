@@ -40,15 +40,18 @@ Support has a property that Harbor's quote desk lacked: high volume of nearly id
   \item \emph{Owner:} Vice president of customer experience.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Go/no-go criteria for the pilot of the hybrid design (treatment vs.\ control).}
-\label{tab:support-gonogo}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.4cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.4cm}@{}}
+\caption{Go/no-go criteria for the pilot of the hybrid design (treatment vs.\ control).}\label{tab:support-gonogo}\\
 \toprule
 \rowcolor{coHead} Criterion & Baseline & Go if (treatment) \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Baseline & Go if (treatment) \\
+\midrule
+\endhead
 \kpi{Cost per contact} Cost per contact, from actual costs & \$4.86 & $\le$ \$3.75 \\
 \kpi{Re-contact rate} 72-hour re-contact rate & 18\% & Not higher than control \\
 \kpi{Satisfaction} CSAT & 3.9 & Not lower than control by more than 0.1 \\
@@ -56,8 +59,8 @@ Support has a property that Harbor's quote desk lacked: high volume of nearly id
 \risk{Against policy}, \risk{Wrong customer} Policy and cross-customer errors & --- & 0 (stop rules) \\
 Copilot draft acceptance & --- & $\ge$ 70\% \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The memo}
 

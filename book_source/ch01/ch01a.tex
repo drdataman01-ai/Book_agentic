@@ -97,15 +97,18 @@ Before you read what Team B did, pause on the finance director's three questions
 
 The vice president funded Team B. Table~\ref{tab:two-teams} shows why, side by side.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Team A and Team B on the Friday afternoon. Both systems worked; only one came with answers.}
-\label{tab:two-teams}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Team A and Team B on the Friday afternoon. Both systems worked; only one came with answers.}\label{tab:two-teams}\\
 \toprule
  & \cellcolor{coRedBg}\textbf{Team A: built an agent} & \cellcolor{coGreenBg}\textbf{Team B: designed a solution} \\
 \midrule
+\endfirsthead
+\toprule
+ & \cellcolor{coRedBg}\textbf{Team A: built an agent} & \cellcolor{coGreenBg}\textbf{Team B: designed a solution} \\
+\midrule
+\endhead
 What they built & One agent with fourteen tools and a long prompt & A workflow with one model step to read requests, rules in code, cited policy text, and manager approval for exceptions \\
 The 15\% discount cap & Written in the prompt & Enforced by tested code \\
 When the policy changes & Edit the prompt and hope & Update the configuration; every quote cites the policy version \\
@@ -115,8 +118,8 @@ What the VP received & An impressive demo & A diagram, a comparison and a one-pa
 \midrule
 Outcome & \cellcolor{coRedBg}Not funded & \cellcolor{coGreenBg}Funded \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Team A's engineers were at least as skilled as Team B's. Their agent was impressive, and with a few more weeks it might have worked well. The difference was that Team B had \emph{designed a solution}. They had decided what the system should do and what it should not do, they had chosen a component for each part of the work on purpose, they had compared their choice with an alternative, and they had tied the whole thing to a business result that someone could check. Team A had \emph{built an agent} and hoped that the business case would follow.
 
@@ -215,22 +218,25 @@ A design is not a diagram, although it usually includes one, and it is not code,
 
 The definition leads directly to the four deliverables you will produce for every case in this book, listed in Table~\ref{tab:deliverables}.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The four things you bring to every design review.}
-\label{tab:deliverables}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\caption{The four things you bring to every design review.}\label{tab:deliverables}\\
 \toprule
 \rowcolor{coHead} Deliverable & The question it answers & Where you learn it \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Deliverable & The question it answers & Where you learn it \\
+\midrule
+\endhead
 \cotag{coBlue}{Design table} & What does each step do, who or what does it, and why is it there? & Chapter~\ref{ch:toolkit} \\
 \cotag{coAmber}{Trade-off table} & Why this design and not another? & Chapter~\ref{ch:toolkit} \\
 \cotag{coGreen}{Working deployment} & Does it actually run, and can we test it? & Every case \\
 \cotag{coPurple}{One-page memo} & Is it worth it, what could go wrong, and what do you need from the sponsor? & Chapter~\ref{ch:business} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{What Can a Language Model Do on Its Own?}
@@ -348,15 +354,18 @@ A system can contain a language model without being an agent in this sense. A pr
 
 Between a program with no model at all and a group of cooperating agents lies a range of options.\index{autonomy spectrum|textbf} Table~\ref{tab:autonomy} lays out six of them, from the least autonomous to the most. The levels are not a ranking of quality. Each step up the table buys flexibility, and pays for it with higher cost, slower responses, less predictable behavior and harder testing.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The autonomy spectrum. Each row down the table gives the model more control over what happens next. The shading runs from green, which is predictable, cheap and easy to test, to red, which is flexible but harder to test and more expensive to run.}
-\label{tab:autonomy}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The autonomy spectrum. Each row down the table gives the model more control over what happens next. The shading runs from green, which is predictable, cheap and easy to test, to red, which is flexible but harder to test and more expensive to run.}\label{tab:autonomy}\\
 \toprule
 Level & Name & Who decides the next step & Example at Harbor's pricing desk \\
 \midrule
+\endfirsthead
+\toprule
+Level & Name & Who decides the next step & Example at Harbor's pricing desk \\
+\midrule
+\endhead
 \rowcolor{coGreen!14} 0 & Rules only & Code decides everything. & Reject any discount above 15\% that lacks a manager's approval. \\
 \rowcolor{coGreen!7} 1 & Single model call & Code decides; the model fills in one step. & Pick out the product, quantity and requested discount from a free-text e-mail. \\
 2 & Fixed workflow & Code runs a fixed sequence that includes some model steps. & Read the request, look up prices, apply the policy, then draft the quote text. \\
@@ -364,8 +373,8 @@ Level & Name & Who decides the next step & Example at Harbor's pricing desk \\
 \rowcolor{coRed!7} 4 & Tool-using agent & The model picks tools in a loop until it is done. & Investigate why a customer's contract price disagrees with the list price, calling lookups as needed. \\
 \rowcolor{coRed!13} 5 & Multi-agent system & Several agents, each with its own goal, hand work to one another. & A sales agent negotiates with a supplier's agent to secure stock for a rush order. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Two observations follow from the table.
 

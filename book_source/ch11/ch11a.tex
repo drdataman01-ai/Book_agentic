@@ -46,33 +46,39 @@ A grocer expects to sell 40 trays of strawberries tomorrow. Should it order 40? 
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:fc-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of forecasting and replenishment.}
-\label{tab:fc-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of forecasting and replenishment.}\label{tab:fc-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The supply-chain director. \\
 \cotag{coGreen}{Users} & Planners and store managers. \\
 \cotag{coAmber}{Approvers} & Finance, for inventory valuation, and the commercial team, for promotions. \\
 \cotag{coPurple}{Owners} & The supply-chain analytics team (forecasting), the replenishment-systems team and the planning team. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:fc-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for forecasting and replenishment.}
-\label{tab:fc-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for forecasting and replenishment.}\label{tab:fc-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Fresh waste} & At most 4.5\% of fresh sales, from 6.8\%. \\
 \kpi{Availability} & Fresh on-shelf availability: at least 96\%, from 92.5\%. \\
 \kpi{Planner hours} & Planner hours on routine overrides: halved. \\
@@ -81,8 +87,8 @@ A grocer expects to sell 40 trays of strawberries tomorrow. Should it order 40? 
 \risk{Out-of-bounds order} & An adjusted order outside sensible bounds reaching a supplier. \\
 \risk{Silent drift} & Forecast quality degrading unnoticed. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \kpi{Fresh waste} and \kpi{Availability} are the textbook pair: ordering more raises availability and waste together. The design must improve both, which is only possible with better forecasts and a better ordering rule.
 
@@ -109,15 +115,18 @@ The foundation-model design assigns each job to the right block. Table~\ref{tab:
   \item \emph{Planners} approve, edit or reject adjustments in a morning queue, sorted by money at stake. Unreviewed adjustments by 3~a.m. fall back to the computed order.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The foundation-model design as a design table: batch forecasts for all series, orders by rule, and an agent only for exceptions. Unreviewed adjustments fall back to the computed order, never to the agent's proposal.}
-\label{tab:fc-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\caption{The foundation-model design as a design table: batch forecasts for all series, orders by rule, and an agent only for exceptions. Unreviewed adjustments fall back to the computed order, never to the agent's proposal.}\label{tab:fc-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & At 10~p.m., forecast every series in one batch, producing quantiles & \tagCode\ Scheduled job on accelerators & Time-series foundation model; forecast store (Analytics) & \kpi{Done by 3 a.m.} \risk{Silent drift} \\
 2 & Compute each order with the newsvendor rule & \tagCode & Forecast store; prices, costs and pack sizes & \kpi{Fresh waste} \kpi{Availability} \\
 3 & Flag exceptions: promotions, holidays, weather, new products and large gaps, about 2\% of series & \tagCode & Calendars and alerts & \kpi{Planner hours} \\
@@ -126,29 +135,32 @@ The foundation-model design assigns each job to the right block. Table~\ref{tab:
 6 & Approve, edit or reject the adjustment. At 3~a.m., anything unreviewed falls back to the computed order & \tagPerson\ Planner & Queue sorted by money at stake & \risk{Systematic error} \\
 7 & Submit all orders by 4~a.m. & \tagCode & Replenishment server (Replenishment systems), \texttt{submit\_orders} & \kpi{Done by 3 a.m.} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \subsection{The statistical design: statistical forecasts and rules}
 
 The statistical design replaces moving averages with established statistical models fitted per series (exponential smoothing with seasonality, for example), keeps the newsvendor rule and the exception flags, and sends exceptions to planners without an agent. It is cheaper, well understood and a strong baseline. Table~\ref{tab:fc-designs} compares the three designs.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The three replenishment designs side by side.}
-\label{tab:fc-designs}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The three replenishment designs side by side.}\label{tab:fc-designs}\\
 \toprule
 \rowcolor{coHead} & \cellcolor{coRedBg}Agent forecaster & Foundation model & Statistical \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & \cellcolor{coRedBg}Agent forecaster & Foundation model & Statistical \\
+\midrule
+\endhead
 Forecasts made by & An agent, series by series & One nightly batch of a foundation model & Statistical models fitted per series \\
 Orders set by & The agent & The newsvendor rule, in code & The newsvendor rule, in code \\
 Exceptions handled by & The agent & An agent proposes; a planner approves & Planners alone \\
 Run cost per year (est.) & Over \$2 million & About \$0.1 million & About \$0.05 million \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 % ----------------------------------------------------------------------
 \section{Trade-offs: Which Design Should We Pilot?}
@@ -202,15 +214,18 @@ Latency shapes the design as much as cost. The nightly window runs from the clos
 
 \subsection{Scores and decision}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for replenishment. Forecast quality scores are provisional until the backtest (Section~\ref{sec:fc-evaluate}).}
-\label{tab:fc-tradeoff}
-\begin{tabular}{@{}lcccc@{}}
+\begin{longtable}{@{}lcccc@{}}
+\caption{Trade-off table for replenishment. Forecast quality scores are provisional until the backtest (Section~\ref{sec:fc-evaluate}).}\label{tab:fc-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Agent forecaster & Foundation model & Statistical \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Agent forecaster & Foundation model & Statistical \\
+\midrule
+\endhead
 Run cost per year (est.) & --- & $>$\$2M & \$0.1M & \$0.05M \\
 \midrule
 Quality & 0.30 & 2 & 5 & 4 \\
@@ -221,7 +236,7 @@ Maintainability & 0.20 & 2 & 3 & 4 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 1.90 & 4.30 & 4.10 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The foundation-model design leads on the provisional scores, but its quality advantage over the statistical design is an assumption until it is measured on Greenleaf's own data. The decision record\index{decision record} makes that explicit: the foundation-model design is chosen \emph{on condition} that the foundation model beats the statistical design's models in the backtest by a stated margin; if it does not, Greenleaf builds the statistical design with the foundation-model design's exception agent added, which is still a large improvement on moving averages.

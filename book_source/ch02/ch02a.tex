@@ -77,15 +77,18 @@ The rest of this chapter turns that chain into everyday design practice. The des
 
 Good designs start from the business and work inward. The most tempting question, ``what should the agent do?'', is also the most dangerous one to ask first, because it assumes that an agent is needed before anyone has looked at the work. The method therefore postpones technology until the third step, when you know what the work is for and who is involved, and it postpones the choice of design until the fifth step, when you have at least two designs to choose between. Table~\ref{tab:method} lists the seven steps, the question each one answers, and the mistake most often made at each.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The seven-step design method.}
-\label{tab:method}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The seven-step design method.}\label{tab:method}\\
 \toprule
 \rowcolor{coHead} \# & Step & Question it answers & Common mistake \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Question it answers & Common mistake \\
+\midrule
+\endhead
 1 & Set the goal and measures & What business result must change, and how will we measure it? & Starting from the technology (``we need a returns agent'') \\
 2 & List the people and systems & Who and what is involved in the work today? & Forgetting people further down the line, such as the warehouse \\
 3 & Ask four questions of each step & For each step of the work: is it judgment or a rule, what must be known, which systems are read or changed, and who must decide? & Calling a step judgment because staff find it tedious \\
@@ -94,8 +97,8 @@ Good designs start from the business and work inward. The most tempting question
 6 & Walk through the failures & How can each step of the chosen design fail, and what happens then? & Listing only model failures, not failures of tools, data or people \\
 7 & Record the decision & What did we choose, why, and what would make us reopen the choice? & Leaving the reasons in people's heads \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \begin{figure}[htbp]
 \centering
@@ -122,15 +125,17 @@ Good designs start from the business and work inward. The most tempting question
 
 The steps fall into three natural groups, as Figure~\ref{fig:roadmap} shows. Steps 1 to 3 are about understanding, and they are covered in Section~\ref{sec:understand}. Step 4 is about drafting, and Section~\ref{sec:design-table} introduces the design table while Section~\ref{sec:patterns} offers proven arrangements to draft from. Steps 5 to 7 are about choosing, and they are covered in Sections~\ref{sec:criteria} and~\ref{sec:failure-walk}. Chapter~\ref{ch:business} then adds the business numbers that steps 1 and 5 depend on.
 
-\paragraph{The running example.} We run the method on a new process at Harbor, product returns. 
-\begin{enumerate}
-\item Contractors sometimes receive a defective valve, the wrong part, or more than they need, and they report it by web form or e-mail. 
-\item A customer-service representative reads the request, finds the order, checks the warranty terms, and decides whether to issue a \textbf{return authorization} (often called an RMA) together with a shipping label. 
-\item When the item reaches the warehouse, an inspector checks whether the defect is covered or the item was misused, and finance then issues a credit. 
-\item Credits above \$2{,}000 need a finance manager's approval. Harbor handles about 1{,}100 returns a month. 
+\begin{runningexample}[Running example: product returns at Harbor]
+We run the method on a new process at Harbor, product returns.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Contractors sometimes receive a defective valve, the wrong part, or more than they need, and they report it by web form or e-mail.
+\item A customer-service representative reads the request, finds the order, checks the warranty terms, and decides whether to issue a \textbf{return authorization} (often called an RMA) together with a shipping label.
+\item When the item reaches the warehouse, an inspector checks whether the defect is covered or the item was misused, and finance then issues a credit.
+\item Credits above \$2{,}000 need a finance manager's approval. Harbor handles about 1{,}100 returns a month.
 \item A representative spends a median of 22 minutes on each, customers wait a median of three business days for an authorization, and an internal audit found that about 6\% of credits went to items outside their warranty, mostly because representatives misread the warranty table.
 \end{enumerate}
-% ----------------------------------------------------------------------
+\end{runningexample}
+
 \section{Steps 1 to 3: What Is the Work, Really?}
 \label{sec:understand}
 
@@ -153,15 +158,18 @@ Before reading Table~\ref{tab:returns-steps}, ask the four questions of the six 
 
 Table~\ref{tab:returns-steps} shows the answers. Read across a row to see what a step needs, and down a column to see how much of each kind of component the design will contain.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The four questions answered for each step of Harbor's returns process.}
-\label{tab:returns-steps}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{2.2cm}@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{2.2cm}@{}}
+\caption{The four questions answered for each step of Harbor's returns process.}\label{tab:returns-steps}\\
 \toprule
 \rowcolor{coHead} Step of the work & Judgment or rule? & What must be known & Systems read or changed & Who must decide \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Step of the work & Judgment or rule? & What must be known & Systems read or changed & Who must decide \\
+\midrule
+\endhead
 Understand the request & \tagJudgment\ The request is free text and may mention several orders & Product bulletins, so the reply can mention known problems & None & Nobody \\
 Find the order & \tagRule\ Match the customer and the order number & Nothing beyond the order & ERP (read the order) & Nobody \\
 Check the warranty & \tagRule\ The warranty table, which people misread but which is not ambiguous & The warranty table, kept as configuration & None & Nobody \\
@@ -169,8 +177,8 @@ Issue the authorization and label & \tagRule\ Once eligibility is known, issuing
 Inspect the item & \tagJudgment\ Policy assigns it to the inspector & Nothing more & Warehouse system (record the finding) & The inspector \\
 Issue the credit & \tagRule\ The amount follows from the order and the finding & Nothing more & ERP (create the credit) & The finance manager, above \$2{,}000 \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 The table shows the shape of the design before any design is drafted. Only one step, understanding the request, needs a model. Warranty eligibility looks like judgment because representatives got it wrong 6\% of the time, but the audit traced the errors to misreading the table rather than to any ambiguity in it. It is therefore a rule for code, and the warranty table is configuration rather than knowledge. The systems group into three MCP servers by owner. Two decisions belong to people by policy, and one is still open: should a representative review every authorization before it is issued? That open question is the real design choice, and the rest of the chapter settles it.
 

@@ -28,15 +28,18 @@ The critic agent checks the draft against a checklist derived from the credit po
 
 The technical focus of this case is the deployment decision deferred since Chapter~\ref{ch:foundations}. Table~\ref{tab:loan-targets} compares the three targets on the criteria that matter for this workload.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Deployment targets for Summit's memo workflow.}
-\label{tab:loan-targets}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Deployment targets for Summit's memo workflow.}\label{tab:loan-targets}\\
 \toprule
 \rowcolor{coHead} Criterion & Agent Runtime & Cloud Run & GKE \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Agent Runtime & Cloud Run & GKE \\
+\midrule
+\endhead
 Long-running, resumable runs & Built for long-running agents with managed sessions & Jobs suit batch steps; services need external state for long runs & Full control; team builds it \\
 Sessions and memory & Managed & Team provides a store & Team provides a store \\
 Network isolation and private access to core systems & Supported in the bank's perimeter (to verify with security) & Supported & Most flexible \\
@@ -44,8 +47,8 @@ Operations effort & Lowest & Low & Highest \\
 Fit for MCP servers & Not its purpose & Natural fit & Possible \\
 Portability & Platform-specific runtime & Any container & Any container \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 No single target is best for every component, and the decision reflects that:
 \begin{itemize}[itemsep=1pt]

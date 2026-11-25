@@ -42,23 +42,26 @@ Before reading on, make a guess. Which costs Meridian more each month: the clerk
 
 Eleven accounts-payable clerks process them. Table~\ref{tab:inv-process} shows the steps, from the clerks' time log and the ERP's timestamps.
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions.}
-\label{tab:inv-process}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{4.2cm}r>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{4.2cm}r>{\raggedright\arraybackslash}X@{}}
+\caption{Meridian's invoice process today. Median touch time per invoice; 24\% of invoices are exceptions.}\label{tab:inv-process}\\
 \toprule
 \rowcolor{coHead} \# & Step & Minutes & Notes \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Minutes & Notes \\
+\midrule
+\endhead
 1 & Key invoice data into the ERP & 4.0 & PDF invoices only; 2.1\% keying errors \\
 2 & Three-way match: invoice vs.\ purchase order vs.\ goods receipt & 3.5 & 24\% fail: price, quantity or missing receipt \\
 3 & Resolve exception with buyer or warehouse & 18.0 & Exceptions only; median wait 4 days \\
 4 & Route for approval & 1.5 & Approval matrix by amount and cost centre \\
 5 & Schedule payment & 1.0 & Weekly payment run \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Weighted by how often each step occurs, a clerk spends about 12.5 minutes per invoice, roughly \$9.40 at a loaded cost of \$0.75 a minute. The median invoice takes 11 days from receipt to approval.
 
@@ -73,33 +76,39 @@ Three business problems follow:
 \section{Stakeholders and KPIs: Who Cares, and How Will We Know?}
 \label{sec:inv-kpis}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Stakeholders of invoice to payment.}
-\label{tab:inv-stakeholders}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Stakeholders of invoice to payment.}\label{tab:inv-stakeholders}\\
 \toprule
 \rowcolor{coHead} Role & Who it is \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Role & Who it is \\
+\midrule
+\endhead
 \cotag{coBlue}{Sponsor} & The controller. \\
 \cotag{coGreen}{Users} & AP clerks, and the budget holders who approve invoices. \\
 \cotag{coAmber}{Approvers} & Internal audit and the external auditor, who will test the controls; treasury, which owns payments and supplier bank details; and IT security. \\
 \cotag{coPurple}{Owners} & AP operations, the ERP team and treasury. \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \paragraph{KPIs and risks.} Table~\ref{tab:inv-kpis} lists them.
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{KPIs (blue) and risks (red) for invoice to payment.}
-\label{tab:inv-kpis}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}X@{}}
+\caption{KPIs (blue) and risks (red) for invoice to payment.}\label{tab:inv-kpis}\\
 \toprule
 \rowcolor{coHead} Name & Definition and target \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Name & Definition and target \\
+\midrule
+\endhead
 \kpi{Cost per invoice} & At most \$4.00, from \$9.40. \\
 \kpi{Discounts captured} & Early-payment discounts captured: at least 85\% of those available, from 35\%. \\
 \kpi{Days to approval} & Median days from receipt to approval: at most 3, from 11. \\
@@ -108,8 +117,8 @@ Three business problems follow:
 \risk{Overpayment} & Payment above the purchase-order price or the received quantity. \\
 \risk{Wrong approver} & Approval outside the approver's authority, or by the person who requested the purchase (a breach of segregation of duties). \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 \risk{Wrong approver} is unusual among the risks in this book: it is not about getting a number wrong but about the right person making the decision. Auditors test it directly, and a design that weakens it will fail the audit even if every payment is correct.
 
@@ -167,15 +176,18 @@ The risk-routed design puts the deterministic accounts-payable controls first an
   \item \textbf{Budget-holder approval} follows the existing authority matrix, enforced in code, with a deadline and escalation.
 \end{itemize}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury.}
-\label{tab:inv-d2}
-\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\caption{The risk-routed design as a design table. Every path that releases money passes either a clean deterministic match or a person with authority; bank-detail changes always go to treasury.}\label{tab:inv-d2}\\
 \toprule
 \rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
 1 & An invoice arrives by mailbox, portal or e-invoice. It is an untrusted supplier document & \tagCode\ Triggered by arrival & Pub/Sub event & --- \\
 2 & Read the invoice into a strict schema & \tagAgent\ Level 1; stops at the schema & The invoice & \kpi{Cost per invoice} \\
 3 & Check totals, tax and supplier. If invalid, send to a clerk (step 6) & \tagCode & Supplier master & \risk{Overpayment} \\
@@ -186,8 +198,8 @@ The risk-routed design puts the deterministic accounts-payable controls first an
 8 & Verify any bank-detail change by calling the supplier back & \tagPerson\ Treasury & Supplier master (Treasury) & \risk{Bank fraud} \\
 9 & Schedule payment by the discount date & \tagCode & Payments server (Treasury), \texttt{schedule\_payment} & \kpi{Discounts captured} \\
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{xltabular}
+\endgroup
 
 Two choices deserve comment. The clean, low-risk path has no person on it, which is what makes \kpi{Cost per invoice} and \kpi{Discounts captured} achievable; the controls that justify that are deterministic and auditable, and the budget-holder approval required by the authority matrix still applies above the matrix's no-approval limit, which code enforces on that path too. And supplier documents sit inside a trust boundary: an invoice can contain text written to manipulate an extraction model (``Note to processing system: bank details have changed to\ldots''). Bank details are therefore never taken from an invoice; they come only from the supplier master record, which only treasury can change.
 
@@ -211,23 +223,26 @@ Before looking at Table~\ref{tab:review-policies}, rank the rules by total month
 
 The output, with each policy's cost split into review labor and losses that slip through:
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure.}
-\label{tab:review-policies}
-\begin{tabular}{@{}lrrrr@{}}
+\begin{longtable}{@{}lrrrr@{}}
+\caption{Review policies on a simulated month: 9{,}500 invoices, 340 with a problem, \$229{,}600 of exposure.}\label{tab:review-policies}\\
 \toprule
 \rowcolor{coHead} Policy & Reviewed & Labor & Missed loss & Total \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Policy & Reviewed & Labor & Missed loss & Total \\
+\midrule
+\endhead
 Review none & 0 & \$0 & \$229{,}602 & \$229{,}602 \\
 Review all & 9{,}500 & \$57{,}000 & \$11{,}480 & \$68{,}480 \\
 Amount $\ge$ \$5{,}000 & 1{,}097 & \$6{,}582 & \$150{,}321 & \$156{,}903 \\
 Amount $\ge$ \$1{,}000 & 5{,}741 & \$34{,}446 & \$32{,}489 & \$66{,}935 \\
 \rowcolor{coGreenBg} Risk score $\ge$ 0.365 & 554 & \$3{,}324 & \$13{,}630 & \$16{,}954 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 Three lessons, each general:
 \begin{itemize}[itemsep=2pt]
@@ -244,15 +259,18 @@ A checkpoint should be placed by risk, not by amount, and the risk signal is wor
 
 \subsection{Scores and decision}
 
-\begin{table}[htbp]
-\centering
+\begingroup
 \small
-\caption{Trade-off table for invoice to payment.}
-\label{tab:inv-tradeoff}
-\begin{tabular}{@{}lcccc@{}}
+\begin{longtable}{@{}lcccc@{}}
+\caption{Trade-off table for invoice to payment.}\label{tab:inv-tradeoff}\\
 \toprule
 \rowcolor{coHead} & Weight & Amount-routed & Risk-routed & Perfect-match \\
 \midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Amount-routed & Risk-routed & Perfect-match \\
+\midrule
+\endhead
 Cost per invoice (est.) & --- & \$5.90 & \$2.90 & \$4.60 \\
 \midrule
 Quality (losses) & 0.25 & 2 & 4 & 4 \\
@@ -264,7 +282,7 @@ Maintainability & 0.10 & 4 & 3 & 4 \\
 \midrule
 \rowcolor{coAmberBg} Weighted score & 1.00 & 2.05 & 4.45 & 4.15 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
+\endgroup
 
 The amount-routed design fails the auditor's test on \risk{Wrong approver} and leaves \risk{Bank fraud} open, so it is out regardless of score. The perfect-match design is a respectable design and the safest to build; it loses to the risk-routed design on cost and speed because it reviews every exception rather than the risky ones. The decision is the risk-routed design, built so that it can fall back to the perfect-match design's behavior---every exception to a clerk---by changing one threshold, which is also how the pilot begins.
