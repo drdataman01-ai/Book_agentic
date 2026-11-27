@@ -138,6 +138,9 @@ Here $r_j$ is the share of transactions that reach human step $j$, taking $m_j$ 
 One transaction costs what the machines charge, plus the minutes that people spend on it, plus the mistakes it is expected to cause. The third part is the one most business cases forget.
 \end{keyidea}
 
+The equation and the rest of the chapter use a few money terms that are worth defining. The \textbf{loaded cost} of an hour of a person's time is what that hour really costs the company: salary plus benefits, taxes, office space and equipment, which is usually well above the hourly wage. The \textbf{expected cost} of an error is how often the mistake happens multiplied by what it costs when it does, so a \$1{,}000 mistake that happens once in every hundred transactions has an expected cost of \$10 per transaction. \textbf{Payback} is how long the savings take to repay the cost of building the solution; a seven-month payback means that the solution has paid for itself after seven months. \textbf{Sensitivity} describes how much the result changes when one assumption changes, and an assumption that can flip the decision with a small change is the one to test first. Finally, the \textbf{median} is the middle value, with half the cases faster and half slower, while the \textbf{90th percentile} is the value that 90\% of cases beat, and it describes the slow cases that customers remember.
+
+
 Three uses of Equation~\eqref{eq:unit} recur throughout the cases.
 
 \paragraph{Comparing designs.} Each alternative in a trade-off table gets its own unit cost. The reviewed-workflow and straight-through designs for Harbor's returns (Chapter~\ref{ch:toolkit}) differ mainly in $r_j$, the share of cases a representative reviews, and in $p_k$, the money lost through return authorizations issued automatically when they should not have been. Writing both out turns the vague trade-off ``speed versus control'' into a number per return.

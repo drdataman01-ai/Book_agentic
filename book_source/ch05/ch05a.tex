@@ -30,6 +30,23 @@ By the end of this case you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The business.} Cymbal Home \& Garden is a retailer with shops and an online store. Its \emph{customer support} team answers customers who write in by chat or e-mail. Each conversation is called a \emph{contact}. Customers write about a handful of things again and again: where is my order, my delivery went wrong, I want to return something, I have a question about a product. Each of these reasons is called an \emph{intent}. A person costs money for every minute spent on a contact, so the mix of intents and the minutes each takes decide what automation is worth.
+
+\textbf{Words in this chapter.}
+\pw{Triage.} Sorting incoming contacts by type and urgency so that each goes to the right place, like a nurse deciding who sees the doctor first.
+\pw{Escalation.} Handing a contact from an automated system to a person.
+\pw{Callback.} A small piece of code that the agent framework runs automatically at a set moment, for example just before a tool is used, often to check or block something.
+\pw{Task-shaped tool.} A tool that does one complete business task, such as ``start a return for this order line,'' rather than exposing a raw database operation.
+\pw{Identity-safe.} The tool learns who the customer is from their verified sign-in, never from something the model types, so a customer cannot trick the model into acting on someone else's account.
+\pw{Validated.} The tool checks its inputs and refuses anything that does not make sense.
+\pw{Idempotent.} Calling the tool twice by accident has the same effect as calling it once, so a customer is never refunded twice.
+\pw{Containment.} The share of contacts resolved without a person. Like deflection in Chapter~\ref{ch:case-policy}, it is easy to inflate and must be paired with checks on whether customers were really helped.
+\pw{Cost per contact.} The full cost, in people's time and in software, of handling one contact.
+\pw{Agent Runtime.} Google Cloud's managed service for running agents, which also keeps track of each conversation.
+\end{beforeyoustart}
+
+
 % ----------------------------------------------------------------------
 \section{Business Brief: What Is Going Wrong Today?}
 \label{sec:support-brief}

@@ -1,0 +1,217 @@
+% ======================================================================
+% Appendix E -- Plain-Language Glossary
+% Designing Agentic AI Solutions, Chris Kuo
+% Everyday explanations of the technical, information-systems and business
+% words used in the book, for readers with no background in the field.
+% ======================================================================
+
+\chapter{Plain-Language Glossary}
+\label{app:glossary}
+
+This glossary explains, in everyday language, the words that this book uses most often. It is written for readers who are new to artificial intelligence, information systems or the industries in the cases. Each entry gives a short meaning first, and sometimes a comparison or an example from the book. Where a word is explained more fully in a chapter, the entry says where. The index at the end of the book lists every page on which a term appears.
+
+\newcommand{\gterm}[1]{\item[#1]}
+\begin{description}[style=nextline, leftmargin=1.2em, itemsep=4pt, font=\normalfont\bfseries\sffamily\small]
+
+% ---------------------------------------------------------------- A
+\gterm{A2A (Agent2Agent)} An open standard that lets agents built and run by different teams or companies send work to one another. MCP connects an agent to tools; A2A connects an agent to other agents. See Chapter~\ref{ch:capstone}.
+\gterm{Accounts payable (AP)} The department, and the process, that pays the company's suppliers. Its daily work is checking supplier invoices and scheduling payments. See Chapter~\ref{ch:case-invoice}.
+\gterm{ADK (Agent Development Kit)} Google's open-source software kit for building agents and workflows in code. Every lab in this book uses it.
+\gterm{Agent} A software component in which a language model decides, while the program is running, which action to take next, such as which tool to use or whether to stop. Compare \emph{workflow}.
+\gterm{Agent card} A short document, in JSON, that an A2A agent publishes to describe who it is, what it can do and how other agents may call it. It works like a business card for an agent.
+\gterm{Agent Runtime} Google Cloud's managed service for running agents, formerly called Vertex AI Agent Engine. It looks after conversations and scaling so that a team does not have to.
+\gterm{AML (anti-money laundering)} The laws and checks that stop criminals from using banks to make illegal money look legitimate. See Chapter~\ref{ch:case-kyc}.
+\gterm{Anomaly} Something unusual compared with normal behavior, such as a card purchase that does not fit the cardholder's habits.
+\gterm{Anti-pattern} A design that looks attractive but reliably causes trouble, such as the do-everything agent of Chapter~\ref{ch:toolkit}.
+\gterm{API (application programming interface)} The menu of requests that a system accepts from other programs. A program asks the ERP's API for a price in the same way that a diner orders from a restaurant's menu.
+\gterm{Approval gate} A step at which a workflow stops and waits for a person to approve, change or reject an action before it continues. It is the most common kind of human checkpoint.
+\gterm{Audit trail} A complete and trustworthy record of who or what did each thing, when, on what evidence and under which version of the software, kept so that an auditor or regulator can check it later.
+\gterm{Autonomy} How much a system decides for itself. Chapter~\ref{ch:foundations} describes six levels, from rules only to many cooperating agents.
+
+% ---------------------------------------------------------------- B
+\gterm{Backtest} A test of a forecasting method on past data: the method forecasts each past day using only what was known before that day, and the forecasts are compared with what actually happened.
+\gterm{Baseline} The simple or current way of doing something, against which a new design is compared. A new model that cannot beat a simple baseline is not worth its cost.
+\gterm{Batch} Processing a large number of items together on a schedule, for example every night, rather than one at a time as they arrive.
+\gterm{Beneficial owner} A real person who ultimately owns or controls a company, as opposed to the company's legal name on paper. Banks must identify them when opening business accounts.
+\gterm{Blast radius} How much of a system a single action could affect if it went wrong. Restarting one server has a small blast radius; restarting a third of them has a large one.
+\gterm{Build versus buy} The decision whether to build a solution in-house or buy one from a vendor. See Chapter~\ref{ch:case-loan}.
+\gterm{Business process} The sequence of steps that people and systems follow to get a piece of work done, such as answering a quote request or paying an invoice.
+
+% ---------------------------------------------------------------- C
+\gterm{Callback} A small piece of code that a framework runs automatically at a set moment, for example just before a tool is used, often to check or block something.
+\gterm{Card-not-present transaction} A card payment made without the physical card, such as an online or in-app purchase. These carry the highest risk of fraud. See Chapter~\ref{ch:case-fraud}.
+\gterm{Chunk} A passage of a few paragraphs cut from a longer document so that a search can return just the relevant part.
+\gterm{Citation} A reference to the exact document, version and section on which an answer is based, so that a person can check the answer.
+\gterm{Cloud} Computers in someone else's data center that a company rents by the hour or by the request. This book uses Google Cloud.
+\gterm{Cloud Run} A Google Cloud service that runs a program packaged as a container and adds or removes copies of it automatically as traffic changes.
+\gterm{Component card} A one-page specification of one part of a design, such as an agent or an MCP server: its purpose, inputs, outputs, tools, quality target, budget and what happens when it fails. See Chapter~\ref{ch:toolkit}.
+\gterm{Compliance} Following the laws, regulations and internal policies that apply to a business.
+\gterm{Confused deputy} A security failure in which a trusted program is tricked into using its own permissions on behalf of someone who should not have them. See Chapter~\ref{ch:toolkit}.
+\gterm{Container} A standard package that holds a program together with everything it needs to run, so that it behaves the same way on any computer.
+\gterm{Containment} In customer support, the share of contacts resolved without a person. It is easy to inflate, so the book always pairs it with measures of real resolution. See Chapter~\ref{ch:case-support}.
+\gterm{Context window} The largest amount of text a language model can read in a single call.
+\gterm{Covenant} A promise written into a loan agreement, such as keeping debt below a stated multiple of earnings. Breaking it gives the lender certain rights. See Chapter~\ref{ch:case-loan}.
+\gterm{Credit memo} The document, often 15 to 40 pages long, on which a bank decides whether to make a loan. See Chapter~\ref{ch:case-loan}.
+\gterm{CRM (customer relationship management)} The system that holds what a company knows about its customers: contacts, conversations, open deals and quotes. Salesforce is a well-known example.
+\gterm{CSAT (customer satisfaction score)} A survey measure of how satisfied customers are after a contact, usually on a scale of one to five.
+\gterm{Current-process map} A table of how the work is done today, step by step, with who does each step, how long it takes, how long it waits and where it goes wrong. It is the baseline for every claim a design makes. See Chapter~\ref{ch:business}.
+
+% ---------------------------------------------------------------- D
+\gterm{Database} An organized store of records that programs can search and update quickly.
+\gterm{Decision record} A short written note of what was decided, why, what the alternatives were and what would make the team change its mind.
+\gterm{Deflection} The share of questions answered without reaching a person. Like containment, it can look good while customers are being failed. See Chapter~\ref{ch:case-policy}.
+\gterm{Deploy} To install a program on a server so that real users and other programs can use it.
+\gterm{Design table} The book's main way of writing a design down: one row per step of the process, saying who or what does the step, with which tools, and why. See Chapter~\ref{ch:toolkit}.
+\gterm{Downtime} Time during which a system is not working for its users.
+
+% ---------------------------------------------------------------- E
+\gterm{Embedding} A list of numbers that represents the meaning of a piece of text. Texts with similar meanings get similar numbers, which lets a search compare meanings rather than exact words.
+\gterm{Error budget} The amount of failure a service is allowed in a period, such as 43 minutes of downtime a month for 99.9\% availability. When the budget is spent, the team slows down changes and fixes reliability first.
+\gterm{ERP (enterprise resource planning)} A company's main operational system, holding products, prices, stock, orders, invoices and accounts. SAP and Oracle are well-known examples.
+\gterm{EU261} The European Union regulation that sets the care and fixed compensation airlines owe passengers when flights are cancelled or badly delayed. See Chapter~\ref{ch:case-airline}.
+\gterm{Evaluation} Measuring how well a system does its job, usually by running it on a prepared set of test cases whose correct answers are known.
+\gterm{Evaluation set} The prepared collection of test cases used in an evaluation.
+\gterm{Event-triggered} Started automatically by something happening, such as an invoice arriving or an alert firing, rather than by a person typing a request.
+
+% ---------------------------------------------------------------- F
+\gterm{Fail closed} To stop or refuse when something unexpected happens, rather than carry on. A payment system that fails closed holds a payment when a check cannot be completed.
+\gterm{Failure walk-through} A systematic look at every way a design could fail, with the cost of each failure and how it will be caught. See Chapter~\ref{ch:toolkit}.
+\gterm{Faithfulness} Whether an answer or explanation says only what its sources actually support. An unfaithful explanation misstates why something happened. See Chapter~\ref{ch:case-fraud}.
+\gterm{False positive and false negative} The two ways a yes-or-no decision can be wrong. A false positive raises an alarm that was not needed, such as blocking a good customer's card. A false negative misses something real, such as letting a fraudulent purchase through.
+\gterm{Framework} A ready-made software kit that handles routine plumbing so that programmers can focus on what is specific to their problem. ADK, LangGraph, the OpenAI Agents SDK and the Claude Agent SDK are agent frameworks.
+\gterm{Function} A named piece of code that takes some inputs, does one job and returns a result. A tool is a function with a description that a model can read.
+
+% ---------------------------------------------------------------- G
+\gterm{GKE (Google Kubernetes Engine)} A Google Cloud service for running many containers together with fine control over how they run. It offers more control than Cloud Run, at the cost of more work.
+\gterm{Go/no-go criteria} Conditions, agreed before a pilot starts, that decide whether the solution continues, is improved and tried again, or stops.
+\gterm{Governance} The rules, roles and reviews a company uses to keep its systems safe, legal and accountable.
+\gterm{Ground truth} The correct answer for a test case, used to judge a system's output.
+\gterm{Guardrail} An automatic check, usually written in ordinary code, that blocks or repairs any input or output that breaks a rule.
+
+% ---------------------------------------------------------------- H
+\gterm{Hallucination} A fluent, confident answer from a language model that is not based on any real source. It looks exactly like a correct answer.
+\gterm{Handoff} Passing a case, together with what is known about it, from one agent or person to another.
+\gterm{Host} In MCP, the application in which the model runs, such as a quote assistant or a code editor.
+\gterm{Human checkpoint} A step at which the system stops so that a person can approve, edit or reject its work.
+\gterm{Human-in-the-loop} A design in which people take part in certain decisions instead of leaving everything to software.
+
+% ---------------------------------------------------------------- I
+\gterm{IAM (identity and access management)} The part of a cloud platform that decides which people and programs may do what. It is where least privilege is put into practice.
+\gterm{Idempotent} An action that has the same effect whether it is done once or several times. An idempotent ``create refund'' tool will not pay twice if it is accidentally called twice.
+\gterm{Incident} An unplanned problem that stops or slows a service, such as an outage of the platform behind Parcelpoint's lockers. See Chapter~\ref{ch:case-incident}.
+\gterm{Incident replay} Testing an incident-response agent by giving it recorded data from past incidents and checking whether it finds what the engineers found.
+\gterm{Indexing} Preparing documents for search ahead of time: cutting them into chunks, computing embeddings and storing them in a vector index.
+\gterm{Information system} The combination of software, data, people and procedures that a company uses to record and run its work.
+\gterm{Instruction} The part of a prompt that tells a model its role and its rules. It is also called the system prompt.
+\gterm{Intent} In customer support, what the customer wants, such as ``where is my order'' or ``I want a refund.''
+\gterm{Invoice} A supplier's bill, stating what was delivered, at what price, and when payment is due.
+
+% ---------------------------------------------------------------- J
+\gterm{JSON} A simple text format of labels and values, such as \texttt{\{"part": "BV-316-3", "in\_stock": 65\}}, used by programs to exchange data. People can read it too.
+
+% ---------------------------------------------------------------- K
+\gterm{KPI (key performance indicator)} A number the business already watches to judge whether things are getting better, such as hours to answer a quote. See Chapter~\ref{ch:business}.
+\gterm{KPI tree} A table or diagram that links a business KPI to the operational measures that drive it and, below them, to the technical measures owned by each part of a design.
+\gterm{KYC (know your customer)} The checks a bank must carry out to confirm who its customers are before opening an account. See Chapter~\ref{ch:case-kyc}.
+
+% ---------------------------------------------------------------- L
+\gterm{Language model (LLM)} A program trained on a very large amount of text to predict what text should come next. Through that one ability it can read, summarize, answer questions and write. LLM stands for \emph{large language model}.
+\gterm{Latency} How long a system takes to respond.
+\gterm{Least privilege} The rule that every person, program and agent should have only the permissions its job needs, and no more.
+\gterm{Least sufficient autonomy} The book's rule for choosing how much a model may decide: use the lowest level of autonomy that meets the step's quality target. See Chapter~\ref{ch:foundations}.
+\gterm{Log} A running record of what a system did and when.
+\gterm{Long-term memory} Information an agent keeps from one conversation to the next, as opposed to session state, which ends with the conversation.
+
+% ---------------------------------------------------------------- M
+\gterm{Margin} The difference between a product's price and its cost, usually given as a percentage of the price.
+\gterm{MCP (Model Context Protocol)} An open standard for connecting AI applications to company systems. It plays the role that a USB-C port plays for devices. See Chapter~\ref{ch:foundations}.
+\gterm{MCP client} The part of an AI application that manages its connection to one MCP server.
+\gterm{MCP server} A small program, owned by the team responsible for a system, that offers that system's capabilities to AI applications as a list of tools.
+\gterm{Median} The middle value when numbers are sorted. Half the cases are faster than the median and half are slower. It is less distorted by a few extreme cases than the average.
+\gterm{Model call} One request sent to a language model and the response it returns. Each call costs money and takes time.
+\gterm{Monitoring} Watching a running system, through dashboards and alerts, so that problems are noticed quickly.
+\gterm{MTTR (mean time to restore)} The average time from the start of an incident until the service works again.
+\gterm{Multi-agent system} A group of agents, each with its own job, that hand work to one another.
+
+% ---------------------------------------------------------------- N
+\gterm{Newsvendor rule} A classic rule for ordering perishable goods. Instead of ordering the expected demand, it orders more or less depending on whether running out or throwing away costs more. See Chapter~\ref{ch:case-forecast}.
+
+% ---------------------------------------------------------------- O
+\gterm{Observability} The ability to see what a running system is doing and why, through its logs, metrics and traces.
+\gterm{On-call} The arrangement in which an engineer is available outside working hours to respond to alerts.
+\gterm{One-page memo} The short document, addressed to the sponsor, that ends every case. It states the problem, the recommendation, the value, the risks and what is needed from the sponsor. See Chapter~\ref{ch:business}.
+
+% ---------------------------------------------------------------- P
+\gterm{Percentile (p90, p95)} The value below which a given share of cases fall. A p90 response time of 4 seconds means that 90\% of responses take 4 seconds or less.
+\gterm{Permissions} The rules that decide what a person or program may read and change.
+\gterm{Pilot} A small, time-limited trial of a solution with real users before the company commits to it fully.
+\gterm{Pinball loss} A measure of how good a forecast of a particular quantile is, such as the amount that will be enough on 80\% of days. See Chapter~\ref{ch:case-forecast}.
+\gterm{Planner--executor} A pattern in which one agent writes a plan and other components carry out its steps.
+\gterm{Production} The live environment where real users and real money are involved, as opposed to a test or a demo.
+\gterm{Prompt} The text given to a language model: its instructions, the request and any extra information.
+\gterm{Prompt injection} An attack in which text that a model reads, such as a document or an e-mail, contains hidden instructions meant to make the model misbehave. See Chapter~\ref{ch:case-kyc}.
+\gterm{Purchase order (PO)} A company's official order to a supplier, stating what it is buying, how many and at what price.
+\gterm{Python} The programming language used in this book's code and labs.
+
+% ---------------------------------------------------------------- Q
+\gterm{Quantile} A value that divides outcomes at a chosen share. The 80\% quantile of tomorrow's demand is the amount that will be enough on 80\% of days.
+\gterm{Queue} A line of work items waiting to be handled, such as transactions waiting for a fraud analyst.
+
+% ---------------------------------------------------------------- R
+\gterm{RAG (retrieval-augmented generation)} A way of giving a model an open book: the system searches company documents for relevant passages, adds them to the prompt, and the model answers from them. See Chapter~\ref{ch:foundations}.
+\gterm{Recall and precision} Two measures of a search or a detector. Recall asks what share of the things we wanted were found. Precision asks what share of the things found were the ones we wanted.
+\gterm{Reflection} A pattern in which a model, or a second model, reviews a draft and suggests corrections before the draft is used.
+\gterm{Release gate} An automatic check that stops a new version of a system from going live unless its tests and evaluations meet agreed thresholds. See Chapter~\ref{ch:capstone}.
+\gterm{Retrieve-then-answer} The book's name for the basic RAG pattern: search first, then let the model answer from what was found.
+\gterm{Risk register} A list of the things that could go wrong with a solution, each with an owner and a planned response.
+\gterm{Router} A step that sends each item down one of several fixed paths, for example sending a customer contact to the returns path or the delivery path.
+\gterm{Rubber-stamping} Approving items without really checking them, which happens when reviewers see too many routine cases. It turns a control into a delay.
+\gterm{Runbook} A written, step-by-step procedure for handling a known situation, such as a particular kind of outage.
+
+% ---------------------------------------------------------------- S
+\gterm{Safety stock} Extra stock kept on hand to cover demand that is higher than forecast.
+\gterm{Sanctions screening} Checking customers against government lists of people and organizations with whom banks are forbidden to do business.
+\gterm{Schema} A precise description of the shape of some data: which fields it has, and what kind of value each field holds.
+\gterm{SDK (software development kit)} A package of code and tools that makes it easier to build software for a particular platform.
+\gterm{Semantic search} Search by closeness of meaning rather than by matching exact words.
+\gterm{Server} A program, usually running in a data center, that waits for requests and answers them. The word also refers to the computer it runs on.
+\gterm{Service account} An account used by a program rather than by a person. Each one should have only the permissions its program needs.
+\gterm{Session state} Information kept for the length of one conversation, such as what the customer has already said.
+\gterm{Shadow mode} Running a new system alongside the current process, recording what it would have done without letting it act, so that its decisions can be compared with people's decisions safely.
+\gterm{Skill} In A2A, one job that an agent offers to other agents, listed on its agent card.
+\gterm{SLA (service-level agreement)} A promise in a contract about how well a service will perform, such as 99.9\% availability, often with money back if it is missed.
+\gterm{SLO (service-level objective)} An internal target for how well a service should perform. A company sets its SLOs stricter than its SLAs so that it has room to spare.
+\gterm{Solution design} A set of decisions about how a business process will be carried out by people, software and AI components, with the reasons, the rejected alternatives and the measurements that will show whether the decisions were right. See Chapter~\ref{ch:foundations}.
+\gterm{Sponsor} The executive who owns the business problem, pays for the solution and decides whether it goes ahead.
+\gterm{Spreading} In banking, re-keying a borrower's financial statements into the bank's standard template so that they can be analyzed. See Chapter~\ref{ch:case-loan}.
+\gterm{SRE (site-reliability engineer)} An engineer whose job is to keep a company's online services running reliably.
+\gterm{Stakeholder} Anyone affected by a solution or able to block it.
+\gterm{System of record} The one official place where a piece of information is stored. When two screens disagree, the system of record is right.
+
+% ---------------------------------------------------------------- T
+\gterm{TCO (total cost of ownership)} The full cost of a solution over its life, including building, running, maintaining and supervising it, not just the purchase price.
+\gterm{Telemetry} Data that a running system reports about itself, such as metrics, logs and traces.
+\gterm{Three-way match} The standard accounts-payable check that an invoice agrees with the purchase order and with the record of goods actually received. See Chapter~\ref{ch:case-invoice}.
+\gterm{Threshold} A cut-off value that turns a score into a decision, such as ``review any transaction with a fraud score above 0.8.''
+\gterm{Time-series foundation model} A large model, trained on many kinds of data recorded over time, that can forecast a new series without being trained on it first. See Chapter~\ref{ch:case-forecast}.
+\gterm{Token} A small piece of text, roughly three-quarters of a word, in which models read and write. Model providers charge by the token.
+\gterm{Tool} An ordinary function, with a short description a model can read, that a model may ask the software to run on its behalf.
+\gterm{Tool call} A model's structured request to run a particular tool with particular inputs.
+\gterm{Tornado analysis} A chart that shows which assumptions in a business case move the result the most, with the biggest at the top. See Chapter~\ref{ch:business}.
+\gterm{Trace} A detailed record of one request's journey through a system, showing each step, each model call and each tool call, and how long each took.
+\gterm{Trade-off table} A table that compares two or more designs on the same fixed criteria, such as quality, cost, speed and risk. See Chapter~\ref{ch:toolkit}.
+\gterm{Trajectory} The sequence of tool calls an agent made, with their inputs, in order. Evaluating an agent means checking its trajectory as well as its final answer.
+\gterm{Triage} Sorting incoming work by type and urgency so that each item goes to the right place.
+\gterm{Trust boundary} A line in a design where data passes from a less trusted source, such as a customer's upload, to a more trusted part of the system. Data crossing it must be checked.
+
+% ---------------------------------------------------------------- U
+\gterm{Unit economics} The cost and benefit of handling one unit of work, such as one quote, one invoice or one customer contact. See Chapter~\ref{ch:business}.
+
+% ---------------------------------------------------------------- V
+\gterm{Value hypothesis} A one-sentence statement of how a solution will create value for the business, written so that a pilot can prove it right or wrong. See Chapter~\ref{ch:business}.
+\gterm{Vector index} A searchable store that holds document chunks together with their embeddings and source details.
+\gterm{Version} A numbered state of a document, a model or a piece of software. Good designs record which version produced each answer.
+
+% ---------------------------------------------------------------- W
+\gterm{Workflow} A sequence of steps fixed in advance by a programmer. A model may do some of the steps, but it does not choose the order. Compare \emph{agent}.
+\end{description}

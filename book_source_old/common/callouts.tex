@@ -1,0 +1,85 @@
+% ======================================================================
+% callouts.tex -- colored callout boxes, tags and colors for the book
+% Designing Agentic AI Solutions, Chris Kuo
+%
+% Load once, in the preamble, AFTER the main preamble:
+%     \input{../common/preamble}
+%     \input{../common/callouts}
+% Needs: xcolor, tcolorbox, tikz (already loaded by the main preamble).
+% ======================================================================
+
+\usepackage{colortbl}          % \rowcolor and \cellcolor in tables
+\tcbuselibrary{skins,breakable}
+
+% ---------- palette -----------------------------------------------------
+\definecolor{coBlue}{HTML}{1F6FB2}    \definecolor{coBlueBg}{HTML}{EAF3FB}
+\definecolor{coGreen}{HTML}{2E8B57}   \definecolor{coGreenBg}{HTML}{EAF6EF}
+\definecolor{coRed}{HTML}{C0392B}     \definecolor{coRedBg}{HTML}{FBECEA}
+\definecolor{coAmber}{HTML}{C47F00}   \definecolor{coAmberBg}{HTML}{FFF6E0}
+\definecolor{coPurple}{HTML}{6C3FA0}  \definecolor{coPurpleBg}{HTML}{F3EEFA}
+\definecolor{coTeal}{HTML}{14808A}    \definecolor{coTealBg}{HTML}{E6F4F5}
+\definecolor{coGray}{HTML}{5D6D7E}    \definecolor{coGrayBg}{HTML}{F2F4F5}
+
+% ---------- shared style --------------------------------------------------
+% A pale box with a colored left bar and a small colored title tab.
+\tcbset{
+  coBase/.style={
+    enhanced, breakable,
+    colback=#1Bg, colframe=#1, boxrule=0pt, leftrule=3.5pt, arc=2pt,
+    left=8pt, right=8pt, top=9pt, bottom=6pt,
+    before skip=12pt, after skip=12pt,
+    fonttitle=\sffamily\bfseries\footnotesize, coltitle=white,
+    attach boxed title to top left={xshift=6pt, yshift=-7pt},
+    boxed title style={colback=#1, colframe=#1, arc=2pt, boxrule=0pt,
+                       left=4pt, right=4pt, top=1.5pt, bottom=1.5pt},
+  }
+}
+
+% ---------- the callouts --------------------------------------------------
+% Questions that open a discussion. Optional argument: a short title.
+\newtcolorbox{thinkabout}[1][Think about it]{coBase=coBlue, title={#1}}
+% A small activity the reader can do right now.
+\newtcolorbox{tryit}[1][Try it]{coBase=coGreen, title={#1}}
+% A common mistake or trap.
+\newtcolorbox{watchout}[1][Watch out]{coBase=coRed, title={#1}}
+% A story or practice from real projects.
+\newtcolorbox{inpractice}[1][In practice]{coBase=coPurple, title={#1}}
+% The one idea to remember from a section.
+\newtcolorbox{keyidea}[1][Key idea]{coBase=coAmber, title={#1}}
+% A short question with its answer, to check understanding.
+\newtcolorbox{quickcheck}[1][Quick check]{coBase=coTeal, title={#1}}
+% The questions a chapter answers (used at the top of a chapter).
+\newtcolorbox{chapterquestions}[1][Questions this chapter answers]{coBase=coBlue,
+  colback=white, boxrule=0.6pt, leftrule=3.5pt, title={#1}}
+
+% Answer line inside a quickcheck box.
+\newcommand{\answer}[1]{\par\smallskip\noindent{\sffamily\bfseries\footnotesize\color{coTeal}Answer.}\ #1}
+
+% ---------- colored tags for use in tables and text -------------------------
+% Usage: \cotag{coBlue}{Judgment}
+\newtcbox{\cotagbox}[1]{on line, colback=#1!14, colframe=#1!14, coltext=#1!80!black,
+  boxrule=0pt, arc=2pt, left=2.5pt, right=2.5pt, top=0.5pt, bottom=0.5pt,
+  fontupper=\sffamily\scriptsize\bfseries}
+\newcommand{\cotag}[2]{\cotagbox{#1}{#2}}
+% Kinds of work (Chapters 1 and 2) and kinds of worker (Chapter 2).
+\newcommand{\tagJudgment}{\cotag{coBlue}{Judgment}}
+\newcommand{\tagKnowledge}{\cotag{coAmber}{Knowledge}}
+\newcommand{\tagAction}{\cotag{coGreen}{Action}}
+\newcommand{\tagRule}{\cotag{coGray}{Rule}}
+\newcommand{\tagPerson}{\cotag{coPurple}{Person}}
+\newcommand{\tagAgent}{\cotag{coBlue}{Agent}}
+\newcommand{\tagCode}{\cotag{coGray}{Code}}
+\newcommand{\tagGuardrail}{\cotag{coRed}{Guardrail}}
+
+% Header row color for tables: \rowcolor{coHead}
+\colorlet{coHead}{coBlueBg}
+
+% ---------- named KPIs and risks (case chapters) -----------------------------
+% Usage: \kpi{Answer accuracy}, \risk{Restricted leak}
+\DeclareRobustCommand{\kpi}[1]{\cotagbox{coBlue}{#1}}
+\DeclareRobustCommand{\risk}[1]{\cotagbox{coRed}{#1}}
+
+% Let lines with unbreakable tags stretch a little instead of overflowing.
+\setlength{\emergencystretch}{2.5em}
+% A running example that a chapter returns to.
+\newtcolorbox{runningexample}[1][Running example]{coBase=coGray, title={#1}}

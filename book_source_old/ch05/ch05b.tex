@@ -1,0 +1,192 @@
+% ======================================================================
+% Chapter 5 -- Part B: alternative designs; unit economics; trade-offs
+% ======================================================================
+
+\section{Alternative Designs: What Could We Build?}
+\label{sec:support-designs}
+
+\subsection{The sample as it stands}
+
+Google's \texttt{customer-service} sample was one of the most widely used ADK\index{Agent Development Kit (ADK)} samples; a version of it appeared in the Google Cloud Next 2025 keynote. It builds ``Project Pro,'' an assistant for Cymbal Home \& Garden that greets a returning customer by name, identifies plants (including from video), recommends products, manages the cart, offers discounts within limits or asks a manager for larger ones, books planting appointments, sends care instructions and generates discount QR codes. It is a single agent with twelve tools and four callbacks. The tools are mocks, as its README states clearly: they return plausible responses without touching any real system.\footnote{The sample was removed from the main branch of \texttt{google/adk-samples} on 9 September 2026 as part of a clean-up of older samples. The companion repository vendors it at commit \texttt{a9dc177}, the last commit that contains it, under its Apache 2.0 license.}
+
+There is much to learn from it, both from what it does well and from what a production design must change. Its strengths first:
+\begin{itemize}[itemsep=1pt]
+  \item Callbacks are used as guardrails\index{guardrail}. A before-tool callback checks that any \texttt{customer\_id} a tool is called with matches the customer in the session---the right instinct about \risk{Wrong customer}.
+  \item Defense in depth for discounts: the QR-code tool re-checks the discount limit itself, with a comment explaining that this guards against prompts that try to talk the agent into larger discounts.
+  \item Tools return structured, recoverable errors. A rejected discount comes back as a status and a message telling the model what limit applies, so the conversation can continue sensibly.
+  \item It ships an evaluation folder and unit tests for its tools.
+\end{itemize}
+
+Now the gaps, measured against Cymbal's support process and the principles of this chapter:
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{It is a sales assistant, not a support system.} Of Cymbal's seven intents, it covers product questions and scheduling. It has no tools for order status, delivery problems, returns or refunds, which are two-thirds of the volume. Its instruction asks it to be proactive about upselling, a goal that sits uneasily with a customer reporting a broken delivery.
+  \item \emph{Identity is an argument.} The customer's profile is written into the global instruction (customer \texttt{123} in the mock), and tools take \texttt{customer\_id} as an argument chosen by the model. The callback's check against session state\index{memory!session state} mitigates this, but the safer design removes the argument entirely, so that the model has nothing to get wrong.
+  \item \emph{The discount rule lives in three places.} The 10\% limit is a constant in the callbacks module, a separate constant in the tools module, and is checked again in the QR-code tool. The vocabulary also disagrees: the approval tools describe discount types as \emph{percentage} or \emph{flat}, while the QR-code tool checks \emph{percentage} or \emph{fixed}. A policy that exists in three copies with two vocabularies will eventually exist in three versions.
+  \item \emph{Approval is decided by a callback.} When the agent asks a manager for a discount of 10 or less, the callback answers ``approved, no manager needed'' without calling the tool; above 10, the mocked manager always approves. In a real system the approval rule belongs to the system that grants the discount.
+  \item \emph{A callback that silently does nothing.} The before-tool callback calls a helper to lowercase all tool arguments but discards the helper's return value, so the arguments are never changed. It is a small slip, and an instructive one: rewriting the model's arguments in a callback is fragile, and validating them in the tool, against an explicit schema, is safer.
+  \item \emph{A blocking rate limiter.} The before-model callback enforces ten model calls a minute per session by sleeping the thread. That is fine in a demonstration and harmful in a service handling thousands of concurrent conversations; rate limiting belongs in the serving infrastructure.
+  \item \emph{The evaluation bar is low.} The evaluation configuration passes an agent whose tool-trajectory score and response-match score are each at least 0.2 on a 0--1 scale. That threshold checks that the agent runs, not that it behaves.
+\end{enumerate}
+
+\subsection{The single-agent design: the sample extended to support}
+
+To compare like with like, the single-agent design extends the sample in its own style to cover Cymbal's support intents: the same single agent, with tools for order status, delivery claims, returns, refunds and case creation added to the flat list (seventeen tools in all), customer ID as an argument, and policy limits in callbacks and prompt. This is what a team under time pressure would most likely build first. Table~\ref{tab:support-alts}, at the end of this section, compares it with the other three designs.
+
+\subsection{The triage design: routing with task-shaped tools}
+
+The triage design separates \emph{understanding} a contact from \emph{acting} on it. Table~\ref{tab:support-d2} writes it down as a design table\index{design table}. A Level~3 triage agent reads the message, identifies the intent and the key entities (order number, product), and routes. Each intent then has its own path, with the least autonomy that works:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Order status} is a Level~2 workflow: code fetches the order's status from the orders server and a Level~1 agent turns it into a friendly reply. No agent decides anything; there is nothing to decide.
+  \item \emph{Returns and refunds} go to a Level~4 returns agent with two tools on the returns server. The refund limit and return window are enforced by the server, and refunds above \$150 are queued for a returns specialist.
+  \item \emph{Product questions} use retrieve-then-answer\index{retrieve-then-answer} over the catalog and care guides.
+  \item \emph{Scheduling} uses a Level~4 agent with the scheduling server's two tools.
+  \item \emph{Complaints, ``I want a person'', and anything else} are handed to a human agent with a summary and the customer's recent orders already attached.
+\end{itemize}
+
+Five MCP servers sit behind the agents, one per owning team plus the support platform's case server. The customer's identity comes from the authenticated chat or e-mail session and travels to each server as a verified token; no tool has a \texttt{customer\_id} parameter.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\caption{The triage design as a design table. One server per owning team; identity travels as a verified token, never as a tool argument. Every agent can also hand a case to a person through \texttt{create\_case}.}\label{tab:support-d2}\\
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
+1 & The customer writes in signed-in chat or by e-mail & \tagPerson\ Customer & Verified session token & --- \\
+2 & Screen the message for attempts to instruct the assistant & \tagGuardrail & The message & \risk{Manipulation} \\
+3 & Identify the intent and key entities, then route & \tagAgent\ Level 3; stops at intent and entities & --- & \kpi{Cost per contact} \kpi{E-mail response} \\
+4a & Order status: fetch the status and write a friendly reply & \tagCode\ plus a Level~1 reply agent & Orders server (Order Mgmt), \texttt{get\_order\_status} & \kpi{Cost per contact} \kpi{Re-contact rate} \\
+4b & Returns and refunds: offer options and start a return; refunds over \$150 wait for a specialist & \tagAgent\ Level 4, at most six calls & Returns server (Order Mgmt), \texttt{get\_return\_options}, \texttt{start\_return} & \risk{Against policy} \risk{Wrong customer} \\
+4c & Product questions and bookings & \tagAgent\ Retrieval agent and booking agent & Catalog (E-commerce), \texttt{search}; Scheduling (Services), \texttt{find\_slots}, \texttt{book\_slot} & \kpi{Cost per contact} \kpi{Satisfaction} \\
+4d & Complaints, ``I want a person'' and anything else: summarize and open a case & \tagAgent\ Summary agent & Cases server (Support Ops), \texttt{create\_case} & \risk{No person} \kpi{Satisfaction} \\
+5 & Handle the case & \tagPerson\ Support agent & Case with summary and recent orders & --- \\
+6 & Approve refunds over \$150 & \tagPerson\ Returns specialist & Returns server queue & \risk{Against policy} \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+\subsection{The assist design: a copilot for every agent}
+
+The assist design keeps a person on every contact and gives that person an AI copilot. When a contact arrives, the copilot classifies it, fetches the order, the return options or the catalog passages, and drafts a reply. The agent reviews, edits and sends. The assist design contains nothing; its savings come from shorter handling times, which Cymbal estimates at 20--35\% depending on intent, based on a two-week trial of drafting in the e-mail queue. Its risks are the lowest of the four designs, because every action passes a person.
+
+\subsection{The hybrid design: automate by intent}
+
+The hybrid design emerged from the cost model in the next section rather than from a pattern. It uses the triage design's automated paths for order status, delivery issues, product questions and scheduling, and the assist design's assisted path for returns and refunds, complaints and anything else. Its design table is the triage design's with the returns agent replaced by a copilot whose drafts go to a person. Table~\ref{tab:support-alts} sets all four designs side by side.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Who handles each kind of contact in the four support designs.}\label{tab:support-alts}\\
+\toprule
+\rowcolor{coHead} & Single agent & Triage & Assist & Hybrid \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Single agent & Triage & Assist & Hybrid \\
+\midrule
+\endhead
+Understanding the contact & One agent with 17 tools & Triage agent routes by intent & A person reads it; the copilot classifies it & Triage agent routes by intent \\
+Order status & The agent & Automated workflow & A person, with a draft & Automated workflow \\
+Delivery, product, scheduling & The agent & Automated paths & A person, with a draft & Automated paths \\
+Returns and refunds & The agent, with limits in its prompt & Returns agent; the server enforces policy & A person, with a draft & A person, with a copilot draft \\
+Complaints and other & The agent & A person, with a summary & A person, with a draft & A person, with a draft \\
+Customer identity & A tool argument & Verified token & Verified token & Verified token \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+% ----------------------------------------------------------------------
+\section{Trade-offs: Which Design Should We Pilot?}
+\label{sec:support-tradeoffs}
+
+\subsection{Cost per contact, by design and by intent}
+
+This case's business skill is unit economics\index{unit economics}, and at 52{,}000 contacts a month it decides the design. Listing~\ref{lst:support-econ} implements Equation~\eqref{eq:unit} for each design, intent by intent. Each design has an automation rate per intent (the share resolved without a person, from a pilot on 2{,}000 historical transcripts replayed against prototypes), a model cost per automated contact, an error rate and cost on automated contacts, and fixed monthly costs for the engineers and servers that keep it running. Escalated contacts cost an extra 1.5 agent minutes, because the agent has to catch up; the triage design saves 3 minutes on complaints by handing them over summarized.
+
+\lstinputlisting[language=Python, caption={Cost per contact by design and intent (\texttt{ch05/unit\_economics.py}, inputs).}, label={lst:support-econ}, firstline=6, lastline=30]{code/unit_economics.py}
+
+\begin{thinkabout}
+Before looking at the output: which design do you expect to be cheapest per contact, and which one do you expect to resolve the most contacts without a person? Are they the same design?
+\end{thinkabout}
+
+The output is:
+\begin{lstlisting}[language={}, numbers=none, frame=none, xleftmargin=0em, basicstyle=\ttfamily\scriptsize]
+Baseline             $4.86/contact  (variable 4.86, fixed 0.00)  contained  0%  monthly $  252,626
+Single agent         $4.16/contact  (variable 3.85, fixed 0.31)  contained 50%  monthly $  216,334
+Triage + tools       $3.51/contact  (variable 2.78, fixed 0.73)  contained 59%  monthly $  182,725
+Agent assist         $3.91/contact  (variable 3.58, fixed 0.33)  contained  0%  monthly $  203,153
+Hybrid by intent     $3.53/contact  (variable 2.84, fixed 0.69)  contained 48%  monthly $  183,727
+
+Triage design, cost per contact by intent (variable part):
+  order status    automated  88%   $0.80
+  delivery issue  automated  40%   $4.31
+  return/refund   automated  55%   $3.04
+  product q       automated  65%   $2.22
+  scheduling      automated  60%   $2.24
+  complaint       automated   0%   $7.27
+  other           automated  15%   $5.97
+\end{lstlisting}
+
+Four lessons come out of these numbers, and each is more general than this case.
+
+\paragraph{Containment is not savings.} The single-agent design contains half of all contacts but saves only 14\% of cost. Its escalations arrive cold, adding minutes to the human path; its higher error rate adds error cost to the automated path; and model cost, though small, is highest for the single-agent design because seventeen tool descriptions travel with every call.
+
+\paragraph{One intent carries the case.} Order status is a third of the volume and, automated as a workflow, falls from about \$3.20 to \$0.80 a contact. Most of the triage design's savings come from the least glamorous path in the design, the one with no real agent in it.
+
+\paragraph{Assist is a serious alternative.} The assist design never lets AI answer a customer and still saves about 20\%, at the lowest risk. A design that does not automate anything can be the right choice when errors are costly or trust is low.
+
+\paragraph{Automating returns buys almost nothing.} Comparing the triage design and the hybrid design isolates the value of automating returns, refunds, complaints and other contacts. The difference is two cents a contact---about \$1{,}000 a month. In exchange, the triage design lets an agent grant refunds of up to \$150 without a person, the path where \risk{Against policy} lives. Per-intent economics turned a design question into a precise price for a risk.
+
+\begin{keyidea}
+Containment is not savings. The hybrid design resolves fewer contacts on its own than the single-agent design (48\% against 50\%), yet costs 63 cents less per contact, because what matters is the cost of every path, including the contacts that reach a person.
+\end{keyidea}
+
+\subsection{Scores for what money does not capture}
+
+\begingroup
+\small
+\begin{longtable}{@{}lcccccc@{}}
+\caption{Trade-off table for support triage. Cost and human workload are in the money row; the remaining criteria are scored 1--5.}\label{tab:support-tradeoff}\\
+\toprule
+\rowcolor{coHead} & Weight & Single agent & Triage & Assist & Hybrid \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & Weight & Single agent & Triage & Assist & Hybrid \\
+\midrule
+\endhead
+Cost per contact (all-in) & --- & \$4.16 & \$3.51 & \$3.91 & \$3.53 \\
+\midrule
+Quality (re-contact, errors) & 0.25 & 2 & 4 & 5 & 4 \\
+Speed (\kpi{E-mail response}) & 0.20 & 5 & 5 & 2 & 4 \\
+Reliability & 0.15 & 2 & 4 & 4 & 4 \\
+Security and privacy & 0.15 & 2 & 4 & 5 & 5 \\
+Control and auditability & 0.15 & 2 & 4 & 5 & 5 \\
+Maintainability & 0.10 & 2 & 3 & 4 & 3 \\
+\midrule
+\rowcolor{coAmberBg} Weighted score & 1.00 & 2.60 & 4.10 & 4.15 & 4.20 \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+Table~\ref{tab:support-tradeoff} combines the money row with scores for the criteria that money does not capture. The hybrid design scores 4 rather than 5 on speed because returns, complaints and other contacts still wait for a person, though a person with a draft; the assist design scores 2 because every e-mail still waits in a queue, which fails \kpi{E-mail response}. The hybrid design matches the triage design's cost within two cents while scoring higher on security and control, because no refund is granted without a person.
+
+\subsection{Failure walk-through and decision}
+
+The failure walk-through\index{failure walk-through} for the hybrid design (an exercise) surfaces one change worth recording here: triage itself can misroute a refund request into the automated delivery path, where a ``broken item'' report could lead to a replacement being shipped. The fix is in the tool, not the router: the delivery server's \texttt{report\_delivery\_damage} tool creates a claim for review and cannot ship a replacement itself. \begin{keyidea}
+When routing can fail, the tools on the wrong path should be unable to do harm.
+\end{keyidea}
+
+\begin{tcolorbox}[colback=white, colframe=black!45, boxrule=0.4pt, arc=1pt, fontupper=\small, title={DR-SUP-001: The hybrid design, automating by intent}, fonttitle=\bfseries\small, coltitle=black, colbacktitle=codefill]
+\textbf{Context.} 52{,}000 contacts a month at \$4.86; 18\% re-contact; e-mail answered in 19 hours; 2.2\% of refunds against policy.\\
+\textbf{Options.} The single-agent design (the sample extended); the triage design (routing with task-shaped tools); the assist design (a copilot on every contact); the hybrid design (automation by intent).\\
+\textbf{Decision.} The hybrid design. Automate order status, delivery issues, product questions and scheduling; assist people on returns and refunds, complaints and other contacts.\\
+\textbf{Reasons.} The hybrid design costs within \$0.02 of the triage design per contact (about \$1{,}000 a month) and keeps a person on every refund; it meets \kpi{E-mail response}, which the assist design does not.\\
+\textbf{Consequences.} Five MCP servers, owned by four teams. The returns server is built now, for the copilot, and is ready for automation later.\\
+\textbf{Reversal triggers\index{reversal trigger}.} Automate returns under \$150 if the copilot's drafts for returns are accepted unedited in more than 90\% of cases over a month, with no policy errors in the sampled review. Move back to assist for any automated intent whose 72-hour re-contact rate exceeds its baseline.
+\end{tcolorbox}

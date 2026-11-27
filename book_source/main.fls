@@ -417,6 +417,9 @@ INPUT appendix/appC.aux
 INPUT ./appendix/appD.aux
 INPUT ./appendix/appD.aux
 INPUT appendix/appD.aux
+INPUT ./appendix/appE.aux
+INPUT ./appendix/appE.aux
+INPUT appendix/appE.aux
 OUTPUT main.aux
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/microtype/mt-cmr.cfg
@@ -608,12 +611,12 @@ INPUT ./ch01/fig-integrated.tex
 INPUT ./ch01/fig-integrated.tex
 INPUT ch01/fig-integrated.tex
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
-INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT ./ch01/ch01c.tex
 INPUT ./ch01/ch01c.tex
 INPUT ./ch01/ch01c.tex
 INPUT ./ch01/ch01c.tex
 INPUT ch01/ch01c.tex
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -623,6 +626,7 @@ INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/lm/ts1lmtt.fd
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/lm/ts1lmtt.fd
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/lm/ts1lmtt.fd
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/ts1-lmtti10.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmri10.tfm
 INPUT ./infographic/infographic01.pdf
 INPUT ./infographic/infographic01.pdf
 INPUT ./infographic/infographic01.pdf
@@ -690,7 +694,6 @@ INPUT ./ch03/code/value_case.py
 INPUT ./ch03/code/value_case.py
 INPUT ch03/code/value_case.py
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/ts1-lmtt10.tfm
-INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmri10.tfm
 INPUT ./ch03/ch03c.tex
 INPUT ./ch03/ch03c.tex
 INPUT ./ch03/ch03c.tex
@@ -1086,6 +1089,12 @@ OUTPUT appendix/appD.aux
 INPUT ./appendix/appD.tex
 INPUT ./appendix/appD.tex
 INPUT appendix/appD.tex
+INPUT ./appendix/appE.tex
+INPUT ./appendix/appE.tex
+OUTPUT appendix/appE.aux
+INPUT ./appendix/appE.tex
+INPUT ./appendix/appE.tex
+INPUT appendix/appE.tex
 INPUT ./main.bbl
 INPUT ./main.bbl
 INPUT main.bbl
@@ -1147,6 +1156,9 @@ INPUT appendix/appC.aux
 INPUT ./appendix/appD.aux
 INPUT ./appendix/appD.aux
 INPUT appendix/appD.aux
+INPUT ./appendix/appE.aux
+INPUT ./appendix/appE.aux
+INPUT appendix/appE.aux
 INPUT ./main.out
 INPUT ./main.out
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb

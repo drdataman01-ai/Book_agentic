@@ -1,0 +1,117 @@
+% ======================================================================
+% Chapter 2 -- Part B: writing the design down (step 4); patterns and
+% anti-patterns
+% ======================================================================
+
+\section{Step 4: How Do We Write a Design Down?}
+\label{sec:design-table}
+\label{sec:notation}
+
+\begin{inpractice}[In practice: three engineers, one design, three stories]
+After Harbor funded Team B's quote design, three engineers described it on the company wiki. One wrote that ``the agent looks up pricing and checks policy,'' another that ``a rules engine applies the discount cap,'' and the third that ``the model decides whether a manager needs to approve.'' The third description was wrong, because in Team B's design code makes that decision, but nobody could tell from the prose. The first design review spent most of its two hours agreeing on what the design was.
+\end{inpractice}
+
+The remedy is a fixed format that puts the same few facts on the page for every part of a design. Step 4 asks you to draft two or three designs and to write each one in this format.
+
+\begin{definition}
+A \keyterm{design table}\index{design table|textbf} lists the steps of a solution in the order in which the work flows, and states for each step who or what does it, what it uses, and why it is there.
+\end{definition}
+
+Each of the four columns has a simple rule.
+\begin{description}[leftmargin=1em,itemsep=2pt]
+  \item[Step.] Write a short phrase, such as ``check the warranty.'' If the work can go more than one way, write every branch, including the ``otherwise'' case.
+  \item[Done by.] Write one of four kinds of worker, \tagPerson, \tagAgent, \tagCode\ or \tagGuardrail, and add the one fact a reviewer needs: a person's role and response time, how much an agent may decide and when it stops, where a code rule comes from, or what a guardrail\index{guardrail} checks. A guardrail is an automatic check that blocks or repairs anything that breaks a policy.
+  \item[Uses.] Write the MCP servers, knowledge stores and inputs the step relies on. For a server, give its owner and only the tools this solution may use; that list is the \texttt{tool\_filter} you give ADK\index{Agent Development Kit (ADK)} in code (Listing~1.4). For a knowledge store, give its owner and how often it is refreshed. A company system appears only through its server.
+  \item[Why it is there.] Write the business measure the step improves or the risk it guards against. \emph{Every step must earn its place}, so a step with nothing in this column is missing its reason or should not be there.
+\end{description}
+
+Table~\ref{tab:quote-design} writes Harbor's quote design from Chapter~\ref{ch:foundations} in this format. Its last column refers to three measures and three risks. The measures are \textbf{turnaround}, the median time to quote, which should fall below 4 hours from 26; \textbf{margin}, which should stay at least at today's level; and \textbf{analyst time}, the minutes per quote, which should fall below 8 from about 35. The risks are a \emph{below-floor} quote under the minimum margin, the \emph{wrong customer} or contract, and a \textbf{mismatch} between a number in the cover note and the quote itself.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.0cm}@{}}
+\caption{Harbor's quote design as a design table. It is the same design as the sketch in Chapter~\ref{ch:foundations}, but the kind, owner, rule source and reason for every step are now on the page.}\label{tab:quote-design}\\
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
+1 & Screen the representative's request, which arrives by e-mail or chat and is untrusted text & \tagGuardrail\ Blocks instructions aimed at the system & The request & Wrong customer \\
+2 & Read the request and fill in the quote form & \tagAgent\ One model call; stops when the form is filled & The request & Turnaround; analyst time \\
+3 & Validate the fields and fetch prices. If a field is missing, ask the representative; otherwise continue & \tagCode & ERP server (owner: Pricing), tools \texttt{get\_item\_pricing} and \texttt{get\_contract\_terms} & Wrong customer \\
+4 & Apply the discount policy. If the quote is an exception, send it to step 5; otherwise go to step 6 & \tagCode\ Discount cap 15\%, margin floor 22\%, from configuration version 3 & Policy and contract index (owner: Finance; refreshed daily) & Margin; below floor \\
+5 & Approve or reject the exception. A rejected quote returns to the representative & \tagPerson\ Sales manager, within 4 business hours & The quote and the reason it is an exception & Below floor \\
+6 & Draft the cover note & \tagAgent\ One model call; stops when the note is written & The priced quote from step 4 & Analyst time \\
+7 & Check every number in the cover note against the policy engine's output & \tagGuardrail & The note and the priced quote & Mismatch \\
+8 & Save the quote as a draft in the CRM & \tagCode & CRM server (owner: Sales Ops), tool \texttt{create\_quote\_draft} & Turnaround \\
+9 & Review the draft and send it to the customer & \tagPerson\ The sales representative, who now owns the quote & The CRM draft & Turnaround \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+The table makes three things explicit that the informal sketch left vague. Code, not the model, decides whether a manager is needed. Both agents make a single call and have a defined stopping point. And the only write to a company system, in step 8, comes after a guardrail that checks every number and before a person reviews the quote.
+
+\subsection{Eight checks before a review}
+\label{sec:checks}
+
+A design table is \emph{complete} when it passes the eight checks below. Each check catches a mistake that recurs in student designs and production systems alike, and each can be answered by reading down one column of the table.
+
+\begin{tryit}[Checklist: eight checks before a review]
+\begin{description}[leftmargin=1em,itemsep=2pt]
+  \item[$\square$ Bounded agents.] Does every agent state how much it may decide and when it stops? An agent with no stopping point has no limit on its cost.
+  \item[$\square$ Protected writes.] Does every step that changes a company system, sends a message outside the company or moves money come after a person or a guardrail, or explain why neither is needed?
+  \item[$\square$ Servers in front of systems.] Is every company system reached only through an MCP server with a listed set of tools?
+  \item[$\square$ Rules in code.] Are thresholds, limits and eligibility rules done by code rather than written into an agent's instructions?
+  \item[$\square$ Owned knowledge.] Does every knowledge store name an owner and say how often it is refreshed?
+  \item[$\square$ Screened input.] Is untrusted content, such as outside e-mail or a customer's upload, screened by a guardrail before an agent reads it, or is there a note explaining why it need not be?
+  \item[$\square$ Complete branches.] Does every step that can go more than one way say what happens in every case, including ``otherwise''?
+  \item[$\square$ Justified steps.] Does every step have an entry in the ``why it is there'' column?
+\end{description}
+\end{tryit}
+
+Complete is not the same as good, because a complete design can still be too costly, too slow or aimed at the wrong problem. The checks only make a design explicit enough to be judged, and the judging is the subject of Section~\ref{sec:criteria}.
+
+\paragraph{Component cards.} Each agent, MCP server and guardrail also gets a short specification called a \keyterm{component card}\index{component card|textbf}. It states the component's purpose, inputs and outputs, autonomy and stopping point, tools, quality target, cost and time budget, and what happens when it fails. The quality target and the budget make the design testable. Chapter~\ref{ch:case-policy} shows a complete card, and Chapter~\ref{ch:case-fraud} builds the test set that a quality target refers to.
+
+% ----------------------------------------------------------------------
+\section{Patterns and Traps: Do We Have to Start from Scratch?}
+\label{sec:patterns}
+
+You rarely draft a design from nothing. A \keyterm{design pattern}\index{design pattern|textbf} is a named, reusable arrangement of steps that solves a recurring problem, with known costs and known ways to fail. A name lets a team say ``put an approval gate in front of the credit'' instead of describing the arrangement each time. This chapter presents the two patterns that appear in almost every case: \textbf{retrieve-then-answer}, which brings company knowledge in, and the \textbf{approval gate}\index{approval gate|textbf}, which keeps a person in charge of consequential actions.
+
+% ---------------- retrieve-then-answer
+\begin{patterncard}{Retrieve-then-answer}\index{retrieve-then-answer|textbf}
+\textbf{Intent.} Answer from the company's own documents rather than the model's memory, and cite the source. This is the RAG\index{retrieval-augmented generation (RAG)} building block of Chapter~\ref{ch:foundations} used as a pattern.\par\smallskip
+\textbf{How it works.} Code searches an index of company documents, an agent answers using only the passages found and cites each one, and a guardrail stops any answer that contains a claim without a citation.\par\smallskip
+\textbf{Use when} answers depend on private or changing text that users must be able to check. \textbf{Avoid when} the answer is a single database field, which should be looked up instead. \textbf{Cost} is one search and one model call per question. \textbf{Typical failures} are an answer from an outdated document, an answer with no supporting passage, and leaked documents that the user may not see. \textbf{In this book:} Chapter~\ref{ch:case-policy}, and the knowledge parts of Chapters~\ref{ch:case-incident} and~\ref{ch:case-loan}.
+\end{patterncard}
+
+% ---------------- approval gate
+\begin{patterncard}{Approval gate}
+\textbf{Intent.} Pause before a consequential action until an authorized person approves, edits or rejects it.\par\smallskip
+\textbf{How it works.} An agent or a code step proposes an action. A written rule in code decides whether the action needs approval. If it does, the action waits for an authorized person; if it does not, it goes ahead at once. Only then does code call the server tool that makes the change.\par\smallskip
+\textbf{Use when} an action is costly or hard to undo, or policy assigns the decision to a role. \textbf{Avoid when} the action is cheap and reversible, because a gate there only adds delay and a sampled review after the fact is better. \textbf{Cost} is mostly the approver's time and the wait. \textbf{Typical failures} are rubber-stamping\index{rubber-stamping} when approvals are too frequent, requests piling up when the approver is away, and approvers shown too little context to judge. \textbf{In this book:} Chapter~\ref{ch:case-invoice}, and also Chapters~\ref{ch:case-fraud}, \ref{ch:case-kyc} and~\ref{ch:case-loan}.
+\end{patterncard}
+
+Five more patterns appear in the chapters that first need them: the \textbf{router} in Chapter~\ref{ch:case-support}, the \textbf{planner--executor} and the \textbf{event-triggered agent} in Chapter~\ref{ch:case-incident}, \textbf{reflection} in Chapter~\ref{ch:case-fraud}, and the \textbf{multi-agent handoff} in Chapter~\ref{ch:case-airline}.
+
+\begin{thinkabout}
+Before reading the three traps below, look back at Team A's design in Chapter~\ref{ch:foundations}. How many things in it would you call a trap? Which one worried the finance director most?
+\end{thinkabout}
+
+An \keyterm{anti-pattern}\index{anti-pattern|textbf} is an arrangement that looks reasonable and fails in a predictable way. Three are common enough to name now.
+
+\begin{antipattern}{The do-everything agent}
+One agent with many tools and a long prompt does everything, as Team A's design did. It demos well and fails in production. Every input can take every path, so it is hard to test; its permissions are the union of everything it might ever need; and a change to one part of the prompt can change behavior elsewhere. \emph{Remedy:} break the process down with the four questions of step 3, and use fixed workflows\index{workflow} and narrow agents.
+\end{antipattern}
+
+\begin{antipattern}{Policy in the prompt}
+Thresholds, eligibility rules and prohibitions are written into the model's instructions instead of into code. \emph{Remedy:} move the rule to a code step or a guardrail, and keep one sentence in the prompt that explains the rule so the model behaves consistently with it.
+\end{antipattern}
+
+\begin{antipattern}{The silent write}
+A write to a company system, a message to a customer or a payment happens with no checkpoint, no guardrail and no log that a person will read. \emph{Remedy:} an approval gate, a guardrail, or at least a reversible write plus a sampled review, chosen according to what a wrong write would cost.
+\end{antipattern}

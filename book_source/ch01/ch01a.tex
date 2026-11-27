@@ -13,6 +13,7 @@
 By the end of this chapter you will be able to answer these questions:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
   \item Why did a smaller, plainer demo win funding over a flashier one?
+  \item What systems does a company run on, and how do programs talk to one another?
   \item What can a language model do on its own, and what can it not do without help?
   \item How do RAG, agents and MCP work, and how does each of them fail?
   \item How much should we let the model decide?
@@ -31,6 +32,9 @@ Harbor Industrial Supply is a regional distributor of pumps, valves and fittings
 The vice president asked two internal teams to show her what AI could do about the problem, and gave each team two weeks.
 
 \paragraph{Team A} built an agent. They wrote a long set of instructions for a large language model that described the discount policy, and they connected the model to fourteen tools, including product search, price lookup, inventory, customer lookup, contract lookup, a margin calculator, an e-mail sender and a CRM updater. In the demo, a sales representative typed, ``Quote 40 units of the 3-inch stainless ball valve for Delta Water, they want 18\% off.'' Within a minute the agent had looked up the customer, found the contract, checked stock, computed a price and drafted an e-mail. The room applauded.
+
+If some of the words in this story are unfamiliar, here is what they mean. A \textbf{large language model} is the technology behind chatbots such as Gemini, ChatGPT and Claude, and Team A's \textbf{instructions}, or \textbf{prompt}, were the text that told the model what to do. Each of the fourteen \textbf{tools} was a small program that the model could ask the software to run for it, such as a price lookup. The \textbf{CRM}, or customer relationship management system, is where Harbor keeps its customers and quotes. Section~\ref{sec:company-systems} explains these systems, and Sections~\ref{sec:llm} and~\ref{sec:blocks} explain the model, tools, RAG and MCP, each with a picture.
+
 
 Then the finance director asked three questions. 
 \begin{enumerate}
@@ -141,6 +145,9 @@ Think of a tool that became easy to use during your career, such as spreadsheets
 
 A few years ago, it took real engineering effort to make a language model call a function, search a collection of documents, or keep working on a task until it was finished. Today a student can do all three in an afternoon. Open-source frameworks such as Google's Agent Development Kit, LangGraph, the OpenAI Agents SDK and the Claude Agent SDK handle most of the plumbing. Vendors publish sample agents for customer service, data analysis and document processing that can be deployed with a single command, and coding assistants write much of the remaining code.
 
+A \textbf{framework} of this kind is a ready-made software kit that handles the routine plumbing of a program, so that programmers only have to write the parts that are specific to their own problem. An \textbf{SDK}, or software development kit, is a similar kit that a company offers for its own platform. Most of these kits are \textbf{open source}, which means that their code is published and anyone may use and change it for free.
+
+
 \textbf{When building becomes cheap, the difficult part of the work moves somewhere else.} The hard question is no longer whether we can make the system call the inventory system. The hard questions are about the business. 
 \begin{itemize}
 \item Which parts of this process should a model decide at all, and which parts must never be left to a model? 
@@ -206,6 +213,9 @@ We will call the distance between being able to build an agent and being able to
 \end{itemize}
 \end{description}
 
+Several terms in this list will come back in every case, so it is worth saying now what they mean. \textbf{Least privilege} is the rule that each part of a system gets only the access it needs for its job, and nothing more. An \textbf{approval gate} is a step at which the system stops and waits until a person approves. \textbf{Deployment} puts a system into real use, and \textbf{monitoring} and \textbf{observability} let the team see what the running system is doing and why. A \textbf{KPI}, or key performance indicator, is a number that the business already watches, such as the hours a customer waits for a quote. \textbf{Unit economics} describes what it costs, and what it saves, to handle one unit of work, such as one quote. \textbf{Go/no-go criteria} are conditions, agreed in advance, that decide whether a trial continues or stops. Finally, errors are \textbf{asymmetric} when a mistake in one direction costs far more than a mistake in the other, as when missing a fraud costs more than questioning a good customer.
+
+
 \subsection{What exactly is a design?}
 
 Throughout the book we use the word \emph{design} in a specific sense.
@@ -239,6 +249,87 @@ The definition leads directly to the four deliverables you will produce for ever
 \endgroup
 
 % ----------------------------------------------------------------------
+\section{What Does a Company Run On?}
+\label{sec:company-systems}
+
+\begin{thinkabout}
+Think of a company you have worked for or bought from. Where does it keep the price of a product, the record of your order and the history of your complaints? Is it one place or several?
+\end{thinkabout}
+
+Before we can talk about where AI fits, we need a picture of how a modern company keeps track of its work. A company is, among other things, a very large collection of \emph{records}. It keeps a record of every customer, every product and its price, every order, every invoice, every employee and every payment. The software that stores these records and lets people work with them is called an \keyterm{information system}\index{information system|textbf}. A large company does not have one information system. It has many, and each one looks after one area of the business.
+
+The simplest building block of an information system is a \keyterm{database}\index{database|textbf}, an organized store of records that a computer can search and update quickly. You can think of a database as a very large and very strict spreadsheet that many people and programs can use at the same time. On top of their databases, most companies run two large systems that appear in almost every chapter of this book.
+
+The first is the \keyterm{ERP}\index{enterprise resource planning (ERP)|textbf}, short for enterprise resource planning system. It is the company's main operational system, and it holds products, prices, stock levels, purchase orders, invoices and the accounts. When Harbor wants to know the price of a valve or how many are in the warehouse, the answer lives in the ERP. SAP and Oracle are well-known examples. The second is the \keyterm{CRM}\index{customer relationship management (CRM)|textbf}, short for customer relationship management system. It holds everything the company knows about its customers, including contacts, past conversations, open deals and quotes. Salesforce is a well-known example, and at Harbor, quotes are created in the CRM.
+
+Each fact a company keeps should have one official home, called its \keyterm{system of record}\index{system of record|textbf}. If two screens show different prices for the same valve, the price in the system of record is the correct one. A well-designed AI solution reads facts from the system of record and writes its changes back there; it never keeps its own private copy of the truth.
+
+The work that flows through these systems is organized into business processes. A \keyterm{business process}\index{business process|textbf} is the sequence of steps that people and systems follow to get a piece of work done, such as answering a quote request, paying a supplier or opening a bank account. Every case in this book redesigns one business process.
+
+Figure~\ref{fig:harbor-systems} shows the people and systems behind Delta Water's request as Harbor handles it today, before any AI is involved. The information needed to answer the customer is spread across several places. The price and stock are in the ERP, the customer's contract and the quote itself are in the CRM, and the discount policy is a document in a shared folder. Much of the slow, manual work at the pricing desk is simply people moving information from one of these places to another, and applying the company's rules along the way.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners=3pt, align=center, font=\footnotesize, minimum height=11mm, text width=2.6cm, inner sep=3pt},
+  sys/.style={box, fill=white, dashed, thick},
+  person/.style={box, fill=humanfill, double},
+  doc/.style={box, fill=ragfill},
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  lab/.style={font=\scriptsize\itshape, fill=white, inner sep=1pt}
+]
+\node[person] (cust) at (0,0) {Customer\\{\scriptsize Delta Water}};
+\node[person] (rep) at (4.3,0) {Sales\\representative};
+\node[person] (desk) at (8.6,0) {Pricing analyst\\{\scriptsize does the checks}};
+\node[person] (mgr) at (12.9,0) {Manager\\{\scriptsize approves big discounts}};
+\node[sys] (erp) at (4.3,-3.0) {\textbf{ERP}\\{\scriptsize prices, costs, stock, orders}};
+\node[sys] (crm) at (8.6,-3.0) {\textbf{CRM}\\{\scriptsize customers, contracts, quotes}};
+\node[doc] (pol) at (12.9,-3.0) {\textbf{Policy documents}\\{\scriptsize discount rules, written in plain text}};
+\draw[arr] (cust) -- node[lab, above=1pt] {e-mail} (rep);
+\draw[arr] (rep) -- node[lab, above=1pt] {request} (desk);
+\draw[arr, <->] (desk) -- node[lab, above=1pt] {asks} (mgr);
+\draw[arr, <->] (desk.south west) -- (erp.north);
+\draw[arr, <->] (desk.south) -- (crm.north);
+\draw[arr, <->] (desk.south east) -- (pol.north);
+\node[lab, align=center] at (8.6,-1.45) {looks up, checks and records};
+\end{tikzpicture}
+\caption{The people and systems behind one quote request at Harbor today. Double borders mark people, dashed boxes mark systems of record, and the amber box marks documents written for people to read.}
+\label{fig:harbor-systems}
+\end{figure}
+
+\subsection{How programs talk to one another}
+
+If software is going to help the pricing desk, it must be able to ask the ERP for a price and ask the CRM to create a quote. Programs do this by sending each other messages in an agreed format, as Figure~\ref{fig:api} shows. You do not need to know how to write these messages, but a few words come up again and again in this book.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners=3pt, align=center, font=\footnotesize, minimum height=12mm, text width=2.6cm, inner sep=3pt},
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  msg/.style={font=\scriptsize\ttfamily, fill=white, draw=black!30, rounded corners=2pt, inner sep=3pt, align=left}
+]
+\node[box, fill=codefill] (app) at (0,0) {A program\\{\scriptsize for example, a quote assistant}};
+\node[box, fill=white, dashed, thick] (erp) at (11,0) {ERP's API\\{\scriptsize the menu of requests it accepts}};
+\draw[arr] ([yshift=3mm]app.east) -- node[msg, above=1mm] {request: price and stock for BV-316-3} ([yshift=3mm]erp.west);
+\draw[arr] ([yshift=-3mm]erp.west) -- node[msg, below=1mm] {response: \{"list\_price": 412.00, "in\_stock": 65\}} ([yshift=-3mm]app.east);
+\end{tikzpicture}
+\caption{Programs talk by sending a request to another system's API and receiving a response, usually written in JSON.}
+\label{fig:api}
+\end{figure}
+
+A \keyterm{server}\index{server|textbf} is a program, usually running on a computer in a data center, that waits for requests and answers them; the word also refers to the computer it runs on. The menu of requests that a system will accept from other programs is called its \keyterm{API}\index{application programming interface (API)|textbf}, short for application programming interface. A restaurant is a good comparison. You do not walk into the kitchen. You order from the menu, the waiter carries your order to the kitchen, and your food comes back. The API is the menu, and the connection between the programs is the waiter. A program sends a \textbf{request}\index{request and response} to an API and receives a \textbf{response}, and this pair is the basic unit of conversation between programs.
+
+Requests and responses are usually written in \keyterm{JSON}\index{JSON|textbf}, a simple text format of labels and values such as \texttt{\{"part": "BV-316-3", "in\_stock": 65\}}. JSON is meant to be readable by people as well as by programs, and you will see it in some of the book's examples.
+
+Most of the servers in this book run in \keyterm{the cloud}\index{cloud|textbf}, which simply means computers in someone else's data center that a company rents by the hour or by the request. This book's labs run on Google Cloud. To \keyterm{deploy}\index{deploy|textbf} a program is to install it on such a server, so that other people and programs can use it rather than only running it on your own laptop.
+
+Two more ideas keep these connections safe. Every program that connects to a company system does so under an account, just as a person does, and the account's \keyterm{permissions}\index{permissions|textbf} decide what it may read and what it may change. A basic rule of good design, called \textbf{least privilege}, says that every account should have only the permissions it needs for its job. Finally, a \keyterm{log}\index{log|textbf} is a running record, kept by a system, of what happened and when: who asked for what, what was changed and what went wrong. Logs are how a company later checks what its software actually did.
+
+\begin{keyidea}
+Most business work is about finding the right information in the right system, applying the company's rules to it, and recording the result. An AI solution helps only if it fits into this picture of systems, rules and people.
+\end{keyidea}
+
+% ----------------------------------------------------------------------
 \section{What Can a Language Model Do on Its Own?}
 \label{sec:llm}
 
@@ -249,6 +340,9 @@ Suppose you paste the request ``Quote 40 units of the 3-inch stainless ball valv
 Every technology in this book is built around a \keyterm{large language model}\index{large language model (LLM)|textbf} (LLM), so we start there. A language model is a program that has been trained on a very large amount of text to predict what text should come next. You give it some text, called the \keyterm{prompt}\index{prompt|textbf}, and it writes a continuation. That sounds modest, but a model trained at a large enough scale learns to do many useful things through this one ability. It can read a messy e-mail and pick out the customer, the products and the quantities. It can summarize a contract, follow written instructions, answer questions, and write a polite note to a manager. It can also produce its answer in a strict format, such as a filled-in form, when asked to.
 
 Two facts about how a model works matter for everything that follows. The first is that a model has \textbf{no memory} between requests. Each time a program sends it a prompt, the model starts fresh, and the only information it has, beyond what it learned during training, is the text in that prompt. The space available for the prompt is called the \keyterm{context window}\index{context window|textbf}. It is large, often hundreds of pages, but it is not unlimited, and every page placed in it costs time and money. The second fact is that a model's output is produced by probability, not by rules. A model that follows an instruction correctly ninety-nine times may still break it the hundredth time, especially if the input is unusual or written to mislead it.
+
+A few more words describe how programs use a model. Each request sent to a model, together with the response it returns, is called a \textbf{model call}, and each call costs a small amount of money and takes a second or more. Models read and write text in small pieces called \keyterm{tokens}\index{token|textbf}, each roughly three-quarters of a word, and model providers charge by the number of tokens that go in and come out, so a longer prompt costs more. Finally, the part of the prompt that tells the model its role and its rules is often called the \textbf{instruction} or the \textbf{system prompt}. The rest of the prompt carries the request and any information we add to it.
+
 
 These two facts explain why a language model on its own is not enough for business work. Imagine giving Team A's request about Delta Water to a model with no help at all. Three things would go wrong.
 

@@ -30,6 +30,21 @@ By the end of this case you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The business.} Parcelpoint runs parcel lockers, and every locker depends on software that runs in the cloud, called the \emph{platform}. When part of the platform breaks or slows down, lockers stop working. Such an event is called an \emph{incident}. The platform is watched by \emph{monitoring}, which raises an \emph{alert} when a measurement looks wrong. Engineers called \emph{site-reliability engineers} (SREs) take turns being \emph{on call}, meaning they must respond to alerts at any hour.
+
+\textbf{How an incident unfolds.} Every incident passes through the same phases: someone notices (\emph{detect}), an engineer takes charge (\emph{acknowledge}), the cause is found (\emph{diagnose}), the damage is stopped, for example by undoing a recent change (\emph{mitigate}), and the fix is confirmed (\emph{verify}). Incidents are ranked by severity: a \emph{P1} affects the whole platform, a \emph{P2} affects one part of it.
+
+\textbf{Words in this chapter.}
+\pw{Availability and SLA.} Availability is the share of time a service works. A \emph{service-level agreement} is a contractual promise, here 99.9\% each month, with money back to the customer, called \emph{service credits}, if it is missed.
+\pw{SLO.} A \emph{service-level objective} is an internal target for how well a service, or here the agent itself, should perform.
+\pw{MTTR.} The average time from the start of an incident until the service works again.
+\pw{Blast radius and reversibility.} How much of the platform an action could harm if it went wrong, and whether it can be undone. Together they decide which actions an agent may take on its own.
+\pw{Observability, traces and logs.} The ability to see what a running system is doing. Logs record events, and a trace follows one request through every step. This chapter applies both to the platform and to the agent.
+\pw{Runbook.} A written, step-by-step procedure for handling a known kind of problem.
+\end{beforeyoustart}
+
+
 % ----------------------------------------------------------------------
 \section{Business Brief: What Is Going Wrong Today?}
 \label{sec:inc-brief}

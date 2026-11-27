@@ -19,11 +19,12 @@ A level-1 auxiliary file: appendix/appA.aux
 A level-1 auxiliary file: appendix/appB.aux
 A level-1 auxiliary file: appendix/appC.aux
 A level-1 auxiliary file: appendix/appD.aux
+A level-1 auxiliary file: appendix/appE.aux
 The style file: plainnat.bst
 Database file #1: common/refs.bib
 You've used 20 entries,
             2773 wiz_defined-function locations,
-            708 strings with 8624 characters,
+            709 strings with 8641 characters,
 and the built_in function-call counts, 8659 in all, are:
 = -- 690
 > -- 612

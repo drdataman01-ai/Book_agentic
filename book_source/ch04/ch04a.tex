@@ -30,6 +30,21 @@ By the end of this case you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The business.} Alder \& Finch is a large engineering firm. Like most companies, it has a human resources team (here called People Operations) that writes the rules employees live by: how much holiday they get, what they may claim as travel expenses, when they may work from home. These rules are written down as \emph{policy documents} on the company's internal website, the \emph{intranet}. When employees cannot find an answer, they open a \emph{ticket}, which is a request logged in a help-desk system, and wait for an HR specialist to reply.
+
+\textbf{Why it is harder than it sounds.} The right answer depends on who is asking. A rule may differ by country, because employment law differs, and by \emph{grade}, which is an employee's level in the company. Some documents are restricted to managers. Policies also change every month, so an answer based on last year's version is wrong.
+
+\textbf{Words in this chapter.}
+\pw{Google sample.} A small example system that Google publishes to show how its tools work. Part~II starts each case from one, critiques it and redesigns it.
+\pw{Pinned at commit.} A \emph{commit} is one saved version of a project's code. Pinning to a commit means that we always use exactly that version, so the example does not change under us.
+\pw{Deflection.} The share of questions answered without reaching a person. It sounds like success, but it counts unanswered or wrongly answered questions too, which is the trap this chapter shows how to avoid.
+\pw{Permission-aware retrieval.} A RAG search that returns only the documents the person asking is allowed to read.
+\pw{Retrieval quality.} How often the search finds the right passage. It is measured separately from the quality of the final answers, because a good answer is impossible if the right passage was never found.
+\pw{Cloud Run.} A Google Cloud service that runs a program for us and adds or removes copies of it as traffic changes.
+\end{beforeyoustart}
+
+
 This is the first case chapter. It follows the nine-section template introduced in Chapter~\ref{ch:foundations}, and the first alternative design is a Google sample exactly as published. Because it is the first case, it goes more slowly than later ones and explains some steps that later cases will take for granted.
 
 % ----------------------------------------------------------------------

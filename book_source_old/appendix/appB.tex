@@ -1,0 +1,50 @@
+% ======================================================================
+% Appendix B -- Concept-to-Framework Mapping
+% ======================================================================
+
+\chapter{Concept-to-Framework Mapping}
+\label{app:mapping}
+
+The designs in this book are framework-independent; the builds use Google's ADK. Table~\ref{tab:mapping} shows where each design concept lives in ADK and in three other widely used frameworks: LangGraph, the OpenAI Agents SDK and the Claude Agent SDK. All four support MCP, so the MCP servers\index{Model Context Protocol (MCP)!server} built in the cases work unchanged with any of them.
+
+Treat the table as a map, not an API reference. These frameworks release frequently, and names, signatures and capabilities change. Each framework's documentation is the authority; the companion repository keeps a version of this table with links, checked at each repository release.
+
+\begingroup
+\scriptsize \setlength{\tabcolsep}{3.5pt}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{Where the book's concepts live in four agent frameworks.}\label{tab:mapping}\\
+\toprule
+Concept & Google ADK & LangGraph & OpenAI Agents SDK & Claude Agent SDK \\
+\midrule
+\endfirsthead
+\toprule
+Concept & Google ADK & LangGraph & OpenAI Agents SDK & Claude Agent SDK \\
+\midrule
+\endhead
+Agent (model + instruction + tools in a loop) & \texttt{Agent} & A graph node running a model with tools (prebuilt ReAct-style agent available) & \texttt{Agent}, run by \texttt{Runner} & The agent loop run by \texttt{query} or a client object, configured with options \\
+Function tool & Python function with docstring; \texttt{FunctionTool} & Tool functions bound to the model & \texttt{@function\_tool} & \texttt{@tool}, bundled into an in-process MCP server \\
+MCP client & \texttt{McpToolset} (stdio, Streamable HTTP) & MCP adapters that load server tools as LangChain tools & MCP server classes for stdio and HTTP & Native: MCP servers listed in options \\
+Fixed workflow, routing (Levels 2--3) & \texttt{Workflow} with edges; route by returning an event with a route name & \texttt{StateGraph} with edges and conditional edges & Code around \texttt{Runner}; handoffs for model-chosen routing & Code around the agent loop; hooks \\
+Sub-agents, handoff & Sub-agents; agents as tools; transfer between agents & Subgraphs; commands that move to another node & Handoffs (first-class) & Subagents defined in options \\
+Human-in-the-loop pause & \texttt{RequestInput} in a workflow node; long-running tools & \texttt{interrupt()} and resume with a command; checkpointers & Human-in-the-loop approval for tool calls & Permission modes and permission callbacks before tool use \\
+Session state & Session with scoped state (\texttt{user:}, \texttt{app:}, \texttt{temp:}) & Graph state persisted by a checkpointer & Sessions (conversation history) & Sessions that can be resumed \\
+Long-term memory & Memory service; Agent Platform Memory Bank & Stores for cross-thread memory & Application-provided & Application-provided; files and tools \\
+Guardrails & Callbacks before/after model, tool and agent & Nodes and conditional edges; validation in code & Input and output guardrails & Hooks before and after tool use \\
+Evaluation & \texttt{adk eval}: trajectories and responses & LangSmith evaluation (separate product) & Tracing plus external evaluation & External evaluation \\
+Tracing & OpenTelemetry; Cloud Trace & LangSmith; OpenTelemetry integrations & Built-in tracing & Hooks and logs; OpenTelemetry integrations \\
+Deployment & \texttt{adk deploy} to Agent Runtime, Cloud Run, GKE & LangGraph Platform, or any container & Any Python host & Any host that can run the SDK \\
+Agent-to-agent & A2A built in (expose and call) & Via A2A libraries & Via A2A libraries & Via A2A libraries \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+\section{Translating a design}
+
+Because the cases keep business logic in code, tools in MCP servers and policy in configuration, moving a design to another framework mostly means re-expressing the orchestration:
+\begin{itemize}[itemsep=1pt]
+  \item \textbf{MCP servers} move unchanged.
+  \item \textbf{Routing functions and guardrails\index{guardrail}} written as plain Python move unchanged; only the way they are attached to the graph or loop differs.
+  \item \textbf{Workflows} map to LangGraph graphs naturally; in the OpenAI and Claude SDKs, which are centered on the agent loop\index{agent loop}, a fixed workflow\index{workflow} is written as ordinary code that calls agents in sequence.
+  \item \textbf{Human-in-the-loop pauses} differ most: check how each framework persists a paused run, how long it can wait, and how a resumed run proves who resumed it.
+  \item \textbf{Evaluation sets} move unchanged if they are stored as data (inputs, expected tool calls\index{tool call}, reference answers), as the repository stores them.
+\end{itemize}

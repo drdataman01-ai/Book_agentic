@@ -7,6 +7,9 @@
 
 Every case in this book is built with Google's open-source \keyterm{Agent Development Kit (ADK)}\index{Agent Development Kit (ADK)|textbf}. ADK is a code-first framework: you define agents, tools and the flow between them in ordinary code, then run them locally, evaluate them, and deploy them. It is available for Python, TypeScript, Go, Java and Kotlin; this book uses Python. ADK is optimized for Google's Gemini models and Google Cloud but is not tied to them: through its LiteLLM integration an ADK agent can use models from other providers \citep{adkdocs}.
 
+If you are not a programmer, a few words will help you read this section. \textbf{Code-first} means that agents are described by writing ordinary program code rather than by clicking through a web page. \textbf{Python} is the programming language the book uses, and a Python \textbf{package} or \textbf{module} is simply a folder or a file of Python code. A \textbf{terminal}, or command line, is a window in which you type commands instead of clicking, and \textbf{running locally} means running on your own computer. You do not need to follow every line of code. Read the explanation around each listing and the grey comments inside it, which say in plain language what each part does.
+
+
 This section is a tour, not a manual. Its goal is that you recognize each part of ADK when a case uses it, and that you can connect what you see in the code to the agent loop and the MCP conversation described in Section~\ref{sec:blocks}. Appendix~A covers installation and project setup in detail.
 
 \begin{versionnote}
@@ -234,6 +237,11 @@ Delivery & Cloud Build, Artifact Registry & Ch.~\ref{ch:capstone} \\
 \end{xltabular}
 \endgroup
 
+The table uses some cloud vocabulary that is worth explaining once. A \textbf{managed service} is one that the cloud provider runs and maintains for you, so that your team does not have to look after servers. A \textbf{container} packages a program with everything it needs, so that it runs the same way on any computer, and \textbf{Kubernetes}, the ``K'' in GKE, is a system for running many containers together. Cloud Storage holds files, BigQuery is a database built for analyzing very large tables, and Vector Search is the meaning-based search that RAG uses.
+
+The remaining rows are about how the pieces cooperate and stay safe. \textbf{Pub/Sub} delivers messages between programs, so that one program can announce ``an invoice has arrived'' and others can react, and a \textbf{scheduler} starts jobs at set times, such as every night. \textbf{IAM}, short for identity and access management, decides who and what may do what. A \textbf{service account} is an account used by a program rather than a person, and a \textbf{secret} is a password or key that is kept in a locked store rather than in the code. Logs record what happened, \textbf{traces} follow one request through every step, and monitoring raises an alert when something goes wrong. Finally, Cloud Build turns code into a package that can be deployed, and Artifact Registry stores those packages.
+
+
 \subsection{Three places to run an agent}
 
 The first deployment decision in every case is where the agent runs. ADK supports three main targets, and the choice is a trade-off like any other (Table~\ref{tab:targets}). ADK's command line deploys to the first two directly: \texttt{adk deploy agent\_engine} for Agent Runtime (the command keeps the old name) and \texttt{adk deploy cloud\_run} for Cloud Run.
@@ -256,6 +264,9 @@ GKE & Full control; fits companies that already run Kubernetes; custom networkin
 \bottomrule
 \end{xltabular}
 \endgroup
+
+Three phrases in the table may need explaining. A service that \textbf{scales to zero} runs nothing, and charges nothing, while nobody is using it. \textbf{Operations work} is the ongoing effort of keeping a system running, including updates, security patches, capacity planning and on-call support. A \textbf{session} is the record of one ongoing conversation, which some targets store for you and others leave to your team.
+
 
 \subsection{Cost control from day one}
 
@@ -320,6 +331,66 @@ The book does not teach all ten stages at full depth in every chapter; that woul
 
 \paragraph{The companion repository.} All code lives in the companion GitHub repository, with each case's dependencies pinned, setup and cleanup scripts, and sample data. The printed listings are excerpts chosen to show design decisions; the repository has the complete, tested code and is updated as ADK and Google Cloud change.
 
+\paragraph{If you are new to the field.} You do not need any background in AI or information systems. Technical and business terms are explained in the text where they first matter, each case opens with a box that describes its industry and process in everyday language, and Appendix~\ref{app:glossary} collects every explanation in one plain-language glossary. If you are not a programmer, read the explanation around each code listing and the comments inside it, which appear in grey italics and describe in plain language what each part does.
+
+\paragraph{The boxes.} The book uses colored boxes so that you can tell at a glance what kind of help you are looking at. Table~\ref{tab:boxes} lists them.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}X@{}}
+\caption{The boxes used in this book.}\label{tab:boxes}\\
+\toprule
+\rowcolor{coHead} Box & What it is for \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Box & What it is for \\
+\midrule
+\endhead
+\cotag{coBlue}{Think about it} & A question to pause on, alone or in class, before reading on. \\
+\cotag{coSlate}{Before you start} & At the start of each case, a plain description of the business process and its vocabulary. \\
+\cotag{coAmber}{Key idea} & The one idea to remember from a section. \\
+\cotag{coTeal}{Quick check} & A short question with its answer, to test your understanding. \\
+\cotag{coRed}{Watch out} & A common mistake or trap. \\
+\cotag{coPurple}{In practice} & A story or habit from real projects. \\
+\cotag{coGreen}{Try it} & A small activity you can do right away. \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+\paragraph{The colors in the figures.} Diagrams of designs use the same colors throughout. \colorbox{agentfill}{Blue} marks a step that uses a language model, \colorbox{codefill}{grey} marks ordinary code, \colorbox{mcpfill}{green} marks an MCP server or tool, \colorbox{ragfill}{amber} marks document search (RAG), and \colorbox{humanfill}{pink} with a double border marks a person.
+
+\paragraph{The business words.} Every case asks whether its solution is worth building and ends with a memo to the executive who would pay for it. Table~\ref{tab:business-words} explains the business words that appear most often; Chapter~\ref{ch:business} teaches how to use them.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}X@{}}
+\caption{Business words used throughout the book, in plain language.}\label{tab:business-words}\\
+\toprule
+\rowcolor{coHead} Word & What it means \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Word & What it means \\
+\midrule
+\endhead
+Sponsor\index{sponsor} & The executive who owns the business problem, pays for the solution and decides whether it goes ahead. At Harbor, the vice president of sales is the sponsor. \\
+Stakeholder\index{stakeholder} & Anyone affected by the solution or able to block it, such as the people who do the work today, their managers, finance, security and the customers. \\
+KPI\index{key performance indicator (KPI)} & A \emph{key performance indicator} is a number the business already watches to judge whether things are getting better, such as the hours a customer waits for a quote. \\
+Margin\index{margin} & The difference between what a product sells for and what it costs, usually given as a percentage of the price. A large discount can push the margin too low. \\
+Unit economics\index{unit economics} & The cost and benefit of handling one unit of work, such as one quote, one invoice or one customer contact. \\
+Cost of an error\index{cost of an error} & What a mistake costs the business. Different mistakes usually cost very different amounts, and good designs take this into account. \\
+False positive and false negative\index{false positive}\index{false negative} & The two directions a yes-or-no decision can go wrong. A \emph{false positive} raises an alarm that was not needed; a \emph{false negative} misses something that should have been caught. \\
+Latency\index{latency} & How long the system takes to respond. \\
+Pilot\index{pilot} & A small, time-limited trial of a solution with real users, run before the company commits to it fully. \\
+Go/no-go criteria\index{go/no-go criteria} & Conditions, agreed before a pilot starts, that decide whether the solution continues or stops. \\
+Audit trail\index{audit trail} & A complete, trustworthy record of who or what did each thing, when, and on what evidence, so that an auditor or regulator can check it later. \\
+Compliance\index{compliance} & Following the laws, regulations and internal policies that apply to a business. \\
+Production\index{production} & The live environment where real users and real money are involved, as opposed to a test or a demo. \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
 % ----------------------------------------------------------------------
 \section*{Chapter Summary}
 \addcontentsline{toc}{section}{Chapter Summary}
@@ -327,6 +398,7 @@ The book does not teach all ten stages at full depth in every chapter; that woul
 \begin{itemize}[itemsep=2pt]
   \item Building an agent has become cheap. Designing a solution, which means deciding what the system should do, choosing a block for each part, comparing alternatives and tying the result to business outcomes, has not. The distance between the two is the \textbf{design gap}.
   \item Closing the gap takes five skills: decomposition, boundaries, trade-offs, production and business justification. Every case produces four deliverables: a design table, a trade-off table, a working deployment and a one-page memo.
+  \item A company runs on information systems. Facts live in systems of record such as the ERP and the CRM, programs reach them through APIs, and most business work is finding information, applying rules to it and recording the result.
   \item A language model turns a prompt into text. On its own it does not know the company, cannot act, has no standard way to reach company systems, and cannot guarantee rules or arithmetic. RAG, agents with tools, MCP and plain code fill these four gaps.
   \item RAG indexes documents ahead of time as chunks with embeddings, finds the passages closest in meaning to each question, and places them in the prompt so that the model can answer from them and cite them.
   \item An agent is a model in a loop. At each turn it either requests a tool call, which the framework runs and returns, or gives a final answer. Step and cost limits bound the loop.
@@ -345,6 +417,7 @@ agent \\
 Agent Development Kit (ADK) \\
 agent loop \\
 Agent2Agent (A2A) \\
+API (application programming interface) \\
 autonomy spectrum \\
 chunk \\
 context window \\
@@ -356,6 +429,7 @@ guardrail \\
 hallucination \\
 host (MCP) \\
 human checkpoint \\
+information system \\
 large language model (LLM) \\
 least sufficient autonomy \\
 MCP client \\
@@ -367,6 +441,7 @@ prompt \\
 retrieval-augmented generation (RAG) \\
 semantic search \\
 solution design \\
+system of record \\
 tool \\
 tool call \\
 trade-off table \\

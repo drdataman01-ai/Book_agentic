@@ -36,6 +36,9 @@ Human workload & Adds work or moves it to a scarcer role & People handle only re
 \end{xltabular}
 \endgroup
 
+A few phrases in the table deserve a word of explanation. \textbf{Untrusted input} is anything that comes from outside the company's control, such as a customer's message or an uploaded file, which might contain mistakes or deliberate tricks. A system \textbf{degrades gracefully} when, instead of failing badly, it does less or hands the work to a person. \textbf{Auditability} means that someone can later reconstruct why each outcome happened, and \textbf{attack testing} means deliberately trying to trick the system before a real attacker does.
+
+
 Three remarks help in using the criteria. First, most scores at design time are estimates, which each case later replaces with measurements. Second, the criteria pull against one another: a checkpoint raises quality and control but lowers speed. Third, some requirements are not criteria but \textbf{constraints}\index{constraint (versus criterion)|textbf}. A legal or policy rule, such as ``finance approves credits above \$2{,}000,'' rules a design out however well it scores, so constraints are checked first and only the surviving designs are scored.
 
 \subsection{Three designs for returns}

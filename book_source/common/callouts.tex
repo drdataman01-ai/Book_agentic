@@ -83,3 +83,13 @@
 \setlength{\emergencystretch}{2.5em}
 % A running example that a chapter returns to.
 \newtcolorbox{runningexample}[1][Running example]{coBase=coGray, title={#1}}
+% ---------- plain-language support for readers new to the field -----------
+% Added so that readers with no background in AI or information systems
+% can follow every chapter.
+\definecolor{coSlate}{HTML}{2C5F7C}  \definecolor{coSlateBg}{HTML}{E9F1F6}
+% A plain-language introduction to the business process of a case chapter,
+% placed right after the chapter questions.
+\newtcolorbox{beforeyoustart}[1][Before you start]{coBase=coSlate,
+  colback=white, boxrule=0.6pt, leftrule=3.5pt, title={#1}}
+% A term and its meaning, used inside beforeyoustart boxes.
+\newcommand{\pw}[1]{\par\smallskip\noindent\textbf{\sffamily\color{coSlate}#1}\enspace}

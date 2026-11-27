@@ -30,6 +30,21 @@ By the end of this case you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The business.} Greenleaf Grocers runs 80 supermarkets. Every night, its systems decide how much of each product each store should receive the next day. This is called \emph{replenishment}. To decide, the system needs a \emph{forecast}: an estimate of how much of each product each store will sell. Each store--product pair is a separate \emph{series} of daily sales, and there are about 480{,}000 of them.
+
+\textbf{Why fresh food is hard.} Strawberries, bread and milk spoil within days. Order too much and the excess is thrown away, which is called \emph{waste} or a \emph{write-off}. Order too little and the shelf is empty, which is called being \emph{out of stock}. Today's system uses a simple \emph{moving average} of recent sales plus some \emph{safety stock}, which is extra stock to cover surprises. Human \emph{planners} correct the orders for holidays, promotions and weather.
+
+\textbf{Words in this chapter.}
+\pw{Time-series foundation model.} A large forecasting model trained on many kinds of data recorded over time, which can forecast a new series without being trained on it first.
+\pw{Batch versus on demand.} Running all the forecasts together on a schedule, such as every night, rather than one at a time whenever someone asks.
+\pw{Quantile.} A forecast stated as ``enough on 80\% of days'' rather than as a single average number.
+\pw{Newsvendor rule.} A classic rule for perishable goods: order more than the average when running out costs more than throwing away, and less when the opposite is true.
+\pw{Baseline and backtest.} The baseline is the simple method a new model must beat. A backtest checks a method on past data, as if it had been used at the time.
+\pw{Latency.} How long a step takes. Here, every forecast and every agent step must finish before the orders leave at 4~a.m.
+\end{beforeyoustart}
+
+
 % ----------------------------------------------------------------------
 \section{Business Brief: What Is Going Wrong Today?}
 \label{sec:fc-brief}

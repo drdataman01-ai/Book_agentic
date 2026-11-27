@@ -18,6 +18,20 @@ By the end of this chapter you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The situation.} Up to now, each chapter designed one solution for one department. In a real company, many departments soon have their own agents, built by different teams. Sales has an agent that prepares quotes, operations has one that manages stock, and finance has one that checks credit. Sooner or later a customer request needs all of them at once, and the agents must work together.
+
+\textbf{Words in this chapter.}
+\pw{A2A (Agent2Agent).} An open standard that lets agents owned by different teams, or even different companies, send work to one another, much as e-mail lets people in different companies write to each other.
+\pw{Agent card and skills.} An agent card is a short public description of an agent: who it is, which \emph{skills} (jobs) it offers, and how others may call it.
+\pw{Task states.} The stages a request passes through, such as \emph{working}, \emph{waiting for input} and \emph{completed}, so that the caller always knows where its request stands.
+\pw{Timeout and fallback.} A timeout is how long a caller waits before giving up; a fallback is what it does instead, such as passing the request to a person.
+\pw{Release.} A new version of an agent system that goes live. Because models, instructions, tools and test sets can all change, a release must be checked before it reaches users.
+\pw{Governance.} The rules, roles and reviews that keep many systems safe and accountable, applied more strictly where the risk is higher.
+\pw{Adoption.} Whether the people a system was built for actually use it in their daily work.
+\end{beforeyoustart}
+
+
 The eleven cases so far each designed one solution for one process. Real companies that succeed with their first solution soon have five, then twenty, built by different teams on different schedules. New problems appear between the solutions: agents that need each other, releases that break neighbors, costs that nobody owns, and people whose jobs change in ways nobody planned. This chapter is about those problems. It does not follow the case template; it ends with a capstone project that does.
 
 We return to Harbor Industrial Supply, where the book began.

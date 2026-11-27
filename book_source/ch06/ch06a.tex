@@ -30,6 +30,20 @@ By the end of this case you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The business.} Meridian Foods buys food from about 1{,}900 suppliers and must pay them. This work is called \emph{accounts payable}. When Meridian orders goods, it issues a \emph{purchase order}, which states what it is buying, how many and at what price. When the goods arrive, the warehouse records a \emph{goods receipt}. Later the supplier sends an \emph{invoice}, its bill. Before paying, a clerk checks that the three documents agree; this is called the \emph{three-way match}. If they disagree, for example because the price on the invoice is higher than the agreed price, the invoice becomes an \emph{exception} that someone must sort out.
+
+\textbf{What can go wrong.} Paying the same invoice twice, paying more than was agreed, paying a fake supplier, or paying late and missing a discount that some suppliers offer for early payment. All of these cost real money, which is why people stay involved in this process.
+
+\textbf{Words in this chapter.}
+\pw{Event-driven.} The workflow starts by itself when something happens, here when an invoice arrives, rather than when a person types a request.
+\pw{Human checkpoint.} A point where the workflow pauses until a person approves, changes or rejects what it proposes.
+\pw{Approval matrix.} The company's rule for who must approve a payment, usually by amount and department.
+\pw{Graph workflow.} A workflow drawn as boxes (steps) and arrows (which step comes next). ADK~2 can run such a workflow directly, including a pause that waits for a person.
+\pw{Shadow mode.} Running the new system alongside the clerks, recording what it \emph{would} have done without letting it pay anyone, so that it can be checked safely before it touches money.
+\end{beforeyoustart}
+
+
 % ----------------------------------------------------------------------
 \section{Business Brief: What Is Going Wrong Today?}
 \label{sec:inv-brief}

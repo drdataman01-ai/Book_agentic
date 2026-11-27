@@ -30,6 +30,21 @@ By the end of this case you will be able to answer these questions:
 \end{enumerate}
 \end{chapterquestions}
 
+\begin{beforeyoustart}
+\textbf{The business.} Northgate is a \emph{card issuer}: the bank that gives customers their credit cards. Every time a card is used online, the shop asks Northgate, within about a tenth of a second, whether to accept the payment. This request is called an \emph{authorization}. Purchases made online or in an app, where the physical card is not shown, are called \emph{card-not-present} transactions, and they are where most card fraud happens.
+
+\textbf{How fraud is caught today.} A statistical \emph{fraud-scoring model}, trained on years of past transactions, gives each payment a score for how suspicious it looks. Rules then accept the payment, decline it, or accept it and put it in a \emph{queue} for a human \emph{fraud analyst} to check afterward. There are always more suspicious payments than analysts can check.
+
+\textbf{Words in this chapter.}
+\pw{Anomaly model.} A model that flags behavior unlike the cardholder's normal pattern. It is a statistical model, not a language model.
+\pw{False positive and false negative.} A false positive blocks or questions a good customer; a false negative lets a fraud through. The two cost very different amounts, which is what \emph{asymmetric error costs} means.
+\pw{Threshold.} The score above which a payment is blocked or sent for review.
+\pw{Labels.} The confirmed answers, fraud or not fraud, used to train and test models. For fraud they often arrive months later, when a cardholder disputes a charge.
+\pw{Why accuracy means nothing.} Fraud is rare, so a system that calls every payment genuine is more than 99\% accurate and completely useless. The chapter uses better measures.
+\pw{Explanation.} A short note for the analyst saying why a payment was flagged. It must match what the scoring model actually used.
+\end{beforeyoustart}
+
+
 From this chapter on, cases are designed from a blank page. There is no sample to critique; the first alternative is the design an inexperienced team would most likely propose, and the method of Chapter~\ref{ch:toolkit} does the rest.
 
 % ----------------------------------------------------------------------

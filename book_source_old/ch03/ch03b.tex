@@ -1,0 +1,250 @@
+% ======================================================================
+% Chapter 3 -- Part B: value hypothesis, value case, unit economics,
+% cost of errors, risk
+% ======================================================================
+
+\section{What Is It Worth?}
+\label{sec:value-case}
+
+\subsection{State the hypothesis first}
+
+Before estimating any money, write one sentence that says how the design creates value. This is the \keyterm{value hypothesis}\index{value hypothesis|textbf}.
+
+\begin{keyidea}[Harbor's value hypothesis, in one sentence]
+\emph{If quotes reach customers in under four hours instead of a day, Harbor will win more of the orders it quotes; and if analysts only check drafts instead of building quotes, they can spend the freed time on large, complex deals---without lowering realized margin.}
+\end{keyidea}
+
+The hypothesis names the mechanism (faster quotes, freed analyst time), the result (more orders won, better use of analysts), and the guardrail\index{guardrail} (margin holds). Every number in the value case should map to a clause of the hypothesis. A number that does not is a sign that the case is being padded.
+
+\subsection{Four kinds of benefit}
+
+The benefits of AI solutions fall into four kinds, and they differ sharply in how certain they are and how they show up in the accounts. Table~\ref{tab:benefits} compares them.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X@{}}
+\caption{The four kinds of benefit, from the least certain to the best measured.}\label{tab:benefits}\\
+\toprule
+\rowcolor{coHead} Kind & What it means & How certain & Watch for \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Kind & What it means & How certain & Watch for \\
+\midrule
+\endhead
+Growth & More revenue or margin: more deals won, more customers served & \cotag{coRed}{Least certain} & Often the largest benefit, so it is tempting to promise it \\
+Labor capacity & Hours freed from routine work & \cotag{coAmber}{Real, but} & It becomes cash only if the freed time is put to valuable use or the team grows more slowly \\
+Error reduction & Fewer costly mistakes, such as margin leakage, refunds and rework & \cotag{coGreen}{Well measured} & Usually solid, because errors leave a trail \\
+Risk reduction & A lower chance of a rare, expensive event, such as a fine or a breach & \cotag{coAmber}{Hard to value} & Sometimes the real reason the project exists \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+\begin{watchout}
+A business case that counts every freed minute as saved salary is the most common overstatement in the field. Unless someone decides what the freed people will do, or the team stops hiring, the minutes never reach the bank.
+\end{watchout}
+
+\subsection{Harbor's value case}\index{value case|textbf}
+
+Listing~\ref{lst:value} computes Harbor's annual value with every assumption in one place. Each input is either measured (from the process map and the controller's audit) or explicitly assumed; the assumed ones are the inputs the pilot must test.
+
+\lstinputlisting[language=Python, caption={Harbor's value case and one-at-a-time sensitivity (\texttt{ch03/value\_case.py}).}, label={lst:value}, firstline=2]{code/value_case.py}
+
+Its output, rounded, is in Table~\ref{tab:value}. Even before looking at sensitivity, two features are worth noticing. The growth line is roughly eight times the labor line. And the model cost---the line many teams spend most of their time debating---is the smallest number in the table: about \$600 a year at three cents per quote.
+
+\begingroup
+\small
+\begin{longtable}{@{}lrl@{}}
+\caption{Harbor's annual value case (base assumptions). One-time build cost: \$180{,}000.}\label{tab:value}\\
+\toprule
+\rowcolor{coHead} Line & \$ per year & Source of the main input \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Line & \$ per year & Source of the main input \\
+\midrule
+\endhead
+Growth (win rate +1 point) & 2{,}304{,}000 & \emph{Assumed}; to be tested in pilot \\
+Labor capacity (50\% redeployed) & 297{,}000 & Time log; redeploy share \emph{assumed} \\
+Error reduction (below-floor quotes) & 156{,}900 & Controller's audit (measured) \\
+Manager review time & $-34{,}600$ & 18\% exception rate (measured) \\
+Run cost (model, platform, 0.4 engineer) & $-84{,}600$ & Vendor pricing; staffing plan \\
+\midrule
+\rowcolor{coGreenBg} Net annual value & 2{,}638{,}700 & Payback on build cost: under one month \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Which assumption is the case built on?}
+
+A payback of under one month should make you suspicious rather than pleased. The second half of Listing~\ref{lst:value} varies each uncertain input across a plausible range while holding the others at their base values. Figure~\ref{fig:tornado} shows the result, sorted by how much each input moves the answer.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.45cm,y=1.15cm,
+  lab/.style={font=\footnotesize, anchor=east, align=right, text width=5.6cm}]
+% x axis: $ millions, 0 to 5
+\foreach \m in {0,1,2,3,4,5} {
+  \draw[black!15] (\m,0.35) -- (\m,-5.45);
+  \node[font=\scriptsize, text=black!60] at (\m,-5.7) {\$\m M};
+}
+\foreach \k/\n/\r/\lo/\hi in {
+  0/{Rise in win rate}/{0 to 2 points: \$0.33M--\$4.94M}/0.3347/4.9427,
+  1/{Share of freed time put to use}/{0\% to 100\%: \$2.34M--\$2.94M}/2.3417/2.9357,
+  2/{Margin lost per below-floor order}/{\$600 to \$2{,}000: \$2.56M--\$2.75M}/2.5637/2.7546,
+  3/{Below-floor rate after redesign}/{1\% to 0\%: \$2.58M--\$2.65M}/2.5817/2.6530,
+  4/{Share of quotes sent to a manager}/{40\% to 10\%: \$2.60M--\$2.65M}/2.5965/2.6541,
+  5/{Model cost per quote}/{\$0.30 to \$0.01: \$2.633M--\$2.639M}/2.6333/2.6391} {
+  \node[lab] at (-0.12,-\k) {\textbf{\n}\\{\scriptsize\color{black!65}\r}};
+  \fill[coRed!65] (\lo,-\k-0.25) rectangle (2.6387,-\k+0.25);
+  \fill[coGreen!65] (2.6387,-\k-0.25) rectangle (\hi,-\k+0.25);
+}
+\draw[dashed, thick, black!70] (2.6387,0.45) -- (2.6387,-5.45);
+\node[font=\scriptsize\bfseries, anchor=south] at (2.6387,0.45) {base case \$2.64M};
+\end{tikzpicture}
+\caption{A tornado chart of Harbor's value case. Each bar shows how far the net annual value moves when one uncertain input swings across its plausible range while the others stay at their base values. Red is the pessimistic end and green the optimistic end. One input, the rise in win rate, dwarfs all the others.}
+\label{fig:tornado}
+\end{figure}
+
+This kind of chart comes from a \keyterm{tornado analysis}\index{tornado analysis|textbf}, and you can see where the name comes from: with the bars sorted from widest to narrowest, it looks like a funnel cloud. Its message is blunt. The entire case swings on one assumption, the win-rate lift: at zero lift the net value is about \$335{,}000 a year; at two points it is nearly \$5 million. Everything else, including a tenfold change in model cost, moves the answer by a few percent.
+
+This changes how the case should be presented and how the pilot should be designed:
+\begin{itemize}[itemsep=1pt]
+  \item \emph{Present the floor case.}\index{floor case|textbf} With zero growth benefit, the design still returns about \$335{,}000 a year and pays back its build cost in about six and a half months. That is the case to lead with, because it rests on measured inputs. The growth benefit is upside to be tested, not promised.
+  \item \emph{Design the pilot to measure the uncertain input.} Win rate can only be measured by comparing quotes handled by the new system with comparable quotes handled the old way, over enough weeks to see a difference. That requirement goes into the rollout plan (Section~\ref{sec:rollout}).
+  \item \emph{Stop optimizing what does not matter.} Choosing a cheaper model to save a fraction of a cent per quote would be wasted effort at Harbor. Choosing a model that makes intake more accurate, and so cuts clarification round trips, might matter a great deal. The value case tells the engineers where their effort pays.
+\end{itemize}
+
+\begin{principle}[Lead with the measured floor]
+Build the value case so that its conservative version rests only on measured inputs. Treat benefits that rest on assumptions as upside, and design the pilot to measure the largest of them.
+\end{principle}
+
+% ----------------------------------------------------------------------
+\section{What Does One Transaction Cost?}
+\label{sec:unit-econ}
+
+Annual totals persuade sponsors; \keyterm{unit economics}\index{unit economics|textbf} guide design. The unit is one transaction---one quote, one ticket, one invoice---and the question is what it costs to process one, by design and by path. Chapter~\ref{ch:foundations} gave a first version for Harbor (Equation~1.1). The full version adds the cost of errors:
+\begin{equation}
+  \begin{split}
+  C_{\text{unit}} \;=\; & \underbrace{c_{\text{model}} + c_{\text{tools}} + c_{\text{plat}}}_{\text{run cost}}
+  \;+\; \underbrace{\sum_{j} r_j \, m_j \, w_j}_{\text{human time}} \\
+  & +\; \underbrace{\sum_{k} p_k \, L_k}_{\text{expected error cost}} .
+  \end{split}
+  \label{eq:unit}
+\end{equation}
+Here $r_j$ is the share of transactions that reach human step $j$, taking $m_j$ minutes at a loaded cost of $w_j$ per minute; $p_k$ is the probability of error type $k$ per transaction and $L_k$ its average cost when it happens. The platform term $c_{\text{plat}}$ spreads fixed costs (hosting, search index, monitoring, the engineer who keeps it running) across the volume.
+
+\begin{keyidea}[Equation~\ref{eq:unit} in plain words]
+One transaction costs what the machines charge, plus the minutes that people spend on it, plus the mistakes it is expected to cause. The third part is the one most business cases forget.
+\end{keyidea}
+
+Three uses of Equation~\eqref{eq:unit} recur throughout the cases.
+
+\paragraph{Comparing designs.} Each alternative in a trade-off table gets its own unit cost. The reviewed-workflow and straight-through designs for Harbor's returns (Chapter~\ref{ch:toolkit}) differ mainly in $r_j$, the share of cases a representative reviews, and in $p_k$, the money lost through return authorizations issued automatically when they should not have been. Writing both out turns the vague trade-off ``speed versus control'' into a number per return.
+
+\paragraph{Comparing paths.} Within one design, different paths have very different costs. A routed design might resolve 60\% of cases through a cheap path at a few cents and send 40\% to a person at several dollars. The average hides the fact that the design's economics depend almost entirely on the routing share. That share becomes a monitored metric.
+
+\paragraph{Scaling.} Run cost grows with volume, but platform cost per unit falls with it, and human cost depends on the routing share, not the volume. Writing the equation per unit shows at once what happens at ten times the traffic---one of the changed requirements every case asks you to handle.
+
+\subsection{Where model cost does and does not matter}
+
+At Harbor, model cost is negligible because each quote is worth tens of thousands of dollars and takes two short model calls. That is common in business-to-business work, but not universal. Model cost matters when:
+\begin{itemize}[itemsep=1pt]
+  \item volume is very high and value per transaction is low (consumer support, content moderation, transaction screening);
+  \item an agent loops, so the number of model calls per transaction is large and variable (planner--executor designs; Chapter~\ref{ch:case-incident});
+  \item contexts are long, as when large documents or long conversation histories are sent on every call;
+  \item latency is part of the product, and a larger model's slower response costs customers.
+\end{itemize}
+Chapters~\ref{ch:case-support} and~\ref{ch:case-forecast} are cases where model and infrastructure costs are a first-order design concern.
+
+% ----------------------------------------------------------------------
+\section{Which Mistakes Hurt Most?}
+\label{sec:error-cost}
+
+\begin{thinkabout}
+Which is worse for Harbor: a sales manager spending a few minutes checking a quote that was fine all along, or a below-floor quote slipping through to a customer? Guess how many times worse, and then read on.
+\end{thinkabout}
+
+Every AI component makes mistakes, and so do the people and rules around it. The design question is never ``how do we eliminate errors?'' but ``which errors are expensive, and is the design spending its protection in the right place?''
+
+\subsection{Pricing an error}
+
+For each error type $k$ in the failure walk-through\index{failure walk-through}, estimate $L_k$, the average cost when it happens. The components are usually some mix of:
+\begin{itemize}[itemsep=1pt]
+  \item \textbf{direct loss}: margin given away, a refund, a payment to the wrong party;
+  \item \emph{rework}: the staff time to find and fix it;
+  \item \emph{customer effect}: a lost order, a complaint, churn;
+  \item \emph{exposure}: fines, audit findings, legal cost, typically rare but large.
+\end{itemize}
+At Harbor, a below-floor quote that is won (31\% of quotes are) costs on average \$1{,}150 in margin given away. A quote that applies the wrong customer's contract costs less in money but more in trust; the sales director put it at one lost repeat order in five such errors.
+
+\subsection{Asymmetric errors}\index{asymmetric error cost|textbf}
+
+Most decisions can go wrong in two directions, and the two directions rarely cost the same. Consider the manager-approval branch in Harbor's policy engine. A \textbf{false negative}---an exception that should have gone to a manager but did not---risks a below-floor quote, about \$1{,}150 when it matters. A \textbf{false positive}---a routine quote sent to a manager unnecessarily---costs six manager minutes, about \$10, plus some hours of delay. The first is roughly a hundred times as expensive as the second, as Figure~\ref{fig:asym} shows.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm, lab/.style={font=\footnotesize, anchor=east, align=right, text width=4.8cm}]
+% scale: $1,150 = 7.5 cm
+\node[lab] at (-0.15,1) {\textbf{False positive}\\{\scriptsize routine quote sent to a manager}};
+\fill[coAmber] (0,0.72) rectangle ({10/1150*7.5},1.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coAmber!80!black] at ({10/1150*7.5+0.1},1) {about \$10};
+\node[lab] at (-0.15,0) {\textbf{False negative}\\{\scriptsize exception that skipped the manager}};
+\fill[coRed!75] (0,-0.28) rectangle (7.5,0.28);
+\node[font=\footnotesize\bfseries, anchor=west, text=coRed] at (7.6,0) {about \$1{,}150};
+\draw[black!40] (0,-0.5) -- (0,1.5);
+\end{tikzpicture}
+\caption{The two ways the manager-approval branch can go wrong, drawn to scale. When one error costs a hundred times the other, the design should be willing to make many cheap errors to avoid one expensive one.}
+\label{fig:asym}
+\end{figure}
+
+When costs are asymmetric, the right threshold is not the one that minimizes the number of errors; it is the one that minimizes their cost. If a component produces a score $s$ (a classifier's probability, a router's confidence) and acts when $s$ exceeds a threshold $\tau$, the expected error cost per transaction is
+\begin{equation}
+  E(\tau) \;=\; \Pr(\text{false positive} \mid \tau)\, L_{\text{FP}} \;+\; \Pr(\text{false negative} \mid \tau)\, L_{\text{FN}},
+  \label{eq:threshold}
+\end{equation}
+and $\tau$ should be chosen to minimize $E(\tau)$, subject to any capacity limit on the people who handle the positives. With $L_{\text{FN}}$ a hundred times $L_{\text{FP}}$, the best threshold sends many more cases to review than an accuracy-maximizing threshold would. Chapter~\ref{ch:case-fraud}, where missed fraud and wrongly blocked customers have very different costs, builds the whole case around Equation~\eqref{eq:threshold}.
+
+Harbor's design sidesteps the problem for its most expensive error in a way worth copying: the exception rule is a deterministic test in code, so there is no score and no threshold to tune. Where a rule can make the decision exactly, asymmetric costs are an argument for using it.
+
+\subsection{Error budgets}
+
+An \keyterm{error budget}\index{error budget|textbf} is the rate of a given error the business agrees to accept, stated before launch. It converts a vague hope (``the system should be accurate'') into a commitment that can be monitored and that triggers action when exceeded. Harbor's budgets for the pilot were:
+\begin{itemize}[itemsep=1pt]
+  \item For quotes issued below the margin floor, the budget is zero, and any occurrence stops the pilot for review.
+  \item For quotes that apply the wrong customer or contract, the budget is 0.3\% of quotes, against 0.9\% today.
+  \item For cover notes whose numbers disagree with the quote, the budget is zero reaching a customer, so the numbers-match guardrail must catch every one.
+\end{itemize}
+Budgets are set from the error's cost and the baseline: the new design should beat the old process on expensive errors, not merely match it, and the budget for a catastrophic error is zero with a defined response when it is breached. Error budgets become go/no-go criteria in the rollout plan and alert thresholds in operations (Chapter~\ref{ch:capstone}).
+
+% ----------------------------------------------------------------------
+\section{What Else Could Go Wrong?}
+\label{sec:risk}
+
+Errors are the risks you can count. A \keyterm{risk register}\index{risk register|textbf} also lists the ones you cannot count easily, each with an owner and a response. Table~\ref{tab:risk} shows the top of Harbor's.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.9cm}@{}}
+\caption{Top of Harbor's risk register for the quote design.}\label{tab:risk}\\
+\toprule
+\rowcolor{coHead} Risk & Kind & Response in the design or plan & Owner \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Risk & Kind & Response in the design or plan & Owner \\
+\midrule
+\endhead
+Below-floor quote issued & \cotag{coRed}{Financial} & Floor enforced in code; zero error budget; pilot stop rule & Controller \\
+Representatives bypass the system for big deals & \cotag{coPurple}{Adoption} & Pilot with volunteers; analysts available for complex quotes; measure share of eligible quotes handled & VP Sales \\
+Customer data sent to a model provider & \cotag{coBlue}{Privacy} & Models run within Harbor's cloud tenancy; no customer data in prompts beyond the request & IT security \\
+Policy text and configuration drift apart & \cotag{coGray}{Operational} & Policy engine reads configuration; retrieval cites version; mismatch alert & Pricing team \\
+Model or API version retired & \cotag{coTeal}{Technology} & Model name in configuration; regression evaluation before any model change & Platform team \\
+Growth benefit does not appear & \cotag{coAmber}{Business case} & Lead with floor case; pilot measures win rate & VP Sales \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+\begin{inpractice}
+Two risks in the table have nothing to do with models: adoption and the business case itself. In practice these sink more AI projects than hallucination\index{hallucination} does. A design that the people it serves will not use has a value of zero, whatever its evaluation scores.
+\end{inpractice}

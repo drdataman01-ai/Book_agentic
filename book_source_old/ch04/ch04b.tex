@@ -1,0 +1,212 @@
+% ======================================================================
+% Chapter 4 -- Part B: alternative designs and trade-offs
+% ======================================================================
+
+\section{Alternative Designs: What Could We Build?}
+\label{sec:policy-designs}
+
+\subsection{The sample design: Google's sample as it stands}
+
+Google's \texttt{rag-agent-search} sample is a starter retrieval agent that answers questions from documents indexed in Agent Search (Google's managed search service, built on what was called Discovery Engine). Documents are placed in a Cloud Storage bucket; a data connector imports them into a search data store; and the agent queries the store through ADK's built-in search tool. Terraform scripts create the bucket, connector and search engine. The sample ships with a two-file demonstration corpus about a fictional robot maker.\footnote{The sample replaced the older \texttt{RAG} sample, which used Vertex AI RAG Engine and was removed from the repository in July 2026. The pinned commit used here is \texttt{ede41c7}, the last change to the sample's folder as of this writing.}
+
+The core of the agent is a few lines (abridged):
+
+\begin{lstlisting}[language=Python, caption={The agent in the \texttt{rag-agent-search} sample (abridged from \texttt{app/agent.py} at commit \texttt{ede41c7}).}, label={lst:sample-rag}]
+instruction = (
+    "You are an AI assistant for question-answering tasks.\n"
+    "Answer to the best of your ability using the context provided.\n"
+    "Leverage the Tools you are provided to answer questions.\n"
+    "If you already know the answer to a question, you can respond "
+    "directly without using the tools."
+)
+
+root_agent = Agent(
+    name="root_agent",
+    model=Gemini(model=LLM, retry_options=types.HttpRetryOptions(attempts=3)),
+    instruction=instruction,
+    tools=[vertex_search_tool],   # VertexAiSearchTool(data_store_id=...)
+)
+\end{lstlisting}
+
+As a starting point the sample does several things well, and a fair critique says so first. It is small enough to read in five minutes. Infrastructure is code, so the same setup can be recreated in another project. Ingestion needs no custom pipeline. Model calls retry on transient errors. Tests mock the search tool so that the agent can be checked without a live index. And it deploys through ADK's own commands to Cloud Run or Agent Runtime.
+
+\begin{thinkabout}
+Before reading the critique, look again at Listing~\ref{lst:sample-rag}. If this agent were answering Alder \& Finch's employees tomorrow, what is the first thing that would go wrong?
+\end{thinkabout}
+
+Measured against Alder \& Finch's needs and the eight checks of Chapter~\ref{ch:toolkit}, it falls short in six places:
+
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{It may answer from the model's own knowledge.} The last sentence of the instruction invites the model to skip retrieval when it thinks it knows the answer. For a policy assistant this is the wrong default: the model's general knowledge of ``annual leave'' is a blend of many countries and companies, and nothing in it is Alder \& Finch's policy. This directly invites \risk{Wrong version} and \risk{Silent policy}.
+  \item \emph{It does not require citations.} An employee cannot check an answer, and an auditor cannot see which document version it came from.
+  \item \emph{It does not know who is asking.} The agent has no notion of the user's country, grade or role, so it cannot choose the right version of a policy. Retrieval returns whatever is most similar to the question, which for ``how much annual leave do I get?'' may be any of three countries' policies.
+  \item \emph{Everyone can retrieve everything.} The data connector imports files as unstructured content (\texttt{data\_schema = "content"} by default), so documents carry no fields such as country or audience to filter on. A manager-only document is as retrievable as the holiday calendar. This violates the zero-tolerance constraint \risk{Restricted leak}, which removes the sample design from consideration before any scoring.
+  \item \emph{The index is refreshed daily.} The connector's default refresh interval is 86{,}400 seconds. A policy changed in the morning can be answered in its old form until the next day. For a policy library where changes often take effect on a stated date, the freshness target should be stated, not inherited.
+  \item \emph{Evaluation does not test what matters.} The bundled evaluation set has two cases---a greeting and ``What information do you have in your knowledge base?''---scored by a model-judged response-quality metric. There are no expected answers, no retrieval metrics, and no tests for abstention or access control. The model is also named by an environment variable whose default is a moving alias (\texttt{gemini-flash-latest}), so the model under the agent can change without any change to the code.
+\end{enumerate}
+
+None of these is a bug in the sample. The sample's job is to show the shortest path from documents to a working agent, and it does that. Each item is a \emph{design decision left open} that a real deployment must close. Table~\ref{tab:policy-designs}, at the end of this section, sets the sample beside the two redesigns, so its gaps are visible at a glance.
+
+\subsection{The grounded design: permission-aware, cited and current}
+
+The grounded design keeps the sample's skeleton---one agent, one search service---and closes the six gaps. Table~\ref{tab:policy-d2} writes it down as a design table\index{design table}.
+
+\begin{itemize}[itemsep=2pt]
+  \item \emph{Identity first.} The employee signs in through the company's identity provider. A code step looks up the employee's country, grade and manager status from the HR directory, through a read-only MCP\index{Model Context Protocol (MCP)} tool, and stores them in the session state\index{memory!session state}. The model never chooses these values.
+  \item \emph{Metadata and filtered retrieval.} Each policy is re-imported as a structured document with fields \texttt{country} (or \texttt{GLOBAL}), \texttt{min\_grade}, \texttt{audience} (\texttt{all} or \texttt{managers}), \texttt{version} and \texttt{effective\_from}. The agent's only search tool is a code wrapper that adds a filter built from the employee's profile. Restricted documents are filtered out \emph{before} retrieval, not after generation.
+  \item \emph{Grounding and citations.} The instruction forbids answers not supported by retrieved passages and requires a citation for each claim, in a fixed format: document ID, section and version.
+  \item \emph{A citation guardrail\index{guardrail}.} Code checks that every citation in the answer refers to a document retrieved in this turn. If any does not, or there are none, the answer is replaced with an abstention.
+  \item \emph{Abstain and hand off.} When the policies do not answer the question, the assistant says so and offers to open an HR ticket containing the question and what it found. The employee confirms before the ticket is created; the ticket then hands the case to an HR generalist.
+  \item \emph{Event-driven freshness.} Publishing a policy writes it to a bucket; the write emits an event that triggers an immediate import. The freshness target is one hour from publication to answerable.
+\end{itemize}
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\caption{The grounded design as a design table. Identity and filtering are in code; the agent may search up to three times, and its answer must pass a citation check or become an offer to hand the question to HR.}\label{tab:policy-d2}\\
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} \# & Step & Done by & Uses & Why it is there \\
+\midrule
+\endhead
+1 & Sign in and ask a question in intranet chat & \tagPerson\ Employee & Company sign-in (SSO) & --- \\
+2 & Look up the employee's country, grade and manager status & \tagCode & HR directory server (owner: HR Systems), tool \texttt{get\_profile} & \risk{Wrong version} \risk{Restricted leak} \\
+3 & Search the policies and draft a cited answer, or reply that nothing was found & \tagAgent\ At most three searches; stops at a cited answer or an abstention & \texttt{search\_policies}, a code wrapper that adds the profile filter; policy index (owner: Policy team; fresh within 1 hour) & \kpi{Resolved without HR} \kpi{Time to answer} \\
+4 & Check every citation. If it passes, send the cited answer; otherwise go to step 5 & \tagGuardrail\ Cited documents must have been retrieved this turn & The answer and this turn's retrieved documents & \kpi{Answer accuracy} \risk{Silent policy} \\
+5 & Offer to open an HR ticket, and wait for the employee to confirm & \tagPerson\ Employee & --- & \risk{Silent policy} \\
+6 & Create the ticket with the question and what was found & \tagCode & HR ticketing server (owner: HR Systems), tool \texttt{create\_ticket} & --- \\
+7 & Answer the ticket & \tagPerson\ HR generalist, within one business day & The ticket & \kpi{Time to answer} \\
+8 & Whenever a policy is published, import it into the index & \tagCode\ Triggered by the publication event & Policy library bucket (owner: Policy team) & \risk{Wrong version} \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+Two choices in the grounded design deserve a comment. The agent is Level~4 rather than Level~1 because good policy answers often need two searches: one for the general rule and one for an exception (``Can I carry over leave?'' needs the leave policy and the year-end memo). The limit of three searches and the explicit stop condition keep that autonomy bounded. And the ticket is created only after the employee confirms, which satisfies the protected-writes check of Chapter~\ref{ch:toolkit} for the one write action in the design and also respects the employee: a question about the disciplinary procedure, for example, is not something every employee wants turned into a ticket automatically.
+
+\subsection{The curated design: approved answers first}
+
+The curated design adds a layer in front of the grounded design. HR writes and approves answers to the most frequent questions, one per country where the answer differs---about 150 questions and 330 answers. A code step compares each incoming question with the curated questions; if the similarity exceeds a threshold and a curated answer exists for the employee's country, the curated answer is returned with its policy citation. Otherwise the question goes down the grounded design's path. Table~\ref{tab:policy-designs} compares all three designs.
+
+The attraction is quality: for the questions that make up most of the volume, the answer is one HR wrote and approved. The cost is maintenance: every policy change must be checked against every curated answer that cites it, and a curated answer that is not updated is a confident wrong answer with HR's name on it.
+
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\caption{The three designs for the policy assistant, side by side.}\label{tab:policy-designs}\\
+\toprule
+\rowcolor{coHead} & \cellcolor{coRedBg}Sample & Grounded & Curated \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} & \cellcolor{coRedBg}Sample & Grounded & Curated \\
+\midrule
+\endhead
+Who is asking & Unknown & Verified at sign-in; profile from the HR directory & Same as grounded \\
+What it searches & Every document, unfiltered & Only documents for the employee's country, grade and role & Approved answers first, then as grounded \\
+Answers come from & Documents, or the model's own knowledge & Retrieved passages only & HR-approved answers, or retrieved passages \\
+Citations & None & Every claim, checked by a guardrail & Every answer \\
+When unsure & Answers anyway & Says so and offers an HR ticket & Same as grounded \\
+Freshness & Daily sync & Within one hour of publication & Within one hour; approved answers must be reviewed on every change \\
+Main extra cost & --- & Tagging and maintaining metadata & Also writing and maintaining 330 answers \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+% ----------------------------------------------------------------------
+\section{Trade-offs: Which Design Should We Pilot?}
+\label{sec:policy-tradeoffs}
+
+\subsection{Constraint first, then scores}
+
+The constraint \risk{Restricted leak} (no restricted content to unentitled employees) removes the sample design before scoring, because nothing in its design prevents a manager-only document from being retrieved for anyone. We still score it in Table~\ref{tab:policy-tradeoff}, because the sponsor will ask why the quick version is not good enough, and the scores answer that question in her terms.
+
+The weights reflect this case. Quality and security carry most of the weight; speed carries little, because every design answers in seconds and the baseline is days. Maintainability and workload matter more than at Harbor, because a policy library changes every week and the people who maintain it are the same HR generalists the project is meant to relieve.
+
+\begingroup
+\small
+\begin{longtable}{@{}lccccc@{}}
+\caption{Trade-off table for the policy assistant. The sample design fails constraint \risk{Restricted leak} and is shown for comparison only.}\label{tab:policy-tradeoff}\\
+\toprule
+\rowcolor{coHead} Criterion & Weight & Sample & Grounded & Curated \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Criterion & Weight & Sample & Grounded & Curated \\
+\midrule
+\endhead
+Quality & 0.25 & 2 & 4 & 5 \\
+Cost & 0.05 & 5 & 4 & 4 \\
+Speed & 0.05 & 5 & 4 & 5 \\
+Reliability & 0.10 & 3 & 4 & 4 \\
+Security and privacy & 0.20 & 1 & 5 & 5 \\
+Control and auditability & 0.10 & 1 & 4 & 5 \\
+Maintainability & 0.10 & 4 & 4 & 2 \\
+Human workload & 0.15 & 3 & 4 & 3 \\
+\midrule
+\rowcolor{coAmberBg} Weighted score & 1.00 & 2.45 & 4.20 & 4.25 \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{A near tie}
+
+The grounded design and the curated design are separated by 0.05 points. The sensitivity check from Chapter~\ref{ch:toolkit}, run on the two viable designs, finds the curated design ahead in about 65\% of perturbed weightings and the grounded design in about 35\%. That is not a decision the numbers can make. When a trade-off table\index{trade-off table} produces a near tie, three further questions usually settle it:
+\begin{enumerate}[itemsep=1pt]
+  \item \emph{Is one option a superset of the other?} Here, yes: the curated design is the grounded design plus a front layer. Building the grounded design first loses nothing; the curated layer can be added later without rework.
+  \item \emph{Which option teaches us more?} The curated design needs HR to choose 150 questions and write answers for them now, on the basis of guesses about which questions matter. The grounded design in pilot produces the data to make that choice: which questions are asked most, and which are answered worst.
+  \item \emph{Which option is easier to reverse?} Withdrawing a curated layer after HR has invested weeks in it is organizationally harder than not building it yet.
+\end{enumerate}
+
+All three point the same way. The decision is to pilot the grounded design, instrumented to find the questions where a curated answer would help most, with the curated design's layer as a planned second phase if the pilot shows it is needed.
+
+\begin{quickcheck}
+The curated design scores 0.05 points higher. Why not simply build it?
+\answer{Because 0.05 points is well inside the noise of the estimates, and the curated design is the grounded design plus an extra layer. Building the grounded design first loses nothing, and its pilot data tells HR which answers are worth curating.}
+\end{quickcheck}
+
+\begin{principle}[Sequence near ties]
+When two designs score within the noise of the estimates and one extends the other, build the smaller one first and let its data decide whether the extension is worth building.
+\end{principle}
+
+\subsection{Failure walk-through}
+
+Table~\ref{tab:policy-failwalk} walks the grounded design. The most instructive row is the second: the filter can be correct and still fail if the \textbf{metadata} is wrong. A German policy tagged \texttt{country = GLOBAL} is shown to everyone. Metadata is now part of the system's correctness, and it needs an owner and a test.
+
+\begingroup
+\scriptsize \setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X cc@{}}
+\caption{Failure walk-through for the grounded design. S = severity, L = likelihood (1--5).}\label{tab:policy-failwalk}\\
+\toprule
+\rowcolor{coHead} Step & Failure & Effect & Detection & Mitigation & S & L \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{coHead} Step & Failure & Effect & Detection & Mitigation & S & L \\
+\midrule
+\endhead
+Resolve profile & Directory has stale grade after promotion & Wrong travel entitlement & Weekly reconciliation with payroll & Directory is system of record; answer states the grade used & 3 & 2 \\
+\rowcolor{coAmberBg} Policy index & Document mis-tagged (country or audience) & Wrong version or restricted doc shown (\risk{Wrong version}, \risk{Restricted leak}) & Metadata lint on publish; leakage tests in evaluation & \textbf{Change:} publishing blocked until metadata validates & 5 & 2 \\
+Search tool & Filter syntax error returns unfiltered results & Restricted docs reach model & Unit test: every query includes a filter & Fail closed: no filter, no search & 5 & 1 \\
+Policy agent & Answers beyond what passages say & Confident wrong answer (\risk{Silent policy}) & Sampled review; groundedness check & Instruction; citation guard & 4 & 3 \\
+Citation check & Cites a retrieved doc that does not support the claim & Wrong answer that looks cited & Sampled review only & Accept for pilot; measure; consider claim-level check & 3 & 3 \\
+Import on publish & Event lost; index stale & Old policy answered (\risk{Wrong version}) & Freshness probe: hourly test question per new version & Daily full sync as backstop & 3 & 2 \\
+HR ticketing & Ticket created twice & Duplicate work & Duplicate check & Idempotency key per conversation & 1 & 2 \\
+\bottomrule
+\end{xltabular}
+\endgroup
+
+The fifth row records a known limit rather than a fix. The citation check verifies that each cited document was retrieved, not that it supports the specific claim. A claim-level check (a second model judging whether each passage supports each sentence) is possible, but it adds cost and latency and its own errors. The decision is to measure the problem in the pilot before paying for a solution.
+
+\subsection{Decision record}
+
+\begin{tcolorbox}[colback=white, colframe=black!45, boxrule=0.4pt, arc=1pt, fontupper=\small, title={DR-POL-001: Pilot the grounded design; curated layer as conditional phase 2}, fonttitle=\bfseries\small, coltitle=black, colbacktitle=codefill]
+\textbf{Context.} 2{,}600 policy tickets a month; 1.8-day median wait; 7\% wrong answers. Constraint \risk{Restricted leak}: zero exposure of restricted documents.\\
+\textbf{Options.} The sample design, Google's sample as is (fails \risk{Restricted leak}); the grounded design, filtered, cited and event-refreshed; the curated design, the grounded design plus curated answers.\\
+\textbf{Decision.} Pilot the grounded design, with metadata validation at publication added from the failure walk-through\index{failure walk-through}.\\
+\textbf{Reasons.} The grounded design and the curated design tie within estimate noise; the curated design extends the grounded design without rework; the grounded design's pilot data is needed to choose which answers to curate.\\
+\textbf{Consequences.} Policy team owns metadata as well as text; publishing is blocked on invalid metadata.\\
+\textbf{Reversal triggers\index{reversal trigger}.} Build the curated layer if, in the pilot, answer accuracy on the 50 most frequent questions is below 97\%, or if more than 30\% of volume falls on fewer than 50 questions. Revisit the citation guard if sampled review finds unsupported cited claims in more than 2\% of answers.
+\end{tcolorbox}
