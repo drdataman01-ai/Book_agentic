@@ -1,4 +1,0 @@
-google-adk==2.12.*
-mcp==2.3.*
-python-dotenv
-pytest
